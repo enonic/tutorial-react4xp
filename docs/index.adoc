@@ -1,0 +1,313 @@
+= Starter: Server side React templating
+:toc: right
+:imagesdir: media/
+
+Build sites that support server side JSX templating using the React framework
+
+== Introduction
+
+This guide will take you through the basic steps of creating a web app, using the basic building blocks of Enonic XP.
+
+During this exercise you will:
+
+* learn about http controllers and view templates
+* optimize serving of static assets
+* make use of the router library
+* set up a vhost, and more..
+
+== Create project
+
+To setup a project locally, simply run the following command:
+
+  enonic project create
+
+Choose "*React4XP*" from the list of starters, create a *new XP sandbox* and complete the setup wizard.
+
+NOTE: *Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[Getting started guide] to install it.
+
+
+== Project structure
+
+The project folder created should now contain a project structure, looking something like this:
+
+[source,files]
+----
+build.gradle <--1-->
+settings.gradle
+build/ <--2-->
+src/
+  main/
+    java/ <!--3-->
+    resources/ <!--4-->
+      assets/ <!--5-->
+      webapp/ <!--6-->
+----
+
+<1> The gradle files are used by the build system
+<2> Contains output files produced by the build
+<3> Optional folder for Java code (used to import sample site in this starter)
+<4> Main location for XP specific project code
+<5> Static assets such as css and icons are placed here
+<6> Folder containing the root webapp http controller
+
+== Building and Deploying
+
+To build and deploy the app, run this command from your shell:
+
+  enonic project deploy
+
+Accept starting the sandbox
+
+[NOTE]
+====
+To verify that your app started successfully, you should find an entry similar to this in the sandbox log:
+
+  2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully
+====
+
+
+== Setting up site
+
+To see your current application:
+
+. log in to the XP admin console (http://localhost:8080)
+. open the "Applications" app, and select the listed applications
+. visit the app by clicking the web app link.
+
+video::webapp.mp4["Logging in, opening apps and launching webapp" width=1024px]
+
+
+== JS Controller
+
+The essense of a web application is the controller.
+In your project, you will find the following file:
+
+.src/main/resources/webapp/webapp.js
+[source,js]
+----
+exports.get = function (req) {
+  var title = "Hello Web app";
+  return  {
+  body: `
+<html>
+  <head>
+    <title>${title}</title>
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+  </head>
+  <body>
+      <h1>Sweet, "${title}" is working!</h1>
+      <img src="html5logo.svg"/>
+  </body>
+</html>
+`
+  }
+};
+----
+
+This controller file is automatically executed when your web app is being accessed.
+
+The example above is also referencing two asset files.
+These files can be found in the `src/main/resources/assets/` folder of your project.
+
+[NOTE]
+====
+By default, the web app engine automatically serves files placed in the `asset/` as if they were located in the root of your web app.
+====
+
+== Using Views
+
+According to the MVC (Model View Controller) pattern,
+we should separate the View (template) from the controller.
+Enonic XP supports a variety of templating engines.
+In this step, we'll use https://market.enonic.com/vendors/enonic/thymeleaf-lib[Thymeleaf]:
+
+. To make sure Thymeleaf is available for our project, we must update the `gradle.build` file.
+Uncomment the following line from the "dependencies" section:
++
+      include "com.enonic.lib:lib-thymeleaf:2.0.0-RC1"
++
+. Create a new file `hello.html` and add it to the `webapp/` folder
++
+.src/main/resources/webapp/hello.html
+[source,html]
+----
+include::../code-samples/webapp-template/hello.html[]
+----
++
+. Then update your controller file to use the new template:
++
+.src/main/resources/webapp/webapp.js
+[source,js]
+----
+include::../code-samples/webapp-template/webapp.js[]
+----
++
+. When finished, redeploy the app. NB! Just start a new shell if your current shell is running the sandbox:
++
+  enonic project deploy
++
+
+Refresh your app, and you should see the heading "*Sweet... Views are working too!*".
+
+[TIP]
+====
+A cool feature related to Thymeleaf templates is that they are actually pure HTML.
+Meaning they may be opened directly in your browser.
+Try opening the hello.html file to see for yourself:
+====
+
+image::hello-dummy.png["Screenshot of template showing dummy heading and html5 logo",width=800px]
+
+== Asset serving
+
+Our approach asset serving is simple, but not optimal.
+XP also provides a more optimized solution for serving assets where:
+
+* Asset url are created automatically (no need to deal with relative paths)
+* Assets get "infinite" cache headers (used by proxies and browsers)
+* Every time you deploy a new app, new url's are generated (no more stale assets)
+
+To use this functionality, we simply need to update our view template:
+
+. Update `hello.html` template with the following content:
++
+.src/main/resources/webapp/hello.html
+[source,js]
+----
+include::../code-samples/webapp-template/hello-assets.html[]
+----
++
+. Redeploy once more:
++
+  enonic project deploy
++
+
+After refreshing your app and inspecting the html5 logo, you should now see something like this:
+
+  <img src="/webapp/webapp.demo/_/asset/webapp.demo:1557487230/html5logo.svg">
+
+TIP: Check out the "Network" tab in your browsers dev tools to see the cache headers
+
+== Routing
+
+Routing, or handling different URLs within your app is a common requirement for web applications.
+
+In this step we will create a basic server-side router.
+In addition to the start page, we will create two more pages and handle navigation between them.
+
+. This time we will use the https://market.enonic.com/vendors/enonic/router-lib[router library]. Add the following line to the dependencies section of the `build.gradle` file to make it available.
++
+  include "com.enonic.lib:lib-router:2.0.0-RC1"
++
+. Then update your `webapp.js` and `hello.html` as follows:
++
+.src/main/resources/webapp/webapp.js
+[source,js]
+----
+include::../code-samples/webapp-router/webapp.js[]
+----
++
+.src/main/resources/webapp/hello.html
+[source,js]
+----
+include::../code-samples/webapp-router/hello.html[]
+----
+. Build and deploy the app once more to see the result:
++
+  enonic project deploy
++
+
+Once the app is deployed, reload and enjoy navigating between the pages.
+
+NOTE: Notice the use of `pageUrl()` to dynamically generate server relative URLs for the pages. This eliminates the need for dealing with relative links etc.
+
+
+////
+== Error handler
+
+You might have noticed the "404 FTW" link in your app by now, and maybe even clicked it?
+Essentially, the this url is not handled by the router, and returns the default error page.
+
+We can do better, as XP provides a concept for generic http error handling. Lets add error handling to our app:
+
+. Add a new controller `error.js` to your project as follows:
++
+.src/main/resources/error/error.js
+[source,js]
+----
+include::../code-samples/error/error.js[]
+----
++
+. Build, deploy and try out your new error handler:
++
+  enonic project deploy
++
+
+== Config management
+
+TODO
+
+Our app is using the Google Maps API.
+Heavy usage of Googles services requires a valid API key.
+
+Hardcoding an API key into your app is far from ideal.
+Luckily, XP provides a simple way to inject configuration, like the API key, without having to change your app.
+
+. Start by https://developers.google.com/maps/documentation/javascript/get-api-key[getting yourself a Google API key]
+. Create a file called <name.of.your.app>.cfg i.e. "my.first.site.cfg" with the following content:
++
+  maps.apiKey = <your google api key>
++
+. Copy this file into your sandbox' config folder. The sandbox is located in your users home folder at .enonic/sandboxes/<name-of-sandbox>/home/config/
+. After placing the file in the sandbox, you should now see a line from the sandbox log showing something like this:
++
+  2019-05-05 20:07:39,462 INFO  c.e.x.s.i.config.ConfigInstallerImpl - Loaded config for [<name.of.your.app>]
++
+
+To verify that the configuration is in use,
+check the source code for a country page to see the following:
++
+  <script src="http://maps.googleapis.com/maps/api/js?key=yourGoogleKey>"></script></head>
++
+
+////
+
+
+== Setting up a vhost
+
+Our webapp URL does not look like something we would want in production.
+XP provides a concept called Vhosts to map the internal XP URI to a public facing URL i.e. `mywebapp.com` -> `/webapp/my.app.name/`.
+
+. Start by locating your sandbox' config folder. It is placed within your users home folder at `.enonic/sandboxes/<name-of-sandbox>/home/config/`
+. Update the `com.enonic.xp.web.vhost.cfg` file in the config/ folder as follows:
++
+.enonic/sandboxes/<name-of-sanbox>/home/config/com.enonic.xp.web.vhost.cfg
+[source,properties]
+----
+include::../code-samples/com.enonic.xp.web.vhost.cfg[]
+----
++
+NOTE: Remember to update the value of `mapping.mywebapp.target` to match the URI to your webapp i.e. "/webapp/my.cool.app/"
++
+. After saving the vhost config file, you should see the following line the XP Sandbox log:
++
+  2019-05-10 11:34:17,234 INFO  c.e.x.w.v.i.c.VirtualHostConfigImpl - Virtual host is enabled and mappings updated.
++
+. Finally, a small trick to fool our browser into thinking `mywebapp.com` is pointing to your local machine. Add the following line to your hosts file.
++
+  127.0.0.1	mywebapp.com
++
+NOTE: On Mac/Linux_: `/etc/hosts`, on Windows: `c:\Windows\System32\Drivers\etc\hosts`
++
+. Point your browser to http://mywebapp.com:8080 to see the glorious result.
+
+Read more about https://developer.enonic.com/docs/xp/stable/deployment/config#vhost[vhost configuration] in the XP docs.
+
+== Logging
+
+While developing an app, it can be helpful to do some logging.
+Try adding the following line into the exports.get section of your webapp controller and see what happens:
+
+  log.info('Testing logging: %s', JSON.stringify(req, null, 4));
+
+NOTE: A simplified logging function and many more are included in the https://market.enonic.com/vendors/enonic/util-lib[Util Library]

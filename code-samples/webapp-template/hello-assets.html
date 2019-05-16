@@ -1,0 +1,10 @@
+<html>
+  <head>
+    <title data-th-text="${title}">Dummy title</title>
+    <link rel="stylesheet" type="text/css" data-th-href="${portal.assetUrl({'_path=styles.css'})}" href="../assets/styles.css"/>
+  </head>
+  <body>
+      <h1 data-th-text="'Faster assets... '+ ${message}">Dummy heading</h1>
+      <img data-th-src="${portal.assetUrl({'_path=html5logo.svg'})}" src="../assets/html5logo.svg"/>
+  </body>
+</html>

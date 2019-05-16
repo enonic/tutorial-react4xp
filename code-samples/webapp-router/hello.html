@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title data-th-text="${title}">Dummy title</title>
+    <link rel="stylesheet" type="text/css" data-th-href="${portal.assetUrl({'_path=styles.css'})}" href="../assets/styles.css"/>
+  </head>
+  <body>
+    <nav>
+      <a data-th-href="${portal.pageUrl({'_path=/'})}" href="./">Main</a>
+      <a data-th-href="${portal.pageUrl({'_path=page'})}" href="page">Page</a>
+      <a data-th-href="${portal.pageUrl({'_path=page/subpage'})}" href="page/subpage">Subpage</a>
+    </nav>
+    <h1 data-th-text="${message}">Dummy heading</h1>
+    <img data-th-src="${portal.assetUrl({'_path=html5logo.svg'})}" src="../assets/html5logo.svg"/>
+  </body>
+</html>
