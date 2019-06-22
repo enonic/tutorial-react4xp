@@ -2,17 +2,32 @@
 :toc: right
 :imagesdir: media/
 
-Build sites and apps that support server side JSX templating with the React framework
+Build sites and apps that support client- and serverside JSX templating with the React framework, in combination with optimized asset serving and hydration - for lighting fast sites and apps.
+
+React4XP integrates React with the CMS components in Content Studio, and allows reuse of JSX templates for both back-end, front-end and editorial use cases. It builds directly on top of traditional XP controllers, making JSX look like any other templating engine out there, while expanding the possibilities for single-page sites and client-side driven apps when needed.
 
 == Introduction
 
-This documentation takes you through the basic elements of React4XP and how to use the starter
+This documentation takes you through the basic elements of React4XP and how to use the starter, helping you kickstart a React4xp project of your own.
 
 Essential features you will learn about:
 
 * How to
 * What is
 * And then some...
+
+[NOTE]
+====
+This starter and guide aims for setting up React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the installation is different from XP7 - and the XP6 starter handles those differences. Using React4xp the rest of the way is identical, so you can still use this guide for both versions.
+
+=== What is React4xp?
+
+React4xp is a suite of tools: a library with a few companion NPM packages. They can of course be used separately or be modified to suit your needs.
+
+But they're *built to work together out of the box* to make everything as easy as possible for you to compile JSX components so that XP can find and use them, insert editorial data into the XP components, use isomorphic serverside and clientside rendering and hydration, and optimize and serve reusable asset chunks to the client side.
+
+This starter handles the full setup.
+
 
 == Create project
 
@@ -33,21 +48,31 @@ The project folder created should now contain a project structure, looking somet
 ----
 build.gradle <--1-->
 settings.gradle
-build/ <--2-->
+package.json <--2-->
+build/ <--3-->
 src/
   main/
-    java/ <!--3-->
-    resources/ <!--4-->
-      assets/ <!--5-->
-      webapp/ <!--6-->
+    resources/
+      assets/ <!--4-->
+      react4xp/ <!--5-->
+        _entries <!--6-->
+      site/
+        parts/ <!--7-->
+        pages/
+      webapp/ <!--8-->
+
 ----
 
-<1> The gradle files are used by the build system
-<2> Contains output files produced by the build
-<3> Optional folder for Java code (used to import sample site in this starter)
-<4> Main location for XP specific project code
-<5> Static assets such as css and icons are placed here
-<6> Folder containing the root webapp http controller
+image::hello-dummy.png["Logging in, opening apps and launching webapp" width=1024px]
+
+<1> The gradle files are used by the build system. The starter adds some setup here: the library lib-react4xp is imported, and some building steps are triggered, putting everything together (using webpack with configurations that are fetched with NPM).
+<2> package.json sets up NPM package import
+<3> build/ contains output files produced by the build. All the output from the react4xp build process will be put in the subfolder build/resources/main/assets/react4xp...
+<4> ...but notably, assets/react4xp is NOT the source of the built React4xp assets. Just use assets/ as before: for general static assets such as css and icons, not react4xp components.
+<5> react4xp/ is the general folder for react component source files. React4xp will look for .js and .jsx files here and in all subfolders, and compile them during build. All subfolders below this (except for _entries) will be compiled to *chunks* with the same name as the subfolder. Put nested/reused react components in subfolders like that, and also other code imported by your components.
+<6> react4xp/_entries is the main folder for *entry components* - react components that can be used by XP through react4xp (i.e., don't need to be referred to (and nested in) other react components.
+<7> Below the parts/ and pages/ subfolders is where you put your XP parts and pages. You can also put JSX entry components together with your parts and pages. If they have the same name as the part/page, they are super easy to inject into the part/page from the controller.
+<8> Folder containing the root webapp http controller. React4xp also supplies services that make it easy to inject react components into standalone webapp pages - in principle not even the controller is needed!
 
 == Building and Deploying
 
