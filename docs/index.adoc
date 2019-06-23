@@ -10,15 +10,9 @@ React4XP integrates React with the CMS components in Content Studio, and allows 
 
 This documentation takes you through the basic elements of React4XP and how to use the starter, helping you kickstart a React4xp project of your own.
 
-Essential features you will learn about:
-
-* How to
-* What is
-* And then some...
-
 [NOTE]
 ====
-This starter and guide aims for setting up React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the installation is different from XP7 - and the XP6 starter handles those differences. Using React4xp the rest of the way is identical, so *you can still use this guide for both versions.*
+The starter and this guide aims for how-to, what-is and setup of React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the installation is different from XP7 - and the XP6 starter handles those differences. Using React4xp the rest of the way is identical, so *you can still use this guide for both versions.*
 ====
 
 === What is React4xp?
@@ -112,13 +106,13 @@ Simply put, there are 4 prototypical usage patterns. You're not bound to use the
 
 . *The easiest* is to put one entry source file into the same folder as a part/page where it should be displayed, and let it have the same file name as the part/page (but `.JSX` extension only!). Let the React4xp shorthand functions `.renderSafe` (for client-side rendering) or `.render` (for server-side rendering and client-side hydration) use XP's `request` and `getComponent()` to figure out the messy stuff for you. Tweak the rendering functions with extra parameters if you want. The output from these render functions is a full response object with everything the client needs to display it - just return it directly.
 . Or if you want to *reuse an entry component in multiple parts or pages* (or just, not be bound by the part/page they 'belong to' in the parent folder): put a source file where you want: either a `.JSX` file in any page/part folder or a `.JS`/`.JSX`/`.ES6` under `react4xp/_entries` (#6 in the structure overview above). React4xp uses the location of all components to derive a name for each of them: the *jsxPath*. You can see the built jsxPaths in `build/resources/main/assets/react4xp/entries.json`. Use `.render` or `.renderSafe`, but with the jsxPath string instead of the `getComponent` object.
-. Or if you need more *flexibility and control, want to insert logic or extract data while constructing the component, or want to use more than one entry component in a single part or page*: instead of using the shorthands `.render` or `.renderSafe`, create a temporary data-holding `new React4xp(...)` object in the page/part controller. When you're done manipulating, the React4xp object has built-in and specific methods for rendering a body and the necessary page contributions, for client-side or server-side react rendering.
-. Finally, *React4xp can be used without XP controllers* if needed: a few services are exposed in runtime, endpoints where a client can request runnable compiled code:
+. Or if you need *more flexibility and control*, want to insert logic or extract data while constructing the component, or want to use more than one entry component in a single part or page: instead of using the shorthands `.render` or `.renderSafe`, create a temporary data-holding `new React4xp(...)` object in the page/part controller. When you're done manipulating, the React4xp object has built-in and specific methods for rendering a body and the necessary page contributions, for client-side or server-side react rendering.
+. Finally, React4xp can be *used outside of the page/part flow*, even without making XP controllers if needed. A few services are exposed in runtime - endpoints where a client can request runnable compiled code:
   - entries, by jsxPath reference,
   - chunks (and lists of chunks), referred by the jsxPath(s) used on a page,
   - a client-side React4xp wrapper, simplifying these manual clientside steps and triggering rendering,
   - React and ReactDOM themselves, the versions used on the serverside. Handy if you're doing SSR and want to be sure it's always the exact same versions doing the rendering everywhere.
-  - This allows you for example to bypass Content Studio if you want, using XP's webapp functionality.
+  - This allows you for example to bypass Content Studio if you want, using XP's webapp functionality, making single-page react apps etc.
 
 === Imports and chunks
 When building your react components, *you can import JS/ES6 code as usual*: nested react components, your own secondary code, other frameworks, libraries, whatever... Imported code can be compiled into separate asset chunks from the entries that use them, for https://webpack.js.org/guides/code-splitting/[code splitting].
