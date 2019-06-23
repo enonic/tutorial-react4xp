@@ -18,7 +18,8 @@ Essential features you will learn about:
 
 [NOTE]
 ====
-This starter and guide aims for setting up React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the installation is different from XP7 - and the XP6 starter handles those differences. Using React4xp the rest of the way is identical, so you can still use this guide for both versions.
+This starter and guide aims for setting up React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the installation is different from XP7 - and the XP6 starter handles those differences. Using React4xp the rest of the way is identical, so *you can still use this guide for both versions.*
+====
 
 === What is React4xp?
 
@@ -31,7 +32,7 @@ This starter handles the full setup.
 
 == Create project
 
-o setup a project locally, run the following command:
+To setup a project locally, run the following command:
 
   enonic project create -r starter-react4xp
 
@@ -42,12 +43,13 @@ NOTE: *Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[
 
 == Project structure
 
-The project folder created should now contain a project structure, looking something like this:
+Next step! If you're used to working with an https://developer.enonic.com/guides/my-first-webapp[ordinary] XP project with https://developer.enonic.com/templates/webpack[webpack], the project will look very similar - the biggest news is the folder `react4xp/` under `resources/`. Your project folder should now look something like this:
 
+.Selected files from the project structure:
 [source,files]
 ----
 build.gradle <--1-->
-settings.gradle
+settings.gradle <--1-->
 package.json <--2-->
 build/ <--3-->
 src/
@@ -56,23 +58,27 @@ src/
       assets/ <!--4-->
       react4xp/ <!--5-->
         _entries <!--6-->
+          REPLACE_ME.jsx <!--7-->
       site/
-        parts/ <!--7-->
-        pages/
-      webapp/ <!--8-->
-
+        parts/ <!--8-->
+        pages/ <!--8-->
+        REPLACE_ME.jsx <!--7-->
+      webapp/ <!--9-->
 ----
 
-image::hello-dummy.png["Logging in, opening apps and launching webapp" width=1024px]
 
-<1> The gradle files are used by the build system. The starter adds some setup here: the library lib-react4xp is imported, and some building steps are triggered, putting everything together (using webpack with configurations that are fetched with NPM).
-<2> package.json sets up NPM package import
-<3> build/ contains output files produced by the build. All the output from the react4xp build process will be put in the subfolder build/resources/main/assets/react4xp...
-<4> ...but notably, assets/react4xp is NOT the source of the built React4xp assets. Just use assets/ as before: for general static assets such as css and icons, not react4xp components.
-<5> react4xp/ is the general folder for react component source files. React4xp will look for .js and .jsx files here and in all subfolders, and compile them during build. All subfolders below this (except for _entries) will be compiled to *chunks* with the same name as the subfolder. Put nested/reused react components in subfolders like that, and also other code imported by your components.
-<6> react4xp/_entries is the main folder for *entry components* - react components that can be used by XP through react4xp (i.e., don't need to be referred to (and nested in) other react components.
-<7> Below the parts/ and pages/ subfolders is where you put your XP parts and pages. You can also put JSX entry components together with your parts and pages. If they have the same name as the part/page, they are super easy to inject into the part/page from the controller.
-<8> Folder containing the root webapp http controller. React4xp also supplies services that make it easy to inject react components into standalone webapp pages - in principle not even the controller is needed!
+<1> The gradle files are used by the build system. The starter adds some setup here: the library *lib-react4xp* is imported, and some building steps are triggered, putting everything together (using webpack with configurations that are fetched with NPM).
+<2> `package.json` sets up NPM package import
+<3> `build/` will contain output files produced by the build. All the output from the react4xp build process (along with a few housekeeping data files) will be compiled into the subfolder `build/resources/main/assets/react4xp`. These built assets are used in runtime both on client- and server side.
+<4> But note that `assets/react4xp` is NOT the source of those React4xp assets! Just use `assets/` for other, general, non-react4xp static assets such as css and icons, etc.
+<5> `react4xp/` is the general folder for react component source files. React4xp will look for `.js` and `.jsx` files here and in all subfolders, and compile them during build. All subfolders below this (except for `_entries` - see below) will be compiled to *chunks* with the same name as the subfolder. Put nested/reused react components in subfolders like that, and also other code imported by your components.
+<6> `react4xp/_entries/` is special and magic. This is the main folder for *entry components* - react components that can be used by XP through react4xp (i.e., don't need to be referred to (and nested in) other react components.
+<7> Two `REPLACE_ME.jsx` files: simply placeholders needed by webpack. Removed each of these when you've added one or more react source file below `react4xp/_entries/` and `site/`.
+<8> Below the `site/parts/` and `site/pages/` subfolders is where you put your XP parts and pages, as always. With React4xp, *you can also put `.jsx` entry components together with your parts and pages*. This is the easiest use case: if they have the same name as the part/page, they are super easy to inject into the part/page from the controller.
+<9> Folder containing the root webapp controller. React4xp also supplies services that make it easy to inject compiled react components into standalone webapp pages - in principle not even controller logic is needed!
+
+NOTE: *Where you put your entry source files in this structure is important for how you refer to them in code!* See the examples below, or check out more details in https://github.com/enonic/lib-react4xp/blob/master/README.md#jsxpath-how-to-refer-to-a-react4xp-component[the main library docs].
+
 
 == Building and Deploying
 
@@ -90,11 +96,6 @@ To verify that your app started successfully, you should find an entry similar t
 ====
 
 
-== API/Details
-
-Bla bla, basic info and links about how react/react4XP works and what it does.
-
-
 == Usage
 
 This section contains a few examples on how you can setup and build something something..
@@ -109,116 +110,10 @@ To see your current application:
 . open the "Applications" app, and select the listed applications
 . visit the app by clicking the web app link.
 
-video::webapp.mp4["Logging in, opening apps and launching webapp" width=1024px]
+
+== API and Details
+
+Bla bla, basic info and links about how react/react4XP works and what it does.
 
 
-==== JS Controller
-
-The essense of a web application is the controller.
-In your project, you will find the following file:
-
-.src/main/resources/webapp/webapp.js
-[source,js]
-----
-exports.get = function (req) {
-  var title = "Hello Web app";
-  return  {
-  body: `
-<html>
-  <head>
-    <title>${title}</title>
-    <link rel="stylesheet" type="text/css" href="styles.css"/>
-  </head>
-  <body>
-      <h1>Sweet, "${title}" is working!</h1>
-      <img src="html5logo.svg"/>
-  </body>
-</html>
-`
-  }
-};
-----
-
-This controller file is automatically executed when your web app is being accessed.
-
-The example above is also referencing two asset files.
-These files can be found in the `src/main/resources/assets/` folder of your project.
-
-[NOTE]
-====
-By default, the web app engine automatically serves files placed in the `asset/` as if they were located in the root of your web app.
-====
-
-=== Example 3 - Using Views
-
-According to the MVC (Model View Controller) pattern,
-we should separate the View (template) from the controller.
-Enonic XP supports a variety of templating engines.
-In this step, we'll use https://market.enonic.com/vendors/enonic/thymeleaf-lib[Thymeleaf]:
-
-. To make sure Thymeleaf is available for our project, we must update the `gradle.build` file.
-Uncomment the following line from the "dependencies" section:
-+
-      include "com.enonic.lib:lib-thymeleaf:2.0.0-RC1"
-+
-. Create a new file `hello.html` and add it to the `webapp/` folder
-+
-.src/main/resources/webapp/hello.html
-[source,html]
-----
-include::../code-samples/webapp-template/hello.html[]
-----
-+
-. Then update your controller file to use the new template:
-+
-.src/main/resources/webapp/webapp.js
-[source,js]
-----
-include::../code-samples/webapp-template/webapp.js[]
-----
-+
-. When finished, redeploy the app. NB! Just start a new shell if your current shell is running the sandbox:
-+
-  enonic project deploy
-+
-
-Refresh your app, and you should see the heading "*Sweet... Views are working too!*".
-
-[TIP]
-====
-A cool feature related to Thymeleaf templates is that they are actually pure HTML.
-Meaning they may be opened directly in your browser.
-Try opening the hello.html file to see for yourself:
-====
-
-image::hello-dummy.png["Screenshot of template showing dummy heading and html5 logo",width=800px]
-
-== Error handling
-
-You might have noticed the "404 FTW" link in your app by now, and maybe even clicked it?
-Essentially, the this url is not handled by the router, and returns the default error page.
-
-We can do better, as XP provides a concept for generic http error handling. Lets add error handling to our app:
-
-. Add a new controller `error.js` to your project as follows:
-+
-.src/main/resources/error/error.js
-[source,js]
-----
-include::../code-samples/error/error.js[]
-----
-+
-. Build, deploy and try out your new error handler:
-+
-  enonic project deploy
-+
-
-
-== Logging
-
-While developing an app, it can be helpful to do some logging.
-Try adding the following line into the exports.get section of your webapp controller and see what happens:
-
-  log.info('Testing logging: %s', JSON.stringify(req, null, 4));
-
-NOTE: A simplified logging function and many more are included in the https://market.enonic.com/vendors/enonic/util-lib[Util Library]
+image::hello-dummy.png["Logging in, opening apps and launching webapp" width=1024px]
