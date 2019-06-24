@@ -2,6 +2,8 @@
 :toc: right
 :imagesdir: media/
 
+image::react4xp.svg["React4xp logo" width=256px]
+
 Build sites and apps that support client- and serverside JSX templating with the React framework, in combination with optimized asset serving and hydration - for lighting fast sites and apps.
 
 == Introduction
@@ -89,30 +91,116 @@ src/
 <2> `package.json` sets up NPM package import
 <3> `build/` will contain output files produced by the build. All the output from the react4xp build process (along with a few housekeeping data files) will be compiled into the subfolder `build/resources/main/assets/react4xp`. These built assets are used in runtime both on client- and server side.
 <4> But note that `assets/react4xp` is NOT the source of those React4xp assets! Just use `assets/` for other, general, non-react4xp static assets such as css and icons, etc.
-<5> `react4xp/` is the general folder for react component source files. React4xp will look for `.js` and `.jsx` files here and in all subfolders, and compile them during build. All subfolders below this (except for `_entries` - see below) will be compiled to *chunks* with the same name as the subfolder. Put nested/reused react components in subfolders like that, and also other code imported by your components.
-<6> `react4xp/_entries/` is special and magic. This is the main folder for *entry components* - react components that can be used directly by React4xp, that is, they don't need to be nested inside other react components.
+<5> `react4xp/` is the general folder for react component source files. React4xp will look for `.js` and `.jsx` files here and in all subfolders, and compile them during build. All subfolders below this (except for `_entries` - see below) will be compiled to https://github.com/enonic/lib-react4xp/blob/master/README.md#entries-and-dependency-chunks[*chunks*] with the same name as the subfolder. Put nested/reused react components in subfolders like that, and also other code imported by your components.
+<6> `react4xp/_entries/` is special and magic. This is the main folder for *https://github.com/enonic/lib-react4xp/blob/master/README.md#entries-and-dependency-chunks[entry components]* - react components that can be used directly by React4xp, that is, they don't need to be nested inside other react components.
 <7> Two `REPLACE_ME.jsx` files: simply placeholders needed by webpack. Removed each of these when you've added one or more react source file below `react4xp/_entries/` and `site/`.
-<8> Below the `site/parts/` and `site/pages/` subfolders is where you put your XP parts and pages, as always. With React4xp, *you can also put `.jsx` entry components together with your parts and pages*. This is the easiest use case: if they have the same name as the part/page, they are super easy to inject into the part/page from the controller.
+<8> Below the `site/parts/` and `site/pages/` subfolders is where you put your XP parts and pages, as always. With React4xp, *you can also put `.jsx` entry components together with your parts and pages*. This is link:#_a_shorthand_function_with_same_name_component[the easiest use case]: if they have the same name as the part/page, they are super easy to inject into the part/page from the controller.
 <9> Folder containing the root webapp controller. React4xp supplies services that allow even static HTML pages to refer to and request compiled React4xp components.
 
-NOTE: *Where you put your entry source files in this structure is important!* Look for `jsxPath` in the examples below, or check out more details in https://github.com/enonic/lib-react4xp/blob/master/README.md#jsxpath-how-to-refer-to-a-react4xp-component[the main library docs].
 
+== Usage
 
-== Usage overview
+Simply put, there are *4 prototypical usage patterns*. You're not bound to use them exactly like this, and the examples below will show some more variation than this. But for clarity here's a basic overview of them:
 
-=== Four ways
+=== A: Shorthand function with same-name component
+*The easiest way* is to put one react entry sourcefile into the same folder as a part/page where it should be displayed, and let it have the same file name as the part/page (but `.JSX` extension only!).
 
-Simply put, there are 4 prototypical usage patterns. You're not bound to use them exactly like this, but for clarity here's an overview:
+Let the React4xp shorthand functions `.renderSafe` (for client-side rendering) or `.render` (for server-side rendering and client-side hydration) use XP's `request` and `getComponent()`. Add some props the same way you would add a model when rendering Thymeleaf, and/or tweak the rendering functions with extra parameters if you want.
 
-. *The easiest* is to put one entry source file into the same folder as a part/page where it should be displayed, and let it have the same file name as the part/page (but `.JSX` extension only!). Let the React4xp shorthand functions `.renderSafe` (for client-side rendering) or `.render` (for server-side rendering and client-side hydration) use XP's `request` and `getComponent()` to figure out the messy stuff for you. Tweak the rendering functions with extra parameters if you want. The output from these render functions is a full response object with everything the client needs to display it - just return it directly.
-. Or if you want to *reuse an entry component in multiple parts or pages* (or just, not be bound by the part/page they 'belong to' in the parent folder): put a source file where you want: either a `.JSX` file in any page/part folder or a `.JS`/`.JSX`/`.ES6` under `react4xp/_entries` (#6 in the structure overview above). React4xp uses the location of all components to derive a name for each of them: the *jsxPath*. You can see the built jsxPaths in `build/resources/main/assets/react4xp/entries.json`. Use `.render` or `.renderSafe`, but with the jsxPath string instead of the `getComponent` object.
-. Or if you need *more flexibility and control*, want to insert logic or extract data while constructing the component, or want to use more than one entry component in a single part or page: instead of using the shorthands `.render` or `.renderSafe`, create a temporary data-holding `new React4xp(...)` object in the page/part controller. When you're done manipulating, the React4xp object has built-in and specific methods for rendering a body and the necessary page contributions, for client-side or server-side react rendering.
-. Finally, React4xp can be *used outside of the page/part flow*, even without making XP controllers if needed. A few services are exposed in runtime - endpoints where a client can request runnable compiled code:
+The output from these render functions is *a full response object with everything the client needs to display it* - HTML and page contributions. Just return it directly from the controller.
+
+=== B: JsxPath references
+If you want to *reuse an entry component in multiple parts or pages* (or just, not be bound by the parent part/page folder): put a source file where you want:
+
+  - either a `.JSX` file in any page/part folder under `site/`,
+  - or a `.JS`/`.JSX`/`.ES6` under `react4xp/_entries`.
+
+...and use `.render` or `.renderSafe`, but with the jsxPath string instead of the `getComponent` object.
+
+During build, React4xp uses the location of all components to derive a name for each of them: the https://github.com/enonic/lib-react4xp/blob/master/README.md#jsxpath-how-to-refer-to-a-react4xp-component[jsxPath]. This can be used anywhere with the React4xp functions.
+
+NOTE: JsxPaths are not OS paths that can be used relatively. They are *name strings, and must be used in full*.
+
+TIP: You can see all the built jsxPaths in `build/resources/main/assets/react4xp/entries.json`.
+
+=== C: React4xp data objects
+If you need *more flexibility and control*, want to insert logic or extract data while constructing the component, or want to *use more than one entry component in a single part or page* - or even use the same react component more than once:
+
+Instead of using the shorthands `.render` or `.renderSafe`, create a temporary data-holding `new React4xp(...)` object in the page/part controller. Use a component or jsxPath argument to point to the react component. When you're done manipulating data, the React4xp object has built-in and specific methods for rendering a body and the necessary page contributions, for client-side or server-side react rendering.
+
+These rendering methods can be *chained*, so that the output HTML or page contribution from one object is the input for the next one. This way, one response object can be built from several react components.
+
+=== D: Client-side exposed services
+Finally, React4xp can be *used outside of the page/part flow*, even without making XP controllers if needed. A few services are exposed in runtime, where a client can request runnable compiled code:
+
   - entries, by jsxPath reference,
   - chunks (and lists of chunks), referred by the jsxPath(s) used on a page,
   - a client-side React4xp wrapper, simplifying these manual clientside steps and triggering rendering,
   - React and ReactDOM themselves, the versions used on the serverside. Handy if you're doing SSR and want to be sure it's always the exact same versions doing the rendering everywhere.
-  - This allows you for example to bypass Content Studio if you want, using XP's webapp functionality, making single-page react apps etc.
+
+This allows you for example to bypass Content Studio if you want, using XP's webapp functionality, making single-page react apps etc.
+
+
+
+== Examples
+
+These examples can be downloaded by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp].
+
+=== 1: Hello World
+
+==== Simple client-side rendering
+
+=== 2: Serverside rendering
+
+==== JsxPath
+
+==== Target container element in DOM
+
+==== Passing editorial data to props
+
+=== 3: React4xp objects
+
+==== Rendering and returning body and page contributions
+
+==== _entries
+
+=== 4: Chaining
+
+==== Nesting
+
+==== Multiple instances of the same react component in one part
+
+=== 5: Webapp
+
+==== Services
+
+==== The React4xp client-side object
+
+==== The wrapper: React4xp.CLIENT
+
+=== 6: Content Studio
+
+==== Adding and using parts
+
+==== Rendering in different modes
+
+To see your current application:
+
+. log in to the XP admin console (http://localhost:8080)
+. open the "Applications" app, and select the listed applications
+. visit the app by clicking the web app link.
+
+
+
+
+
+
+
+== API and details
+
+Link to lib-react4xp
+
+=== API
 
 === Imports and chunks
 When building your react components, *you can import JS/ES6 code as usual*: nested react components, your own secondary code, other frameworks, libraries, whatever... Imported code can be compiled into separate asset chunks from the entries that use them, for https://webpack.js.org/guides/code-splitting/[code splitting].
@@ -128,21 +216,13 @@ https://github.com/enonic/lib-react4xp/blob/master/README.md#entries-and-depende
 
 TIP: Chunks are more optimized than entries. Ideally, keep the served entries slim and leave the heavy lifting to chunks.
 
+=== Gotchas
 
-=== Example A - Cool title
+=== Adjusting the setup
 
-=== Example B - (title)
+adjusting pieces of the build
+	webpack.configs from NPM packages
+	constants: project structure
+	externals, mtp SSR
+	packages and versions
 
-To see your current application:
-
-. log in to the XP admin console (http://localhost:8080)
-. open the "Applications" app, and select the listed applications
-. visit the app by clicking the web app link.
-
-
-== API and Details
-
-Bla bla, basic info and links about how react/react4XP works and what it does.
-
-
-image::hello-dummy.png["Logging in, opening apps and launching webapp" width=1024px]
