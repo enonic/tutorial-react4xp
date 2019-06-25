@@ -149,9 +149,9 @@ These examples require:
   - a little basic experience Enonic XP 7 (check out the excellent introductions at the https://developer.enonic.com/[Developer Portal]),
   - a https://developer.enonic.com/guides/my-first-site#page_component[main page component] with a https://developer.enonic.com/guides/my-first-site#regions[region].
 
-NOTE: They examples build incrementally on each other.
+NOTE: The examples build incrementally on each other.
 
-TIP: They can be downloaded by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp], along with everything needed to run.
+TIP: They can be downloaded along with everything needed to run, by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp]
 
 TIP: See the link:#_api[API section] below for more details about how to use what's demonstrated.
 
@@ -393,9 +393,6 @@ Most noteworthy:
 
 TIP: You may notice that server-side rendering takes a long time to produce an output on the first rendering - on the scale of several seconds. This happens _very rarely or never_ after the first rendering on the server. What happens is that the component is parsed, compiled and cached on the server. After that, repeated renderings even with different props are very fast!
 
-==== Target container element in DOM
-
-==== Passing editorial data to props
 
 === 3: React4xp objects
 
