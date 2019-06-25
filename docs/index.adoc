@@ -144,11 +144,16 @@ This allows you for example to bypass Content Studio if you want, using XP's web
 
 == Examples
 
-NOTE: The examples assume you already have a little basic experience Enonic XP 7 (if not, check out the excellent introductions at the https://developer.enonic.com/[Developer Portal]), and they _build incrementally on each other from there_. You should also have a https://developer.enonic.com/guides/my-first-site#page_component[main page component] with a https://developer.enonic.com/guides/my-first-site#regions[region] in the same project.
+These examples require:
 
-TIP: See the link:#_api[API section] for more details about how to use what's demonstrated.
+  - a little basic experience Enonic XP 7 (check out the excellent introductions at the https://developer.enonic.com/[Developer Portal]),
+  - a https://developer.enonic.com/guides/my-first-site#page_component[main page component] with a https://developer.enonic.com/guides/my-first-site#regions[region].
 
-TIP: These examples can be downloaded by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp], along with everything needed to run.
+NOTE: They examples build incrementally on each other.
+
+TIP: They can be downloaded by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp], along with everything needed to run.
+
+TIP: See the link:#_api[API section] below for more details about how to use what's demonstrated.
 
 === 1: Hello World
 
@@ -208,7 +213,9 @@ exports.get = function(request) {
 
 *That's it. Now let's add this part to a page in Content Studio and see what happens!*
 
-Run `enonic project deploy` from your shell, start the sandbox and direct your browser to `localhost:8080/admin`. Log in to XP and open Content Studio. If you haven't already, create some content (a site or the included landing page type will do) that uses a page controller with a region. Insert a new part, and choose the minimal-example part you just made. Edit it, give it a displayname, save it and enter the preview:
+==== Adding a React4xp part in Content Studio and rendering it
+
+Run `enonic project deploy` from your shell, start the sandbox and direct your browser to `localhost:8080/admin`. Log in to XP and open Content Studio. If you haven't already, create some content (a site or the included landing page type will do) that uses a page controller with a region. Insert a new part, and select the minimal-example part you just made. Edit it, give it a displayname, save it and enter the preview:
 
 [.thumb]
 image::hello-world.png["Glorious greeting of the very existence itself!" width=492px]
@@ -249,13 +256,19 @@ The important lines here are all added by `.renderSafe` in the part:
 <5> The rendering command is triggered, with some arguments:
 <6> A pointer to the react component,
 <7> The ID of the element to render the component into,
-<8> And the props.
+<8> And the props. Note that we only added the `greetee` prop. The other one, `React4xpId`, is the unique ID of the component, same as the element target. It's always added as a react prop for the component. Occasionally handy!
 
-
-
-==== Simple client-side rendering
 
 === 2: Serverside rendering
+
+In this example we'll create a new part, similar to the link:#_1_hello_world[first] one but with these differences:
+
+- Server-side rendering with hydration: `.render` instead of `.renderSafe`. They have the same parameter signature, but we'll also use it slightly differently here with some manual options:
+- A thymeleaf HTML view already exists, and we're rendering the react component into a target container element in it,
+- We're not using a 'local' JSX component inside the part. Instead, we're using the `jsxPath` to point elsewhere; to the same react entry as we used in the first example.
+- We're setting the ID manually, instead of letting `.render` generate it.
+- Since we're manually setting both the ID and the jsxPath pointer, we don't need the `component` parameter.
+- However, we'll inject some editorial data into the react commponent, using the props. We'll use `getComponents` to fetch those.
 
 ==== JsxPath
 
