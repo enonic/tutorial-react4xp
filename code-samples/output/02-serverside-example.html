@@ -1,0 +1,25 @@
+<body class="xp-page">
+  <main data-portal-region="main" class="xp-region">
+
+    <div class="serverside-example">
+      <h2>Server-side rendering example</h2>
+      <p>Server-side rendered and hydrated, inserted below:</p>
+      <div id="serverside-example-container">
+        <p data-reactroot="">Hello <!-- -->from the server side<!-- -->!</p>
+      </div>
+      <p>(SSR example is done).</p>
+    </div>
+
+  </main>
+
+  <script src="(...) /react4xp/externals.88e80cab5.js" ></script>
+  <script src="(...) /react4xp-client/" ></script>
+  <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script>
+  <script defer>
+    React4xp.CLIENT.hydrate(
+      React4xp['site/parts/01-minimal-example/01-minimal-example'],
+      "serverside-example-container" ,
+      {"greetee":"from the server side","react4xpId":"serverside-example-container"}
+    );
+  </script>
+</body>
