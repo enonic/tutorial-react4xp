@@ -250,7 +250,7 @@ If we view the page source code in the browser (and format it and strip away som
 The important lines here are all added by `.renderSafe` in the part:
 
 <1> The generated target container element (`body`), with an ID. It's empty for now, it won't be filled with "Hello World" before the rendering is triggered.
-<2> Downloading React and ReactDOM in an `externals` chunk. When this is run, `React` and `ReactDOM` are globally available in the client.
+<2> Downloading React and ReactDOM in an `externals` chunk (the exact path varies with local setups, so it's truncated to `(...)`). When this is run, `React` and `ReactDOM` are globally available in the client.
 <3> Downloading the react4xp client wrapper, which enables the rendering command in point #5, among other things. Creates a global client-side object, `React4xp`, which will contain all things React4xp in runtime. The client wrapper is `React4xp.CLIENT`.
 <4> Downloading the react component itself - the autocompiled version of `01-minimal-example.jsx`. The runtime-renderable component is put into `React4xp.<jsxPath>`, in this case: `React4xp['site/parts/01-minimal-example/01-minimal-example']`.
 <5> The rendering command is triggered, with some arguments:
@@ -265,7 +265,7 @@ In this example we'll create a new part, similar to the link:#_1_hello_world[fir
 
 - Server-side rendering with hydration: `.render` instead of `.renderSafe`. They have the same parameter signature, but we'll also use it slightly differently here with some manual options:
 - A thymeleaf HTML view already exists, and we're rendering the react component into a target container element in it,
-- We're not using a 'local' JSX component inside the part. Instead, we're using the `jsxPath` to point elsewhere; to the same react entry that we used in the first example.
+- We're not using a 'local' JSX component inside the part. Instead, we're using the `jsxPath` to point elsewhere; to reuse the react entry from the first example.
 - We're setting the ID manually, instead of letting `.render` generate it.
 - Since we're manually setting both the ID and the jsxPath pointer, we don't need the `component` parameter.
 - However, we'll inject some editorial data into the react commponent, using the props. We'll use `getComponents` to fetch those.
@@ -349,7 +349,7 @@ exports.get = function(request) {
 
 *Moving on:*
 
-Let's add the new part `02-serverside-example` to our page in Content Studio (the way we did in link:#_1_hello_world[the previous example]). When we edit the part and open the inspect panel on the right, we see the TextField asking us "What should be our greeting?". It suggests _"world"_, but for variation we'll enter _"from the server side"_. This is the `greetee` value, it gets prop'ed into the react component, and we can see the rendered result in the preview on the left:
+Let's add the new part `02-serverside-example` to our page in Content Studio (the way we did in link:#_1_hello_world[the previous example]). When we edit the part and open the inspect panel on the right, we see the TextField asking us _"What should be our greeting?"_. It suggests _"world"_, but for variation we'll enter _"from the server side"_. This is the `greetee` value, it gets prop'ed into the react component, and we can see the rendered result in the preview on the left:
 
 [.thumb]
 image::editing-serverside.png["" width=1037px]
@@ -387,9 +387,11 @@ The output page source from the server is very similar to the previous example:
 
 Most noteworthy:
 
-<1> The target container is not empty, but contains server-rendered HTML.
+<1> The target container is not initially empty anymore, but contained rendered HTML from the server.
 <2> The imported entry is still the same as in the previous example. This is the compiled version of the JSX component we pointed to with `jsxPath` in the controller.
 <3> Instead of `.render`, we're triggering `.hydrate`. Here, that doesn't make a difference since our react component doesn't have any more active stuff in it than just outputting an HTML string. But had it had things like event listeners, state, connections to thirdparty libraries etc, `.hydrate` would have hooked those up to the DOM structure created in the target container element, creating a working, active component.
+
+TIP: You may notice that server-side rendering takes a long time to produce an output on the first rendering - on the scale of several seconds. This happens _very rarely or never_ after the first rendering on the server. What happens is that the component is parsed, compiled and cached on the server. After that, repeated renderings even with different props are very fast!
 
 ==== Target container element in DOM
 
