@@ -14,7 +14,7 @@ This documentation takes you through the basic elements of React4XP and how to u
 
 [NOTE]
 ====
-The starter and this guide aims for how-to, what-is and setup of React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the installation is different from XP7 - and the XP6 starter handles those differences. Using React4xp the rest of the way is identical, so *you can still use this guide for both versions.*
+The starter and this guide aims for how-to, what-is and setup of React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the installation and build commands are different from XP7 - and the XP6 starter handles those differences. Using React4xp the rest of the way is identical, so *you can still use this guide for both versions.*
 ====
 
 === What is React4xp?
@@ -144,7 +144,11 @@ This allows you for example to bypass Content Studio if you want, using XP's web
 
 == Examples
 
-These examples can be downloaded by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp].
+NOTE: The examples assume you already have a little basic experience Enonic XP 7 (if not, check out the excellent introductions at the https://developer.enonic.com/[Developer Portal]), and they _build incrementally on each other from there_. You should also have a https://developer.enonic.com/guides/my-first-site#page_component[main page component] with a https://developer.enonic.com/guides/my-first-site#regions[region] in the same project.
+
+TIP: See the link:#_api[API section] for more details about how to use what's demonstrated.
+
+TIP: These examples can be downloaded by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp], along with everything needed to run.
 
 === 1: Hello World
 
@@ -159,30 +163,38 @@ Let's make a simple XP part that contains a react component: `01-minimal-example
   01-minimal-example.es6
 ----
 
-The part definition has nothing exciting going on:
+Nothing in particular is needed in *the part definition*...
 
 .01-minimal-example.xml:
-```xml
+[source,xml,linenums,options="nowrap"]
+----
 <part>
   <display-name>01 - Minimal Example</display-name>
   <description>Simple client-side example</description>
   <form />
 </part>
-```
+----
 
-The react component is plain and boring too - just receiving and greeting a `greetee` prop:
+...and *the react component* itself - the entry - is just _any standard JSX file, as long as it default-exports a function that returns a react element_. The function may optionally take a `props` object parameter - here we'll receive a `greetee` prop and gloriously greet it:
 
 .01-minimal-example.jsx:
-```jsx
+[source,jsx,linenums,options="nowrap"]
+----
 import React from 'react';
 
 export default (props) => <p>Hello {props.greetee}!</p>;
-```
+----
 
-The controller, though, is where things happen:
+*The controller* below imports `React4xp` and uses `.renderSafe` from it, which does a few important things here:
+
+- Uses `request` to determine viewing mode, and choose a suitable rendering. In live mode, `renderSafe` will make a client-side rendering.
+- Notes that there is no HTML `body` argument, so the JSX will be the only view to display. So `renderSafe` generates a container `body` HTML element from scratch.
+- Uses the XP `component` object (from `portal.getComponent()`) to locate the JSX file in the part folder, with the part name: `01-minimal-example.jsx`. The `component` is also used to create a unique, matching react component ID for the `body` container and the client-side render command that targets it.
+- Generates a response object that's directly returned from the controller, to the client. In addition to `body`, some `pageContributions` are generated and added - containing asset download links and JS rendering commands.
 
 .01-minimal-example.es6:
-```ecmascript
+[source,javascript,linenums,options="nowrap"]
+----
 const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
 
@@ -192,21 +204,53 @@ exports.get = function(request) {
 
     return React4xp.renderSafe(request, { component, props });
 };
-```
+----
 
-// request is used to determine viewing mode. RenderSafe will aim for client-side rendering outside of XP Content Studio's edit mode, and attempt
-    // non-hydrated SSR for the edit mode (falling back to a placeholder if SSR fails).
-    // Component is used to extrapolate a container/react-component ID and the path to target the jsx file in the same part folder, with the same name.
+*That's it. Now let's add this part to a page in Content Studio and see what happens!*
 
+Run `enonic project deploy` from your shell, start the sandbox and direct your browser to `localhost:8080/admin`. Log in to XP and open Content Studio. If you haven't already, create some content (a site or the included landing page type will do) that uses a page controller with a region. Insert a new part, and choose the minimal-example part you just made. Edit it, give it a displayname, save it and enter the preview:
 
-`.renderSafe` takes care of three things:
+[.thumb]
+image::hello-world.png["Glorious greeting of the very existence itself!" width=492px]
 
-- Once it gets a `.component` data object, and there's a JSX file with the same name as the controller, it can find the JSX file on its own and
+If we view the page source code in the browser (and format it and strip away some irrelevant parts), we'll see something like this:
+[source,html,options="nowrap"]
+----
+<!DOCTYPE html>
+<html>
+  <head>(...)</head>
 
-do without an HTML view file and construct the target container from scratch, into which the react component is rendered. This is now the parts entire view.
+  <body>
 
-We're doing without an HTML view file in the part for now, just letting `.renderSafe` detect that there  Inserts simple, hard-coded props to the React component, and
-// uses XP component (getComponent) to refer to the React component in the same part folder and with the same name (example.jsx)
+    <main data-portal-region="main" class="xp-region">
+      <div (...) id="parts_01-minimal-example__main_0"></div> <!--1-->
+    </main>
+
+    <script src="(...) /react4xp/externals.88e80cab5.js"></script>  <!--2-->
+    <script src="(...) /react4xp-client/"></script> <!--3-->
+    <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script> <!--4-->
+    <script defer>
+      React4xp.CLIENT.render( <!--5-->
+        React4xp['site/parts/01-minimal-example/01-minimal-example'], <!--6-->
+        "parts_01-minimal-example__main_0",  <!--7-->
+        { "greetee": "world", "react4xpId": "parts_01-minimal-example__main_0" } <!--8-->
+      );
+    </script>
+   </body>
+</html>
+----
+
+The important lines here are all added by `.renderSafe` in the part:
+
+<1> The generated target container element (`body`), with an ID. It's empty for now, it won't be filled with "Hello World" before the rendering is triggered.
+<2> Downloading React and ReactDOM in an `externals` chunk. When this is run, `React` and `ReactDOM` are globally available in the client.
+<3> Downloading the react4xp client wrapper, which enables the rendering command in point #5, among other things. Creates a global client-side object, `React4xp`, which will contain all things React4xp in runtime. The client wrapper is `React4xp.CLIENT`.
+<4> Downloading the react component itself - the autocompiled version of `01-minimal-example.jsx`. The runtime-renderable component is put into `React4xp.<jsxPath>`, in this case: `React4xp['site/parts/01-minimal-example/01-minimal-example']`.
+<5> The rendering command is triggered, with some arguments:
+<6> A pointer to the react component,
+<7> The ID of the element to render the component into,
+<8> And the props.
+
 
 
 ==== Simple client-side rendering
