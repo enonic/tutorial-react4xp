@@ -124,7 +124,7 @@ NOTE: JsxPaths are not OS paths that can be used relatively. They are *name stri
 TIP: You can see all the built jsxPaths in `build/resources/main/assets/react4xp/entries.json`.
 
 === C: React4xp data objects
-If you need *more flexibility and control*, want to insert logic or extract data while constructing the component, or want to *use more than one entry component in a single part or page* - or even use the same react component more than once:
+If you need *more flexibility*, or want to *use more than one entry component in a single part or page* - or even *use the same react component more than once in a part/page*:
 
 Instead of using the shorthands `.render` or `.renderSafe`, create a temporary data-holding `new React4xp(...)` object in the page/part controller. Use a component or jsxPath argument to point to the react component. When you're done manipulating data, the React4xp object has built-in and specific methods for rendering a body and the necessary page contributions, for client-side or server-side react rendering.
 
@@ -159,10 +159,10 @@ TIP: See the link:#_api[API section] below for more details about how to use wha
 
 Let's make a simple XP part that contains a react component: `01-minimal-example`, which will be rendered entirely at the client side:
 
-.site/parts:
+.Files involved:
 [source,files]
 ----
-/01-minimal-example/
+site/parts/01-minimal-example/
   01-minimal-example.xml
   01-minimal-example.jsx
   01-minimal-example.es6
@@ -270,16 +270,16 @@ In this example we'll create a new part, similar to the link:#_1_hello_world[fir
 - Since we're manually setting both the ID and the jsxPath pointer, we don't need the `component` parameter.
 - However, we'll inject some editorial data into the react commponent, using the props. We'll use `getComponents` to fetch those.
 
-.site/parts:
+.Files involved:
 [source,files]
 ----
-/01-minimal-example/
-  01-minimal-example.jsx
-
-/02-serverside-example/
-  02-serverside-example.xml
-  02-serverside-example.html
-  02-serverside-example.es6
+site/parts/
+  01-minimal-example/
+    01-minimal-example.jsx
+  02-serverside-example/
+    02-serverside-example.xml
+    02-serverside-example.html
+    02-serverside-example.es6
 ----
 
 Still an unremarkable *part definition*, but now there's a `greetee` TextLine input field. Here we'll enter something editorial in Content Studio, fetch it in the controller and inject it into the react component.
@@ -341,13 +341,14 @@ exports.get = function(request) {
 ----
 
 - Line 8: Fetching the component data we entered (or, we're about to) in the textfield in Content Studio
+- Line 10: The `.render` shorthand method produces a server-side rendering. In live view, it also hydrates the rendered HTML - post-filling it with the active react and js functionality on the client.
 - Line 11: `request` is still used to determine viewing mode.
 - Line 13: extracting `greetee` from the component data, and setting the value as the `greetee` prop
 - Line 14: uses jsxPath to use the react entry from the previous example, `01-minimal-example.jsx`. This path structure is common for all JSX entries below the `site/` folder: `site/<parts-or-pages>/<name-of-part-or-page-folder>/<filename>`.
 - Line 15: manually setting the component's `React4xpId`, identical to the `id` of the rendering target container.
-- Line 16: the `body` parameter takes an HTML string. Here, Thymeleaf renders it based on the view file above. This string would just pass through the `.renderSafe` client-side rendering function and become the `body` output, possibly with a container element added. But here, since we're using `.render` for server-side rendering, _React4xp will use the initial `props` element and render a static HTML string of the react component into the target container_ in `body`, and return the new `body`! On the client, the react function `.hydrate` will be run on the container, filling in and activating the react component.
+- Line 16: the `body` parameter is an HTML string. Here, it's rendered by Thymeleaf based on the view file above. The `body` parameter is *pass-through*: had this been the `.renderSafe` client-side rendering function, it would just have become the `body` in the response output, only with a container element added (possibly. Nothing's added if a matching-`id` element is found in it). But with `.render`, the react component is rendered to HTML by the server using the initial `props`, and inserted into the target container in `body` (which, again, might be a generated target container if the input HTML is missing one). This modified `body` is then returned. On the client, `.render` will `.hydrate` the container, filling in and activating the react component.
 
-*Moving on:*
+*Run it:*
 
 Let's add the new part `02-serverside-example` to our page in Content Studio (the way we did in link:#_1_hello_world[the previous example]). When we edit the part and open the inspect panel on the right, we see the TextField asking us _"What should be our greeting?"_. It suggests _"world"_, but for variation we'll enter _"from the server side"_. This is the `greetee` value, it gets prop'ed into the react component, and we can see the rendered result in the preview on the left:
 
@@ -391,10 +392,51 @@ Most noteworthy:
 <2> The imported entry is still the same as in the previous example. This is the compiled version of the JSX component we pointed to with `jsxPath` in the controller.
 <3> Instead of `.render`, we're triggering `.hydrate`. Here, that doesn't make a difference since our react component doesn't have any more active stuff in it than just outputting an HTML string. But had it had things like event listeners, state, connections to thirdparty libraries etc, `.hydrate` would have hooked those up to the DOM structure created in the target container element, creating a working, active component.
 
-TIP: You may notice that server-side rendering takes a long time to produce an output on the first rendering - on the scale of several seconds. This happens _very rarely or never_ after the first rendering on the server. What happens is that the component is parsed, compiled and cached on the server. After that, repeated renderings even with different props are very fast!
+TIP: Server-side rendering can take a long time to produce an output on the first rendering (several seconds). This should happen _very rarely or never_ after the first rendering on the server. What happens is that the component is parsed, compiled and cached on the server. After that, repeated renderings even with different props are very fast!
 
 
 === 3: React4xp objects
+
+Here we won't use the shorthand functions `.render` or `.renderSafe`. Instead, we'll use the explicit syntax that the shorthand functions use under the hood. We'll construct a data-holding React4xp object, and use its built-in methods to specifically and separately render the `body` and the `pageContributions`.
+
+This provides more fine-grained control and opportunities for logic steps during the component creation.
+
+Other new features demonstrated:
+
+- The controller as the source of the target container ID, injecting it both into the view and the react component,
+- Referring to a React component outside of XP's `/site/` structure, in the base directory `/react4xp/\_entries`,
+- Rendering a `body` with Thymeleaf once, and using it as a static pre-rendered template.
+- Making some raw XP pageContributions before rendering, with a script with inserted editorial data. Then passing that `pageContributions` object through the `.renderClientPageContributions`, and getting new pageContributions (which activate the react component as we did before) added to it - retaining the existing pageContributions.
+
+.Files involved:
+[source,files]
+----
+react4xp/_entries/
+  ColorGreeter.jsx
+site/parts:
+  /03-customflow-example/
+    03-customflow-example.xml
+    03-customflow-example.html
+    03-customflow-example.es6
+----
+
+As usual, we start with the *part definition*, and it's still the source of some editorial data: `color`.
+
+.03-customflow-example.xml:
+[source,xml,linenums,options="nowrap"]
+----
+<part>
+	<display-name>03 - CustomFlow Example</display-name>
+    <description>AKA. The Color Thing</description>
+	<form>
+        <input name="color" type="TextLine">
+            <label>What's the color of the thing?</label>
+            <occurrences minimum="1" maximum="1"/>
+            <default>red</default>
+        </input>
+    </form>
+</part>
+----
 
 ==== Rendering and returning body and page contributions
 
