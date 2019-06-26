@@ -141,6 +141,7 @@ Finally, React4xp can be *used outside of the page/part flow*, even without maki
 This allows you for example to bypass Content Studio if you want, using XP's webapp functionality, making single-page react apps etc.
 
 
+'''
 
 == Examples
 
@@ -154,6 +155,8 @@ NOTE: The examples build incrementally on each other.
 TIP: They can be downloaded along with everything needed to run, by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp]
 
 TIP: See the link:#_api[API section] below for more details about how to use what's demonstrated.
+
+'''
 
 === 1: Hello World
 
@@ -213,7 +216,9 @@ exports.get = function(request) {
 
 *That's it. Now let's add this part to a page in Content Studio and see what happens!*
 
-==== Adding a React4xp part in Content Studio and rendering it
+'''
+
+*Adding a React4xp part in Content Studio and rendering it*
 
 Run `enonic project deploy` from your shell, start the sandbox and direct your browser to `localhost:8080/admin`. Log in to XP and open Content Studio. If you haven't already, create some content (a site or the included landing page type will do) that uses a page controller with a region. Insert a new part, and select the minimal-example part you just made. Edit it, give it a displayname, save it and enter the preview:
 
@@ -258,6 +263,7 @@ The important lines here are all added by `.renderSafe` in the part:
 <7> The ID of the element to render the component into,
 <8> And the props. Note that we only added the `greetee` prop. The other one, `React4xpId`, is the unique ID of the component, same as the element target. It's always added as a react prop for the component. Occasionally handy!
 
+'''
 
 === 2: Serverside rendering
 
@@ -324,33 +330,52 @@ const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
 const thymeleaf = require('/lib/thymeleaf');
 
+// View file
 const view = resolve('02-serverside-example.html');
 
 exports.get = function(request) {
+    // Fetching the component data we entered (or, we're about to)
+    // in the textfield in Content Studio:
     const component = portal.getComponent();
 
+    // The `.render` shorthand method produces a server-side rendering. <!--1-->
     return React4xp.render(
-        request,
+        request, // `request` is still used to determine viewing mode.
         {
+            // Extracting `greetee` from the component data,
+            // and setting the value as the `greetee` prop
             props: { greetee: component.config.greetee },
+
+            // Uses jsxPath to use the react entry from the previous
+            // example, `01-minimal-example.jsx`. <!--2-->
             jsxPath: 'site/parts/01-minimal-example/01-minimal-example',
+
+            // Manually setting the component's `React4xpId`,
+            // identical to the `id` of the rendering target container.
             id: 'serverside-example-container',
+
+            // The `body` parameter is an HTML string.
+            // Here, it’s rendered by Thymeleaf based on the view file. <!--3-->
             body: thymeleaf.render(view, {})
-        });
+        }
+    );
 };
 ----
 
-- Line 8: Fetching the component data we entered (or, we're about to) in the textfield in Content Studio
-- Line 10: The `.render` shorthand method produces a server-side rendering. In live view, it also hydrates the rendered HTML - post-filling it with the active react and js functionality on the client.
-- Line 11: `request` is still used to determine viewing mode.
-- Line 13: extracting `greetee` from the component data, and setting the value as the `greetee` prop
-- Line 14: uses jsxPath to use the react entry from the previous example, `01-minimal-example.jsx`. This path structure is common for all JSX entries below the `site/` folder: `site/<parts-or-pages>/<name-of-part-or-page-folder>/<filename>`.
-- Line 15: manually setting the component's `React4xpId`, identical to the `id` of the rendering target container.
-- Line 16: the `body` parameter is an HTML string. Here, it's rendered by Thymeleaf based on the view file above. The `body` parameter is *pass-through*: had this been the `.renderSafe` client-side rendering function, it would just have become the `body` in the response output, only with a container element added (possibly. Nothing's added if a matching-`id` element is found in it). But with `.render`, the react component is rendered to HTML by the server using the initial `props`, and inserted into the target container in `body` (which, again, might be a generated target container if the input HTML is missing one). This modified `body` is then returned. On the client, `.render` will `.hydrate` the container, filling in and activating the react component.
+Notes:
 
-*Run it:*
+<1> In live view, `.render` also *hydrates* the rendered HTML - adds post-filling
+       // it with the active react and js functionality on the client:
 
-Let's add the new part `02-serverside-example` to our page in Content Studio (the way we did in link:#_1_hello_world[the previous example]). When we edit the part and open the inspect panel on the right, we see the TextField asking us _"What should be our greeting?"_. It suggests _"world"_, but for variation we'll enter _"from the server side"_. This is the `greetee` value, it gets prop'ed into the react component, and we can see the rendered result in the preview on the left:
+<2> This *jsxPath structure* is common for all JSX entries below the `site/` folder: `site/<parts-or-pages>/<part-or-page-folder-name>/<filename>`.
+
+<3> *Body and pageContributions parameters:* The `body` and `pageContributions` parameters are *pass-through*! Had this been the `.renderSafe` client-side rendering function, `body` would just have become the `body` in the response output, only with a container element added (possibly. Nothing's added if a matching-`id` element is found in it). But with `.render`, the react component is rendered to HTML by the server using the initial `props`, and inserted into the target container in `body` (which, again, might be a generated target container if the input HTML is missing one). This modified `body` is then returned. On the client, `.render` will `.hydrate` the container, filling in and activating the react component. The `pageContributions` parameter isn't shown here, but works the same way: appending the React4xp output pageContributions to the input ones, if any were given. See the next example.
+
+'''
+
+*Okay, enough code - let's run the example!*
+
+Add the new part `02-serverside-example` to our page in Content Studio (the way we did in link:#\_1_hello_world[the previous example]). When we edit the part and open the _inspect_ panel on the right, we see the TextField asking us _"What should be our greeting?"_ It suggests _"world"_, but for variation we'll enter _"from the server side"_. This is the `greetee` value, it gets prop'ed into the react component, and we can see the rendered result in the preview on the left:
 
 [.thumb]
 image::editing-serverside.png["" width=1037px]
@@ -375,15 +400,14 @@ The output page source from the server is very similar to the previous example:
   <script src="(...) /react4xp/externals.88e80cab5.js" ></script>
   <script src="(...) /react4xp-client/" ></script>
   <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script> <!--2-->
-  <script defer>
-    React4xp.CLIENT.hydrate( <!--3-->
+  <script defer> <!--3-->
+    React4xp.CLIENT.hydrate(
       React4xp['site/parts/01-minimal-example/01-minimal-example'],
       "serverside-example-container" ,
       {"greetee":"from the server side","react4xpId":"serverside-example-container"}
     );
   </script>
 </body>
-
 ----
 
 Most noteworthy:
@@ -394,6 +418,7 @@ Most noteworthy:
 
 TIP: Server-side rendering can take a long time to produce an output on the first rendering (several seconds). This should happen _very rarely or never_ after the first rendering on the server. What happens is that the component is parsed, compiled and cached on the server. After that, repeated renderings even with different props are very fast!
 
+'''
 
 === 3: React4xp objects
 
@@ -412,7 +437,7 @@ Other new features demonstrated:
 [source,files]
 ----
 react4xp/_entries/
-  ColorGreeter.jsx
+  ColorThing.jsx
 site/parts:
   /03-customflow-example/
     03-customflow-example.xml
@@ -426,27 +451,158 @@ As usual, we start with the *part definition*, and it's still the source of some
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
-	<display-name>03 - CustomFlow Example</display-name>
-    <description>AKA. The Color Thing</description>
-	<form>
-        <input name="color" type="TextLine">
-            <label>What's the color of the thing?</label>
-            <occurrences minimum="1" maximum="1"/>
-            <default>red</default>
-        </input>
-    </form>
+  <display-name>03 - CustomFlow Example</display-name>
+  <description>AKA. The Color Thing</description>
+  <form>
+    <input name="color" type="TextLine">
+      <label>What's the color of the thing?</label>
+      <occurrences minimum="1" maximum="1"/>
+      <default>red</default>
+    </input>
+  </form>
 </part>
 ----
 
-==== Rendering and returning body and page contributions
+Next, let's look at the *react component*. Still not very advanced, but at least it's colorful (sorry):
 
-==== _entries
+.ColorThing.jsx:
+[source,javascript,linenums,options="nowrap"]
+----
+import React from 'react';
+
+export default (props) =>
+  <div style={{border: `1px dotted ${props.color}`,margin:"5px",padding:"5px" }}>
+    <h2>The {props.color} thing</h2>
+    <p style={{color: props.color}}>Hey, I'm pretty {props.color}!</p>
+  </div>;
+----
+
+The thymeleaf *view* has no other purpose than to show that an ID is inserted, turning this into a target container:
+
+.03-customflow-example.html
+[source,html,linenums,options="nowrap"]
+----
+<div data-th-id="${targetId}"></div>
+----
+
+Finally, *the controller*:
+
+.03-customflow-example.es6:
+[source,javascript,linenums,options="nowrap"]
+----
+
+const portal = require('/lib/xp/portal');
+const React4xp = require('/lib/enonic/react4xp');
+const thymeleaf = require('/lib/thymeleaf');
+
+// Sets the ID for both the react component and the target container...
+const TARGET_ID = "color-greeter-id";
+
+const view = resolve('03-customflow-example.html');
+const model = {
+    targetId: TARGET_ID
+};
+// ... which is rendered to a static HTML string here and only once:
+const PRE_RENDERED_BODY_TEMPLATE = thymeleaf.render(view, model);
+
+exports.get = function(request) {
+    const component = portal.getComponent();
+
+    // Constructor for a React4xp object, setting one mandatory parameter:
+    // either an XP component object, or as in this case: a jsxPath string. <!--1-->
+    const reactComp = new React4xp('ColorThing');
+
+    // Builder pattern for setting the additional optional attributes. <!--2-->
+    reactComp
+        .setId(TARGET_ID)
+        .setProps({
+            color: component.config.color
+        });
+
+	// Making a normal XP pageContributions object <!--3-->
+	const preExistingPageContributions = {
+        bodyEnd: `<script>
+            console.log('Okay, rendered the ${reactComp.props.color} thing.');
+        </script>`
+    };
+
+    // Without the shorthand rendering, there are separate rendering
+    // functions for body and pageContributions: <!--4-->
+    return {
+        // `.renderTargetContainer` renders ONLY the target container
+        // - no server-side added react content. <!--5-->
+        body: reactComp.renderTargetContainer(PRE_RENDERED_BODY_TEMPLATE),
+
+        // `.renderClientPageContributions` only makes
+        // client-side rendering script tags. <!--6-->
+        pageContributions: reactComp.renderClientPageContributions(
+            preExistingPageContributions
+        )
+    }
+};
+----
+
+Footnotes from the comments:
+
+<1> Why is `ColorThing`, and only that, the jsxPath to `ColorThing.jsx`? Because it's at the root level of the magic react4xp-entries base folder: `src/main/resources/react4xp/_entries`.
+
+<2> The builder pattern means these optional methods can be chained like in the example or happen separately - in any sequence. The example lines here are equivalent to:
+
+	reactComp.setProps({color: component.config.color});
+	reactComp.setId(TARGET_ID);
+
+<3> The `props` are already set in the React4xp `reactComp` object. We can fetch attributes from it before the rendering, in this case reading the `color` prop and injecting it into this mini-script.
+
+<4> So there's no automatic selection of rendering mode. *Try to avoid active client-side JS running in Content Studio's edit mode*. Take care when rendering manually like this. The simplest way is to detect the viewing mode from the `request` object and skip the pageContributions.
+
+<5> `.renderTargetContainer` can be used without an argument. It will then simply generate an empty target container for you, with an `id` matching the react components ID.
+
+<6> We're passing `preExistingPageContributions` _through_ `.renderClientPageContributions`, keeping the script line we made and adding the component's necessary pageContributions to it when it's returned. This method can also be run without an argument, giving you fresh pageContributions.
+
+'''
+
+*Okay, let's take a look:*
+As before, open Enonic XP, make a new part, select the new part we made: 03-Customflow Example. Edit the part config, and change the color of the thing, for example to "blue". Save, and open the preview.
+
+Unsurprisingly, we should get something like this:
+
+[.thumb]
+image::the-blue-thing.png["" width=1068px]
+
+We also see in the console, the little `console.log` script from the controller has picked up the `color` prop, and passed through the `.renderClientPageContributions`, only joined by the generated JS that the client uses to render the blue thing. The rest of the output follows the same logic as we've seen before for a client-side rendering:
+
+[source,html,options="nowrap"]
+----
+<body>
+  <main data-portal-region="main" class="xp-region">
+    <div id="color-greeter-id"></div>
+  </main>
+
+  <script src="(...) /react4xp/externals.88e80cab5.js"></script>
+  <script src="(...) /react4xp-client/"></script>
+
+  <script>console.log('Okay, rendered the blue thing.');</script>
+
+  <script src="(...) /react4xp/ColorThing.js"></script>
+  <script defer>
+    React4xp.CLIENT.render(
+      React4xp['ColorThing'],
+      "color-greeter-id",
+      { "color": "blue", "react4xpId": "color-greeter-id" }
+    );
+  </script>
+</body>
+----
+
+'''
 
 === 4: Chaining
 
 ==== Nesting
 
 ==== Multiple instances of the same react component in one part
+
+==== Hydration at work
 
 === 5: Webapp
 
