@@ -141,8 +141,6 @@ Finally, React4xp can be *used outside of the page/part flow*, even without maki
 This allows you for example to bypass Content Studio if you want, using XP's webapp functionality, making single-page react apps etc.
 
 
-'''
-
 == Examples
 
 These examples require:
@@ -156,7 +154,6 @@ TIP: They can be downloaded along with everything needed to run, by checking out
 
 TIP: See the link:#_api[API section] below for more details about how to use what's demonstrated.
 
-'''
 
 === 1: Hello World
 
@@ -216,8 +213,6 @@ exports.get = function(request) {
 
 *That's it. Now let's add this part to a page in Content Studio and see what happens!*
 
-'''
-
 *Adding a React4xp part in Content Studio and rendering it*
 
 Run `enonic project deploy` from your shell, start the sandbox and direct your browser to `localhost:8080/admin`. Log in to XP and open Content Studio. If you haven't already, create some content (a site or the included landing page type will do) that uses a page controller with a region. Insert a new part, and select the minimal-example part you just made. Edit it, give it a displayname, save it and enter the preview:
@@ -262,8 +257,6 @@ The important lines here are all added by `.renderSafe` in the part:
 <6> A pointer to the react component,
 <7> The ID of the element to render the component into,
 <8> And the props. Note that we only added the `greetee` prop. The other one, `React4xpId`, is the unique ID of the component, same as the element target. It's always added as a react prop for the component. Occasionally handy!
-
-'''
 
 === 2: Serverside rendering
 
@@ -371,8 +364,6 @@ Notes:
 
 <3> *Body and pageContributions parameters:* The `body` and `pageContributions` parameters are *pass-through*! Had this been the `.renderSafe` client-side rendering function, `body` would just have become the `body` in the response output, only with a container element added (possibly. Nothing's added if a matching-`id` element is found in it). But with `.render`, the react component is rendered to HTML by the server using the initial `props`, and inserted into the target container in `body` (which, again, might be a generated target container if the input HTML is missing one). This modified `body` is then returned. On the client, `.render` will `.hydrate` the container, filling in and activating the react component. The `pageContributions` parameter isn't shown here, but works the same way: appending the React4xp output pageContributions to the input ones, if any were given. See the next example.
 
-'''
-
 *Okay, enough code - let's run the example!*
 
 Add the new part `02-serverside-example` to our page in Content Studio (the way we did in link:#\_1_hello_world[the previous example]). When we edit the part and open the _inspect_ panel on the right, we see the TextField asking us _"What should be our greeting?"_ It suggests _"world"_, but for variation we'll enter _"from the server side"_. This is the `greetee` value, it gets prop'ed into the react component, and we can see the rendered result in the preview on the left:
@@ -417,8 +408,6 @@ Most noteworthy:
 <3> Instead of `.render`, we're triggering `.hydrate`. Here, that doesn't make a difference since our react component doesn't have any more active stuff in it than just outputting an HTML string. But had it had things like event listeners, state, connections to thirdparty libraries etc, `.hydrate` would have hooked those up to the DOM structure created in the target container element, creating a working, active component.
 
 TIP: Server-side rendering can take a long time to produce an output on the first rendering (several seconds). This should happen _very rarely or never_ after the first rendering on the server. What happens is that the component is parsed, compiled and cached on the server. After that, repeated renderings even with different props are very fast!
-
-'''
 
 === 3: React4xp objects
 
@@ -559,8 +548,6 @@ Footnotes from the comments:
 
 <6> We're passing `preExistingPageContributions` _through_ `.renderClientPageContributions`, keeping the script line we made and adding the component's necessary pageContributions to it when it's returned. This method can also be run without an argument, giving you fresh pageContributions.
 
-'''
-
 *Okay, let's take a look:*
 As before, open Enonic XP, make a new part, select the new part we made: 03-Customflow Example. Edit the part config, and change the color of the thing, for example to "blue". Save, and open the preview.
 
@@ -594,8 +581,6 @@ We also see in the console, the little `console.log` script from the controller 
 </body>
 ----
 
-'''
-
 === 4: Chaining
 
 ==== Nesting
@@ -605,29 +590,16 @@ We also see in the console, the little `console.log` script from the controller 
 ==== Hydration at work
 
 === 5: Webapp
-
-==== Services
-
-==== The React4xp client-side object
-
-==== The wrapper: React4xp.CLIENT
-
-=== 6: Content Studio
-
-==== Adding and using parts
-
-==== Rendering in different modes
-
 To see your current application:
 
 . log in to the XP admin console (http://localhost:8080)
 . open the "Applications" app, and select the listed applications
 . visit the app by clicking the web app link.
+==== Services
 
+==== The React4xp client-side object
 
-
-
-
+==== The wrapper: React4xp.CLIENT
 
 
 == API and details
@@ -651,6 +623,8 @@ https://github.com/enonic/lib-react4xp/blob/master/README.md#entries-and-depende
 TIP: Chunks are more optimized than entries. Ideally, keep the served entries slim and leave the heavy lifting to chunks.
 
 === Gotchas
+
+==== Rendering in different modes
 
 === Adjusting the setup
 
