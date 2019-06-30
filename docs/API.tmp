@@ -1,0 +1,151 @@
+/** All-in-one best-practice renderer. Renders server-side if it can, adds hydration logic for the client-side. Renders
+  * dynamic/client-side react in XP preview and live mode, and static/server-side in edit mode (XP content studio).
+  * On problems, falls back to renderSafe.
+  *
+  * @param request {object} XP request object.
+  * @param params {object} MUST include jsxPath or component. And if not component, either an id OR a non-falsy uniqueId parameter is needed. If component is included, the jsxPath is automatically inserted to point to a JSX file in the XP component folder, with the same name. This file must exist. If component AND jsxPath are included, jsxPath will override the component name.
+  *      - component {object} XP component object (used to extrapolate component part and target container ID). This is sufficient if the JSX entry file is in the same folder and has the same name, and the react component doesn't need to be rendered into a particular pre-existing HTML container element.
+  *      - jsxPath {string} path to react component entry, see available paths in build/main/resources/react4xp/entries.json after building the parent project with react4xp-build-components. These are NAMES, not relative paths. So jsxPath can't contain '..', '//', '/./' or start with '.' or '/'.
+  *      - id {string} sets the target container element id (overrides the extrapolated id if component was set). If this matches an ID in an input body, the react component will be rendered there. If not, a container with this ID will be added.
+  *      - uniqueId {boolean|string} If set, ensures that the ID is unique. If id is set (previous param), a random integer will be postfixed to it. If uniqueId is a string, this is the prefix before the random postfix. If the id param is used in addition to a uniqueId string, uniqueId takes presedence and overrides id.
+  *      - props {object, optional} react props sent in to the component
+  *      - body {string, optional} Existing HTML body, for example rendered from thymeleaf. If it already has a matching-ID target container, body passes through unchanged (use this option and the setId method to control where in the body the react component should be inserted). If it doesn't have a matching container, a matching <div> will be inserted at the end of the body, inside the root element. If body is missing, a pure-target-container body is generated and returned.
+  *      - pageContributions.js {object, optional} Pre-existing pageContributions. New page contributions for rendering this component will be added to any pre-existing ones.
+  *
+  * @returns a response object that can be directly returned from an XP controller.
+  */
+static render = (request, params) => {
+buildFromParams
+
+
+
+
+
+/** Safety renderer. More thorough fallback and failure reporting, and avoids server-side rendering - except in edit
+ *  mode, where client-side rendering is the bigger hazard.
+ *
+ *  Returns a response object that can be directly returned from an XP controller.
+ *  @param params {object} See .render for parameter details.
+ *  @returns {object} Object with body and pageContributions.js. Body will contain a target container element for the react component. PageContributions will contain scripts referred by URL for running the component client-side and the component's dependencies, as well as an inline trigger script for starting the react frontend rendering into the target container. Duplicates in pageContributions.js will be removed, to avoid running identical scripts twice.
+ */
+static renderSafe = (request, params) => {
+buildFromParams
+
+
+
+
+/** Generates or modifies existing enonic XP pageContributions.js. Adds client-side dependency chunks (core React4xp frontend,
+ * shared libs and components etc, as well as the entry component scripts.
+ * Also returns/adds small scripts that trigger the component scripts. Prevents duplicate references to dependencies.
+ *
+ * @param pageContributions PageContributions object that the new scripts will be added to. If no input, new ones
+ * are instantiated.
+ */
+renderHydrationPageContributions = (pageContributions) => {
+
+
+
+
+
+
+
+/** Generates or modifies existing enonic XP pageContributions.js. Adds client-side dependency chunks (core React4xp frontend,
+ * shared libs and components etc, as well as the entry component scripts.
+ * Also returns/adds small scripts that trigger the component scripts. Prevents duplicate references to dependencies.
+ *
+ * @param pageContributions PageContributions object that the new scripts will be added to. If no input, new ones
+ * are instantiated.
+ */
+renderClientPageContributions = (pageContributions) => {
+
+
+
+
+
+
+/** Server-side rendering: Renders a static HTML markup and inserts it into an ID-matching target container in an HTML body. If a
+ * matching-ID container (or a body) is missing, it will be generated.
+ * @param body {string} Existing HTML body, for example rendered from thymeleaf.
+ * @returns {string} adjusted or generated HTML body with rendered react component.
+ */
+renderSSRIntoContainer(body) {
+
+
+
+
+
+
+
+/** Generates or modifies an HTML body, with a target container whose ID matches this component's react4xpId.
+ * @param body {string} Existing HTML body, for example rendered from thymeleaf.
+ *     If it already has a matching-ID target container, body passes through unchanged (use this option and the
+ *     setId method to control where in the body the react component should be inserted). If it doesn't have a
+ *     matching container, a matching <div> will be inserted at the end of the body, inside the root element. If
+ *     body is missing, a pure-target-container body is generated and returned.
+ * @param content {string} HTML content that, if included, is inserted into the container with the matching Id.
+ * @returns {string} adjusted or generated HTML body with rendered react component.
+ */
+renderTargetContainer(body, content) {
+
+
+
+
+
+/** Renders a pure static HTML markup of ONLY the react component, without a surrounding HTML markup or container.
+  * Can override props that have previously been added to this component.
+  */
+renderComponentString = (overrideProps) =>
+
+
+
+
+--------------------------------------------
+
+
+
+
+
+/** When you want to use a particular JSX file (other than the default, a JSX file in the same folder as the XP component,
+  * with the same name as the folder).
+  *
+  * @param jsxPath (string, mandatory) Name of a JSX file, will be interpreted as a full, absolute JSX path. NOTE
+  *        that these are component NAME strings, not file paths that can be relative. So avoid stuff like "..", "//", "./", etc.
+  *        After building the parent project with react4xp-build-components,
+  *        the available entry jsxPaths can be seen in build/main/resources/react4xp/entries.json.
+  *
+  * @returns The React4xp object itself, for builder-like telescoping pattern.
+  */
+setJsxPath(jsxPath) {
+
+
+
+
+
+
+/** Sets the react4xpId - the HTML ID of the target container this component will be rendered into.
+  * Deletes the ID if argument is omitted.
+  * @returns The react4xp component itself, for builder-like telescoping pattern.
+  */
+setId(react4xpId) {
+
+
+
+
+
+
+/** Appends a unique target container ID postfix after the currently set reactXpId (if any).
+  * @returns The react4xp component itself, for builder-like telescoping pattern.
+  */
+uniqueId() {
+
+
+
+
+
+/** Sets the react4xp component's top-level props.
+  * @param props {object} Props to be stored in the component. Must be a string-serializeable object!
+  * @returns The react4xp component itself, for builder-like telescoping pattern.
+  */
+setProps(props) {
+
+
