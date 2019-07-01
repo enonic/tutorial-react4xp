@@ -4,7 +4,11 @@
 
 Build sites and apps that support client- and serverside JSX templating with the React framework, in combination with optimized asset serving and hydration - for lighting fast sites and apps.
 
+{nbsp} +
+
 image::react4xp.svg["React4xp logo" width=256px]
+
+{nbsp} +
 
 == Introduction
 
@@ -16,6 +20,9 @@ This documentation takes you through the basic elements of React4XP and how to u
 ====
 The starter and this guide aims for how-to, what-is and setup of React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the installation and build commands are different from XP7 - and the XP6 starter handles those differences. Using React4xp the rest of the way is identical, so *you can still use this guide for both versions.*
 ====
+
+{nbsp} +
+{nbsp} +
 
 === What is React4xp?
 
@@ -32,6 +39,10 @@ But primarily, *it's built to work together out of the box to make it as easy as
 This guide focuses on the react4xp starter, which handles a full basic setup. But it can also be imported into an existing XP project - the core library docs have https://github.com/enonic/lib-react4xp/blob/master/README.md#installing-the-library[a guide for that].
 
 
+{nbsp} +
+{nbsp} +
+{nbsp} +
+
 == Get started
 
 === Create a starter project
@@ -44,6 +55,7 @@ Remember to create a *new XP sandbox* when completing the project wizard.
 
 NOTE: *Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[Getting started guide] to install it.
 
+{nbsp} +
 
 === Build and Deploy
 
@@ -60,6 +72,10 @@ To verify that your app started successfully, you should find an entry similar t
   2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully
 ====
 
+
+{nbsp} +
+{nbsp} +
+{nbsp} +
 
 == Project structure
 
@@ -98,30 +114,38 @@ src/
 <9> Folder containing the root webapp controller. React4xp supplies services that allow even static HTML pages to refer to and request compiled React4xp components.
 
 
+{nbsp} +
+{nbsp} +
+{nbsp} +
+
 == Usage
 
-Simply put, there are *4 prototypical usage patterns*. You're not bound to use them exactly like this, and the examples below will show some more variation than this. But for clarity here's a basic overview of them:
+Simply put, there are *4 prototypical usage patterns*. You're not bound to use them exactly like this, and the *link:#_examples[examples]* below will show some more variation than this. But for clarity here's an overview of them:
+
+{nbsp} +
 
 === A: Shorthand function with same-name component
 *The easiest way* is to put one react entry sourcefile into the same folder as a part/page where it should be displayed, and let it have the same file name as the part/page (but `.JSX` extension only!).
 
-Let the React4xp shorthand functions `.renderSafe` (for client-side rendering) or `.render` (for server-side rendering and client-side hydration) use XP's `request` and `getComponent()`. Add some props the same way you would add a model when rendering Thymeleaf, and/or tweak the rendering functions with extra parameters if you want.
+Let the React4xp shorthand functions `.renderSafe` (for client-side rendering) or `.render` (for server-side rendering and client-side hydration) use XP's `request` and `portal.getComponent()`. Add some props the same way you would add a model when rendering Thymeleaf, and/or tweak the rendering functions with extra parameters if you want.
 
 The output from these render functions is *a full response object with everything the client needs to display it* - HTML and page contributions. Just return it directly from the controller.
 
+{nbsp} +
+
 === B: JsxPath references
-If you want to *reuse an entry component in multiple parts or pages* (or just, not be bound by the parent part/page folder): put a source file where you want:
+If you want to *reuse an entry component in multiple parts or pages* (or just, not be bound by the parent part/page folder), put a source file where you want...
 
-  - either a `.JSX` file in any page/part folder under `site/`,
-  - or a `.JS`/`.JSX`/`.ES6` under `react4xp/_entries`.
+  - either a `.JS`/`.JSX`/`.ES6` under `react4xp/_entries`,
+  - or a `.JSX` file in any page/part folder under `site/`,
 
-...and use `.render` or `.renderSafe`, but with the jsxPath string instead of the `getComponent` object.
-
-During build, React4xp uses the location of all components to derive a name for each of them: the https://github.com/enonic/lib-react4xp/blob/master/README.md#jsxpath-how-to-refer-to-a-react4xp-component[jsxPath]. This can be used anywhere with the React4xp functions.
+...and use `.render` or `.renderSafe`, but instead of the object from `getComponent`, use the *https://github.com/enonic/lib-react4xp/blob/master/README.md#jsxpath-how-to-refer-to-a-react4xp-component[jsxPath] string*: a name for each entry component, built from the relative path of the JSX file below `react4xp/_entries` or `site/` - without the file extension.
 
 NOTE: JsxPaths are not OS paths that can be used relatively. They are *name strings, and must be used in full*.
 
 TIP: You can see all the built jsxPaths in `build/resources/main/assets/react4xp/entries.json`.
+
+{nbsp} +
 
 === C: React4xp data objects
 If you need *more flexibility*, or want to *use more than one entry component in a single part or page* - or even *use the same react component more than once in a part/page*:
@@ -129,6 +153,8 @@ If you need *more flexibility*, or want to *use more than one entry component in
 Instead of using the shorthands `.render` or `.renderSafe`, create a temporary data-holding `new React4xp(...)` object in the page/part controller. Use a component or jsxPath argument to point to the react component. When you're done manipulating data, the React4xp object has built-in and specific methods for rendering a body and the necessary page contributions, for client-side or server-side react rendering.
 
 These rendering methods can be *chained*, so that the output HTML or page contribution from one object is the input for the next one. This way, one response object can be built from several react components.
+
+{nbsp} +
 
 === D: Client-side exposed services
 Finally, React4xp can be *used outside of the page/part flow*, even without making XP controllers if needed. A few services are exposed in runtime, where a client can request runnable compiled code:
@@ -141,19 +167,21 @@ Finally, React4xp can be *used outside of the page/part flow*, even without maki
 This allows you for example to bypass Content Studio if you want, using XP's webapp functionality, making single-page react apps etc.
 
 
+{nbsp} +
+{nbsp} +
+{nbsp} +
+
 == Examples
 
-These examples require:
+These examples require a little basic experience with Enonic XP 7 (check out the excellent introductions at the https://developer.enonic.com/[Developer Portal]), and a https://developer.enonic.com/guides/my-first-site#page_component[main page component] with a https://developer.enonic.com/guides/my-first-site#regions[region].
 
-  - a little basic experience Enonic XP 7 (check out the excellent introductions at the https://developer.enonic.com/[Developer Portal]),
-  - a https://developer.enonic.com/guides/my-first-site#page_component[main page component] with a https://developer.enonic.com/guides/my-first-site#regions[region].
-
-NOTE: The examples build incrementally on each other.
+The examples build incrementally on each other.
 
 TIP: They can be downloaded along with everything needed to run, by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp]
 
 TIP: See the link:#_api[API section] below for more details about how to use what's demonstrated.
 
+{nbsp} +
 
 === 1: Hello World
 
@@ -211,9 +239,10 @@ exports.get = function(request) {
 };
 ----
 
-*That's it. Now let's add this part to a page in Content Studio and see what happens!*
+{nbsp} +
+{nbsp} +
 
-*Adding a React4xp part in Content Studio and rendering it*
+*That's it. Now let's add this part to a page in Content Studio and render it!*
 
 Run `enonic project deploy` from your shell, start the sandbox and direct your browser to `localhost:8080/admin`. Log in to XP and open Content Studio. If you haven't already, create some content (a site or the included landing page type will do) that uses a page controller with a region. Insert a new part, and select the minimal-example part you just made. Edit it, give it a displayname, save it and enter the preview:
 
@@ -236,11 +265,11 @@ If we view the page source code in the browser (and format it and strip away som
     <script src="(...) /react4xp/externals.88e80cab5.js"></script>  <!--2-->
     <script src="(...) /react4xp-client/"></script> <!--3-->
     <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script> <!--4-->
-    <script defer>
-      React4xp.CLIENT.render( <!--5-->
-        React4xp['site/parts/01-minimal-example/01-minimal-example'], <!--6-->
-        "parts_01-minimal-example__main_0",  <!--7-->
-        { "greetee": "world", "react4xpId": "parts_01-minimal-example__main_0" } <!--8-->
+    <script defer> <!--5-->
+      React4xp.CLIENT.render(
+        React4xp['site/parts/01-minimal-example/01-minimal-example'],
+        "parts_01-minimal-example__main_0",
+        { "greetee": "world", "react4xpId": "parts_01-minimal-example__main_0" }
       );
     </script>
    </body>
@@ -253,10 +282,10 @@ The important lines here are all added by `.renderSafe` in the part:
 <2> Downloading React and ReactDOM in an `externals` chunk (the exact path varies with local setups, so it's truncated to `(...)`). When this is run, `React` and `ReactDOM` are globally available in the client.
 <3> Downloading the react4xp client wrapper, which enables the rendering command in point #5, among other things. Creates a global client-side object, `React4xp`, which will contain all things React4xp in runtime. The client wrapper is `React4xp.CLIENT`.
 <4> Downloading the react component itself - the autocompiled version of `01-minimal-example.jsx`. The runtime-renderable component is put into `React4xp.<jsxPath>`, in this case: `React4xp['site/parts/01-minimal-example/01-minimal-example']`.
-<5> The rendering command is triggered, with some arguments:
-<6> A pointer to the react component,
-<7> The ID of the element to render the component into,
-<8> And the props. Note that we only added the `greetee` prop. The other one, `React4xpId`, is the unique ID of the component, same as the element target. It's always added as a react prop for the component. Occasionally handy!
+<5> A client rendering command `React4xp.CLIENT.render` is generated and triggered, with some arguments: A pointer to the react component, the ID of the element to render the component into, and the props. Note that we only added the `greetee` prop. The other one, `React4xpId`, is the unique ID of the component, same as the element target. It's always added as a react prop for the component. Occasionally handy!
+
+{nbsp} +
+{nbsp} +
 
 === 2: Serverside rendering
 
@@ -364,6 +393,9 @@ Notes:
 
 <3> *Body and pageContributions parameters:* The `body` and `pageContributions` parameters are *pass-through*! Had this been the `.renderSafe` client-side rendering function, `body` would just have become the `body` in the response output, only with a container element added (possibly. Nothing's added if a matching-`id` element is found in it). But with `.render`, the react component is rendered to HTML by the server using the initial `props`, and inserted into the target container in `body` (which, again, might be a generated target container if the input HTML is missing one). This modified `body` is then returned. On the client, `.render` will `.hydrate` the container, filling in and activating the react component. The `pageContributions` parameter isn't shown here, but works the same way: appending the React4xp output pageContributions to the input ones, if any were given. See the next example.
 
+{nbsp} +
+{nbsp} +
+
 *Okay, enough code - let's run the example!*
 
 Add the new part `02-serverside-example` to our page in Content Studio (the way we did in link:#\_1_hello_world[the previous example]). When we edit the part and open the _inspect_ panel on the right, we see the TextField asking us _"What should be our greeting?"_ It suggests _"world"_, but for variation we'll enter _"from the server side"_. This is the `greetee` value, it gets prop'ed into the react component, and we can see the rendered result in the preview on the left:
@@ -408,6 +440,9 @@ Most noteworthy:
 <3> Instead of `.render`, we're triggering `.hydrate`. Here, that doesn't make a difference since our react component doesn't have any more active stuff in it than just outputting an HTML string. But had it had things like event listeners, state, connections to thirdparty libraries etc, `.hydrate` would have hooked those up to the DOM structure created in the target container element, creating a working, active component.
 
 TIP: Server-side rendering can take a long time to produce an output on the first rendering (several seconds). This should happen _very rarely or never_ after the first rendering on the server. What happens is that the component is parsed, compiled and cached on the server. After that, repeated renderings even with different props are very fast!
+
+{nbsp} +
+{nbsp} +
 
 === 3: React4xp objects
 
@@ -548,6 +583,8 @@ Footnotes from the comments:
 
 <6> We're passing `preExistingPageContributions` _through_ `.renderClientPageContributions`, keeping the script line we made and adding the component's necessary pageContributions to it when it's returned. This method can also be run without an argument, giving you fresh pageContributions.
 
+{nbsp} +
+
 *Okay, let's take a look:*
 As before, open Enonic XP, make a new part, select the new part we made: 03-Customflow Example. Edit the part config, and change the color of the thing, for example to "blue". Save, and open the preview.
 
@@ -556,7 +593,7 @@ Unsurprisingly, we should get something like this:
 [.thumb]
 image::the-blue-thing.png["" width=1068px]
 
-We also see in the console, the little `console.log` script from the controller has picked up the `color` prop, and passed through the `.renderClientPageContributions`, only joined by the generated JS that the client uses to render the blue thing. The rest of the output follows the same logic as we've seen before for a client-side rendering:
+We also see in the console that the little `console.log` script from the controller has picked up the `color` prop _from_ the object, and passed through the `.renderClientPageContributions`, only joined by the generated JS that the client uses to render the blue thing. The rest of the output follows the same logic as we've seen before for a client-side rendering:
 
 [source,html,options="nowrap"]
 ----
@@ -581,13 +618,40 @@ We also see in the console, the little `console.log` script from the controller 
 </body>
 ----
 
-=== 4: Chaining
+{nbsp} +
+{nbsp} +
 
-==== Nesting
+=== 4: A part with multiple react components, chaining, nesting, hydration
 
-==== Multiple instances of the same react component in one part
+A final example, where we'll look at using multiple react components in a single part - including reusing multiple instances of _the same_ react component and making them unique within the part:
 
-==== Hydration at work
+- chaining (passing the body and pageContributions through multiple react4xp data objects),
+- nesting shared, non-entry react components in an entry,
+- how `import`-ing non-entry code results in a predictable chunk structure,
+- `.hydrate` lets the client activate a pre-rendered component.
+
+.Files involved:
+[source,files]
+----
+react4xp/
+  myChunk/
+    Builder.jsx <!--1-->
+  _entries/
+    mySubfolder/
+      BuilderContainer.jsx <!--2-->
+site/parts:
+  /04-chaining-example/
+    04-chaining-example.jsx <!--3-->
+    04-chaining-example.xml <!--4-->
+    04-chaining-example.html <!--5-->
+    04-chaining-example.es6 <!--6-->
+----
+
+<1> InnerGreeter is
+
+
+{nbsp} +
+{nbsp} +
 
 === 5: Webapp
 To see your current application:
@@ -605,6 +669,10 @@ To see your current application:
 == API and details
 
 Link to lib-react4xp
+
+{nbsp} +
+{nbsp} +
+{nbsp} +
 
 === API
 
