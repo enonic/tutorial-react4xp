@@ -862,100 +862,101 @@ Comparing this screenshot (or better, run the example and check out the actual o
 ----
 <!DOCTYPE html>
 <html>
-    <head></head>
+  <head></head>
 
-    <body>
+  <body>
 
-        <main data-portal-region="main" class="xp-region">
-            <div data-portal-component-type="part" class="chaining-example">
+    <main data-portal-region="main" class="xp-region">
+      <div data-portal-component-type="part" class="chaining-example">
 
-                <h1>04 - Chaining Example</h1>
-                <p>These two target containers existed in the HTML:</p>
+        <h1>04 - Chaining Example</h1>
+        <p>These two target containers existed in the HTML:</p>
 
-                <div id="a-target-container">
-                    <div class="builderclicker-entry" data-reactroot="">
-                        <div class="builderclicker">
-                            <h3>
-                                <span style="cursor:pointer" class="first">Click</span>
-                                <span style="cursor:pointer" class="second">ME!</span></h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="another-target-container">
-                    <div class="builderclicker-entry" data-reactroot="">
-                        <div class="builderclicker">
-                            <h3>
-                                <span style="cursor:pointer" class="first">No click ME!</span>
-                                <span style="cursor:pointer" class="second">I do the exact same thing only better!</span>
-                            </h3>
-                        </div>
-                    </div>
-                </div>
-
-                <hr style="display:block; margin:20px; width:100%; height:1px; border:1px dotted #aaa;"></hr>
-
-                <p>The rest of the containers didn't exist before rendering, and so, are inserted at the end:</p>
-                <div id="this-is-not-unique"></div>
-                <div id="this-id-is-unique_90354192"></div>
-                <div id="this-id-is-unique_43124046"></div>
-                <div id="this-id-is-unique_87401825"></div>
-                <div id="this-id-is-unique_63865684"></div>
+        <div id="a-target-container">
+          <div class="builderclicker-entry" data-reactroot="">
+            <div class="builderclicker">
+              <h3>
+                <span style="cursor:pointer" class="first">Click</span>
+                <span style="cursor:pointer" class="second">ME!</span>
+              </h3>
             </div>
-        </main>
+          </div>
+        </div>
 
-        <script src="(...) /react4xp/externals.88e80cab5.js"></script>
-        <script src="(...) /react4xp-client/"></script>
-        <script src="(...) /react4xp/myChunk.059c6f899.js"></script>
-        <script src="(...) /react4xp/mySubfolder/BuilderClickerEntry.js"></script>
-        <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script>
-        <script src="(...) /react4xp/site/parts/04-chaining-example/04-chaining-example.js"></script>
+        <div id="another-target-container">
+          <div class="builderclicker-entry" data-reactroot="">
+            <div class="builderclicker">
+              <h3>
+                <span style="cursor:pointer" class="first">No click ME!</span>
+                <span style="cursor:pointer" class="second">I do the exact same thing only better!</span>
+              </h3>
+            </div>
+          </div>
+        </div>
 
-        <script defer>React4xp.CLIENT.hydrate(React4xp['mySubfolder/BuilderClickerEntry'], "a-target-container", {
-            "first": "Click",
-            "second": "ME!",
-            "react4xpId": "a-target-container"
-        });</script>
-        <script defer>React4xp.CLIENT.hydrate(React4xp['site/parts/04-chaining-example/04-chaining-example'], "another-target-container", {
-            "first": "No click ME!",
-            "second": "I do the exact same thing only better!",
-            "react4xpId": "another-target-container"
-        });</script>
+        <hr style="display:block; margin:20px; width:100%; height:1px; border:1px dotted #aaa;"></hr>
 
-        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
-            "greetee": "first repeated ID",
-            "react4xpId": "this-is-not-unique"
-        });</script>
-        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
-            "greetee": "second repeated ID",
-            "react4xpId": "this-is-not-unique"
-        });</script>
-        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
-            "greetee": "third repeated ID",
-            "react4xpId": "this-is-not-unique"
-        });</script>
-        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
-            "greetee": "fourth repeated ID",
-            "react4xpId": "this-is-not-unique"
-        });</script>
+        <p>The rest of the containers didn't exist before rendering, and so, are inserted at the end:</p>
+        <div id="this-is-not-unique"></div>
+        <div id="this-id-is-unique_90354192"></div>
+        <div id="this-id-is-unique_43124046"></div>
+        <div id="this-id-is-unique_87401825"></div>
+        <div id="this-id-is-unique_63865684"></div>
+      </div>
+    </main>
 
-        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_90354192", {
-            "greetee": "first unique ID",
-            "react4xpId": "this-id-is-unique_90354192"
-        });</script>
-        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_43124046", {
-            "greetee": "second unique ID",
-            "react4xpId": "this-id-is-unique_43124046"
-        });</script>
-        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_87401825", {
-            "greetee": "third unique ID",
-            "react4xpId": "this-id-is-unique_87401825"
-        });</script>
-        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_63865684", {
-            "greetee": "fourth unique ID",
-            "react4xpId": "this-id-is-unique_63865684"
-        });</script>
-    </body>
+    <script src="(...) /react4xp/externals.88e80cab5.js"></script>
+    <script src="(...) /react4xp-client/"></script>
+    <script src="(...) /react4xp/myChunk.059c6f899.js"></script>
+    <script src="(...) /react4xp/mySubfolder/BuilderClickerEntry.js"></script>
+    <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script>
+    <script src="(...) /react4xp/site/parts/04-chaining-example/04-chaining-example.js"></script>
+
+    <script defer>React4xp.CLIENT.hydrate(React4xp['mySubfolder/BuilderClickerEntry'], "a-target-container", {
+      "first": "Click",
+      "second": "ME!",
+      "react4xpId": "a-target-container"
+    });</script>
+    <script defer>React4xp.CLIENT.hydrate(React4xp['site/parts/04-chaining-example/04-chaining-example'], "another-target-container", {
+      "first": "No click ME!",
+      "second": "I do the exact same thing only better!",
+      "react4xpId": "another-target-container"
+    });</script>
+
+    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+      "greetee": "first repeated ID",
+      "react4xpId": "this-is-not-unique"
+    });</script>
+    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+      "greetee": "second repeated ID",
+      "react4xpId": "this-is-not-unique"
+    });</script>
+    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+      "greetee": "third repeated ID",
+      "react4xpId": "this-is-not-unique"
+    });</script>
+    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+      "greetee": "fourth repeated ID",
+      "react4xpId": "this-is-not-unique"
+    });</script>
+
+    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_90354192", {
+      "greetee": "first unique ID",
+      "react4xpId": "this-id-is-unique_90354192"
+    });</script>
+    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_43124046", {
+      "greetee": "second unique ID",
+      "react4xpId": "this-id-is-unique_43124046"
+    });</script>
+    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_87401825", {
+      "greetee": "third unique ID",
+      "react4xpId": "this-id-is-unique_87401825"
+    });</script>
+    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_63865684", {
+      "greetee": "fourth unique ID",
+      "react4xpId": "this-id-is-unique_63865684"
+    });</script>
+  </body>
 </html>
 ----
 
@@ -965,16 +966,79 @@ Comparing this screenshot (or better, run the example and check out the actual o
 {nbsp} +
 
 === 5: Webapp
-To see your current application:
+The last demonstration is the services `/react4xp/`, `/react4xp-client/`, `/react4xp-dependencies/` and `/react4xp-externals/`. These enable you to take advantage of React4xp components and features directly from a client-side script from scratch (except for server-side rendering, which obviously isn't available).
 
-. log in to the XP admin console (http://localhost:8080)
-. open the "Applications" app, and select the listed applications
-. visit the app by clicking the web app link.
-==== Services
+In the example below, we'll use XP's https://developer.enonic.com/guides/my-first-webapp[webapp] functionality with a thymeleaf template, enabling us to use `portal.serviceUrl` to get the fully prefixed URL to the services. But as long as long as you know the prefix service URL to an XP server running React4xp, you could hard code the urls if you wanted and use this feature from a completely standalone HTML.
 
-==== The React4xp client-side object
+`React4xp.CLIENT.renderWithDependencies` abstracts and simplifies all the necessary steps in rendering multiple entries into multiple target containers. It needs:
 
-==== The wrapper: React4xp.CLIENT
+- React, ReactDOM and the React4xp client wrapper must be fetched (line 5-15 below),
+- The prefix service URL must be set, as a global `SERVICE_URL_ROOT` variable (line 34).
+
+.pure.html:
+[source,html,linenums,options="nowrap"]
+----
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- OPTION 1: You can get React and ReactDOM from CDN like this... -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
+    <!-- OPTION 2:
+      ...but React and ReactDOM are also available as a chunk from this service:
+      <script data-th-src="${portal.serviceUrl({'_service=react4xp-externals'})}"></script>
+    -->
+
+    <!-- The client wrapper is needed either way: -->
+    <script data-th-src="${portal.serviceUrl({'_service=react4xp-client'})}"></script>
+  </head>
+
+  <body>
+    <h1>Standalone HTML</h1>
+
+    <!-- Target containers -->
+    <div id="color_thing"></div>
+    <div id="clickable_thing"></div>
+
+    <!-- Sets a global variable SERVICE_URL_ROOT.
+    This is the root URL prefix to the services used
+    by React4xp.CLIENT.renderWithDependencies.
+    Can be set anywhere as long as it's before
+    renderWithDependencies is called: -->
+    <script data-th-text="|var SERVICE_URL_ROOT=`${portal.serviceUrl({'_service='})}`;|"></script>
+
+    <!-- Actual rendering call: -->
+    <script>
+        React4xp.CLIENT.renderWithDependencies(
+
+          // First parameter: an object where the keys are jsxPaths
+          // (which can still be used more than once as long as the IDs
+          // are unique), and the values are objects with
+          // `targetId` and `props` parameters:
+          {
+            ColorThing: {
+              targetId: 'color_thing',
+              props: { color: "purple"}
+            },
+
+            'site/parts/04-chaining-example/04-chaining-example': {
+              targetId: 'clickable_thing',
+              props: { first: "Come On!", second: "Click Me Already!" },
+            },
+          },
+
+          // Demo callback in an optional second parameter:
+          function() {
+              console.log("This callback is inserted and called after rendering.");
+          }
+        );
+    </script>
+  </body>
+</html>
+----
+
+
 
 
 == API and details
