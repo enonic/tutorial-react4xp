@@ -837,14 +837,128 @@ exports.get = function(request) {
 };
 ----
 
-NOTE: In this example (line 57-78), we're making a new React4xp object for each rendering. An object can in principle be re-rendered with different props, *but rendering a body or pageContribution will lock the ID* of the object. I.e., a re-rendering of the same React4xp object will always target the same container element!
+NOTE: In this example (line 57-78), we're making a new React4xp object for each rendering. An object can in principle be re-rendered with different props, *but rendering a body or pageContribution will lock the ID* of the object. I.e., a re-rendering of the same React4xp object will always target the same container element! Trying to change the ID will throw an error.
 
 {nbsp} +
 
-*Let's take a look at the rendered output*:
+*Screenshot of the rendered output:*
 
 [.thumb]
-image::complex.png["Ccomplex chaining example output" width=1037px]
+image::chaining.png["You clicked? I am but a humble screenshot." width=1036px]
+
+Comparing this screenshot (or better, run the example and check out the actual output) with the page source below, there are a few things worth noting:
+
+- in the actual output, the _"click me"_ components are active and clickable: clicking the first or second half of each of them doubles the clicked text, as defined in the `BuilderClicker`. This activation happened in the `.hydrate` steps (lines 58 and 64).
+- the clicks are isolated to the component that was actually clicked: even though they are technically the same inner component `BuilderClicker` (by source), they each have their own state so when one is clicked the other one doesn't react. This is not because `BuilderClicker` is nested differently in them, but because their ID's are different,
+- as predicted, since the ID was the same in all 4 renderings (line 60 in `04-chaining-example.es6`), only one container with `id="this-is-not-unique"` was added to the body (line 41 below),
+- and although the four React4xp objects each add a separate `React4xp.CLIENT.render` call (lines 71, 76, 81, 86), they all target the same container, so only the last one is remains in the end,
+- and since `"this-id-is-unique"` had a different postfix appended each time, all the 4 renderings created a different container (lines 42-45), and each of those are visibly rendered.
+- React4xp automatically traced the dependency to `myChunk.<hash>.js` and added this import to the page contributions (line 51), because `BuilderClicker` lives there. As long as the `site` and `react4xp` folders are used for entries and dependency chunks as described, imports like this will always be handled automatically,
+- and although several of the generated assets are called more than once, the page contributions are trimmed so each of them are only loaded to the client once (lines 49-56).
+
+
+.Page source:
+[source,html,linenums,options="nowrap"]
+----
+<!DOCTYPE html>
+<html>
+    <head></head>
+
+    <body>
+
+        <main data-portal-region="main" class="xp-region">
+            <div data-portal-component-type="part" class="chaining-example">
+
+                <h1>04 - Chaining Example</h1>
+                <p>These two target containers existed in the HTML:</p>
+
+                <div id="a-target-container">
+                    <div class="builderclicker-entry" data-reactroot="">
+                        <div class="builderclicker">
+                            <h3>
+                                <span style="cursor:pointer" class="first">Click</span>
+                                <span style="cursor:pointer" class="second">ME!</span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="another-target-container">
+                    <div class="builderclicker-entry" data-reactroot="">
+                        <div class="builderclicker">
+                            <h3>
+                                <span style="cursor:pointer" class="first">No click ME!</span>
+                                <span style="cursor:pointer" class="second">I do the exact same thing only better!</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="display:block; margin:20px; width:100%; height:1px; border:1px dotted #aaa;"></hr>
+
+                <p>The rest of the containers didn't exist before rendering, and so, are inserted at the end:</p>
+                <div id="this-is-not-unique"></div>
+                <div id="this-id-is-unique_90354192"></div>
+                <div id="this-id-is-unique_43124046"></div>
+                <div id="this-id-is-unique_87401825"></div>
+                <div id="this-id-is-unique_63865684"></div>
+            </div>
+        </main>
+
+        <script src="(...) /react4xp/externals.88e80cab5.js"></script>
+        <script src="(...) /react4xp-client/"></script>
+        <script src="(...) /react4xp/myChunk.059c6f899.js"></script>
+        <script src="(...) /react4xp/mySubfolder/BuilderClickerEntry.js"></script>
+        <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script>
+        <script src="(...) /react4xp/site/parts/04-chaining-example/04-chaining-example.js"></script>
+
+        <script defer>React4xp.CLIENT.hydrate(React4xp['mySubfolder/BuilderClickerEntry'], "a-target-container", {
+            "first": "Click",
+            "second": "ME!",
+            "react4xpId": "a-target-container"
+        });</script>
+        <script defer>React4xp.CLIENT.hydrate(React4xp['site/parts/04-chaining-example/04-chaining-example'], "another-target-container", {
+            "first": "No click ME!",
+            "second": "I do the exact same thing only better!",
+            "react4xpId": "another-target-container"
+        });</script>
+
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+            "greetee": "first repeated ID",
+            "react4xpId": "this-is-not-unique"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+            "greetee": "second repeated ID",
+            "react4xpId": "this-is-not-unique"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+            "greetee": "third repeated ID",
+            "react4xpId": "this-is-not-unique"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+            "greetee": "fourth repeated ID",
+            "react4xpId": "this-is-not-unique"
+        });</script>
+
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_90354192", {
+            "greetee": "first unique ID",
+            "react4xpId": "this-id-is-unique_90354192"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_43124046", {
+            "greetee": "second unique ID",
+            "react4xpId": "this-id-is-unique_43124046"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_87401825", {
+            "greetee": "third unique ID",
+            "react4xpId": "this-id-is-unique_87401825"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_63865684", {
+            "greetee": "fourth unique ID",
+            "react4xpId": "this-id-is-unique_63865684"
+        });</script>
+    </body>
+</html>
+----
+
 
 
 {nbsp} +
