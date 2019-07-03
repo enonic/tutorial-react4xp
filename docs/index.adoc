@@ -1133,6 +1133,49 @@ comp.uniqueId(); <!--4-->
 
 All of the above *return* the object itself, enabling the builder pattern.
 
+
+{nbsp} +
+
+.Data object body HTML rendering:
+[source,javascript,options="nowrap"]
+----
+const htmlContent = comp.renderComponentString(overrideProps); <!--1-->
+
+const newBody = comp.renderTargetContainer(existingBody, htmlContent); <!--2-->
+
+const newBody = comp.renderSSRIntoContainer(existingBody); <!--3-->
+
+// Using renderSSRIntoContainer is equivalent to:
+// const newBody = comp.renderTargetContainer(existingBody, comp.renderComponentString());
+
+----
+
+<1> `comp.renderComponentString(overrideProps)`: (server-side) renders and returns a *simple HTML string representation of the data object*, without a container or any further `body` interaction, based on the `props` currently set in the data object, or `overrideProps` _(object, optional)_ if they are set.
+
+<2> `renderTargetContainer`: *Primary client-side body renderer*. Parameters:
+
+  * `existingBody` _(string, optional)_ String containing HTML, and only that. If empty, a target container (with an `id` matching the ID of the data object `comp`) will be returned. If there is an HTML string but a matching-ID container is not found, a target container is added _at the end of the root element of the HTML_, i.e. just before the final closing tag. If there's a string _with_ a matching ID, nothing is changed.
+  * `htmlContent` _(string, optional)_ HTML string. If empty or missing: no effect. If included, this will be injected inside the matching-ID container (that's guaranteed by the logic in the previous parameter), replacing any content that was already there. Note that in client-side rendering, `htmlContent` is usually left empty, leaving it to the client to inject some rendered content into the container.
+
+  * *Returns* a valid HTML string, ready to be returned from a controller as the `body` field in the response - or be sent as the `existingBody` into a rendering method of a different React4xp object (see the chaining example).
+
+<3> `renderSSRIntoContainer`: *Primary server-side body renderer*. First renders an HTML representation of the data object `comp` based on its current `props`, then injects that HTML into a (new or existing) matching-id target container in `existingBody`.  Parameters:
+  * `existingBody` _(string, optional)_ Same as `existingBody` for `.renderTargetContainer`: string containing HTML, and only that. If empty, a target container (with an `id` matching the ID of the data object `comp`) will be returned. If there is an HTML string but a matching-ID container is not found, a target container is added _at the end of the root element of the HTML_, i.e. just before the final closing tag. If there's a string _with_ a matching ID, nothing is changed.
+
+{nbsp} +
+
+.Data object pageContributions rendering:
+[source,javascript,options="nowrap"]
+----
+const newPageContributions = comp.renderClientPageContributions(existingPageContributions); <!--1-->
+
+const newPageContributions = comp.renderHydrationPageContributions(existingPageContributions); <!--2-->
+----
+
+<1> `renderClientPageContributions(existingPageContributions)`: *Primary client-side pageContributions renderer*. Returns a new page contributions object, with `existingPageContributions` _(object, optional)_ added to it, and the needed pageContributions to get the client to fetch the dependencies of `comp` and render it into the matching-ID container (provided by one of the body HTML rendering methods above). This includes the entry of `comp`, all the chunks of its imported dependencies, the client-side wrapper and the _externals_, meaning client-side runnable React and ReactDOM code, the same used for the client-side rendering. Trims the pageContributions before returning them, preventing excessive loading on the client side.
+
+<2> `renderHydrationPageContributions(existingPageContributions)`: *Primary server-side pageContributions renderer*. Identical to `.renderClientPageContributions` above, but expects that the matching-ID container already has the HTML of `comp` injected into it from the server - and then has the client trigger a https://reactjs.org/docs/react-dom.html#hydrate[react hydration] of it: activating the previously-passive HTML representation and turning it into a fully active react component.
+
 {nbsp} +
 
 === Imports and chunks
