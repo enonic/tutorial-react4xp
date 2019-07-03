@@ -26,7 +26,7 @@ buildFromParams
  *
  *  Returns a response object that can be directly returned from an XP controller.
  *  @param params {object} See .render for parameter details.
- *  @returns {object} Object with body and pageContributions.js. Body will contain a target container element for the react component. PageContributions will contain scripts referred by URL for running the component client-side and the component's dependencies, as well as an inline trigger script for starting the react frontend rendering into the target container. Duplicates in pageContributions.js will be removed, to avoid running identical scripts twice.
+ *  @returns {object} Response object that can be directly returned from an XP controller, with `body` and `pageContributions` fields: `body` will contain a target container element for the react component. `pageContributions` will contain scripts referred by URL for running the component client-side and the component's dependencies, as well as an inline trigger script for starting the react frontend rendering into the target container. Duplicates in `pageContributions` will be removed, to avoid running identical scripts twice.
  */
 static renderSafe = (request, params) => {
 buildFromParams

@@ -970,7 +970,7 @@ The last demonstration is the services `/react4xp/`, `/react4xp-client/`, `/reac
 
 In the example below, we'll use XP's https://developer.enonic.com/guides/my-first-webapp[webapp] functionality with a thymeleaf template, enabling us to use `portal.serviceUrl` to get the fully prefixed URL to the services. But as long as long as you know the prefix service URL to an XP server running React4xp, you could hard code the urls if you wanted and use this feature from a completely standalone HTML.
 
-`React4xp.CLIENT.renderWithDependencies` abstracts and simplifies all the necessary steps in rendering multiple entries into multiple target containers. It needs:
+`React4xp.CLIENT.renderWithDependencies` abstracts and simplifies all the necessary steps in rendering multiple entries into multiple target containers, including tracing and fetching entries and dependency chunks once. It needs:
 
 - React, ReactDOM and the React4xp client wrapper must be fetched (line 5-15 below),
 - The prefix service URL must be set, as a global `SERVICE_URL_ROOT` variable (line 34).
@@ -1038,18 +1038,55 @@ In the example below, we'll use XP's https://developer.enonic.com/guides/my-firs
 </html>
 ----
 
-
-
+{nbsp} +
+{nbsp} +
 
 == API and details
 
-Link to lib-react4xp
+More details can be found at https://github.com/enonic/lib-react4xp#readme[the main library docs] and the source code in that repo.
 
-{nbsp} +
-{nbsp} +
 {nbsp} +
 
 === API
+
+==== React4xp
+
+.Import:
+[source,javascript,options="nowrap"]
+----
+// Equivalent: import React4xp from '/lib/enonic/react4xp';
+const React4xp = require('/lib/enonic/react4xp');
+----
+
+{nbsp} +
+
+.Shorthand rendering:
+[source,javascript,options="nowrap"]
+----
+React4xp.render(request, params); <!--1-->
+
+React4xp.renderSafe(request, params);  <!--2-->
+----
+
+<1> `React4xp.render`: *All-in-one best-practice renderer.* Renders server-side if it can, adds hydration logic for the client-side. Renders dynamic/client-side react in XP preview and live mode, and static/server-side in edit mode (XP content studio). On problems, falls back to `renderSafe`.
+
+<2> `React4xp.renderSafe`: *Client-side and fallback renderer.* More thorough fallback and failure reporting, and avoids server-side rendering - except in edit mode, where client-side rendering is the bigger hazard.
+
+*Both have the same signatures and returns:*
+
+  * `request` _(object, mandatory)_ XP request object.
+  * `params` _(object, mandatory)_ MUST include `jsxPath` or `component`. And if not `component`, either an `id` OR a non-falsy `uniqueId` parameter is needed. Target component file must exist. If `component` AND one of `jsxPath` or `id` are included, those data from `component` are overridden. *Subfields* in `params`:
+  ** `component` _(object)_ XP component object (used to extrapolate component part and target container ID). This is sufficient if the JSX entry file is in the same folder and has the same name, and the react component doesn't need to be rendered into a particular pre-existing HTML container element.
+  ** `jsxPath` _(string)_ path to react component entry, see available paths in `build/resources/main/assets/react4xp/entries.json` after building the parent project with react4xp-build-components. These are *names*, not relative paths. So jsxPath can't contain '..', '//', '/./' or start with '.' or '/'.
+  ** `id` _(string, optional)_ sets the target container element id (overrides the extrapolated id if component was set). If this matches an ID in an input body, the react component will be rendered there. If not, a container with this ID will be added.
+  ** `uniqueId` _(boolean|string, optional)_ If set, ensures that the ID is unique. If id is set (previous param), a random integer will be postfixed to it. If uniqueId is a string, this is the prefix before the random postfix. If the id param is used in addition to a uniqueId string, uniqueId takes presedence and overrides id.
+  ** `props` _(object, optional)_ react props sent in to the component
+  ** `body` _(string, optional)_ Existing HTML body, for example rendered from thymeleaf. If it already has a matching-ID target container, body passes through unchanged (use this option and the setId method to control where in the body the react component should be inserted). If it doesn't have a matching container, a matching <div> will be inserted at the end of the body, inside the root element. If body is missing, a pure-target-container body is generated and returned.
+  ** `pageContributions` _(object, optional)_ Pre-existing pageContributions. New page contributions for rendering this component will be added to any pre-existing ones.
+
+They *return* a response object that can be directly returned from an XP controller, with the fields `body` and `pageContributions`: `body` will contain a target container element for the react component. `pageContributions` will contain scripts referred by URL for running the component client-side and the component's dependencies, as well as an inline trigger script for starting the react frontend rendering into the target container. Duplicates in `pageContributions` will be removed, to avoid running identical scripts twice.
+
+{nbsp} +
 
 === Imports and chunks
 When building your react components, *you can import JS/ES6 code as usual*: nested react components, your own secondary code, other frameworks, libraries, whatever... Imported code can be compiled into separate asset chunks from the entries that use them, for https://webpack.js.org/guides/code-splitting/[code splitting].
@@ -1065,9 +1102,11 @@ https://github.com/enonic/lib-react4xp/blob/master/README.md#entries-and-depende
 
 TIP: Chunks are more optimized than entries. Ideally, keep the served entries slim and leave the heavy lifting to chunks.
 
-=== Gotchas
+{nbsp} +
 
 ==== Rendering in different modes
+
+{nbsp} +
 
 === Adjusting the setup
 
