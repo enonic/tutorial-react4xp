@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+
+    <body>
+
+        <main data-portal-region="main" class="xp-region">
+            <div data-portal-component-type="part" class="chaining-example">
+
+                <h1>04 - Chaining Example</h1>
+                <p>These two target containers existed in the HTML:</p>
+
+                <div id="a-target-container">
+                    <div class="builderclicker-entry" data-reactroot="">
+                        <div class="builderclicker">
+                            <h3>
+                                <span style="cursor:pointer" class="first">Click</span>
+                                <span style="cursor:pointer" class="second">ME!</span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="another-target-container">
+                    <div class="builderclicker-entry" data-reactroot="">
+                        <div class="builderclicker">
+                            <h3>
+                                <span style="cursor:pointer" class="first">No click ME!</span>
+                                <span style="cursor:pointer" class="second">I do the exact same thing only better!</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="display:block; margin:20px; width:100%; height:1px; border:1px dotted #aaa;"></hr>
+
+                <p>The rest of the containers didn't exist before rendering, and so, are inserted at the end:</p>
+                <div id="this-is-not-unique"></div>
+                <div id="this-id-is-unique_90354192"></div>
+                <div id="this-id-is-unique_43124046"></div>
+                <div id="this-id-is-unique_87401825"></div>
+                <div id="this-id-is-unique_63865684"></div>
+            </div>
+        </main>
+
+        <script src="(...) /react4xp/externals.88e80cab5.js"></script>
+        <script src="(...) /react4xp-client/"></script>
+        <script src="(...) /react4xp/myChunk.059c6f899.js"></script>
+        <script src="(...) /react4xp/mySubfolder/BuilderClickerEntry.js"></script>
+
+        <script defer>React4xp.CLIENT.hydrate(React4xp['mySubfolder/BuilderClickerEntry'], "a-target-container", {
+            "first": "Click",
+            "second": "ME!",
+            "react4xpId": "a-target-container"
+        });</script>
+        <script src="(...) /react4xp/site/parts/04-chaining-example/04-chaining-example.js"></script>
+        <script defer>React4xp.CLIENT.hydrate(React4xp['site/parts/04-chaining-example/04-chaining-example'], "another-target-container", {
+            "first": "No click ME!",
+            "second": "I do the exact same thing only better!",
+            "react4xpId": "another-target-container"
+        });</script>
+        <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script>
+
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+            "greetee": "first repeated ID",
+            "react4xpId": "this-is-not-unique"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+            "greetee": "second repeated ID",
+            "react4xpId": "this-is-not-unique"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+            "greetee": "third repeated ID",
+            "react4xpId": "this-is-not-unique"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
+            "greetee": "fourth repeated ID",
+            "react4xpId": "this-is-not-unique"
+        });</script>
+
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_90354192", {
+            "greetee": "first unique ID",
+            "react4xpId": "this-id-is-unique_90354192"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_43124046", {
+            "greetee": "second unique ID",
+            "react4xpId": "this-id-is-unique_43124046"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_87401825", {
+            "greetee": "third unique ID",
+            "react4xpId": "this-id-is-unique_87401825"
+        });</script>
+        <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_63865684", {
+            "greetee": "fourth unique ID",
+            "react4xpId": "this-id-is-unique_63865684"
+        });</script>
+
+    </body>
+</html>

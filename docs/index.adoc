@@ -175,7 +175,7 @@ This allows you for example to bypass Content Studio if you want, using XP's web
 
 These examples require a little basic experience with Enonic XP 7 (check out the excellent introductions at the https://developer.enonic.com/[Developer Portal]), and a https://developer.enonic.com/guides/my-first-site#page_component[main page component] with a https://developer.enonic.com/guides/my-first-site#regions[region].
 
-The examples build incrementally on each other.
+The examples build incrementally on each other: the later, advanced examples are clearer if you've seen the previous ones.
 
 TIP: They can be downloaded along with everything needed to run, by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp]
 
@@ -211,7 +211,7 @@ Nothing in particular is needed in *the part definition*...
 ...and *the react component* itself - the entry - is just _any standard JSX file, as long as it default-exports a function that returns a react element_. The function may optionally take a `props` object parameter - here we'll receive a `greetee` prop and gloriously greet it:
 
 .01-minimal-example.jsx:
-[source,jsx,linenums,options="nowrap"]
+[source,javascript,linenums,options="nowrap"]
 ----
 import React from 'react';
 
@@ -386,8 +386,7 @@ exports.get = function(request) {
 
 Notes:
 
-<1> In live view, `.render` also *hydrates* the rendered HTML - adds post-filling
-       // it with the active react and js functionality on the client:
+<1> In live view, `.render` also *hydrates* the rendered HTML - post-filling it with the active react and JS functionality on the client
 
 <2> This *jsxPath structure* is common for all JSX entries below the `site/` folder: `site/<parts-or-pages>/<part-or-page-folder-name>/<filename>`.
 
@@ -623,22 +622,23 @@ We also see in the console that the little `console.log` script from the control
 
 === 4: A part with multiple react components, chaining, nesting, hydration
 
-A final example, where we'll look at using multiple react components in a single part - including reusing multiple instances of _the same_ react component and making them unique within the part:
+A more complex example, where we'll look at using *multiple react components in a single part* - including reusing multiple instances of _the same_ react component and making them unique within the part:
 
+- rendering a stateful component, more powerful than before,
+- ...which is serverside-rendered as a passive string and then activated in the client with `.hydrate`,
 - chaining (passing the body and pageContributions through multiple react4xp data objects),
 - nesting shared, non-entry react components in an entry,
 - how `import`-ing non-entry code results in a predictable chunk structure,
-- `.hydrate` lets the client activate a pre-rendered component.
 
 .Files involved:
 [source,files]
 ----
 react4xp/
   myChunk/
-    Builder.jsx <!--1-->
+    BuilderClicker.jsx <!--1-->
   _entries/
     mySubfolder/
-      BuilderContainer.jsx <!--2-->
+      BuilderClickerEntry.jsx <!--2-->
 site/parts:
   /04-chaining-example/
     04-chaining-example.jsx <!--3-->
@@ -647,7 +647,204 @@ site/parts:
     04-chaining-example.es6 <!--6-->
 ----
 
-<1> InnerGreeter is
+{nbsp} +
+*1.* `BuilderClicker` is a shared react component that will be imported by `BuilderClickerEntry` and put inside the chunk `myChunk.<hash>.js` - because it's below the `myChunk` subfolder instead of `_entries`. *As a non-entry, it will not get a jsxPath*, so it will be better optimized but must be imported by an entry to be used in React4xp. It's also a *stateful and active* react component: the props are stored and output after one another in a `<h3>` element, and can be changed: each of them are repeated/doubled when clicked in the client (so repeated clicks will build a lot of text, hence the name):
+
+.BuilderClicker.jsx:
+[source,javascript,linenums,options="nowrap"]
+----
+import React from 'react';
+
+class BuilderClicker extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            first: props.first,
+            second: props.second,
+        }
+    };
+
+    // Doubles the 'first' or 'second' string in state, depending on the key.
+    makeMore = (key) => {
+        this.setState({[key]: this.state[key] + " " + this.state[key]});
+    };
+
+    render() {
+        return <div className="builderclicker">
+            <h3>
+                <span onClick={() => this.makeMore('first')}
+                      style={{cursor: "pointer"}}
+                      className="first">{this.state.first}
+                </span> <span onClick={() => this.makeMore('second')}
+                      style={{cursor: "pointer"}}
+                      className="second">{this.state.second}</span>
+            </h3>
+        </div>;
+    }
+};
+
+export default (props) => <BuilderClicker {...props} />;
+----
+
+{nbsp} +
+*2.* `BuilderClickerEntry` is a simple entry component (since it's below `_entries`), just a container for the shared `BuilderClicker`. We will use it directly in our part, with the jsxPath `mySubfolder/BuilderClickerEntry`. But it will also be imported by a different entry, the part's own JSX. This makes no structural difference: entries can be imported by other entries, and are still entries:
+
+.BuilderClickerEntry.jsx:
+[source,javascript,linenums,options="nowrap"]
+----
+import React from 'react';
+
+import BuilderClicker from '../../myChunk/BuilderClicker';
+
+export default (props) => <div className="builderclicker-entry">
+		<BuilderClicker {...props} />
+	</div>;
+----
+
+{nbsp} +
+*3.* `04-chaining-example.jsx` is the part's internal react entry. It serves no other purpose than to demonstrate that an entry can import and nest another entry in the standard JS/react way, should you ever need to:
+
+.04-chaining-example.jsx:
+[source,javascript,linenums,options="nowrap"]
+----
+import React from 'react';
+
+import BuilderClickerEntry from '../../../react4xp/_entries/mySubfolder/BuilderClickerEntry';
+
+export default (props) => <BuilderClickerEntry {...props} />;
+----
+
+
+{nbsp} +
+*4.* `04-chaining-example.xml`, the *part definition*, doesn't do anything this time:
+
+.04-chaining-example.xml:
+[source,xml,linenums,options="nowrap"]
+----
+<part>
+	<display-name>04 - Chaining Example</display-name>
+    <description>Multiple react components, chaining, nesting, hydration</description>
+	<form />
+</part>
+----
+
+{nbsp} +
+*5.* `04-chaining-example.html`, the *part view*, is just some description, two target containers (with `id` that will be referred in the controller) and a horizontal line:
+
+.04-chaining-example.html:
+[source,html,linenums,options="nowrap"]
+----
+<div class="chaining-example">
+    <h1>04 - Chaining Example</h1>
+    <p>These two target containers existed in the HTML:</p>
+    <div data-th-id="a-target-container"></div>
+    <div data-th-id="another-target-container"></div>
+
+    <hr style="display:block; margin:20px; width:100%; height:1px; border:1px dotted #aaa;"/>
+    <p>The rest of the containers don't exist before rendering, but are inserted at the end:</p>
+</div>
+----
+
+{nbsp} +
+*6.* `04-chaining-example.es6`, the *part controller*:
+
+.04-chaining-example.es6:
+[source,javascript,linenums,options="nowrap"]
+----
+const portal = require('/lib/xp/portal');
+const thymeleaf = require('/lib/thymeleaf');
+const React4xp = require('/lib/enonic/react4xp');
+
+const view = resolve("04-chaining-example.html");
+
+exports.get = function(request) {
+
+    // Renders BuilderClickerEntry, which nests BuilderClicker,
+    // into the "a-target-container" element:
+    const firstComp = new React4xp('mySubfolder/BuilderClickerEntry')
+        .setId("a-target-container")
+        .setProps({
+            first: "Click",
+            second: "ME!"
+        });
+
+    // Uses the component to point to and render the part-local
+    // 04-chaining-example.jsx, which nests BuilderClickerEntry
+    // and BuilderClicker with it, into the "another-target-container" element:
+    const secondComp = new React4xp(portal.getComponent())
+        .setId("another-target-container")
+        .setProps({
+            first: "No click ME!",
+            second: "I do the exact same thing only better!"
+        });
+
+    // Creates a body starting point from the local HTML view:
+    let body = thymeleaf.render(view, {});
+
+    // Chaining: passes the body through the two components' server-side
+    // rendering methods, which add passive HTML inside the two target
+    // containers in it:
+    body = firstComp.renderSSRIntoContainer(body);
+    body = secondComp.renderSSRIntoContainer(body);
+
+    // Chaining: creates the necessary page contributions for hydration
+    // for the first component, and passes them through the second one. The
+    // second turn only appends what's necessary, so that shared components
+    // and dependency chunks etc aren't loaded twice:
+    let pageContributions = firstComp.renderHydrationPageContributions();
+    pageContributions = secondComp.renderHydrationPageContributions(pageContributions);
+
+
+    // ------------------------------
+    // A horizontal separator comes here in the view: a new section,
+    // demonstrating a way to repeat the same entry multiple times in a part.
+    // All the target containers here are generated and added to the body,
+    // since the components' IDs don't match anything in the body.
+    // ------------------------------
+
+
+    // Creates 4 components with different props: "first repeated ID",
+    // "second repeated ID", etc. Note that ALL of them are given the same ID.
+    // That means they are all rendered into the same target container,
+    // so only the last one will be visibly rendered:
+    ['first', 'second', 'third', 'fourth'].forEach(cardinalNum => {
+        const notUniqueComp = new React4xp('site/parts/01-minimal-example/01-minimal-example')
+            .setId('this-is-not-unique')
+            .setProps({ greetee: `${cardinalNum} repeated ID`});
+
+        body = notUniqueComp.renderTargetContainer(body);
+        pageContributions = notUniqueComp.renderClientPageContributions(pageContributions);
+    });
+
+    // Same as above, but with a crucial difference: adding `.uniqueId()` to the ID
+    // makes React4xp add a random-number postfix to the ID. This causes each component
+    // to have a different ID, so 4 container elements are added to body instead of one
+    // - and all four become visible.
+    ['first', 'second', 'third', 'fourth'].forEach(cardinalNum => {
+        const uniqueComp = new React4xp('site/parts/01-minimal-example/01-minimal-example')
+            .setId('this-id-is-unique').uniqueId()
+            .setProps({ greetee: `${cardinalNum} unique ID`});
+
+        body = uniqueComp.renderTargetContainer(body);
+        pageContributions = uniqueComp.renderClientPageContributions(pageContributions);
+    });
+
+    // Returning the body/pageContribution response from the part.
+    return {
+        body,
+        pageContributions,
+    };
+};
+----
+
+NOTE: In this example (line 57-78), we're making a new React4xp object for each rendering. An object can in principle be re-rendered with different props, *but rendering a body or pageContribution will lock the ID* of the object. I.e., a re-rendering of the same React4xp object will always target the same container element!
+
+{nbsp} +
+
+*Let's take a look at the rendered output*:
+
+[.thumb]
+image::complex.png["Ccomplex chaining example output" width=1037px]
 
 
 {nbsp} +
