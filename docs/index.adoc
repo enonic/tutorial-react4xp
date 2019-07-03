@@ -848,7 +848,7 @@ image::chaining.png["You clicked? I am but a humble screenshot." width=1036px]
 
 Comparing this screenshot (or better, run the example and check out the actual output) with the page source below, there are a few things worth noting:
 
-- in the actual output, the _"click me"_ components are active and clickable: clicking the first or second half of each of them doubles the clicked text, as defined in the `BuilderClicker`. This activation happened in the `.hydrate` steps (lines 58 and 64).
+- in the actual output, the _"click me"_ components are active and clickable: clicking the first or second half of each of them doubles the clicked text, as defined in the `BuilderClicker`. This activation happened in the `.hydrate` steps (lines 58 and 64 below).
 - the clicks are isolated to the component that was actually clicked: even though they are technically the same inner component `BuilderClicker` (by source), they each have their own state so when one is clicked the other one doesn't react. This is not because `BuilderClicker` is nested differently in them, but because their ID's are different,
 - as predicted, since the ID was the same in all 4 renderings (line 60 in `04-chaining-example.es6`), only one container with `id="this-is-not-unique"` was added to the body (line 41 below),
 - and although the four React4xp objects each add a separate `React4xp.CLIENT.render` call (lines 71, 76, 81, 86), they all target the same container, so only the last one is remains in the end,
@@ -1054,8 +1054,9 @@ More details can be found at https://github.com/enonic/lib-react4xp#readme[the m
 .Import:
 [source,javascript,options="nowrap"]
 ----
-// Equivalent: import React4xp from '/lib/enonic/react4xp';
 const React4xp = require('/lib/enonic/react4xp');
+
+// Equivalent: import React4xp from '/lib/enonic/react4xp';
 ----
 
 {nbsp} +
@@ -1085,6 +1086,52 @@ React4xp.renderSafe(request, params);  <!--2-->
   ** `pageContributions` _(object, optional)_ Pre-existing pageContributions. New page contributions for rendering this component will be added to any pre-existing ones.
 
 They *return* a response object that can be directly returned from an XP controller, with the fields `body` and `pageContributions`: `body` will contain a target container element for the react component. `pageContributions` will contain scripts referred by URL for running the component client-side and the component's dependencies, as well as an inline trigger script for starting the react frontend rendering into the target container. Duplicates in `pageContributions` will be removed, to avoid running identical scripts twice.
+
+
+{nbsp} +
+
+.Data object construction:
+[source,javascript,options="nowrap"]
+----
+const comp = new React4xp(component|jsxPath);
+----
+
+The constructor has a mandatory parameter, ONE of the following two. This follows the same logic as the `component` and `jsxPath` subfields in `params` in the shorthand rendering methods above:
+
+  * EITHER `component` _(object)_ Current-XP-component data; the output of `portal.getComponent()`. This will point to a local (same-name, same-folder as the component) react file. Derives and sets the component's `jsxPath` AND its `id` (`react4xpId`) so they don't need to be set.
+  * OR `jsxPath` _(string)_ Pointer to any component. Sets the component's `jsxPath` but not the `id`.
+
+*Returns* the constructed data-holding object (`comp`) where these fields are readable:
+
+  * `.jsxPath` _(string)_ The jsxPath of the target react entry. The entry must exist.
+  * `.props` _(object)_ Component props, if set (see below),
+  * `.react4xpId` _(string)_ Component and target-container ID, if set (see below). If not set, the rendering methods will thow an error.
+
+{nbsp} +
+
+.Attribute setters in the data object:
+[source,javascript,options="nowrap"]
+----
+comp.setProps(props); <!--1-->
+comp.setJsxPath(jsxPath); <!--2-->
+comp.setId(id); <!--3-->
+comp.uniqueId(); <!--4-->
+
+// Sequence doesn't matter (except for setId, which can overwrite a previous uniqueId).
+// And a builder pattern is supported, so this would be equivalent:
+//
+//   comp.setProps(props)
+//       .setJsxPath(jsxPath)
+//       .setId(id)
+//       .uniqueId();
+----
+
+<1> `setProps(props)`: `props` _(object)_ is any object serializable by `JSON.stringify`. Overwrites previous props. Props will be fed to the entry component. Even if not set explicitly, the props received by the entry component will always contain the ID, as the field `react4xpId`.
+<2> `setJsxPath(jsxPath)`: `jsxPath` _(string)_ points to an entry component that must exist, jsxPath must be valid. Overwrites previous value.
+<3> `setId(id)`: `id` _(string)_ Identifies the react4xp component (`comp`) and points to a target container in the DOM to receive the react rendering. Preferrably a unique element `id` in the DOM. Corresponds to `comp.react4xpId` and `props.react4xpId`.
+<4> `uniqueId()`: enforces a unique element and component ID, by appending a random-number postfix. If an ID hasn't been set, it will become the random-number postfix.
+
+All of the above *return* the object itself, enabling the builder pattern.
 
 {nbsp} +
 

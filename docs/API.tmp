@@ -1,36 +1,3 @@
-/** All-in-one best-practice renderer. Renders server-side if it can, adds hydration logic for the client-side. Renders
-  * dynamic/client-side react in XP preview and live mode, and static/server-side in edit mode (XP content studio).
-  * On problems, falls back to renderSafe.
-  *
-  * @param request {object} XP request object.
-  * @param params {object} MUST include jsxPath or component. And if not component, either an id OR a non-falsy uniqueId parameter is needed. If component is included, the jsxPath is automatically inserted to point to a JSX file in the XP component folder, with the same name. This file must exist. If component AND jsxPath are included, jsxPath will override the component name.
-  *      - component {object} XP component object (used to extrapolate component part and target container ID). This is sufficient if the JSX entry file is in the same folder and has the same name, and the react component doesn't need to be rendered into a particular pre-existing HTML container element.
-  *      - jsxPath {string} path to react component entry, see available paths in build/main/resources/react4xp/entries.json after building the parent project with react4xp-build-components. These are NAMES, not relative paths. So jsxPath can't contain '..', '//', '/./' or start with '.' or '/'.
-  *      - id {string} sets the target container element id (overrides the extrapolated id if component was set). If this matches an ID in an input body, the react component will be rendered there. If not, a container with this ID will be added.
-  *      - uniqueId {boolean|string} If set, ensures that the ID is unique. If id is set (previous param), a random integer will be postfixed to it. If uniqueId is a string, this is the prefix before the random postfix. If the id param is used in addition to a uniqueId string, uniqueId takes presedence and overrides id.
-  *      - props {object, optional} react props sent in to the component
-  *      - body {string, optional} Existing HTML body, for example rendered from thymeleaf. If it already has a matching-ID target container, body passes through unchanged (use this option and the setId method to control where in the body the react component should be inserted). If it doesn't have a matching container, a matching <div> will be inserted at the end of the body, inside the root element. If body is missing, a pure-target-container body is generated and returned.
-  *      - pageContributions.js {object, optional} Pre-existing pageContributions. New page contributions for rendering this component will be added to any pre-existing ones.
-  *
-  * @returns a response object that can be directly returned from an XP controller.
-  */
-static render = (request, params) => {
-buildFromParams
-
-
-
-
-
-/** Safety renderer. More thorough fallback and failure reporting, and avoids server-side rendering - except in edit
- *  mode, where client-side rendering is the bigger hazard.
- *
- *  Returns a response object that can be directly returned from an XP controller.
- *  @param params {object} See .render for parameter details.
- *  @returns {object} Response object that can be directly returned from an XP controller, with `body` and `pageContributions` fields: `body` will contain a target container element for the react component. `pageContributions` will contain scripts referred by URL for running the component client-side and the component's dependencies, as well as an inline trigger script for starting the react frontend rendering into the target container. Duplicates in `pageContributions` will be removed, to avoid running identical scripts twice.
- */
-static renderSafe = (request, params) => {
-buildFromParams
-
 
 
 
