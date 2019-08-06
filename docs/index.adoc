@@ -120,44 +120,40 @@ src/
 
 == Usage patterns
 
-Simply put, there are *4 prototypical usage patterns*. You're not bound to use them exactly like this, and the *link:#_examples[examples]* below will show some more variation than this. But for clarity here's an overview of them:
+For flexibility, there are several ways to use React4xp. They can be boiled down to *4 basic patterns*. You're not bound to use them exactly like this of course, and the *link:#_examples[examples]* below will show some more variation than this. But for clarity here's an overview:
 
 {nbsp} +
 
 === A: Shorthand function with same-name component
 *The easiest way* is to put one react entry sourcefile into the same folder as a part/page where it should be displayed, and let it have the same file name as the part/page (but `.JSX` extension only!).
 
-Let the React4xp shorthand functions `.renderSafe` (for client-side rendering) or `.render` (for server-side rendering and client-side hydration) use XP's `request` and `portal.getComponent()`. Add some props the same way you would add a model when rendering Thymeleaf, and/or tweak the rendering functions with extra parameters if you want.
-
-The output from these render functions is *a full response object with everything the client needs to display it* - HTML and page contributions. Just return it directly from the controller.
+React4xp has two _shorthand functions_ (shortcut syntaxes doing the most common stuff all at once): `.renderSafe` for purely client-side rendering, and `.render` for server-side rendering and client-side hydration. These are built to be easy to use and syntactically similar to how you would normally use Thymeleaf etc in XP. Parameters are tweakable, and they both return *a full response object with everything the client needs to display it* - HTML and page contributions. Just return it directly from the controller.
 
 {nbsp} +
 
 === B: JsxPath references
-If you want to *reuse an entry component in multiple parts or pages* (or just, not be bound by the parent part/page folder), put a source file where you want...
+If you want a part/page to use an entry component from a different folder, or reuse an entry across multiple parts or pages, then *each entry has a jsxPath used to refer to it from any page/part*:
 
-  - either a `.JS`/`.JSX`/`.ES6` under `react4xp/_entries`,
+  - Either put a `.JS`/`.JSX`/`.ES6` file under `react4xp/_entries`,
   - or a `.JSX` file in any page/part folder under `site/`,
 
-...and use `.render` or `.renderSafe`, but instead of the object from `getComponent`, use the *https://github.com/enonic/lib-react4xp/blob/master/README.md#jsxpath-how-to-refer-to-a-react4xp-component[jsxPath] string*: a name for each entry component, built from the relative path of the JSX file below `react4xp/_entries` or `site/` - without the file extension.
+The jsxPath will be the file name relative to these - after compilation you can see all the built jsxPaths in `build/resources/main/assets/react4xp/entries.json`. Then, `.render` and `.renderSafe` (and the React4xp object constructor, see below) can receive a jsxPath string instead of the `getComponent`.
 
-NOTE: JsxPaths are not OS paths that can be used relatively. They are *name strings, and must be used in full*.
-
-TIP: You can see all the built jsxPaths in `build/resources/main/assets/react4xp/entries.json`.
+NOTE: JsxPaths are not OS paths that can be used relatively. They are generated *name strings, and must be used in full*.
 
 {nbsp} +
 
 === C: React4xp data objects
-If you need *more flexibility*, or want to *use more than one entry component in a single part or page* - or even *use the same react component more than once in a part/page*:
+If you need *more flexibility*, for example want to use _more than one_ entry component in a single part or page, or even use _the same entry component more than once_ in the same part/page:
 
-Instead of using the shorthands `.render` or `.renderSafe`, create a temporary data-holding `new React4xp(...)` object in the page/part controller. Use a component or jsxPath argument to point to the react component. When you're done manipulating data, the React4xp object has built-in and specific methods for rendering a body and the necessary page contributions, for client-side or server-side react rendering.
+Instead of using the shorthands `.render` or `.renderSafe`, create a temporary data-holding `new React4xp(...)` object in the page/part controller, with a component or jsxPath argument to point to the react component. When you're done manipulating data, the React4xp object has built-in and specific methods for rendering a body and the necessary page contributions, for both client-side or server-side react rendering.
 
-These rendering methods can be *chained*, so that the output HTML or page contribution from one object is the input for the next one. This way, one response object can be built from several react components.
+These rendering methods can be _chained_, so that the output HTML or page contribution from one object is the input for the next one. This way, one response object can be built from several react components.
 
 {nbsp} +
 
 === D: Client-side exposed services
-Finally, React4xp can be *used outside of the page/part flow*, even without making XP controllers if needed. A few services are exposed in runtime, where a client can request runnable compiled code:
+Finally, React4xp can be *used outside of the page/part flow*, even without XP controllers if needed. A few services are exposed in runtime, where a client can request runnable compiled code:
 
   - entries, by jsxPath reference,
   - chunks (and lists of chunks), referred by the jsxPath(s) used on a page,
@@ -281,8 +277,8 @@ The important lines here are all added by `.renderSafe` in the part:
 <1> The generated target container element (`body`), with an ID. It's empty for now, it won't be filled with "Hello World" before the rendering is triggered.
 <2> Downloading React and ReactDOM in an `externals` chunk (the exact path varies with local setups, so it's truncated to `(...)`). When this is run, `React` and `ReactDOM` are globally available in the client.
 <3> Downloading the react4xp client wrapper, which enables the rendering command in point #5, among other things. Creates a global client-side object, `React4xp`, which will contain all things React4xp in runtime. The client wrapper is `React4xp.CLIENT`.
-<4> Downloading the react component itself - the autocompiled version of `01-minimal-example.jsx`. The runtime-renderable component is put into `React4xp.<jsxPath>`, in this case: `React4xp['site/parts/01-minimal-example/01-minimal-example']`.
-<5> A client rendering command `React4xp.CLIENT.render` is generated and triggered, with some arguments: A pointer to the react component, the ID of the element to render the component into, and the props. Note that we only added the `greetee` prop. The other one, `React4xpId`, is the unique ID of the component, same as the element target. It's always added as a react prop for the component. Occasionally handy!
+<4> Downloading the react component itself - the compiled version of `01-minimal-example.jsx`. The runtime-renderable component is put into `React4xp.<jsxPath>`, in this case: `React4xp['site/parts/01-minimal-example/01-minimal-example']`.
+<5> A client rendering command `React4xp.CLIENT.render` is called with some arguments: A pointer to the react component, the ID of the element to render the component into, and the props. Note that we only added the `greetee` prop. The other one, `React4xpId`, is the unique ID of the component, same as the element target. It's always added as a react prop for each component, helping to separate multiple instances of the same component (for example allowing them to share a common redux store without meddling with each other's state).
 
 {nbsp} +
 {nbsp} +
