@@ -173,7 +173,7 @@ export default (props) => <p>Hello {props.greetee}!</p>;
 
 [NOTE]
 ====
-_Entries in React4XP are the React components that can be accessed by React4XP_. They are just any standard JSX file, as long as it:
+*_Entries_ in React4XP are the React components that can be accessed by React4XP*. They are just any standard JSX file, as long as it:
 
 - default-exports a function that returns a React element, and
 - is placed under the folder `/react4xp/_entries` or like in this example: in a part or page folder under `site/`.
@@ -217,11 +217,11 @@ An important difference from Thymeleaf's renderer is that `React4XP.render` gene
 {nbsp} +
 {nbsp} +
 
-*That's it. Now let's add this part to a page in Content Studio and render it:*
+*That's it. This part is ready to display in XP!* Let's add it to a page in Content Studio and render it:*
 
 - Run `enonic project deploy` from your shell, start the sandbox and direct your browser to `localhost:8080/admin`.
 - Log in to XP and open Content Studio.
-- Create some content with a Region (e.g. the starter includes a Default Page controller that you can use to diplay e.g. https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page] or even just a site).
+- Create some content (e.g. a site with the Default Page controller included with the starter, or a https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page]). Anything with a Region will do.
 - Insert a new part into the region, and select the `01-minimal-example` part you just made.
 - Enter the preview to view the content outside of Content Studio. You should now see:
 
@@ -269,21 +269,21 @@ Curious about what happened here? *View the page source code in the browser* to 
 
 [NOTE]
 ====
-We only added the `greetee` prop. The other one, `React4xpId`, is the unique ID of the component, same as the container element ID. It's always added as a react prop for each entry, conveniently helping to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
+We only added the `greetee` prop in the controller. The other one, `react4xpId`, is the unique ID of the component, same as the container element ID. It's always added as a prop for each entry, conveniently helping to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
 ====
 {nbsp} +
 {nbsp} +
 
-=== 2: Serverside rendering
+=== 2: Client-side rendering, params, target body, XP props, jsxPath
 
-In this example we'll create a new part, similar to the link:#_1_hello_world[first] one but with these differences:
+In this example we'll create another part, similar to the link:#_1_hello_world[first example], but with these variations:
 
-- Server-side rendering with hydration: `.render` instead of `.renderSafe`. They have the same parameter signature, but we'll also use it slightly differently here with some manual options:
-- A thymeleaf HTML view already exists, and we're rendering the react component into a target container element in it,
-- We're not using a 'local' JSX component inside the part. Instead, we're using the `jsxPath` to point elsewhere; to reuse the react entry from the first example.
-- We're setting the ID manually, instead of letting `.render` generate it.
-- Since we're manually setting both the ID and the jsxPath pointer, we don't need the `component` parameter.
-- However, we'll inject some editorial data into the react commponent, using the props. We'll use `getComponents` to fetch those.
+- Add optional parameters to the rendering,
+  * ...with a `clientRender` flag, turning the entire output into client-side React rendering.
+- We'll render the react entry into a target container element that already exists in an HTML body,
+  * ...which comes from a Thymeleaf template _before_ the entry is rendered into it.
+- We'll use an entry that's not in the part's own folder - we'll actually reuse to the same JSX entry as in the first example,
+  * ...and we'll insert editorial data from Content Studio into the props.
 
 .Files involved:
 [source,files]
@@ -291,117 +291,123 @@ In this example we'll create a new part, similar to the link:#_1_hello_world[fir
 site/parts/
   01-minimal-example/
     01-minimal-example.jsx
-  02-serverside-example/
-    02-serverside-example.xml
-    02-serverside-example.html
-    02-serverside-example.es6
+  02-clientrender-example/
+    02-clientrender-example.xml
+    02-clientrender-example.html
+    02-clientrender-example.es6
 ----
 
-Still an unremarkable *part definition*, but now there's a `greetee` TextLine input field. Here we'll enter something editorial in Content Studio, fetch it in the controller and inject it into the react component.
+Still a pretty unremarkable *part definition*. Only now there's a `greetee` TextLine input field ready for some editorial text from Content Studio.
 
-.02-serverside-example.xml:
+.02-clientrender-example.xml:
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
-  <display-name>02 - Server-Side Example</display-name>
-  <description>Server-side rendered react component</description>
-  <form>
-    <input name="greetee" type="TextLine">
-      <label>What should be our greeting (after 'Hello')?</label>
-      <occurrences minimum="1" maximum="1"/>
-      <default>world</default>
-    </input>
-  </form>
+	<display-name>02 - ClientRender Example</display-name>
+    <description>Client-side rendered react component</description>
+	<form>
+        <input name="greetee" type="TextLine">
+            <label>Who or what should we greet?</label>
+            <occurrences minimum="1" maximum="1"/>
+            <default>world</default>
+        </input>
+    </form>
 </part>
 ----
 
-*The view* demonstrates how a target container can be anywhere in an HTML file, and still receive the react injection - same as in vanilla react - as long as we point to it with the ID: `serverside-example-container`.
+*The thymeleaf template* shows that a target container element can be anywhere in an HTML body - same as in vanilla react - as long as we point to it with a unique element ID. Here: `"second-example-container"`.
 
-NOTE: If `.render` or `.renderSafe` are given a `body` to inject react into, but there's no element in the HTML with an `id` that matches the `React4xpId` of the component, a new, empty container with a matching `id` will be added inside the `body`, at the end. In this case it would be injected between line 5 and 6:
-
-.02-serverside-example.html
+.02-clientrender-example.html
 [source,html,linenums,options="nowrap"]
 ----
 <div class="serverside-example">
     <h2>Server-side rendering example</h2>
     <p>Server-side rendered and hydrated, inserted below:</p>
-    <div id="serverside-example-container"></div>
-    <p>(SSR example is done).</p>
+    <div id="second-example-container"></div>
+    <p>(And we're done)</p>
 </div>
 ----
 
-As usual, the important React4xp stuff happens in *the part controller*:
+TIP: We've hardcoded the ID here and in the controller for clarity. The best practice however, would be to pass it to thymeleaf through the model.
 
-.02-serverside-example.es6:
+Moving on to *the part controller*, where the React4xp stuff happens:
+
+.02-clientrender-example.es6:
 [source,javascript,linenums,options="nowrap"]
 ----
+
 const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
 const thymeleaf = require('/lib/thymeleaf');
 
-// View file
-const view = resolve('02-serverside-example.html');
+const view = resolve('02-clientrender-example.html'); <!--1-->
 
 exports.get = function(request) {
-    // Fetching the component data we entered (or, we're about to)
-    // in the textfield in Content Studio:
     const component = portal.getComponent();
 
-    // The `.render` shorthand method produces a server-side rendering. <!--1-->
-    return React4xp.render(
-        request, // `request` is still used to determine viewing mode.
-        {
-            // Extracting `greetee` from the component data,
-            // and setting the value as the `greetee` prop
-            props: { greetee: component.config.greetee },
+    const preExistingBody = thymeleaf.render(view, {}); <!--1-->
 
-            // Uses jsxPath to use the react entry from the previous
-            // example, `01-minimal-example.jsx`. <!--2-->
-            jsxPath: 'site/parts/01-minimal-example/01-minimal-example',
+    const props = {
+        greetee: component.config.greetee <!--2-->
+    };
 
-            // Manually setting the component's `React4xpId`,
-            // identical to the `id` of the rendering target container.
-            id: 'serverside-example-container',
+    const jsxPath = 'site/parts/01-minimal-example/01-minimal-example'; <!--3-->
 
-            // The `body` parameter is an HTML string.
-            // Here, it’s rendered by Thymeleaf based on the view file. <!--3-->
-            body: thymeleaf.render(view, {})
-        }
-    );
-};
+    const params = {
+        <!--4-->
+        body: preExistingBody,
+        id: 'second-example-container',
+        clientRender: true,
+    };
+
+    return React4xp.render(jsxPath, props, request, params);
 ----
 
-Notes:
+What's happening here?
 
-<1> In live view, `.render` also *hydrates* the rendered HTML - post-filling it with the active react and JS functionality on the client
+<1>  The HTML with the target container element is rendered,
 
-<2> This *jsxPath structure* is common for all JSX entries below the `site/` folder: `site/<parts-or-pages>/<part-or-page-folder-name>/<filename>`.
+<2> We get the `greetee` value from XP and insert in into the props,
 
-<3> *Body and pageContributions parameters:* The `body` and `pageContributions` parameters are *pass-through*! Had this been the `.renderSafe` client-side rendering function, `body` would just have become the `body` in the response output, only with a container element added (possibly. Nothing's added if a matching-`id` element is found in it). But with `.render`, the react component is rendered to HTML by the server using the initial `props`, and inserted into the target container in `body` (which, again, might be a generated target container if the input HTML is missing one). This modified `body` is then returned. On the client, `.render` will `.hydrate` the container, filling in and activating the react component. The `pageContributions` parameter isn't shown here, but works the same way: appending the React4xp output pageContributions to the input ones, if any were given. See the next example.
+<3> Here an important concept is introduced: *A _jsxPath_ is the name of an entry in React4xp*. We used the `component` object to refer to the entry in the first example, which is easy but _only works if the entry is in the same folder and has the same name_. Here we want the entry from a different part's folder: the same entry we used before. These strings are _names_, not paths relative to the controller (so avoid `../` etc). You can read more about entries here, but *the rules of thumb are*:
+  * If an entry file is a JSX file under `src/main/resources/site`, the jsxPath is the file path relative to `src/main/resources/` - unix-style and without file extension.
+  * An entry can also be located under `src/main/resources/react4xp/_entries`, and then the jsxPath will be relative to that folder instead.
+  * If you're ever unsure: all the available jsxPaths are stored in `build/resources/main/assets/react4xp/entries.json`. This file is generated by webpack during build (and shouldn't be deleted or edited).
+
+<4> We're adding some *parameters* as a fourth argument object to `.render`:
+  * `body` is the HTML body we're inserting the React entry into,
+  * `id` is setting the ID, and targeting that container element in `body`,
+  * `clientRender`: if this is truthy, you get old-school client-side React rendering. `.render` doesn't render the entry on the server-side, but leaves the target container unchanged and instead makes some page contributions that makes the browser build the entry into the target container.
+  * It's also possible to add a `pageContributions` field, for adding pre-existing page contributions to the ones that `.render` generates.
+
+[NOTE]
+====
+In the first example, we didn't pass an `id` or a `body` to `.render`, but it still worked. *They are both optional*, React4XP generates what's missing: If no `body` is found, React4xp will generate an empty HTML with a matching element ID. If there's no `id` found either, a random number is used - or data from `component` if you used that in the entry argument. If there's a `body` but it doesn't have any elements with an ID matching the `id` parameter, an empty target container element is added at the end of `body`.
+====
+
 
 {nbsp} +
 {nbsp} +
 
-*Okay, enough code - let's run the example!*
+*Okay, enough - time to run the example!*
 
-Add the new part `02-serverside-example` to our page in Content Studio (the way we did in link:#\_1_hello_world[the previous example]). When we edit the part and open the _inspect_ panel on the right, we see the TextField asking us _"What should be our greeting?"_ It suggests _"world"_, but for variation we'll enter _"from the server side"_. This is the `greetee` value, it gets prop'ed into the react component, and we can see the rendered result in the preview on the left:
+- The new part is ready. Add it to some content in Content Studio the same way you did in link:#_1_hello_world[the previous example].
+- Change the part's `greetee` field: edit the content, click and mark the "Client-side rendering example" part, and edit the "Who or what should we greet?" field on the right-side config panel. When you save it, the preview should update.
 
 [.thumb]
-image::editing-serverside.png["" width=1037px]
+image::editing-clientside.png["" width=1037px]
 
-The output page source from the server is very similar to the previous example:
+If we open a Preview tab and dig into at *the output page source*, it's similar to the previous example:
 [source,html,options="nowrap"]
 ----
 <body>
   <main data-portal-region="main" class="xp-region">
 
     <div class="serverside-example">
-      <h2>Server-side rendering example</h2>
-      <p>Server-side rendered and hydrated, inserted below:</p>
-      <div id="serverside-example-container">
-        <p data-reactroot="">Hello <!-- -->from the server side<!-- -->!</p> <!--1-->
-      </div>
-      <p>(SSR example is done).</p>
+      <h2>Client-side rendering example</h2>
+      <p>Skips server-side rendering, and instead sets up client-side react to render the entry into the container below:</p>
+      <div id="serverside-example-container"></div> <!--1-->
+      <p>(And we're done).</p>
     </div>
 
   </main>
@@ -410,22 +416,21 @@ The output page source from the server is very similar to the previous example:
   <script src="(...) /react4xp-client/" ></script>
   <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script> <!--2-->
   <script defer> <!--3-->
-    React4xp.CLIENT.hydrate(
-      React4xp['site/parts/01-minimal-example/01-minimal-example'],
-      "serverside-example-container" ,
-      {"greetee":"from the server side","react4xpId":"serverside-example-container"}
+    React4xp.CLIENT.render(
+        React4xp['site/parts/01-minimal-example/01-minimal-example'],
+        "second-example-container" ,
+        {"greetee":"from the client side","react4xpId":"second-example-container"}
     );
   </script>
 </body>
 ----
 
-Most noteworthy:
+Most noteworthy differences from the first example:
 
-<1> The target container is not initially empty anymore, but contained rendered HTML from the server.
+<1> The target container is now initially empty, there was no rendered HTML from the server.
 <2> The imported entry is still the same as in the previous example. This is the compiled version of the JSX component we pointed to with `jsxPath` in the controller.
-<3> Instead of `.render`, we're triggering `.hydrate`. Here, that doesn't make a difference since our react component doesn't have any more active stuff in it than just outputting an HTML string. But had it had things like event listeners, state, connections to thirdparty libraries etc, `.hydrate` would have hooked those up to the DOM structure created in the target container element, creating a working, active component.
+<3> Instead of `.hydrate`, we're calling `.render`. Our react component is rendered and inserted into the `"serverside-example-container"` element by the browser. `React4xp.CLIENT.render` has the same signature as `React4xp.CLIENT.hydrate`: `(entryJsxPath, targetElementId, props)`.
 
-TIP: Server-side rendering can take a long time to produce an output on the first rendering (several seconds). This should happen _very rarely or never_ after the first rendering on the server. What happens is that the component is parsed, compiled and cached on the server. After that, repeated renderings even with different props are very fast!
 
 {nbsp} +
 {nbsp} +
