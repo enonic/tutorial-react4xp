@@ -4,13 +4,13 @@
 
 image::react4xp.svg["React4xp logo" width=256px]
 
-This tutorial will show you how to build XP sites and apps with React rendering.
+This tutorial will show you step-by-step how to build XP sites and apps with React rendering.
 
 [NOTE]
 ====
 This is _not_ a tutorial for learning React in itself, or how to get started using Enonic XP. For that, many excellent guides exist already, see for example https://reactjs.org/tutorial/tutorial.html[the official intro to React] or https://developer.enonic.com/start[the Enonic XP developer portal].
 
-Being a little familiar with https://webpack.js.org/guides/getting-started/[webpack] doesn't hurt either.
+Being a familiar with https://webpack.js.org/guides/getting-started/[webpack] isn't strictly necessary, but might make the structure make sense.
 ====
 
 {nbsp} +
@@ -29,7 +29,7 @@ During this exercise you will:
 
 [NOTE]
 ====
-The starter and this guide aims for how-to, what-is and setup of React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the React4xp installation and build commands are different from XP7. The rest of the way it's pretty identical, so *you can still use this guide for both versions.*
+The starter and this guide aims for how-to, what-is and setup of React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the React4xp installation and build commands are different from XP7. The rest of the way it's pretty identical, so *you can still use most of this guide for both versions.*
 ====
 
 {nbsp} +
@@ -37,7 +37,7 @@ The starter and this guide aims for how-to, what-is and setup of React4xp with *
 
 === The React4xp library
 
-React4xp is an XP library that:
+React4xp is an XP library (with a companion gradle build config) that:
 
 - makes it easy to get started with rendering React from ordinary XP controllers - making JSX look like any other templating engine,
 - is flexible enough to cover many more advanced use cases,
@@ -88,7 +88,7 @@ To verify that your app started successfully, you should find an entry similar t
 
 If you're used to working with an https://developer.enonic.com/guides/my-first-webapp[ordinary] XP project with https://developer.enonic.com/templates/webpack[webpack], the structure will look familiar - the biggest news is the folder `react4xp/` under `resources/`.
 
-TIP: You don't need to know the following structure by heart to get started. *Just put your JSX source files under `react4xp/_entries/` or under `site/`, and you're ready to build and run.*
+TIP: You don't need to know the following structure by heart to get started. *Just put your JSX source files under `react4xp/_entries/` or under `site/`, and you're ready to get started: build and run.*
 
 Your project folder should look something like this:
 
@@ -118,7 +118,7 @@ src/
 <3> `build/` will contain output files from the build process. The files from the React4XP part of the build will all be put into the subfolder `build/resources/main/assets/react4xp`. These are used after the build, by both client- and server-side runtime processes,
 <4> ..just note that your React4XP source files should normally NOT be put in `assets/react4xp`! The `assets/` folder is just used in the regular XP way for other, general assets: non-React4xp JS, CSS, icons, etc.
 <5> *React4XP will instead look for your JS and JSX files under the `react4xp/` folder* (they are kept apart from other XP source files because they are treated differently in the build). You can make subfolders under here, they will be compiled into "sub-libraries" - reusable _chunks_ that contain code that your ReactXP entries can import (but are not themselves accessable by React4XP). More on this below.
-<6> The *one special magic folder* that will not be turned into chunks, is `react4xp/\_entries/`. This is here you put your *entries* - the React component source files that can be accessed by React4xp in the XP controllers. We'll get back to this below.
+<6> The *one special magic folder* that will not be turned into chunks, is `react4xp/_entries/`. This is here you put your *entries* - the React component source files that can be accessed by React4xp in the XP controllers. We'll get back to this below.
 <7> Two `REPLACE_ME.jsx` files: placeholders for webpack. Remove each of these when you've added one or more React source file below `react4xp/_entries/` and `site/`.
 <8> Below the `site/parts/` and `site/pages/` subfolders is as always where you put your XP parts and pages. Now with React4xp, *you can also put JSX entries together with your parts and pages*. This is the easiest way to use a React4XP entry from a part/page controller.
 <9> Outside of the scope of this tutorial but worth mentioning: the `webapp/` folder containing the root webapp controller. React4XP supplies services that allow static HTML pages to refer to and request compiled entries.
@@ -132,11 +132,15 @@ src/
 
 These examples are incremental: the later, advanced examples are clearer if you've seen the previous ones.
 
-TIP: They can be downloaded along with everything needed to run, by checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp]
+TIP: The example code tries to speak for itself. If something isn't clear, there's plenty of explanations in between. If you're really good at this, you will probably skip through a lot of the explanations. That's fine, but you might want to take a look at *the most central terms*: link:#_entries[entries], link:#_jsxpath[jsxPaths], and link:#_chunks[chunks].
+
+TIP: You can copy/paste the code examples into the starter, or download the examples along with everything needed to run, by using git and checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp].
+
 
 {nbsp} +
+{nbsp} +
 
-=== 1: Hello World: server-side rendering by default
+=== 1: Hello World (entries, server-side rendering by default)
 
 Let's make a simple XP part that contains a react component: `01-minimal-example`
 
@@ -149,7 +153,11 @@ site/parts/01-minimal-example/
   01-minimal-example.es6
 ----
 
-Add a *part definition*. It doen't need anything special, just XP boilerplate:
+{nbsp} +
+
+==== Code
+
+Add a *part definition*. It doesn't need anything special, just XP boilerplate:
 
 .01-minimal-example.xml:
 [source,xml,linenums,options="nowrap"]
@@ -161,7 +169,7 @@ Add a *part definition*. It doen't need anything special, just XP boilerplate:
 </part>
 ----
 
-*Now for the React component itself - the entry:*
+Now for *the React component* itself - _the entry_:
 
 .01-minimal-example.jsx
 [source,javascript,linenums,options="nowrap"]
@@ -172,15 +180,15 @@ export default (props) => <p>Hello {props.greetee}!</p>;
 ----
 
 [NOTE]
-====
+===== Entries
 *_Entries_ in React4XP are the React components that can be accessed by React4XP*. They are just any standard JSX file, as long as it:
 
 - default-exports a function that returns a React element, and
-- is placed under the folder `/react4xp/_entries` or like in this example: in a part or page folder under `site/`.
-====
+- is placed either under the folder `/react4xp/_entries`, or like in this example: in a part or page folder under `site/`.
 
-The returned function can take an optional `props` object parameter. Our entry will receive a `greetee` prop and greet it with a magnificent _Hello_.
+The returned function can take an optional `props` object parameter. Our entry will receive a `greetee` prop and greet it with a booming _Hello_.
 
+{nbsp} +
 
 Now moving on, make the *part controller* that uses React4XP to render the entry:
 
@@ -214,19 +222,22 @@ It basically just imports `React4xp` and uses the `.render` function, similar to
 An important difference from Thymeleaf's renderer is that `React4XP.render` generates _a full response object_ that can be directly returned from the controller, instead of just HTML that you need to wrap in a `body` field in the controller's response object.
 ====
 
-{nbsp} +
+*That's it. This part is ready to display in XP!*
+
 {nbsp} +
 
-*That's it. This part is ready to display in XP!* Let's add it to a page in Content Studio and render it:*
+==== Part setup, and output
 
-- Run `enonic project deploy` from your shell, start the sandbox and direct your browser to `localhost:8080/admin`.
+Let's add it to a page in Content Studio and render it:
+
+- Run `enonic project deploy` from your shell, let the build complete, start the sandbox and direct your browser to `localhost:8080/admin`.
 - Log in to XP and open Content Studio.
 - Create some content (e.g. a site with the Default Page controller included with the starter, or a https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page]). Anything with a Region will do.
 - Insert a new part into the region, and select the `01-minimal-example` part you just made.
 - Enter the preview to view the content outside of Content Studio. You should now see:
 
 [.thumb]
-image::hello-world.png["Glorious greeting of the very existence itself!" width=492px]
+image::hello-world.png["A most glorious greeting of the very concept of existence itself! In suitably divine Times New Roman. Because a good tutorial should never have ANY irrelevant added layers!!!" width=492px]
 
 {nbsp} +
 {nbsp} +
@@ -274,9 +285,9 @@ We only added the `greetee` prop in the controller. The other one, `react4xpId`,
 {nbsp} +
 {nbsp} +
 
-=== 2: Client-side rendering, params, target body, XP props, jsxPath
+=== 2: Parameters (jsxPath, client-side rendering, target body, editorial props)
 
-In this example we'll create another part, similar to the link:#_1_hello_world[first example], but with these variations:
+In this example we'll create another part, similar to link:#_1_hello_world_entries_server_side_rendering_by_default[the first example], but with these variations:
 
 - Add optional parameters to the rendering,
   * ...with a `clientRender` flag, turning the entire output into client-side React rendering.
@@ -297,7 +308,11 @@ site/parts/
     02-clientrender-example.es6
 ----
 
-Still a pretty unremarkable *part definition*. Only now there's a `greetee` TextLine input field ready for some editorial text from Content Studio.
+{nbsp} +
+
+==== Code
+
+*The part definition* is still pretty unremarkable. Only now there's a `greetee` TextLine input field ready for some editorial text from Content Studio.
 
 .02-clientrender-example.xml:
 [source,xml,linenums,options="nowrap"]
@@ -320,15 +335,15 @@ Still a pretty unremarkable *part definition*. Only now there's a `greetee` Text
 .02-clientrender-example.html
 [source,html,linenums,options="nowrap"]
 ----
-<div class="serverside-example">
-    <h2>Server-side rendering example</h2>
-    <p>Server-side rendered and hydrated, inserted below:</p>
+<div class="clientrender-example">
+    <h2>Client-side rendering example</h2>
+    <p>Skips server-side rendering, and instead sets up client-side react to render the entry into the container below:</p>
     <div id="second-example-container"></div>
     <p>(And we're done)</p>
 </div>
 ----
 
-TIP: We've hardcoded the ID here and in the controller for clarity. The best practice however, would be to pass it to thymeleaf through the model.
+TIP: We've hardcoded the ID here and in the controller for clarity. The best practice however, would be to pass it to thymeleaf through the model - see link:#_3_react4xp_objects_alternative_syntax_manual_flow_control_the_entries_folder[example #3].
 
 Moving on to *the part controller*, where the React4xp stuff happens:
 
@@ -351,14 +366,14 @@ exports.get = function(request) {
         greetee: component.config.greetee <!--2-->
     };
 
-    const jsxPath = 'site/parts/01-minimal-example/01-minimal-example'; <!--3-->
-
     const params = {
-        <!--4-->
+        <!--3-->
         body: preExistingBody,
         id: 'second-example-container',
         clientRender: true,
     };
+
+    const jsxPath = 'site/parts/01-minimal-example/01-minimal-example'; <!--4-->
 
     return React4xp.render(jsxPath, props, request, params);
 ----
@@ -369,33 +384,40 @@ What's happening here?
 
 <2> We get the `greetee` value from XP and insert in into the props,
 
-<3> Here an important concept is introduced: *A _jsxPath_ is the name of an entry in React4xp*. We used the `component` object to refer to the entry in the first example, which is easy but _only works if the entry is in the same folder and has the same name_. Here we want the entry from a different part's folder: the same entry we used before. These strings are _names_, not paths relative to the controller (so avoid `../` etc). You can read more about entries here, but *the rules of thumb are*:
-  * If an entry file is a JSX file under `src/main/resources/site`, the jsxPath is the file path relative to `src/main/resources/` - unix-style and without file extension.
-  * An entry can also be located under `src/main/resources/react4xp/_entries`, and then the jsxPath will be relative to that folder instead.
-  * If you're ever unsure: all the available jsxPaths are stored in `build/resources/main/assets/react4xp/entries.json`. This file is generated by webpack during build (and shouldn't be deleted or edited).
-
-<4> We're adding some *parameters* as a fourth argument object to `.render`:
+<3> We're adding some *parameters* as a fourth argument object to `.render`:
   * `body` is the HTML body we're inserting the React entry into,
   * `id` is setting the ID, and targeting that container element in `body`,
+    - A side note: in the first example, we didn't pass an `id` or a `body` parameter to `.render`, but it still worked. *They are both optional*, React4XP generates what's missing: If no `body` is found, React4xp will generate an empty HTML with a matching element ID. If there's no `id` found either, a random number is used - or data from `component` if you used that in the entry argument. If there's a `body` but it doesn't have any elements with an ID matching the `id` parameter, an empty target container element is added at the end of `body`.
   * `clientRender`: if this is truthy, you get old-school client-side React rendering. `.render` doesn't render the entry on the server-side, but leaves the target container unchanged and instead makes some page contributions that makes the browser build the entry into the target container.
-  * It's also possible to add a `pageContributions` field, for adding pre-existing page contributions to the ones that `.render` generates.
-
-[NOTE]
-====
-In the first example, we didn't pass an `id` or a `body` to `.render`, but it still worked. *They are both optional*, React4XP generates what's missing: If no `body` is found, React4xp will generate an empty HTML with a matching element ID. If there's no `id` found either, a random number is used - or data from `component` if you used that in the entry argument. If there's a `body` but it doesn't have any elements with an ID matching the `id` parameter, an empty target container element is added at the end of `body`.
-====
+  * There's also an optional `pageContributions` field, for adding pre-existing page contributions to the ones that `.render` generates.
 
 
-{nbsp} +
+<4> Here an important concept is introduced - the _jsxPath_:
+
+===== JsxPath:
+*A _jsxPath_ is the name of an entry in React4xp*. Remember how we used the `component` object to refer to the entry in the first example, which is the easiest way but _only works if the entry is in the same folder and has the same name_. Here we want to access the entry (the same entry we used before) from a different part's folder - from _anywhere_ actually. JsxPaths are _name strings_, not paths relative to the controller (so avoid `../` etc).
+
+*Rules of thumb for jsxPaths:*
+
+- If an entry file is a JSX file under `src/main/resources/site`, the jsxPath is the file path relative to `src/main/resources/` - unix-style and without file extension.
+- An entry can also be located under `src/main/resources/react4xp/_entries`, and then the jsxPath will be relative to that folder instead.
+- If you're ever unsure: all the available jsxPaths are stored in `build/resources/main/assets/react4xp/entries.json`. This file is generated by webpack during build (and shouldn't be deleted or edited).
+
 {nbsp} +
 
 *Okay, enough - time to run the example!*
 
-- The new part is ready. Add it to some content in Content Studio the same way you did in link:#_1_hello_world[the previous example].
+{nbsp} +
+
+==== Output
+
+- The new part is ready. Add it to some content in Content Studio, the same way you did in link:#_part_setup_and_output[the previous example].
 - Change the part's `greetee` field: edit the content, click and mark the "Client-side rendering example" part, and edit the "Who or what should we greet?" field on the right-side config panel. When you save it, the preview should update.
 
 [.thumb]
 image::editing-clientside.png["" width=1037px]
+
+{nbsp} +
 
 If we open a Preview tab and dig into *the output page source*, it's similar to the previous example:
 [source,html,options="nowrap"]
@@ -403,7 +425,7 @@ If we open a Preview tab and dig into *the output page source*, it's similar to 
 <body>
   <main data-portal-region="main" class="xp-region">
 
-    <div class="serverside-example">
+    <div class="clientrender-example">
       <h2>Client-side rendering example</h2>
       <p>Skips server-side rendering, and instead sets up client-side react to render the entry into the container below:</p>
       <div id="serverside-example-container"></div> <!--1-->
@@ -419,7 +441,10 @@ If we open a Preview tab and dig into *the output page source*, it's similar to 
     React4xp.CLIENT.render(
         React4xp['site/parts/01-minimal-example/01-minimal-example'],
         "second-example-container" ,
-        {"greetee":"from the client side","react4xpId":"second-example-container"}
+        {
+            "greetee":"from the client side",
+            "react4xpId":"second-example-container"
+        }
     );
   </script>
 </body>
@@ -435,7 +460,7 @@ Most notable differences from the first example:
 {nbsp} +
 {nbsp} +
 
-=== 3: React4xp objects: alternative syntax, more manual control. The _entries folder.
+=== 3: React4xp objects (alternative syntax, manual flow control, the _entries folder)
 
 In this example we won't use `.render`. Instead, we'll look at a more direct syntax that gives you better control and opportunities for logic steps when you handle the entry.
 
@@ -452,12 +477,15 @@ Other features demonstrated:
 ----
 react4xp/_entries/
   ColorThing.jsx
-site/parts:
-  /03-customflow-example/
-    03-customflow-example.xml
-    03-customflow-example.html
-    03-customflow-example.es6
+site/parts//03-customflow-example/
+  03-customflow-example.xml
+  03-customflow-example.html
+  03-customflow-example.es6
 ----
+
+{nbsp} +
+
+==== Code
 
 *The part definition* now defines some other editorial data: `color`.
 
@@ -576,10 +604,12 @@ Just like the `.render` method in examples 01 and 02, we can control `.renderBod
 The `clientRender` parameter *should match between the two rendering functions* for a React4XP object: if we add it to `.renderBody` (and it's true/truthy), we should add it to `.renderPageContributions` too.
 ====
 
+*Okay, let's take a look!*
 
 {nbsp} +
 
-*Okay, let's take a look:*
+==== Output
+
 Like before, open Enonic XP Content Studio, add the new part to some content, select and edit it and change the Color of the Thing, for example to "blue".
 
 Save, it should look something like this:
@@ -591,6 +621,8 @@ If we open it in Preview and look at the browser console, we also see that the l
 
 [.thumb]
 image::the-blue-thing.png["" width=1068px]
+
+{nbsp} +
 
 *The output page source* should similar to this (and similar to what `.render` generated earlier):
 
@@ -624,42 +656,76 @@ image::the-blue-thing.png["" width=1068px]
 </body>
 ----
 
-Note the random but matching ID (_uniqueId_) of the target container and the `react4xpId` of the `React4xp.CLIENT.hydrate` call.
+Note the random but matching ID (_uniqueId_) of the target container and in the `React4xp.CLIENT.hydrate` call.
 
 {nbsp} +
 {nbsp} +
 
-=== 4: A part with multiple react components, chaining, nesting, hydration
+=== 4: Multiple entries (chaining, nesting, chunks)
 
-A more complex example, where we'll look at using *multiple react components in a single part* - including reusing multiple instances of _the same_ react component and making them unique within the part:
+Demonstrating some final features:
 
-- rendering a stateful component, more powerful than before,
-- ...which is serverside-rendered as a passive string and then activated in the client with `.hydrate`,
-- chaining (passing the body and pageContributions through multiple react4xp data objects),
-- nesting shared, non-entry react components in an entry,
-- how `import`-ing non-entry code results in a predictable chunk structure,
+- We'll stay with the syntax from the previous example, and that lets us make *a part with multiple entries* - both different entries and reusing multiple instances of the same entry.
+  * *Chaining:* We'll see how rendered bodies and page contributions are passed through all the entries, before returning the final `body` and `pageContribution` to the response object.
+- Importing other React components into your entries - both other entries and React components from dependency *chunks*:
+  * Webpack compiles and packs code into "sub-libraries", for bundling up and optimizing code that's frequently imported by other entries (or chunks).
+
+Obviously, this is gonna be the most complex example. Also, some of the React components in this example will be _stateful and active_ on the client (this doesn't really demonstate anything - active components don't require anything special from React4XP, we've just been using passive components until now).
+
+{nbsp} +
 
 .Files involved:
 [source,files]
 ----
 react4xp/
-  myChunk/
-    BuilderClicker.jsx <!--1-->
   _entries/
-    mySubfolder/
-      BuilderClickerEntry.jsx <!--2-->
+    mySubfolder/ <!--1-->
+      BuilderClickerEntry.jsx
+  myChunk/ <!--2-->
+    BuilderClicker.jsx
 site/parts:
   /04-chaining-example/
-    04-chaining-example.jsx <!--3-->
-    04-chaining-example.xml <!--4-->
-    04-chaining-example.html <!--5-->
-    04-chaining-example.es6 <!--6-->
+    04-chaining-example.jsx
+    04-chaining-example.xml
+    04-chaining-example.html
+    04-chaining-example.es6
 ----
 
-{nbsp} +
-*1.* `BuilderClicker` is a shared react component that will be imported by `BuilderClickerEntry` and put inside the chunk `myChunk.<hash>.js` - because it's below the `myChunk` subfolder instead of `_entries`. *As a non-entry, it will not get a jsxPath*, so it will be better optimized but must be imported by an entry to be used in React4xp. It's also a *stateful and active* react component: the props are stored and output after one another in a `<h3>` element, and can be changed: each of them are repeated/doubled when clicked in the client (so repeated clicks will build a lot of text, hence the name):
+Just make a mental note of a difference from before - *two added subfolders:*
 
-.BuilderClicker.jsx:
+<1> `mySubfolder` under `react4xp/_entries/`
+
+<2> `myChunk` under `react4xp/`
+
+They are important in two ways, we'll see how in a moment.
+
+{nbsp} +
+
+==== Code
+
+*The first entry:*
+
+.react4xp/_entries/mySubfolder/BuilderClickerEntry.jsx:
+[source,javascript,linenums,options="nowrap"]
+----
+import React from 'react';
+
+import BuilderClicker from '../../myChunk/BuilderClicker';
+
+export default (props) => <div className="builderclicker-entry">
+		<BuilderClicker {...props} />
+	</div>;
+----
+
+Some repetition from before: remember how *JSX files below `react4xp/_entries` will be compiled to entries, with a jsxPath relative to that folder and without the file extension*? So this will be an entry with the jsxPath `mySubfolder/BuilderClickerEntry`.
+
+It's functionally pretty slim, it doesn't do much except import another React component, `react4xp/myChunk/BuilderClicker` and pass the props down to it. Since `BuilderClicker` is not under `react4xp/_entries`, it's not an entry and can't be used by React4XP. Which is why it needs an entry like this.
+
+{nbsp} +
+
+*A slightly heavier, non-entry React component:*
+
+.react4xp/myChunk/BuilderClicker.jsx:
 [source,javascript,linenums,options="nowrap"]
 ----
 import React from 'react';
@@ -680,7 +746,7 @@ class BuilderClicker extends React.Component {
 
     render() {
         return <div className="builderclicker">
-            <h3>
+            <h3 style={{color:"green"}}>
                 <span onClick={() => this.makeMore('first')}
                       style={{cursor: "pointer"}}
                       className="first">{this.state.first}
@@ -695,59 +761,68 @@ class BuilderClicker extends React.Component {
 export default (props) => <BuilderClicker {...props} />;
 ----
 
-{nbsp} +
-*2.* `BuilderClickerEntry` is a simple entry component (since it's below `_entries`), just a container for the shared `BuilderClicker`. We will use it directly in our part, with the jsxPath `mySubfolder/BuilderClickerEntry`. But it will also be imported by a different entry, the part's own JSX. This makes no structural difference: entries can be imported by other entries, and are still entries:
+`BuilderClicker` displays two texts in one line, and builds more by doubling each of the texts whenever they are clicked in the browser.
 
-.BuilderClickerEntry.jsx:
+This is a _non-entry_ React component, that will be imported by several of the entries in this example (`BuilderClickerEntry` is one of them). Because of its source file location, `BuilderClicker` will be compiled into a highly reuseable, optimized and auto-handled chunk called `myChunk`:
+
+===== Chunks:
+*JSX files that are _not_ under `site/` or `react4xp/_entries` won't be compiled into entries*. They don't have a jsxPath, and *need to be imported by an entry* to be used in React4XP (or to be precise: they must be part of an import tree with an entry on top).
+
+*Everything that's imported from files in other subfolders below `react4xp/` will be compiled into chunks*. These are "sub-library" code bundles with the same name as the subfolder. They are *optimized* for repeated loading and runtime import, and cached for reuse, with a cache-busting content hash added to the file name.
+
+Chunks are made to be *fire-and-forget:* you don't need to handle them in any way after naming the subfolders and importing the contents correctly. React4xp takes care of them during serving, caching and server-side rendering.
+
+One recommended usage - an entry as a bridge between React4xp and more heavyweight React components:
+
+[TIP]
+====
+*Since the chunks are most optimized, it's recommended to keep the entries slim and put as much of the heavy and reusable stuff as possible into chunks.* Also, it's best to keep the non-entries in chunks: each JSX entry is compiled to its own separate JS file. If an entry imports a non-entry piece of code that's _not in a chunk either_, it will just be compiled into the entry's JS "bundle", making it more heavy-weight.
+====
+
+{nbsp} +
+
+*Another entry in the part:*
+
+.site/parts/04-chaining-example/04-chaining-example.jsx:
 [source,javascript,linenums,options="nowrap"]
 ----
 import React from 'react';
-
-import BuilderClicker from '../../myChunk/BuilderClicker';
-
-export default (props) => <div className="builderclicker-entry">
-		<BuilderClicker {...props} />
-	</div>;
-----
-
-{nbsp} +
-*3.* `04-chaining-example.jsx` is the part's internal react entry. It serves no other purpose than to demonstrate that an entry can import and nest another entry in the standard JS/react way, should you ever need to:
-
-.04-chaining-example.jsx:
-[source,javascript,linenums,options="nowrap"]
-----
-import React from 'react';
-
 import BuilderClickerEntry from '../../../react4xp/_entries/mySubfolder/BuilderClickerEntry';
 
 export default (props) => <BuilderClickerEntry {...props} />;
 ----
 
+Three things to note here:
+
+- An entry can import and nest another entry just fine (if you should ever need to),
+- The same React component, `BuilderClicker`, is imported from its chunk more than once in the same part (but only loaded once in the client),
+- The two instances of it are functional and independent in the client. The fact that it's imported into the part through two different entries doesn't matter for this - we'll show this by using _this_ entry twice in the controller.
+
 
 {nbsp} +
-*4.* `04-chaining-example.xml`, the *part definition*, doesn't do anything this time:
+*The part definition* doesn't define anything editorial this time:
 
-.04-chaining-example.xml:
+.site/parts/04-chaining-example/04-chaining-example.xml:
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
-	<display-name>04 - Chaining Example</display-name>
-    <description>Multiple react components, chaining, nesting, hydration</description>
-	<form />
+  <display-name>04 - Chaining Example</display-name>
+  <description>Multiple react components, chaining, nesting, hydration</description>
+  <form />
 </part>
 ----
 
 {nbsp} +
-*5.* `04-chaining-example.html`, the *part view*, is just some description, two target containers (with `id` that will be referred in the controller) and a horizontal line:
+*The part view* has two target containers (with hardcoded IDs) and a horizontal divider, and clearly expects some more containers to be added:
 
-.04-chaining-example.html:
+.site/parts/04-chaining-example/04-chaining-example.html:
 [source,html,linenums,options="nowrap"]
 ----
 <div class="chaining-example">
     <h1>04 - Chaining Example</h1>
     <p>These two target containers existed in the HTML:</p>
-    <div data-th-id="a-target-container"></div>
-    <div data-th-id="another-target-container"></div>
+    <div id="a-target-container"></div>
+    <div id="another-target-container"></div>
 
     <hr style="display:block; margin:20px; width:100%; height:1px; border:1px dotted #aaa;"/>
     <p>The rest of the containers don't exist before rendering, but are inserted at the end:</p>
@@ -755,9 +830,9 @@ export default (props) => <BuilderClickerEntry {...props} />;
 ----
 
 {nbsp} +
-*6.* `04-chaining-example.es6`, the *part controller*:
+And finally, the juicy *part controller*:
 
-.04-chaining-example.es6:
+.site/parts/04-chaining-example/04-chaining-example.es6:
 [source,javascript,linenums,options="nowrap"]
 ----
 const portal = require('/lib/xp/portal');
@@ -767,514 +842,333 @@ const React4xp = require('/lib/enonic/react4xp');
 const view = resolve("04-chaining-example.html");
 
 exports.get = function(request) {
+    const component = portal.getComponent();
 
-    // Renders BuilderClickerEntry, which nests BuilderClicker,
-    // into the "a-target-container" element:
-    const firstComp = new React4xp('mySubfolder/BuilderClickerEntry')
+    const clientRender = (request.mode !== 'edit' && request.mode !== 'inline'); <!--1-->
+
+
+    const firstReact4xpObj = new React4xp('mySubfolder/BuilderClickerEntry') <!--2-->
         .setId("a-target-container")
         .setProps({
             first: "Click",
             second: "ME!"
         });
 
-    // Uses the component to point to and render the part-local
-    // 04-chaining-example.jsx, which nests BuilderClickerEntry
-    // and BuilderClicker with it, into the "another-target-container" element:
-    const secondComp = new React4xp(portal.getComponent())
+    const secondReact4xpObj = new React4xp(component) <!--3-->
         .setId("another-target-container")
         .setProps({
             first: "No click ME!",
             second: "I do the exact same thing only better!"
         });
 
-    // Creates a body starting point from the local HTML view:
+    // ------------------------------ A horizontal separator comes here in the view:
+    // a new section where React4XP generates and inserts target containers where the
+    // IDs didn't exist in the HTML
+
+
+    const thirdReact4xpObj = new React4xp(component) <!--4-->
+        .setId("a-third-container-doesnt-exist-but-will-be-generated") <!--5-->
+        .setProps({
+            first: "Here I am.",
+            second: "Again."
+        });
+
+
     let body = thymeleaf.render(view, {});
 
-    // Chaining: passes the body through the two components' server-side
-    // rendering methods, which add passive HTML inside the two target
-    // containers in it:
-    body = firstComp.renderSSRIntoContainer(body);
-    body = secondComp.renderSSRIntoContainer(body);
+    body = firstReact4xpObj.renderBody({ body }); <!--6-->
+    body = secondReact4xpObj.renderBody({ body, clientRender });
+    body = thirdReact4xpObj.renderBody({ body });
 
-    // Chaining: creates the necessary page contributions for hydration
-    // for the first component, and passes them through the second one. The
-    // second turn only appends what's necessary, so that shared components
-    // and dependency chunks etc aren't loaded twice:
-    let pageContributions = firstComp.renderHydrationPageContributions();
-    pageContributions = secondComp.renderHydrationPageContributions(pageContributions);
+    let pageContributions = firstReact4xpObj.renderPageContributions();
+    pageContributions = secondReact4xpObj.renderPageContributions({
+    	pageContributions,
+    	clientRender
+    });
+    pageContributions = thirdReact4xpObj.renderPageContributions({ pageContributions });
 
 
-    // ------------------------------
-    // A horizontal separator comes here in the view: a new section,
-    // demonstrating a way to repeat the same entry multiple times in a part.
-    // All the target containers here are generated and added to the body,
-    // since the components' IDs don't match anything in the body.
-    // ------------------------------
-
-
-    // Creates 4 components with different props: "first repeated ID",
-    // "second repeated ID", etc. Note that ALL of them are given the same ID.
-    // That means they are all rendered into the same target container,
-    // so only the last one will be visibly rendered:
-    ['first', 'second', 'third', 'fourth'].forEach(cardinalNum => {
-        const notUniqueComp = new React4xp('site/parts/01-minimal-example/01-minimal-example')
+    ['first', 'second', 'third', 'fourth'].forEach(cardinalNum => {	<!--7-->
+        const notUniqueComp = new React4xp(
+            	'site/parts/01-minimal-example/01-minimal-example'
+            )
             .setId('this-is-not-unique')
-            .setProps({ greetee: `${cardinalNum} repeated ID`});
+            .setProps({ greetee: `${cardinalNum} repeated thing`});
 
-        body = notUniqueComp.renderTargetContainer(body);
-        pageContributions = notUniqueComp.renderClientPageContributions(pageContributions);
+        body = notUniqueComp.renderBody({ body });
+        pageContributions = notUniqueComp.renderPageContributions({ pageContributions });
     });
 
-    // Same as above, but with a crucial difference: adding `.uniqueId()` to the ID
-    // makes React4xp add a random-number postfix to the ID. This causes each component
-    // to have a different ID, so 4 container elements are added to body instead of one
-    // - and all four become visible.
+
     ['first', 'second', 'third', 'fourth'].forEach(cardinalNum => {
-        const uniqueComp = new React4xp('site/parts/01-minimal-example/01-minimal-example')
-            .setId('this-id-is-unique').uniqueId()
-            .setProps({ greetee: `${cardinalNum} unique ID`});
+        const uniqueComp = new React4xp(
+            	'site/parts/01-minimal-example/01-minimal-example'
+            )
+            .setId('this-id-is-unique').uniqueId() <!--8-->
+            .setProps({ greetee: `${cardinalNum} unique thing`});
 
-        body = uniqueComp.renderTargetContainer(body);
-        pageContributions = uniqueComp.renderClientPageContributions(pageContributions);
+        body = uniqueComp.renderBody({body});
+        pageContributions = uniqueComp.renderPageContributions({ pageContributions });
     });
 
-    // Returning the body/pageContribution response from the part.
-    return {
+
+    return { <!--9-->
         body,
-        pageContributions,
+        pageContributions: clientRender ?
+            pageContributions :
+            undefined,
     };
 };
+
 ----
 
-NOTE: In this example (line 57-78), we're making a new React4xp object for each rendering. An object can in principle be re-rendered with different props, *but rendering a body or pageContribution will lock the ID* of the object. I.e., a re-rendering of the same React4xp object will always target the same container element! Trying to change the ID will throw an error.
+*Some details and explanations:*
+
+<1> *Content Studion and client-side rendering/hydration:* Just like we did in the previous example, it's a good idea to respond to XP's viewing mode: are the react components being displayed inside Content Studio (request.mode is 'edit' or 'inline')? If so, the client-side JS of Content  Studio may clash with react's JS. We're making a boolean `clientRender` for common control of all the entries in this part. This allows client-side rendering and hydration only outside Content Studio, and makes React4xp render static and un-hydrated HTML visualizations inside Content Studio - giving a visualization everywhere but activation only outside of Content Studio. Repetition: the `React4xp.render` shorthand function does all this automatically, if you prefer that.
+
+<2> Importing `BuilderClicker` from `myChunk` a first time, through `BuilderClickerEntry`...
+
+<3> ...and a sceond time, through the part's own entry (referred by `component`) which nests `BuilderClickerEntry`...
+
+<4> ...and a third time, through the same part's own entry again.
+
+<5> From here on down, none of the IDs will exist as target element IDs in the body. React4XP auto-handles this by inserting them at the end of `body`, in the order of chaining:
+
+<6> *Chaining:* First creates a `body` starting point from the local Thymeleaf template. This is _passed through_ the `.renderBody` method of all the React4XP objects, each one expanding `body` by inserting either just a container element (`clientRender`) or rendering more React into it. `firstReact4xpObj` and `thirdReact4xpObj` will be server-side-rendered, `secondReact4xpObj` will be client-side-rendered. Note how *the `clientRender` parameter matches for each React4XP object*, between the `renderBody` and `.renderPageContributions` calls in the next step. `.renderPageContributions` works the same way: a `pageContributions` object is expanded with activating scripts for each time it passes through a React4XP object. `.renderPageContributions` only appends what's necessary, so that shared components and chunks etc aren't loaded more than once in the client.
+
+<7> Making 4 unique React4XP objects from the same entry, with different props, and adding them to the chain. _They all have the same ID_ (`'this-is-not-unique'`), so they will be rendered and overwritten into the same container element - so only the last one of them survives and is visible.
+
+<8>	So the lesson is to force the IDs to be unique, by adding a `.uniqueId()` call in each iteration. Now that the IDs are different, and they each get their own container element and all four are visibly rendered.
+
+<9> And finally, outputting the results of the chain (although the pageContributions are skipped inside Content Studio).
+
+[NOTE]
+====
+In this example we're making a new React4xp object for each rendering. An object can in principle be re-rendered, *but rendering a body or pageContribution will lock the ID* of the object.
+
+In other words: we can use an _entry_ multiple times targeting different container elements by using different React4XP objects. And we can render the same _React4XP object_ into the same container multiple times (if we should need to). But *trying to change the ID and target element will throw an error after an object's first rendering.*
+====
+
+*Enough already - let's do this!*
 
 {nbsp} +
 
-*Screenshot of the rendered output:*
+==== Output
+
+Add this part the same way as in the previous examples and look at it in the Preview - you should see this:
 
 [.thumb]
-image::chaining.png["You clicked? I am but a humble screenshot." width=1036px]
+image::chaining2.png["You clicked, Sir? I am but a humble screenshot!" width=1036px]
 
-Comparing this screenshot (or better, run the example and check out the actual output) with the page source below, there are a few things worth noting:
+The few things worth confirming here:
 
-- in the actual output, the _"click me"_ components are active and clickable: clicking the first or second half of each of them doubles the clicked text, as defined in the `BuilderClicker`. This activation happened in the `.hydrate` steps (lines 58 and 64 below).
-- the clicks are isolated to the component that was actually clicked: even though they are technically the same inner component `BuilderClicker` (by source), they each have their own state so when one is clicked the other one doesn't react. This is not because `BuilderClicker` is nested differently in them, but because their ID's are different,
-- as predicted, since the ID was the same in all 4 renderings (line 60 in `04-chaining-example.es6`), only one container with `id="this-is-not-unique"` was added to the body (line 41 below),
-- and although the four React4xp objects each add a separate `React4xp.CLIENT.render` call (lines 71, 76, 81, 86), they all target the same container, so only the last one is remains in the end,
-- and since `"this-id-is-unique"` had a different postfix appended each time, all the 4 renderings created a different container (lines 42-45), and each of those are visibly rendered.
-- React4xp automatically traced the dependency to `myChunk.<hash>.js` and added this import to the page contributions (line 51), because `BuilderClicker` lives there. As long as the `site` and `react4xp` folders are used for entries and dependency chunks as described, imports like this will always be handled automatically,
-- and although several of the generated assets are called more than once, the page contributions are trimmed so each of them are only loaded to the client once (lines 49-56).
+- A *many-to-many relationship*: all of the entries and React4xp objects were visualized by a single part here. And some of the entries have been used in other parts and across several React4xp objects.
+- This is but a humble screenshot, but in the actual Preview outside of Content Studio, the green rendered `BuilderClicker` instances are now *active* and respond to clicks as defined in `BuilderClicker`: clicking the first or second half of each of them doubles the clicked text (this activation happened in the `.hydrate` steps for server-side rendered entries, and in the actual rendering for client-side rendered ones).
+- The clicks and reponses are *isolated* to the instance that was actually clicked: even though they are technically the same entry `BuilderClicker`, they each have their own state. This is not because `BuilderClicker` is nested differently in them, but because their ID's are different,
+- There's only one "...repeated thing" but four "...unique thing", as explained above (point 7 and 8 in the controller code)
 
+{nbsp} +
+*The output page source* to the client is much longer now. If you want to dive into that, it would look something like this:
 
-.Page source:
+.Huge page source:
 [source,html,linenums,options="nowrap"]
 ----
 <!DOCTYPE html>
 <html>
-  <head></head>
+    <head></head>
 
-  <body>
+    <body>
 
-    <main data-portal-region="main" class="xp-region">
-      <div data-portal-component-type="part" class="chaining-example">
+        <main data-portal-region="main" class="xp-region">
+            <div data-portal-component-type="part" class="chaining-example">
+                <h1>04 - Chaining Example</h1>
+                <p>These two target containers existed in the HTML:</p>
 
-        <h1>04 - Chaining Example</h1>
-        <p>These two target containers existed in the HTML:</p>
+                <div id="a-target-container"> <!--1-->
+                    <div class="builderclicker-entry" data-reactroot="">
+                        <div class="builderclicker">
+                            <h3 style="color:green">
+                                <span style="cursor:pointer" class="first">Click</span>
+                                <span style="cursor:pointer" class="second">ME!</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
 
-        <div id="a-target-container">
-          <div class="builderclicker-entry" data-reactroot="">
-            <div class="builderclicker">
-              <h3>
-                <span style="cursor:pointer" class="first">Click</span>
-                <span style="cursor:pointer" class="second">ME!</span>
-              </h3>
+                <div id="another-target-container"></div> <!--1-->
+
+                <hr style="display:block; margin:20px; width:100%; height:1px; border:0; border-bottom:1px dotted #aaa;"/>
+                <p>The rest of the containers don't exist before rendering, but are generated and inserted at the end:</p>
+                <br/>
+
+                <div id="a-third-container-doesnt-exist-but-will-be-generated">  <!--2-->
+                    <div class="builderclicker-entry" data-reactroot="">
+                        <div class="builderclicker">
+                            <h3 style="color:green">
+                                <span style="cursor:pointer" class="first">Here I am.</span>
+                                <span style="cursor:pointer" class="second">Again.</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="this-is-not-unique">  <!--3-->
+                	<p data-reactroot="">Hello <!-- -->fourth repeated thing<!-- --> !</p>
+                </div>
+
+                <div id="this-id-is-unique_82264525">
+                	<p data-reactroot="">Hello <!-- -->first unique thing<!-- --> !</p>
+                </div>
+                <div id="this-id-is-unique_92592361">
+                	<p data-reactroot="">Hello <!-- -->second unique thing<!-- --> !</p>
+                </div>
+                <div id="this-id-is-unique_73808051">
+                	<p data-reactroot="">Hello <!-- -->third unique thing<!-- --> !</p>
+                </div>
+                <div id="this-id-is-unique_54219185">
+                	<p data-reactroot="">Hello <!-- -->fourth unique thing<!-- --> !</p>
+                </div>
             </div>
-          </div>
-        </div>
+        </main>
 
-        <div id="another-target-container">
-          <div class="builderclicker-entry" data-reactroot="">
-            <div class="builderclicker">
-              <h3>
-                <span style="cursor:pointer" class="first">No click ME!</span>
-                <span style="cursor:pointer" class="second">I do the exact same thing only better!</span>
-              </h3>
-            </div>
-          </div>
-        </div>
+        <script src=" (...) /react4xp/externals.88e80cab5.js"></script>
+        <script src=" (...) /react4xp-client/"></script>
+        <script src=" (...) /react4xp/myChunk.b26b22ea4.js"></script>  <!--4-->
 
-        <hr style="display:block; margin:20px; width:100%; height:1px; border:1px dotted #aaa;"></hr>
+        <script src=" (...) /react4xp/mySubfolder/BuilderClickerEntry.js"></script>
+        <script defer>
+            React4xp.CLIENT.hydrate(
+                React4xp['mySubfolder/BuilderClickerEntry'],
+                "a-target-container",
+                {
+                    "first": "Click",
+                    "second": "ME!",
+                    "react4xpId": "a-target-container"
+                }
+            );
+        </script>
 
-        <p>The rest of the containers didn't exist before rendering, and so, are inserted at the end:</p>
-        <div id="this-is-not-unique"></div>
-        <div id="this-id-is-unique_90354192"></div>
-        <div id="this-id-is-unique_43124046"></div>
-        <div id="this-id-is-unique_87401825"></div>
-        <div id="this-id-is-unique_63865684"></div>
-      </div>
-    </main>
+        <script src=" (...) /react4xp/site/parts/04-chaining-example/04-chaining-example.js"></script>  <!--5-->
+        <script defer>
+            React4xp.CLIENT.render(
+                React4xp['site/parts/04-chaining-example/04-chaining-example'],
+                "another-target-container",
+                {
+                    "first": "No click ME!",
+                    "second": "I do the exact same thing only better!",
+                    "react4xpId": "another-target-container"
+                }
+            );
+        </script>
+        <script defer>
+            React4xp.CLIENT.hydrate(
+                React4xp['site/parts/04-chaining-example/04-chaining-example'],
+                "a-third-container-doesnt-exist-but-will-be-generated",
+                {
+                    "first": "Here I am.",
+                    "second": "Again.",
+                    "react4xpId": "a-third-container-doesnt-exist-but-will-be-generated"
+                }
+            );
+        </script>
 
-    <script src="(...) /react4xp/externals.88e80cab5.js"></script>
-    <script src="(...) /react4xp-client/"></script>
-    <script src="(...) /react4xp/myChunk.059c6f899.js"></script>
-    <script src="(...) /react4xp/mySubfolder/BuilderClickerEntry.js"></script>
-    <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script>
-    <script src="(...) /react4xp/site/parts/04-chaining-example/04-chaining-example.js"></script>
-
-    <script defer>React4xp.CLIENT.hydrate(React4xp['mySubfolder/BuilderClickerEntry'], "a-target-container", {
-      "first": "Click",
-      "second": "ME!",
-      "react4xpId": "a-target-container"
-    });</script>
-    <script defer>React4xp.CLIENT.hydrate(React4xp['site/parts/04-chaining-example/04-chaining-example'], "another-target-container", {
-      "first": "No click ME!",
-      "second": "I do the exact same thing only better!",
-      "react4xpId": "another-target-container"
-    });</script>
-
-    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
-      "greetee": "first repeated ID",
-      "react4xpId": "this-is-not-unique"
-    });</script>
-    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
-      "greetee": "second repeated ID",
-      "react4xpId": "this-is-not-unique"
-    });</script>
-    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
-      "greetee": "third repeated ID",
-      "react4xpId": "this-is-not-unique"
-    });</script>
-    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-is-not-unique", {
-      "greetee": "fourth repeated ID",
-      "react4xpId": "this-is-not-unique"
-    });</script>
-
-    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_90354192", {
-      "greetee": "first unique ID",
-      "react4xpId": "this-id-is-unique_90354192"
-    });</script>
-    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_43124046", {
-      "greetee": "second unique ID",
-      "react4xpId": "this-id-is-unique_43124046"
-    });</script>
-    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_87401825", {
-      "greetee": "third unique ID",
-      "react4xpId": "this-id-is-unique_87401825"
-    });</script>
-    <script defer>React4xp.CLIENT.render(React4xp['site/parts/01-minimal-example/01-minimal-example'], "this-id-is-unique_63865684", {
-      "greetee": "fourth unique ID",
-      "react4xpId": "this-id-is-unique_63865684"
-    });</script>
-  </body>
+        <script src=" (...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script> <!--5-->
+        <script defer>
+            React4xp.CLIENT.hydrate(
+                React4xp['site/parts/01-minimal-example/01-minimal-example'], <!--3-->
+                "this-is-not-unique",
+                {
+                    "greetee": "first repeated thing",
+                    "react4xpId": "this-is-not-unique"
+                }
+            );
+        </script>
+        <script defer>
+            React4xp.CLIENT.hydrate(
+                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                "this-is-not-unique",
+                {
+                    "greetee": "second repeated thing",
+                    "react4xpId": "this-is-not-unique"
+                }
+            );
+        </script>
+        <script defer>
+            React4xp.CLIENT.hydrate(
+                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                "this-is-not-unique",
+                {
+                    "greetee": "third repeated thing",
+                    "react4xpId": "this-is-not-unique"
+                }
+            );
+        </script>
+        <script defer>
+            React4xp.CLIENT.hydrate(
+                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                "this-is-not-unique",
+                {
+                    "greetee": "fourth repeated thing",
+                    "react4xpId": "this-is-not-unique"
+                }
+            );
+        </script>
+        <script defer>
+            React4xp.CLIENT.hydrate(
+                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                "this-id-is-unique_82264525",
+                {
+                    "greetee": "first unique thing",
+                    "react4xpId": "this-id-is-unique_82264525"
+                }
+            );
+        </script>
+        <script defer>
+            React4xp.CLIENT.hydrate(
+                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                "this-id-is-unique_92592361",
+                {
+                    "greetee": "second unique thing",
+                    "react4xpId": "this-id-is-unique_92592361"
+                }
+            );
+        </script>
+        <script defer>
+            React4xp.CLIENT.hydrate(
+                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                "this-id-is-unique_73808051",
+                {
+                    "greetee": "third unique thing",
+                    "react4xpId": "this-id-is-unique_73808051"
+                }
+            );
+        </script>
+        <script defer>
+            React4xp.CLIENT.hydrate(
+                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                "this-id-is-unique_54219185",
+                {
+                    "greetee": "fourth unique thing",
+                    "react4xpId": "this-id-is-unique_54219185"
+                }
+            );
+        </script>
+    </body>
 </html>
-----
-
-
-
-{nbsp} +
-{nbsp} +
-
-=== 5: Webapp
-The last demonstration is the services `/react4xp/`, `/react4xp-client/`, `/react4xp-dependencies/` and `/react4xp-externals/`. These enable you to take advantage of React4xp components and features directly from a client-side script from scratch (except for server-side rendering, which obviously isn't available).
-
-In the example below, we'll use XP's https://developer.enonic.com/guides/my-first-webapp[webapp] functionality with a thymeleaf template, enabling us to use `portal.serviceUrl` to get the fully prefixed URL to the services. But as long as long as you know the prefix service URL to an XP server running React4xp, you could hard code the urls if you wanted and use this feature from a completely standalone HTML.
-
-`React4xp.CLIENT.renderWithDependencies` abstracts and simplifies all the necessary steps in rendering multiple entries into multiple target containers, including tracing and fetching entries and dependency chunks once. It needs:
-
-- React, ReactDOM and the React4xp client wrapper must be fetched (line 5-15 below),
-- The prefix service URL must be set, as a global `SERVICE_URL_ROOT` variable (line 34).
-
-.pure.html:
-[source,html,linenums,options="nowrap"]
-----
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- OPTION 1: You can get React and ReactDOM from CDN like this... -->
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-
-    <!-- OPTION 2:
-      ...but React and ReactDOM are also available as a chunk from this service:
-      <script data-th-src="${portal.serviceUrl({'_service=react4xp-externals'})}"></script>
-    -->
-
-    <!-- The client wrapper is needed either way: -->
-    <script data-th-src="${portal.serviceUrl({'_service=react4xp-client'})}"></script>
-  </head>
-
-  <body>
-    <h1>Standalone HTML</h1>
-
-    <!-- Target containers -->
-    <div id="color_thing"></div>
-    <div id="clickable_thing"></div>
-
-    <!-- Sets a global variable SERVICE_URL_ROOT.
-    This is the root URL prefix to the services used
-    by React4xp.CLIENT.renderWithDependencies.
-    Can be set anywhere as long as it's before
-    renderWithDependencies is called: -->
-    <script data-th-text="|var SERVICE_URL_ROOT=`${portal.serviceUrl({'_service='})}`;|"></script>
-
-    <!-- Actual rendering call: -->
-    <script>
-        React4xp.CLIENT.renderWithDependencies(
-
-          // First parameter: an object where the keys are jsxPaths
-          // (which can still be used more than once as long as the IDs
-          // are unique), and the values are objects with
-          // `targetId` and `props` parameters:
-          {
-            ColorThing: {
-              targetId: 'color_thing',
-              props: { color: "purple"}
-            },
-
-            'site/parts/04-chaining-example/04-chaining-example': {
-              targetId: 'clickable_thing',
-              props: { first: "Come On!", second: "Click Me Already!" },
-            },
-          },
-
-          // Demo callback in an optional second parameter:
-          function() {
-              console.log("This callback is inserted and called after rendering.");
-          }
-        );
-    </script>
-  </body>
-</html>
-----
-
-{nbsp} +
-{nbsp} +
-
-== API
-
-More details can be found at https://github.com/enonic/lib-react4xp#readme[the main library docs] and the source code in that repo.
-
-{nbsp} +
-
-=== Controller functions
-
-.Import:
-[source,javascript,options="nowrap"]
-----
-const React4xp = require('/lib/enonic/react4xp');
-
-// Equivalent: import React4xp from '/lib/enonic/react4xp';
-----
-
-{nbsp} +
-
-.Shorthand rendering:
-[source,javascript,options="nowrap"]
-----
-React4xp.render(request, params); <!--1-->
-
-React4xp.renderSafe(request, params);  <!--2-->
-----
-
-<1> `React4xp.render`: *All-in-one best-practice renderer.* Renders server-side if it can, adds hydration logic for the client-side. Renders dynamic/client-side react in XP preview and live mode, and static/server-side in edit mode (XP content studio). On problems, falls back to `renderSafe`.
-
-<2> `React4xp.renderSafe`: *Client-side and fallback renderer.* More thorough fallback and failure reporting, and avoids server-side rendering - except in edit mode, where client-side rendering is the bigger hazard.
-
-*Both have the same signatures and returns:*
-
-  * `request` _(object, mandatory)_ XP request object.
-  * `params` _(object, mandatory)_ MUST include `jsxPath` or `component`. And if not `component`, either an `id` OR a non-falsy `uniqueId` parameter is needed. Target component file must exist. If `component` AND one of `jsxPath` or `id` are included, those data from `component` are overridden. *Subfields* in `params`:
-  ** `component` _(object)_ XP component object (used to extrapolate component part and target container ID). This is sufficient if the JSX entry file is in the same folder and has the same name, and the react component doesn't need to be rendered into a particular pre-existing HTML container element.
-  ** `jsxPath` _(string)_ path to react component entry, see available paths in `build/resources/main/assets/react4xp/entries.json` after building the parent project with react4xp-build-components. These are *names*, not relative paths. So jsxPath can't contain '..', '//', '/./' or start with '.' or '/'.
-  ** `id` _(string, optional)_ sets the target container element id (overrides the extrapolated id if component was set). If this matches an ID in an input body, the react component will be rendered there. If not, a container with this ID will be added.
-  ** `uniqueId` _(boolean|string, optional)_ If set, ensures that the ID is unique. If id is set (previous param), a random integer will be postfixed to it. If uniqueId is a string, this is the prefix before the random postfix. If the id param is used in addition to a uniqueId string, uniqueId takes presedence and overrides id.
-  ** `props` _(object, optional)_ react props sent in to the component
-  ** `body` _(string, optional)_ Existing HTML body, for example rendered from thymeleaf. If it already has a matching-ID target container, body passes through unchanged (use this option and the setId method to control where in the body the react component should be inserted). If it doesn't have a matching container, a matching <div> will be inserted at the end of the body, inside the root element. If body is missing, a pure-target-container body is generated and returned.
-  ** `pageContributions` _(object, optional)_ Pre-existing pageContributions. New page contributions for rendering this component will be added to any pre-existing ones.
-
-They *return* a response object that can be directly returned from an XP controller, with the fields `body` and `pageContributions`: `body` will contain a target container element for the react component. `pageContributions` will contain scripts referred by URL for running the component client-side and the component's dependencies, as well as an inline trigger script for starting the react frontend rendering into the target container. Duplicates in `pageContributions` will be removed, to avoid running identical scripts twice.
-
-
-{nbsp} +
-
-.Data object construction:
-[source,javascript,options="nowrap"]
-----
-const comp = new React4xp(component|jsxPath);
-----
-
-The constructor has a mandatory parameter, ONE of the following two. This follows the same logic as the `component` and `jsxPath` subfields in `params` in the shorthand rendering methods above:
-
-  * EITHER `component` _(object)_ Current-XP-component data; the output of `portal.getComponent()`. This will point to a local (same-name, same-folder as the component) react file. Derives and sets the component's `jsxPath` AND its `id` (`react4xpId`) so they don't need to be set.
-  * OR `jsxPath` _(string)_ Pointer to any component. Sets the component's `jsxPath` but not the `id`.
-
-*Returns* the constructed data-holding object (`comp`) where these fields are readable:
-
-  * `.jsxPath` _(string)_ The jsxPath of the target react entry. The entry must exist.
-  * `.props` _(object)_ Component props, if set (see below),
-  * `.react4xpId` _(string)_ Component and target-container ID, if set (see below). If not set, the rendering methods will thow an error.
-
-{nbsp} +
-
-.Attribute setters in the data object:
-[source,javascript,options="nowrap"]
-----
-comp.setProps(props); <!--1-->
-comp.setJsxPath(jsxPath); <!--2-->
-comp.setId(id); <!--3-->
-comp.uniqueId(); <!--4-->
-
-// Sequence doesn't matter (except for setId, which can overwrite a previous uniqueId).
-// And a builder pattern is supported, so this would be equivalent:
-//
-//   comp.setProps(props)
-//       .setJsxPath(jsxPath)
-//       .setId(id)
-//       .uniqueId();
-----
-
-<1> `setProps(props)`: `props` _(object)_ is any object serializable by `JSON.stringify`. Overwrites previous props. Props will be fed to the entry component. Even if not set explicitly, the props received by the entry component will always contain the ID, as the field `react4xpId`.
-<2> `setJsxPath(jsxPath)`: `jsxPath` _(string)_ points to an entry component that must exist, jsxPath must be valid. Overwrites previous value.
-<3> `setId(id)`: `id` _(string)_ Identifies the react4xp component (`comp`) and points to a target container in the DOM to receive the react rendering. Preferrably a unique element `id` in the DOM. Corresponds to `comp.react4xpId` and `props.react4xpId`.
-<4> `uniqueId()`: enforces a unique element and component ID, by appending a random-number postfix. If an ID hasn't been set, it will become the random-number postfix.
-
-All of the above *return* the object itself, enabling the builder pattern.
-
-
-{nbsp} +
-
-.Data object body HTML rendering:
-[source,javascript,options="nowrap"]
-----
-const htmlContent = comp.renderComponentString(overrideProps); <!--1-->
-
-const newBody = comp.renderTargetContainer(existingBody, htmlContent); <!--2-->
-
-const newBody = comp.renderSSRIntoContainer(existingBody); <!--3-->
-
-// Using renderSSRIntoContainer is equivalent to:
-// const newBody = comp.renderTargetContainer(existingBody, comp.renderComponentString());
 
 ----
 
-<1> `comp.renderComponentString(overrideProps)`: (server-side) renders and returns a *simple HTML string representation of the data object*, without a container or any further `body` interaction, based on the `props` currently set in the data object, or `overrideProps` _(object, optional)_ if they are set.
+Just confirming what you surely guessed would happen:
 
-<2> `renderTargetContainer`: *Primary client-side body renderer*. Parameters:
-
-  * `existingBody` _(string, optional)_ String containing HTML, and only that. If empty, a target container (with an `id` matching the ID of the data object `comp`) will be returned. If there is an HTML string but a matching-ID container is not found, a target container is added _at the end of the root element of the HTML_, i.e. just before the final closing tag. If there's a string _with_ a matching ID, nothing is changed.
-  * `htmlContent` _(string, optional)_ HTML string. If empty or missing: no effect. If included, this will be injected inside the matching-ID container (that's guaranteed by the logic in the previous parameter), replacing any content that was already there. Note that in client-side rendering, `htmlContent` is usually left empty, leaving it to the client to inject some rendered content into the container.
-
-  * *Returns* a valid HTML string, ready to be returned from a controller as the `body` field in the response - or be sent as the `existingBody` into a rendering method of a different React4xp object (see the chaining example).
-
-<3> `renderSSRIntoContainer`: *Primary server-side body renderer*. First renders an HTML representation of the data object `comp` based on its current `props`, then injects that HTML into a (new or existing) matching-id target container in `existingBody`.  Parameters:
-  * `existingBody` _(string, optional)_ Same as `existingBody` for `.renderTargetContainer`: string containing HTML, and only that. If empty, a target container (with an `id` matching the ID of the data object `comp`) will be returned. If there is an HTML string but a matching-ID container is not found, a target container is added _at the end of the root element of the HTML_, i.e. just before the final closing tag. If there's a string _with_ a matching ID, nothing is changed.
-
-{nbsp} +
-
-.Data object pageContributions rendering:
-[source,javascript,options="nowrap"]
-----
-const newPageContributions = comp.renderClientPageContributions(existingPageContributions); <!--1-->
-
-const newPageContributions = comp.renderHydrationPageContributions(existingPageContributions); <!--2-->
-----
-
-<1> `renderClientPageContributions(existingPageContributions)`: *Primary client-side pageContributions renderer*. Returns a new page contributions object, with `existingPageContributions` _(object, optional)_ added to it, and the needed pageContributions to get the client to fetch the dependencies of `comp` and render it into the matching-ID container (provided by one of the body HTML rendering methods above). This includes the entry of `comp`, all the chunks of its imported dependencies, the client-side wrapper and the _externals_, meaning client-side runnable React and ReactDOM code, the same used for the client-side rendering. Trims the pageContributions before returning them, preventing excessive loading on the client side.
-
-<2> `renderHydrationPageContributions(existingPageContributions)`: *Primary server-side pageContributions renderer*. Identical to `.renderClientPageContributions` above, but expects that the matching-ID container already has the HTML of `comp` injected into it from the server - and then has the client trigger a https://reactjs.org/docs/react-dom.html#hydrate[react hydration] of it: activating the previously-passive HTML representation and turning it into a fully active react component.
-
-{nbsp} +
-
-=== Services
-The four included React4xp services are exposed to the client and are central to how it fetches the assets, dependencies and the client wrapper itself. Half of what the auto-generated pageContributions are doing, uses the services. However, the services are directly usable as well. They are documented https://github.com/enonic/lib-react4xp#the-services[in the main library docs].
-
-{nbsp} +
-
-=== Client-side wrapper
-Downloadable from the `/react4xp-client` service, is client-runnable code that wraps a few handy functions, used by the autogenerated pageContributions, but usable manually as well.
-
-It creates a `React4xp` global object in the browser, which will contain all things React4xp. It exposes three methods under the `React4xp.CLIENT` attribute:
-
-.Client-side wrapper functions:
-[source,javascript,options="nowrap"]
-----
-React4xp.CLIENT.render(Component, targetId, props); // corresponds to https://reactjs.org/docs/react-dom.html#render
-
-React4xp.CLIENT.hydrate(Component, targetId, props); // corresponds to https://reactjs.org/docs/react-dom.html#hydrate
-
-React4xp.CLIENT.renderWithDependencies(componentsTargetsAndProps, callback, serviceUrlRoot);
-----
-
-The first two methods are 'pure' renderers. This means that in addition to the client wrapper, you need to supply and run scripts for React and ReactDOM (which are bundled in the React4xp _externals_) - and scripts for the entries as well as all their chunks, before calling `render` or `hydrate`.
-
-However, you can also use React4xp components in a standalone html page, having only React/ReactDOM (or React4xp externals) and this client loaded in the browser: use `renderWithDependencies` as below.
-
-{nbsp} +
-
-==== Using `render` and `hydrate`
-They both have a `(Component, targetId [, props])` signature:
-
-  * `Component`: _(React4xp entry or any ReactDOM renderable, mandatory)_ If it's a function, the wrapper will try to turn it into a ReactDOM component by running `Component(props)`. When loading React4xp entries, they are exposed in the client as functions as part of the `React4xp` object: `React4xp[jsxPath] = (props) => Component`. A fallback has been added so that if an entry component has been compiled into a `.default` sub-attribute, the client can access the component both with and without the `default` field: if `React4xp.CLIENT.render(React4xp.myComponent.default, ...)` is strictly correct, then `React4xp.CLIENT.render(React4xp.MyComponent, ...)` will also work.
-  * `targetId` _(string, mandatory)_ The unique ID of an HTML container element, into which the component will be rendered. Obviously, this must exist in the DOM when running.
-  * `props`: _(object, optional)_ Top-level props that will be sent into the component. React4xp relies on serialization of this object, so _functions can't be passed in this way!_
-
-{nbsp} +
-
-==== Using `renderWithDependencies`
-This wraps a whole chain of necessary steps: when the client has the wrapper available, you know where to contact the services (the prefix: their common URL before the service names), you have some React4xp components you want to render and know their jsxPaths and props, then `renderWithDependencies` will take care of all the gritty details needed for a client-side render, in a single call for multiple React4xp components:
-
-  - contact the React4xp services,
-  - determine what the entries' chunk dependencies are,
-  - download and run those in parallel,
-  - then download and run the entry scripts,
-  - then run `render` on each of the entries,
-  - all the time preventing duplicate downloads.
-
-Parameters:
-
-  * `componentsTargetsAndProps` _(object, mandatory)_ Object where each entry is similar to the `Component, targetId, [, props]` signature mentioned above: the *keys*  are jsxPath strings of React4xp entries. The *values* are objects that have a mandatory `targetId` string and an optional `props` object.
-  * `callback` _(function, optional)_ This function is run after running `render`,
-  * `serviceUrlRoot` _(string, optional)_ Root of the URL to the `/react4xp` and `/react4xp-dependencies` link:#_services[services]. For example, if they have the URLs `/_/service/my.app/react4xp/` and `/_/service/my.app/react4xp-dependencies/`, then `serviceRootUrl` should be `/_/service/my.app` (without a trailing slash). This is _sort of optional_: you can skip it if you define a constant `SERVICE_URL_ROOT` in global namespace before running  `renderWithDependencies` (see link:#_5_webapp[the Webapp example]). If you don't, it's a mandatory argument.
-
+<1> While the first and third React4XP objects were server-side rendered and hydrated, the second one was client-side rendered into an empty container.
+<2> Several of the containers that were output weren't defined in the original Thymeleaf template, and were only rendered because the ID wasn't found.
+<3> Only one container with _"this-is-not-unique"_ was rendered for the same reason: that ID had already been inserted. So all the corresponding React4XP objects were server-side rendered into that one. This would also happen with client-side rendering! Also look further down: the client is asked to `hydrate` all four instances, which will log errors in the console since the content doesn't match.
+<4> React4xp automatically traced the dependency to `myChunk.<hash>.js` and added this import to the page contributions because that's where `BuilderClicker` comes from.
+<5> Although several of the generated assets are _used_ more than once, the page contributions are trimmed for duplicates so each of them are only _downloaded to the client_ once.
 
 {nbsp} +
 {nbsp} +
 
-== Gotchas
+== Need to go deeper?
 
-=== Imports and chunks
-When building your react components, *you can import JS/ES6 code as usual*: nested react components, your own secondary code, other frameworks, libraries, whatever... Imported code can be compiled into separate asset chunks from the entries that use them, for https://webpack.js.org/guides/code-splitting/[code splitting].
-
-This chunking is easy to control: *put the imported sources in chunk-named subfolders below the `react4xp/` folder* (outside of `_entries`). Done this way, React4xp will handle:
-
- - optimized building and serving of the entries and chunks,
- - client-and-server-side caching with cache busting,
- - keep track of exactly which secondary chunks are needed for displaying which component entries,
- - and add the necessary client-side script requests/imports along with the response.
-
-https://github.com/enonic/lib-react4xp/blob/master/README.md#entries-and-dependency-chunks[More about entries and chunks in the core library documentation].
-
-TIP: Chunks are more optimized than entries. Ideally, keep the served entries slim and leave the heavy lifting to chunks.
-
-{nbsp} +
-
-=== Rendering in different modes
-Usually, it's recommended to use server-side rendering and hydration if you can. However, when using XP, it's recommended to avoid running client-side scripts in Content Studio's edit mode, as far as possible. This can be detected with `request.mode` in a controller, you can use this to control the pageContributions behavior in edit mode.
-
-The link:#_controller_functions[shorthand rendering functions] will handle this automatically.
-
-{nbsp} +
-
-=== Adding/adjusting React4xp to an existing project
-If you have an existing XP project you want to integrate React4xp into, the easiest way is probably to look at https://github.com/enonic/starter-react4xp/blob/master/build.gradle[build.gradle] and https://github.com/enonic/starter-react4xp/blob/master/package.json[package.json] from the starter project, and weave them into your own to add the support.
-
-Things to keep in mind:
-
-* `react4xp-build-components`, `react4xp-buildconstants` and `react4xp-runtime-externals` in package.json, and the line `include 'com.enonic.lib:lib-react4xp:0.3.3'` in build.gradle are all important.
-* So is the React4xp configuration: lines 41-86 in build.gradle.
-** The basic structure of a React4xp project, as described in this guide, is actually meant to be flexible and adjustable. See the https://www.npmjs.com/package/react4xp-buildconstants[react4xp-buildconstants docs] and tweak `REACT4XP_OVERRIDES` in build.gradle.
-* The gradle task `webpack_react4xp` in build.gradle triggers a webpack build, targeting the react components and only those: `react4xp-build-components`. Here, webpack runs webpack.config.js files that are fetched from the NPM packages. This task can probably be added as-is (depending on your react build requirements).
-** However, if you need a different or adjusted webpack setup, you can run `npm install` and copy the contents from `node_modules/react4xp-build-components/webpack.config.js` into a webpack config of your own, adjust that, and refer to that in build.gradle instead of the react4xp-build-components one.
-** Important: if you tweak `webpack_react4xp`, make sure that this task doesn't target and transpile the "normal" XP functional source files, that'll mess things up.
-* The gradle task `babelXP` in build.gradle is a pretty bare-bone setup for _only_ transpiling the "normal" XP functional files.
-** Important: if you tweak `babelXP`, make sure that this task doesn't target and transpile the React4xp source files. That'll mess things up for sure.
+Thats _most_ of what React4XP offers. For more technical details, some corner-case features, adaptability and more complex functionality, you can take a look at link:#[the API overview] or the link:#[React4XP library documentation].
