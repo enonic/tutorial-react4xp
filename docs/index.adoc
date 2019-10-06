@@ -27,34 +27,14 @@ During this exercise you will:
 - see how to point the controller to the React components - and where to put them in your project source,
 - dig a little deeper into ways of controlling the rendering,
 
-[NOTE]
-====
-The starter and this guide aims for how-to, what-is and setup of React4xp with *XP 7*. An XP6-compatible version will be released shortly. If you're using XP6 and the XP6 starter, only the React4xp installation and build commands are different from XP7. The rest of the way it's pretty identical, so *you can still use most of this guide for both versions.*
-====
-
-{nbsp} +
-{nbsp} +
-
-=== The React4xp library
-
-React4xp is an XP library (with a companion gradle build config) that:
-
-- makes it easy to get started with rendering React from ordinary XP controllers - making JSX look like any other templating engine,
-- is flexible enough to cover many more advanced use cases,
-- features some tricks right out of the box to conveniently cover a couple of common needs - such as isomorphic client- or serverside rendering and hydration, build flow and compilation, automated asset serving with optimization, and more
-- aims to be modular and tweakable, making it possible to pop the hood, pick it apart and set things up your own way. Godspeed!
-
-https://github.com/enonic/lib-react4xp/blob/master/README.md#installing-the-library[The React4XP documentation is right here].
 
 {nbsp} +
 {nbsp} +
 {nbsp} +
 
-== Get started
+== Create project
 
-=== Create a starter project
-
-To setup a project locally, run the following command:
+Set up the starter project locally. With Enonic XP 7, run the following command:
 
   enonic project create -r starter-react4xp
 
@@ -64,9 +44,58 @@ NOTE: *Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[
 
 {nbsp} +
 
-=== Build and Deploy
+=== Project structure
 
-To build and deploy the app, run this command from your shell:
+If you're used to working with an https://developer.enonic.com/guides/my-first-webapp[ordinary] XP project with https://developer.enonic.com/templates/webpack[webpack], the structure will look familiar - the biggest news is the folder `react4xp/` under `resources/`.
+
+TIP: This structure is just an overview, and you don't need to know it by heart to get started. For now, *just put your JSX source files under `react4xp/_entries/` or under `site/`, and you're ready to build and run.*
+
+Your project folder should look something like this:
+
+.Selected files:
+[source,files]
+----
+build.gradle <--1-->
+settings.gradle <--1-->
+package.json <--2-->
+src/
+  main/
+    resources/
+      react4xp/ <!--3-->
+        _entries/ <!--4-->
+          REPLACE_ME.jsx <!--5-->
+      site/
+        parts/ <!--4-->
+        pages/ <!--4-->
+        REPLACE_ME.jsx <!--5-->
+----
+
+<1> The gradle files are used to set up the build system: the *lib-react4xp library* and some building tasks,
+<2> `package.json` sets up NPM import of some packages that React4XP and the build process need,
+<3> Webpack will look for your React-specific JS and JSX source files under the `react4xp/` folder.
+<4> You can add your own subfolder structure under `/react4xp/`, but note that `react4xp/_entries/` is a reserved, "magic" name. This folder is where you put *"entries"* - the source files that will be accessible to use in the XP controllers as in the examples. It's also possible to put entries (with `.JSX`-extension) along with XP components (e.g. in `/site/parts` or `/pages`).
+<5> Two `REPLACE_ME.jsx` files under `react4xp/_entries/` and `site/`. Webpack needs these empty placeholders here, you can remove each of them when you've added one or more React source files under those folders.
+
+{nbsp} +
+
+== The React4XP library
+
+These examples will focus on *React4XP*, which comes with the starter. React4XP is an XP library with a companion build setup, that:
+
+- makes it easy to get started with rendering React from ordinary XP controllers - making JSX look like any other templating engine,
+- is flexible enough to cover many more advanced use cases,
+- features some tricks right out of the box to conveniently cover a couple of common needs - such as isomorphic client- or serverside rendering and hydration, build flow and compilation, automated asset serving with optimization, and more
+- aims to be modular and tweakable, making it possible to pop the hood, pick it apart and set things up your own way. Godspeed!
+
+If you need it later, https://github.com/enonic/lib-react4xp/blob/master/README.md#installing-the-library[the React4XP documentation is right here].
+
+{nbsp} +
+{nbsp} +
+{nbsp} +
+
+== Build and Deploy
+
+To build and deploy the starter app, run this command from your shell:
 
   enonic project deploy
 
@@ -78,50 +107,6 @@ To verify that your app started successfully, you should find an entry similar t
 
   2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully
 ====
-
-
-{nbsp} +
-{nbsp} +
-{nbsp} +
-
-== Project structure
-
-If you're used to working with an https://developer.enonic.com/guides/my-first-webapp[ordinary] XP project with https://developer.enonic.com/templates/webpack[webpack], the structure will look familiar - the biggest news is the folder `react4xp/` under `resources/`.
-
-TIP: You don't need to know the following structure by heart to get started. *Just put your JSX source files under `react4xp/_entries/` or under `site/`, and you're ready to get started: build and run.*
-
-Your project folder should look something like this:
-
-.Selected files:
-[source,files]
-----
-build.gradle <--1-->
-settings.gradle <--1-->
-package.json <--2-->
-build/ <--3-->
-src/
-  main/
-    resources/
-      assets/ <!--4-->
-      react4xp/ <!--5-->
-        _entries/ <!--6-->
-          REPLACE_ME.jsx <!--7-->
-      site/
-        parts/ <!--8-->
-        pages/ <!--8-->
-        REPLACE_ME.jsx <!--7-->
-      webapp/ <!--9-->
-----
-
-<1> The gradle files are used by the build system. The starter includes some setup here: the *lib-react4xp* library and some building tasks,
-<2> `package.json` sets up NPM import of some packages that React4XP and the build process need,
-<3> `build/` will contain output files from the build process. The files from the React4XP part of the build will all be put into the subfolder `build/resources/main/assets/react4xp`. These are used after the build, by both client- and server-side runtime processes,
-<4> ..just note that your React4XP source files should normally NOT be put in `assets/react4xp`! The `assets/` folder is just used in the regular XP way for other, general assets: non-React4xp JS, CSS, icons, etc.
-<5> *React4XP will instead look for your JS and JSX files under the `react4xp/` folder* (they are kept apart from other XP source files because they are treated differently in the build). You can make subfolders under here, they will be compiled into "sub-libraries" - reusable _chunks_ that contain code that your ReactXP entries can import (but are not themselves accessable by React4XP). More on this below.
-<6> The *one special magic folder* that will not be turned into chunks, is `react4xp/_entries/`. This is here you put your *entries* - the React component source files that can be accessed by React4xp in the XP controllers. We'll get back to this below.
-<7> Two `REPLACE_ME.jsx` files: placeholders for webpack. Remove each of these when you've added one or more React source file below `react4xp/_entries/` and `site/`.
-<8> Below the `site/parts/` and `site/pages/` subfolders is as always where you put your XP parts and pages. Now with React4xp, *you can also put JSX entries together with your parts and pages*. This is the easiest way to use a React4XP entry from a part/page controller.
-<9> Outside of the scope of this tutorial but worth mentioning: the `webapp/` folder containing the root webapp controller. React4XP supplies services that allow static HTML pages to refer to and request compiled entries.
 
 
 {nbsp} +
@@ -643,12 +628,12 @@ image::the-blue-thing.png["" width=1068px]
         </div>
 
     </main>
-    <script src="/admin/site/preview/default/draft/example03/_/service/com.enonic.app.react4xp/react4xp/externals.88e80cab5.js"></script>
-    <script src="/admin/site/preview/default/draft/example03/_/service/com.enonic.app.react4xp/react4xp-client/"></script>
+    <script src="(...) react4xp/externals.88e80cab5.js"></script>
+    <script src="(...) react4xp-client/"></script>
 
     <script>console.log('Okay, rendered the blue thing.');</script>
 
-    <script src="/admin/site/preview/default/draft/example03/_/service/com.enonic.app.react4xp/react4xp/ColorThing.js"></script>
+    <script src="(...) react4xp/ColorThing.js"></script>
     <script defer>React4xp.CLIENT.hydrate(React4xp['ColorThing'], "_99689402", {
         "color": "blue",
         "react4xpId": "_99689402"
