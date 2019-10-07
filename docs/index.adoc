@@ -87,7 +87,7 @@ These examples will focus on *React4XP*, which comes with the starter. React4XP 
 - features some tricks right out of the box to conveniently cover a couple of common needs - such as isomorphic client- or serverside rendering and hydration, build flow and compilation, automated asset serving with optimization, and more
 - aims to be modular and tweakable, making it possible to pop the hood, pick it apart and set things up your own way. Godspeed!
 
-If you need it later, https://github.com/enonic/lib-react4xp/blob/master/README.md#installing-the-library[the React4XP documentation is right here].
+We are currently in the process of finishing up the in-depth documentation for the library, its API, and the build setup. It will be released on the Enonic website before long.
 
 {nbsp} +
 {nbsp} +
@@ -127,15 +127,15 @@ TIP: You can copy/paste the code examples into the starter, or download the exam
 
 === 1: Hello World (entries, server-side rendering by default)
 
-Let's make a simple XP part that contains a react component: `01-minimal-example`
+Let's make a simple XP part that contains a react component: `hello-react`
 
 .Files involved:
 [source,files]
 ----
-site/parts/01-minimal-example/
-  01-minimal-example.xml
-  01-minimal-example.jsx
-  01-minimal-example.es6
+site/parts/hello-react/
+  hello-react.xml
+  hello-react.jsx
+  hello-react.es6
 ----
 
 {nbsp} +
@@ -144,7 +144,7 @@ site/parts/01-minimal-example/
 
 Add a *part definition*. It doesn't need anything special, just XP boilerplate:
 
-.01-minimal-example.xml:
+.hello-react.xml:
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
@@ -156,7 +156,7 @@ Add a *part definition*. It doesn't need anything special, just XP boilerplate:
 
 Now for *the React component* itself - _the entry_:
 
-.01-minimal-example.jsx
+.hello-react.jsx
 [source,javascript,linenums,options="nowrap"]
 ----
 import React from 'react';
@@ -177,7 +177,7 @@ The returned function can take an optional `props` object parameter. Our entry w
 
 Now moving on, make the *part controller* that uses React4XP to render the entry:
 
-.01-minimal-example.es6:
+.hello-react.es6:
 [source,javascript,linenums,options="nowrap"]
 ----
 const portal = require('/lib/xp/portal');
@@ -218,11 +218,11 @@ Let's add it to a page in Content Studio and render it:
 - Run `enonic project deploy` from your shell, let the build complete, start the sandbox and direct your browser to `localhost:8080/admin`.
 - Log in to XP and open Content Studio.
 - Create some content (e.g. a site with the Default Page controller included with the starter, or a https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page]). Anything with a Region will do.
-- Insert a new part into the region, and select the `01-minimal-example` part you just made.
+- Insert a new part into the region, and select the `hello-react` part you just made.
 - Enter the preview to view the content outside of Content Studio. You should now see:
 
 [.thumb]
-image::hello-world.png["A most glorious greeting of the very concept of existence itself! In suitably divine Times New Roman. Because a good tutorial should never have ANY irrelevant added layers!!!" width=492px]
+image::hello-world.png["Rendering: Hello World. In fabulous Times New Roman, because a good tutorial has no irrelevant layers of complexity.", width=492px]
 
 {nbsp} +
 {nbsp} +
@@ -237,19 +237,19 @@ Curious about what happened here? *View the page source code in the browser* to 
   <body>
 
     <main data-portal-region="main" class="xp-region">
-      <div (...) id="parts_01-minimal-example__main_0">
+      <div (...) id="parts_hello-react__main_0">
       	<p data-reactroot="">Hello <!-- -->world<!-- -->!</p> <!--1-->
       </div>
     </main>
 
     <script src="(...) /react4xp/externals.88e80cab5.js"></script>  <!--2-->
     <script src="(...) /react4xp-client/"></script> <!--3-->
-    <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script> <!--4-->
+    <script src="(...) /react4xp/site/parts/hello-react/hello-react.js"></script> <!--4-->
     <script defer> <!--5-->
       React4xp.CLIENT.hydrate(
-        React4xp['site/parts/01-minimal-example/01-minimal-example'],
-        "parts_01-minimal-example__main_0",
-        { "greetee": "world", "react4xpId": "parts_01-minimal-example__main_0" }
+        React4xp['site/parts/hello-react/hello-react'],
+        "parts_hello-react__main_0",
+        { "greetee": "world", "react4xpId": "parts_hello-react__main_0" }
       );
     </script>
 
@@ -260,7 +260,7 @@ Curious about what happened here? *View the page source code in the browser* to 
 <1> A container element with an ID, and inside it: an HTML representation of the JSX entry, pre-rendered by React4XP on the server with the initial props.
 <2> A standard `externals` chunk (the exact path may vary with local setups, so it's truncated to `(...)`. The same goes for the cache-busting hash in the filename). This contains React and ReactDOM, built-in with React4XP.
 <3> The React4xp client wrapper, which enables the hydration command in point #5, among other things. A global client-side object is created, `React4xp`, which will contain all things React4xp in runtime. The client wrapper is `React4xp.CLIENT`.
-<4> The entry itself - the compiled version of `01-minimal-example.jsx`.
+<4> The entry itself - the compiled version of `hello-react.jsx`.
 <5> Calling `React4xp.CLIENT.hydrate`, the hydration of the entry along with a path pointer to the entry (we'll get back to this below, as the concept of _jsxPath_), the ID of the container element the entry is rendered into, and the props.
 
 [NOTE]
@@ -278,19 +278,19 @@ In this example we'll create another part, similar to link:#_1_hello_world_entri
   * ...with a `clientRender` flag, turning the entire output into client-side React rendering.
 - We'll render the react entry into a target container element that already exists in an HTML body,
   * ...which comes from a Thymeleaf template _before_ the entry is rendered into it.
-- We'll use an entry that's not in the part's own folder - we'll actually reuse to the same JSX entry as in the first example,
+- We'll use an entry that's not in the part's own folder - we'll actually reuse to the same JSX entry "hello-react" as in the first example,
   * ...and we'll insert editorial data from Content Studio into the props.
 
 .Files involved:
 [source,files]
 ----
 site/parts/
-  01-minimal-example/
-    01-minimal-example.jsx
-  02-clientrender-example/
-    02-clientrender-example.xml
-    02-clientrender-example.html
-    02-clientrender-example.es6
+  hello-react/
+    hello-react.jsx
+  client-render/
+    client-render.xml
+    client-render.html
+    client-render.es6
 ----
 
 {nbsp} +
@@ -299,7 +299,7 @@ site/parts/
 
 *The part definition* is still pretty unremarkable. Only now there's a `greetee` TextLine input field ready for some editorial text from Content Studio.
 
-.02-clientrender-example.xml:
+.client-render.xml:
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
@@ -317,7 +317,7 @@ site/parts/
 
 *The thymeleaf template* shows that a target container element can be anywhere in an HTML body - same as in vanilla react - as long as we point to it with a unique element ID. Here: `"second-example-container"`.
 
-.02-clientrender-example.html
+.client-render.html
 [source,html,linenums,options="nowrap"]
 ----
 <div class="clientrender-example">
@@ -332,7 +332,7 @@ TIP: We've hardcoded the ID here and in the controller for clarity. The best pra
 
 Moving on to *the part controller*, where the React4xp stuff happens:
 
-.02-clientrender-example.es6:
+.client-render.es6:
 [source,javascript,linenums,options="nowrap"]
 ----
 
@@ -340,7 +340,7 @@ const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
 const thymeleaf = require('/lib/thymeleaf');
 
-const view = resolve('02-clientrender-example.html'); <!--1-->
+const view = resolve('client-render.html'); <!--1-->
 
 exports.get = function(request) {
     const component = portal.getComponent();
@@ -358,7 +358,7 @@ exports.get = function(request) {
         clientRender: true,
     };
 
-    const jsxPath = 'site/parts/01-minimal-example/01-minimal-example'; <!--4-->
+    const jsxPath = 'site/parts/hello-react/hello-react'; <!--4-->
 
     return React4xp.render(jsxPath, props, request, params);
 ----
@@ -400,7 +400,7 @@ What's happening here?
 - Change the part's `greetee` field: edit the content, click and mark the "Client-side rendering example" part, and edit the "Who or what should we greet?" field on the right-side config panel. When you save it, the preview should update.
 
 [.thumb]
-image::editing-clientside.png["" width=1037px]
+image::editing-clientside.png["Changing props editorially in Content Studio",width=1037px]
 
 {nbsp} +
 
@@ -421,10 +421,10 @@ If we open a Preview tab and dig into *the output page source*, it's similar to 
 
   <script src="(...) /react4xp/externals.88e80cab5.js" ></script>
   <script src="(...) /react4xp-client/" ></script>
-  <script src="(...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script> <!--2-->
+  <script src="(...) /react4xp/site/parts/hello-react/hello-react.js"></script> <!--2-->
   <script defer> <!--3-->
     React4xp.CLIENT.render(
-        React4xp['site/parts/01-minimal-example/01-minimal-example'],
+        React4xp['site/parts/hello-react/hello-react'],
         "second-example-container" ,
         {
             "greetee":"from the client side",
@@ -462,10 +462,10 @@ Other features demonstrated:
 ----
 react4xp/_entries/
   ColorThing.jsx
-site/parts//03-customflow-example/
-  03-customflow-example.xml
-  03-customflow-example.html
-  03-customflow-example.es6
+site/parts/custom-flow/
+  custom-flow.xml
+  custom-flow.html
+  custom-flow.es6
 ----
 
 {nbsp} +
@@ -474,7 +474,7 @@ site/parts//03-customflow-example/
 
 *The part definition* now defines some other editorial data: `color`.
 
-.03-customflow-example.xml:
+.custom-flow.xml:
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
@@ -506,7 +506,7 @@ export default (props) =>
 
 *The Thymeleaf view* receives the ID of the target container element from Thymeleaf:
 
-.03-customflow-example.html
+.custom-flow.html
 [source,html,linenums,options="nowrap"]
 ----
 <div>
@@ -517,7 +517,7 @@ export default (props) =>
 
 Finally, *the controller*:
 
-.03-customflow-example.es6:
+.custom-flow.es6:
 [source,javascript,linenums,options="nowrap"]
 ----
 
@@ -525,7 +525,7 @@ const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
 const thymeleaf = require('/lib/thymeleaf');
 
-const view = resolve('03-customflow-example.html');
+const view = resolve('custom-flow.html');
 
 exports.get = function(request) {
     const component = portal.getComponent();
@@ -600,12 +600,12 @@ Like before, open Enonic XP Content Studio, add the new part to some content, se
 Save, it should look something like this:
 
 [.thumb]
-image::the-blue-thing2.png["" width=1068px]
+image::the-blue-thing2.png["Rendered text in Content Studio is blue, and says: the blue thing" width=1068px]
 
 If we open it in Preview and look at the browser console, we also see that the little `console.log` script from the controller has picked up the `color` prop from the React4XP object:
 
 [.thumb]
-image::the-blue-thing.png["" width=1068px]
+image::the-blue-thing.png["Rendered preview looks the same as in Content Studio, but now we also see that the expected output was printed in the browser console." width=1068px]
 
 {nbsp} +
 
@@ -669,11 +669,11 @@ react4xp/
   myChunk/ <!--2-->
     BuilderClicker.jsx
 site/parts:
-  /04-chaining-example/
-    04-chaining-example.jsx
-    04-chaining-example.xml
-    04-chaining-example.html
-    04-chaining-example.es6
+  /chaining/
+    chaining.jsx
+    chaining.xml
+    chaining.html
+    chaining.es6
 ----
 
 Just make a mental note of a difference from before - *two added subfolders:*
@@ -768,7 +768,7 @@ One recommended usage - an entry as a bridge between React4xp and more heavyweig
 
 *Another entry in the part:*
 
-.site/parts/04-chaining-example/04-chaining-example.jsx:
+.site/parts/chaining/chaining.jsx:
 [source,javascript,linenums,options="nowrap"]
 ----
 import React from 'react';
@@ -787,7 +787,7 @@ Three things to note here:
 {nbsp} +
 *The part definition* doesn't define anything editorial this time:
 
-.site/parts/04-chaining-example/04-chaining-example.xml:
+.site/parts/chaining/chaining.xml:
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
@@ -800,7 +800,7 @@ Three things to note here:
 {nbsp} +
 *The part view* has two target containers (with hardcoded IDs) and a horizontal divider, and clearly expects some more containers to be added:
 
-.site/parts/04-chaining-example/04-chaining-example.html:
+.site/parts/chaining/chaining.html:
 [source,html,linenums,options="nowrap"]
 ----
 <div class="chaining-example">
@@ -817,14 +817,14 @@ Three things to note here:
 {nbsp} +
 And finally, the juicy *part controller*:
 
-.site/parts/04-chaining-example/04-chaining-example.es6:
+.site/parts/chaining/chaining.es6:
 [source,javascript,linenums,options="nowrap"]
 ----
 const portal = require('/lib/xp/portal');
 const thymeleaf = require('/lib/thymeleaf');
 const React4xp = require('/lib/enonic/react4xp');
 
-const view = resolve("04-chaining-example.html");
+const view = resolve("chaining.html");
 
 exports.get = function(request) {
     const component = portal.getComponent();
@@ -875,7 +875,7 @@ exports.get = function(request) {
 
     ['first', 'second', 'third', 'fourth'].forEach(cardinalNum => {	<!--7-->
         const notUniqueComp = new React4xp(
-            	'site/parts/01-minimal-example/01-minimal-example'
+            	'site/parts/hello-react/hello-react'
             )
             .setId('this-is-not-unique')
             .setProps({ greetee: `${cardinalNum} repeated thing`});
@@ -887,7 +887,7 @@ exports.get = function(request) {
 
     ['first', 'second', 'third', 'fourth'].forEach(cardinalNum => {
         const uniqueComp = new React4xp(
-            	'site/parts/01-minimal-example/01-minimal-example'
+            	'site/parts/hello-react/hello-react'
             )
             .setId('this-id-is-unique').uniqueId() <!--8-->
             .setProps({ greetee: `${cardinalNum} unique thing`});
@@ -1033,10 +1033,10 @@ The few things worth confirming here:
             );
         </script>
 
-        <script src=" (...) /react4xp/site/parts/04-chaining-example/04-chaining-example.js"></script>  <!--5-->
+        <script src=" (...) /react4xp/site/parts/chaining/chaining.js"></script>  <!--5-->
         <script defer>
             React4xp.CLIENT.render(
-                React4xp['site/parts/04-chaining-example/04-chaining-example'],
+                React4xp['site/parts/chaining/chaining'],
                 "another-target-container",
                 {
                     "first": "No click ME!",
@@ -1047,7 +1047,7 @@ The few things worth confirming here:
         </script>
         <script defer>
             React4xp.CLIENT.hydrate(
-                React4xp['site/parts/04-chaining-example/04-chaining-example'],
+                React4xp['site/parts/chaining/chaining'],
                 "a-third-container-doesnt-exist-but-will-be-generated",
                 {
                     "first": "Here I am.",
@@ -1057,10 +1057,10 @@ The few things worth confirming here:
             );
         </script>
 
-        <script src=" (...) /react4xp/site/parts/01-minimal-example/01-minimal-example.js"></script> <!--5-->
+        <script src=" (...) /react4xp/site/parts/hello-react/hello-react.js"></script> <!--5-->
         <script defer>
             React4xp.CLIENT.hydrate(
-                React4xp['site/parts/01-minimal-example/01-minimal-example'], <!--3-->
+                React4xp['site/parts/hello-react/hello-react'], <!--3-->
                 "this-is-not-unique",
                 {
                     "greetee": "first repeated thing",
@@ -1070,7 +1070,7 @@ The few things worth confirming here:
         </script>
         <script defer>
             React4xp.CLIENT.hydrate(
-                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                React4xp['site/parts/hello-react/hello-react'],
                 "this-is-not-unique",
                 {
                     "greetee": "second repeated thing",
@@ -1080,7 +1080,7 @@ The few things worth confirming here:
         </script>
         <script defer>
             React4xp.CLIENT.hydrate(
-                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                React4xp['site/parts/hello-react/hello-react'],
                 "this-is-not-unique",
                 {
                     "greetee": "third repeated thing",
@@ -1090,7 +1090,7 @@ The few things worth confirming here:
         </script>
         <script defer>
             React4xp.CLIENT.hydrate(
-                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                React4xp['site/parts/hello-react/hello-react'],
                 "this-is-not-unique",
                 {
                     "greetee": "fourth repeated thing",
@@ -1100,7 +1100,7 @@ The few things worth confirming here:
         </script>
         <script defer>
             React4xp.CLIENT.hydrate(
-                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                React4xp['site/parts/hello-react/hello-react'],
                 "this-id-is-unique_82264525",
                 {
                     "greetee": "first unique thing",
@@ -1110,7 +1110,7 @@ The few things worth confirming here:
         </script>
         <script defer>
             React4xp.CLIENT.hydrate(
-                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                React4xp['site/parts/hello-react/hello-react'],
                 "this-id-is-unique_92592361",
                 {
                     "greetee": "second unique thing",
@@ -1120,7 +1120,7 @@ The few things worth confirming here:
         </script>
         <script defer>
             React4xp.CLIENT.hydrate(
-                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                React4xp['site/parts/hello-react/hello-react'],
                 "this-id-is-unique_73808051",
                 {
                     "greetee": "third unique thing",
@@ -1130,7 +1130,7 @@ The few things worth confirming here:
         </script>
         <script defer>
             React4xp.CLIENT.hydrate(
-                React4xp['site/parts/01-minimal-example/01-minimal-example'],
+                React4xp['site/parts/hello-react/hello-react'],
                 "this-id-is-unique_54219185",
                 {
                     "greetee": "fourth unique thing",
@@ -1156,4 +1156,4 @@ Just confirming what you surely guessed would happen:
 
 == Need to go deeper?
 
-Thats _most_ of what React4XP offers. For more technical details, some corner-case features, adaptability and more complex functionality, you can take a look at link:#[the API overview] or the link:#[React4XP library documentation].
+Thats _most_ of what React4XP offers. For more technical details, some corner-case features, adaptability and more complex functionality, we will shortly release on the Enonic pages a full API overview and other in-depth documentation for the library and build setup.
