@@ -125,9 +125,9 @@ TIP: You can copy/paste the code examples into the starter, or download the exam
 {nbsp} +
 {nbsp} +
 
-=== 1: Hello World (entries, server-side rendering by default)
+=== 1: Hello React (entries, server-side rendering by default)
 
-Let's make a simple XP part that contains a react component: `hello-react`
+Let's make a simple XP part that displays "Hello World", using a react component: `hello-react`.
 
 .Files involved:
 [source,files]
@@ -148,7 +148,7 @@ Add a *part definition*. It doesn't need anything special, just XP boilerplate:
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
-  <display-name>01 - Minimal Example</display-name>
+  <display-name>Hello React</display-name>
   <description>Simple example with server-side rendering by default</description>
   <form />
 </part>
@@ -270,9 +270,9 @@ We only added the `greetee` prop in the controller. The other one, `react4xpId`,
 {nbsp} +
 {nbsp} +
 
-=== 2: Parameters (jsxPath, client-side rendering, target body, editorial props)
+=== 2: Client-side rendering (parameters, jsxPath, target body, editorial props)
 
-In this example we'll create another part, similar to link:#_1_hello_world_entries_server_side_rendering_by_default[the first example], but with these variations:
+In this example we'll create another part, similar to link:#_1_hello_react_entries_server_side_rendering_by_default[the first example], but with these variations:
 
 - Add optional parameters to the rendering,
   * ...with a `clientRender` flag, turning the entire output into client-side React rendering.
@@ -303,7 +303,7 @@ site/parts/
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
-	<display-name>02 - ClientRender Example</display-name>
+	<display-name>Client Rendering</display-name>
     <description>Client-side rendered react component</description>
 	<form>
         <input name="greetee" type="TextLine">
@@ -328,7 +328,7 @@ site/parts/
 </div>
 ----
 
-TIP: We've hardcoded the ID here and in the controller for clarity. The best practice however, would be to pass it to thymeleaf through the model - see link:#_3_react4xp_objects_alternative_syntax_manual_flow_control_the_entries_folder[example #3].
+TIP: We've hardcoded the ID here and in the controller for clarity. The best practice however, would be to pass it to thymeleaf through the model - see link:#_3_custom_flow_react4xp_objects_syntax_manual_control_the_entries_folder[example #3].
 
 Moving on to *the part controller*, where the React4xp stuff happens:
 
@@ -445,7 +445,7 @@ Most notable differences from the first example:
 {nbsp} +
 {nbsp} +
 
-=== 3: React4xp objects (alternative syntax, manual flow control, the _entries folder)
+=== 3: Custom flow (React4xp objects syntax, manual control, the _entries folder)
 
 In this example we won't use `.render`. Instead, we'll look at a more direct syntax that gives you better control and opportunities for logic steps when you handle the entry.
 
@@ -478,8 +478,8 @@ site/parts/custom-flow/
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
-  <display-name>03 - CustomFlow Example</display-name>
-  <description>AKA. The Color Thing</description>
+  <display-name>Custom Flow</display-name>
+  <description>React4xp object syntax, and more</description>
   <form>
     <input name="color" type="TextLine">
       <label>What's the color of the thing?</label>
@@ -646,7 +646,7 @@ Note the random but matching ID (_uniqueId_) of the target container and in the 
 {nbsp} +
 {nbsp} +
 
-=== 4: Multiple entries (chaining, nesting, chunks)
+=== 4: Chaining (multiple entries, nesting, chunks)
 
 Demonstrating some final features:
 
@@ -791,7 +791,7 @@ Three things to note here:
 [source,xml,linenums,options="nowrap"]
 ----
 <part>
-  <display-name>04 - Chaining Example</display-name>
+  <display-name>Chaining</display-name>
   <description>Multiple react components, chaining, nesting, hydration</description>
   <form />
 </part>
@@ -931,7 +931,7 @@ exports.get = function(request) {
 ====
 In this example we're making a new React4xp object for each rendering. An object can in principle be re-rendered, *but rendering a body or pageContribution will lock the ID* of the object.
 
-In other words: we can use an _entry_ multiple times targeting different container elements by using different React4XP objects. And we can render the same _React4XP object_ into the same container multiple times (if we should need to). But *trying to change the ID and target element will throw an error after an object's first rendering.*
+In other words: we can use an _entry_ multiple times target1ing different container elements by using different React4XP objects. And we can render the same _React4XP object_ into the same container multiple times (if we should need to). But *trying to change the ID and target element will throw an error after an object's first rendering.*
 ====
 
 *Enough already - let's do this!*
