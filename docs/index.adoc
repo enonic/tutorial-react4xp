@@ -65,16 +65,25 @@ src/
         _entries/ <!--4-->
           REPLACE_ME.jsx <!--5-->
       site/
-        parts/ <!--4-->
-        pages/ <!--4-->
-        REPLACE_ME.jsx <!--5-->
+        pages/
+            default/ <!--6-->
+              default.es6
+              default.html
+              default.xml
+        parts/
+          hello-react/ <!--7-->
+            hello-react.es6
+            hello-react.jsx
+            hello-react.xml
 ----
 
 <1> The gradle files are used to set up the build system: the *lib-react4xp library* and some building tasks,
 <2> `package.json` sets up NPM import of some packages that React4XP and the build process need,
 <3> Webpack will look for your React-specific JS and JSX source files under the `react4xp/` folder.
 <4> You can add your own subfolder structure under `/react4xp/`, but note that `react4xp/_entries/` is a reserved, "magic" name. This folder is where you put *"entries"* - the source files that will be accessible to use in the XP controllers as in the examples. It's also possible to put entries (with `.JSX`-extension) along with XP components (e.g. in `/site/parts` or `/pages`).
-<5> Two `REPLACE_ME.jsx` files under `react4xp/_entries/` and `site/`. Webpack needs these empty placeholders here, you can remove each of them when you've added one or more React source files under those folders.
+<5> Webpack needs _something_ in its focus folders to avoid halting the build process, so `REPLACE_ME.jsx` is just an empty placeholder. You can remove it when you've added one or more React source files under here.
+<6> For convenience, a bare-bone page controller is included with the starter...
+<7> ...along with the first example from this tutorial.
 
 {nbsp} +
 
@@ -154,7 +163,7 @@ Add a *part definition*. It doesn't need anything special, just XP boilerplate:
 </part>
 ----
 
-Now for *the React component* itself - _the entry_:
+Now for *the React component* itself:
 
 .hello-react.jsx
 [source,javascript,linenums,options="nowrap"]
@@ -164,18 +173,22 @@ import React from 'react';
 export default (props) => <p>Hello {props.greetee}!</p>;
 ----
 
-[NOTE]
+It takes a `greetee` prop and greets it with a booming "Hello"! This is our first example of an _Entry_:
+
 ===== Entries
+
 *_Entries_ in React4XP are the React components that can be accessed by React4XP*. They are just any standard JSX file, as long as it:
 
-- default-exports a function that returns a React element, and
-- is placed either under the folder `/react4xp/_entries`, or like in this example: in a part or page folder under `site/`.
+- default-exports a function that takes an optional `props` parameter and returns a React element,
 
-The returned function can take an optional `props` object parameter. Our entry will receive a `greetee` prop and greet it with a booming _Hello_.
+- is placed either under the folder `/react4xp/_entries`, or in a part or page folder under `site/`.
+
+As long as this is done, they are automatically handled by React4XP and can be easily used in XP controllers:
+
 
 {nbsp} +
 
-Now moving on, make the *part controller* that uses React4XP to render the entry:
+The *part controller* uses React4XP to render the entry:
 
 .hello-react.es6:
 [source,javascript,linenums,options="nowrap"]
