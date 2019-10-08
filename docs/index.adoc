@@ -937,7 +937,6 @@ In other words: we can use an _entry_ multiple times target1ing different contai
 
 === Output
 
-////
 
 Add this part the same way as in the previous examples and look at it in the Preview - you should see this:
 
@@ -1142,7 +1141,6 @@ The few things worth confirming here:
 
 ----
 
-////
 
 Just confirming what you surely guessed would happen:
 
