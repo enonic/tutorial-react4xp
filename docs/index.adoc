@@ -494,8 +494,6 @@ export default (props) =>
   </div>;
 ----
 
-////
-
 
 
 *The Thymeleaf view* receives the ID of the target container element from Thymeleaf:
@@ -508,6 +506,8 @@ export default (props) =>
     <div data-th-id="${targetId}"></div>
 </div>
 ----
+
+////
 
 
 
