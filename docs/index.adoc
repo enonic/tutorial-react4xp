@@ -428,9 +428,8 @@ Most notable differences from the first example:
 <2> The imported entry is still the same as in the previous example. This is the compiled version of the JSX component we pointed to with `jsxPath` in the controller.
 <3> Instead of `.hydrate`, we're calling `.render`. Our react component is rendered and inserted into the `"serverside-example-container"` element _by the browser_. `React4xp.CLIENT.render` has the same signature as `React4xp.CLIENT.hydrate`: `(entryJsxPath, targetElementId, props)`.
 
-////
 
-=== 3: Custom flow
+== 3: Custom flow
 
 In this example we won't use `.render`.
 Instead, we'll look at a more direct syntax that gives you better control and opportunities for logic steps when you handle the entry.
@@ -457,7 +456,7 @@ site/parts/custom-flow/
 
 
 
-==== Code
+=== Code
 
 *The part definition* now defines some other editorial data: `color`.
 
@@ -547,9 +546,10 @@ exports.get = function(request) {
             undefined
     }
 };
-
-
 ----
+
+////
+
 
 *Some explanations:*
 
@@ -580,7 +580,7 @@ The `clientRender` parameter *should match between the two rendering functions* 
 
 
 
-==== Output
+=== Output
 
 Like before, open Enonic XP Content Studio, add the new part to some content, select and edit it and change the Color of the Thing, for example to "blue".
 
