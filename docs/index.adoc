@@ -8,12 +8,10 @@ This tutorial will show you step-by-step how to build XP sites and apps with Rea
 
 [NOTE]
 ====
-This is _not_ a tutorial for learning React in itself, or how to get started using Enonic XP. For that, many excellent guides exist already, see for example https://reactjs.org/tutorial/tutorial.html[the official intro to React] or https://developer.enonic.com/start[the Enonic XP developer portal].
-
-Being a familiar with https://webpack.js.org/guides/getting-started/[webpack] isn't strictly necessary, but might make the structure make sense.
+This documentation expects basic knowledge of React, XP and Webpack.
+Check out https://reactjs.org/tutorial/tutorial.html[the official intro to React], https://developer.enonic.com/start[the Enonic XP developer portal].
+and the https://webpack.js.org/guides/getting-started/[webpack documentation] for more info.
 ====
-
-{nbsp} +
 
 == Introduction
 
@@ -27,10 +25,6 @@ During this exercise you will:
 - see how to point the controller to the React components - and where to put them in your project source,
 - dig a little deeper into ways of controlling the rendering,
 
-
-{nbsp} +
-{nbsp} +
-{nbsp} +
 
 == Create project
 
@@ -98,9 +92,6 @@ These examples will focus on *React4XP*, which comes with the starter. React4XP 
 
 We are currently in the process of finishing up the in-depth documentation for the library, its API, and the build setup. It will be released on the Enonic website before long.
 
-{nbsp} +
-{nbsp} +
-{nbsp} +
 
 == Build and Deploy
 
@@ -118,11 +109,9 @@ To verify that your app started successfully, you should find an entry similar t
 ====
 
 
-{nbsp} +
-{nbsp} +
-{nbsp} +
-
 == Examples
+
+////
 
 These examples are incremental: the later, advanced examples are clearer if you've seen the previous ones.
 
@@ -130,9 +119,6 @@ TIP: The example code tries to speak for itself. If something isn't clear, there
 
 TIP: You can copy/paste the code examples into the starter, or download the examples along with everything needed to run, by using git and checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp].
 
-
-{nbsp} +
-{nbsp} +
 
 === 1: Hello React (entries, server-side rendering by default)
 
@@ -1164,8 +1150,8 @@ Just confirming what you surely guessed would happen:
 <4> React4xp automatically traced the dependency to `myChunk.<hash>.js` and added this import to the page contributions because that's where `BuilderClicker` comes from.
 <5> Although several of the generated assets are _used_ more than once, the page contributions are trimmed for duplicates so each of them are only _downloaded to the client_ once.
 
-{nbsp} +
-{nbsp} +
+
+////
 
 == Need to go deeper?
 
