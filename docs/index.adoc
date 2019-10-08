@@ -681,10 +681,9 @@ They are important in two ways, we'll see how in a moment.
 
 The first entry:
 
-////
 
 .react4xp/_entries/mySubfolder/BuilderClickerEntry.jsx:
-[source,javascript]
+[source,JavaScript]
 ----
 import React from 'react';
 
@@ -699,6 +698,7 @@ Some repetition from before: remember how *JSX files below `react4xp/_entries` w
 
 It's functionally pretty slim, it doesn't do much except import another React component, `react4xp/myChunk/BuilderClicker` and pass the props down to it. Since `BuilderClicker` is not under `react4xp/_entries`, it's not an entry and can't be used by React4XP. Which is why it needs an entry like this.
 
+////
 
 
 *A slightly heavier, non-entry React component:*
