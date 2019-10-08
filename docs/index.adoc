@@ -261,7 +261,7 @@ Curious about what happened here? *View the page source code in the browser* to 
 We only added the `greetee` prop in the controller. The other one, `react4xpId`, is the unique ID of the component, same as the container element ID. It's always added as a prop for each entry, conveniently helping to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
 ====
 
-=== 2: Client-side rendering (parameters, jsxPath, target body, editorial props)
+=== 2: Client-side rendering
 
 In this example we'll create another part, similar to link:#_1_hello_react_entries_server_side_rendering_by_default[the first example], but with these variations:
 
@@ -432,21 +432,19 @@ Most notable differences from the first example:
 <3> Instead of `.hydrate`, we're calling `.render`. Our react component is rendered and inserted into the `"serverside-example-container"` element _by the browser_. `React4xp.CLIENT.render` has the same signature as `React4xp.CLIENT.hydrate`: `(entryJsxPath, targetElementId, props)`.
 
 
+=== 3: Custom flow
 
-////
+In this example we won't use `.render`.
+Instead, we'll look at a more direct syntax that gives you better control and opportunities for logic steps when you handle the entry.
 
-
-=== 3: Custom flow (React4xp objects syntax, manual control, the _entries folder)
-
-In this example we won't use `.render`. Instead, we'll look at a more direct syntax that gives you better control and opportunities for logic steps when you handle the entry.
-
-We'll construct *a data-holding React4xp object* from an entry, manipulate it a little, and use its built-in methods to render the `body` and the `pageContributions` separately.
+We'll construct *a data-holding React4xp object* from an entry, manipulate it a little,
+and use its built-in methods to render the `body` and the `pageContributions` separately.
 
 Other features demonstrated:
 
-- The target container ID is inserted into `body` by Thymeleaf, which gets it from the data-holding object,,
-- Using an entry outside of XP's `/site/` structure, in the base directory `/react4xp/_entries`,
-- Making some raw XP page contributions before rendering, with a script with inserted editorial data. Then passing that `pageContributions` object through `.renderPageContributions`, adding it to the React4XP page contributions.
+- The target container ID is inserted into `body` by Thymeleaf, which gets it from the data-holding object
+- Using an entry outside of XP's `/site/` structure, in the base directory `/react4xp/_entries`
+- Making some raw XP page contributions before rendering, with a script with inserted editorial data. Then passing that `pageContributions` object through `.renderPageContributions`, adding it to the React4XP page contributions
 
 .Files involved:
 [source,files]
@@ -635,9 +633,11 @@ image::the-blue-thing.png["Rendered preview looks the same as in Content Studio,
 Note the random but matching ID (_uniqueId_) of the target container and in the `React4xp.CLIENT.hydrate` call.
 
 
+////
 
 
-=== 4: Chaining (multiple entries, nesting, chunks)
+
+=== 4: Chaining
 
 Demonstrating some final features:
 
