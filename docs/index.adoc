@@ -698,8 +698,6 @@ Some repetition from before: remember how *JSX files below `react4xp/_entries` w
 
 It's functionally pretty slim, it doesn't do much except import another React component, `react4xp/myChunk/BuilderClicker` and pass the props down to it. Since `BuilderClicker` is not under `react4xp/_entries`, it's not an entry and can't be used by React4XP. Which is why it needs an entry like this.
 
-////
-
 
 *A slightly heavier, non-entry React component:*
 
@@ -739,11 +737,17 @@ class BuilderClicker extends React.Component {
 export default (props) => <BuilderClicker {...props} />;
 ----
 
+
+
 `BuilderClicker` displays two texts in one line, and builds more by doubling each of the texts whenever they are clicked in the browser.
 
 This is a _non-entry_ React component, that will be imported by several of the entries in this example (`BuilderClickerEntry` is one of them). Because of its source file location, `BuilderClicker` will be compiled into a highly reuseable, optimized and auto-handled chunk called `myChunk`:
 
-===== Chunks:
+==== Chunks:
+
+////
+
+
 *JSX files that are _not_ under `site/` or `react4xp/_entries` won't be compiled into entries*. They don't have a jsxPath, and *need to be imported by an entry* to be used in React4XP (or to be precise: they must be part of an import tree with an entry on top).
 
 *Everything that's imported from files in other subfolders below `react4xp/` will be compiled into chunks*. These are "sub-library" code bundles with the same name as the subfolder. They are *optimized* for repeated loading and runtime import, and cached for reuse, with a cache-busting content hash added to the file name.
