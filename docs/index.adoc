@@ -482,6 +482,7 @@ site/parts/custom-flow/
 
 *The react component* is inline-styled with the color it gets from the `props`:
 
+////
 .ColorThing.jsx:
 [source,JavaScript]
 ----
@@ -494,7 +495,7 @@ export default (props) =>
   </div>;
 ----
 
-
+////
 
 *The Thymeleaf view* receives the ID of the target container element from Thymeleaf:
 
@@ -513,6 +514,7 @@ export default (props) =>
 
 Finally, the controller:
 
+////
 
 .custom-flow.es6
 [source,JavaScript]
