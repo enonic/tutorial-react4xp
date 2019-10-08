@@ -429,6 +429,9 @@ Most notable differences from the first example:
 <3> Instead of `.hydrate`, we're calling `.render`. Our react component is rendered and inserted into the `"serverside-example-container"` element _by the browser_. `React4xp.CLIENT.render` has the same signature as `React4xp.CLIENT.hydrate`: `(entryJsxPath, targetElementId, props)`.
 
 
+
+
+
 == 3: Custom flow
 
 In this example we won't use `.render`.
@@ -476,8 +479,6 @@ site/parts/custom-flow/
 </part>
 ----
 
-////
-
 
 *The react component* is inline-styled with the color it gets from the `props`:
 
@@ -492,6 +493,10 @@ export default (props) =>
     <p style={{color: props.color}}>Hey, I'm pretty {props.color}!</p>
   </div>;
 ----
+
+////
+
+
 
 *The Thymeleaf view* receives the ID of the target container element from Thymeleaf:
 
