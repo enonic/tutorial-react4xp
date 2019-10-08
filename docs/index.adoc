@@ -476,7 +476,7 @@ site/parts/custom-flow/
 </part>
 ----
 
-
+////
 *The react component* is inline-styled with the color it gets from the `props`:
 
 .ColorThing.jsx:
@@ -676,6 +676,7 @@ They are important in two ways, we'll see how in a moment.
 
 ==== Code
 
+////
 *The first entry:*
 
 .react4xp/_entries/mySubfolder/BuilderClickerEntry.jsx:
