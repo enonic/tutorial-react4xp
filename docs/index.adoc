@@ -812,7 +812,6 @@ Three things to note here:
 
 And finally, the juicy part controller:
 
-////
 
 .site/parts/chaining/chaining.es6:
 [source,javascript,linenums,options="nowrap"]
@@ -904,6 +903,7 @@ exports.get = function(request) {
 
 ----
 
+
 *Some details and explanations:*
 
 <1> *Content Studion and client-side rendering/hydration:* Just like we did in the previous example, it's a good idea to respond to XP's viewing mode: are the react components being displayed inside Content Studio (request.mode is 'edit' or 'inline')? If so, the client-side JS of Content  Studio may clash with react's JS. We're making a boolean `clientRender` for common control of all the entries in this part. This allows client-side rendering and hydration only outside Content Studio, and makes React4xp render static and un-hydrated HTML visualizations inside Content Studio - giving a visualization everywhere but activation only outside of Content Studio. Repetition: the `React4xp.render` shorthand function does all this automatically, if you prefer that.
@@ -936,6 +936,8 @@ In other words: we can use an _entry_ multiple times target1ing different contai
 
 
 === Output
+
+////
 
 Add this part the same way as in the previous examples and look at it in the Preview - you should see this:
 
