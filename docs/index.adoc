@@ -477,8 +477,6 @@ site/parts/custom-flow/
 ----
 
 
-////
-
 *The react component* is inline-styled with the color it gets from the `props`:
 
 .ColorThing.jsx:
@@ -506,7 +504,7 @@ export default (props) =>
 
 Finally, *the controller*:
 
-.custom-flow.es6:
+.custom-flow.es6
 [source,JavaScript]
 ----
 const portal = require('/lib/xp/portal');
@@ -550,6 +548,7 @@ exports.get = function(request) {
 };
 ----
 
+////
 
 
 *Some explanations:*
