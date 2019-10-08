@@ -495,7 +495,7 @@ export default (props) =>
 ----
 
 
-////
+
 *The Thymeleaf view* receives the ID of the target container element from Thymeleaf:
 
 .custom-flow.html
@@ -507,8 +507,8 @@ export default (props) =>
 </div>
 ----
 
-////
 
+////
 
 
 Finally, the controller:
@@ -517,8 +517,48 @@ Finally, the controller:
 .custom-flow.es6
 [source,JavaScript]
 ----
+const portal = require('/lib/xp/portal');
+const React4xp = require('/lib/enonic/react4xp');
+const thymeleaf = require('/lib/thymeleaf');
 
+const view = resolve('custom-flow.html');
+
+exports.get = function(request) {
+    const component = portal.getComponent();
+
+    const reactObj = new React4xp('ColorThing'); <!--1-->
+
+    reactObj
+        .setProps({ color: component.config.color })
+        .uniqueId(); <!--2-->
+
+    const model = {
+        targetId: reactObj.react4xpId <!--3-->
+    };
+    const preRenderedBody = thymeleaf.render(view, model);
+
+    const preExistingPageContributions = {
+        bodyEnd: `<script>
+        	console.log('Okay, rendered the ${reactObj.props.color} thing.');
+        		</script>`
+    }; <!--3-->
+
+    return { <!--4-->
+
+        body: reactObj.renderBody({
+            body: preRenderedBody, <!--5-->
+        }),
+
+        pageContributions: (request.mode === 'live' || request.mode === 'preview') ? <!--6-->
+            reactObj.renderPageContributions({ <!--7-->
+                pageContributions: preExistingPageContributions
+            }) :
+            undefined
+    }
+};
 ----
+
+////
 
 <1> Constructing the data-holding React4XP object `reactObj`. The constructor takes *one mandatory argument*: an entry reference. Just like the first argument in `.render`, the entry reference can be a jsxPath OR an XP component object. Here it's a jsxPath. So why is `ColorThing`, and _only_ that, the jsxPath to `ColorThing.jsx`? Because the JSX file is at the root level of the React4XP _entries base folder_: `src/main/resources/react4xp/_entries`.
 
