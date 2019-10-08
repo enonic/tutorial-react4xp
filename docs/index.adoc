@@ -640,7 +640,6 @@ Note the random but matching ID (_uniqueId_) of the target container and in the 
 
 == 4: Chaining
 
-////
 
 Demonstrating some final features:
 
@@ -680,7 +679,9 @@ They are important in two ways, we'll see how in a moment.
 
 === Code
 
-*The first entry:*
+The first entry:
+
+////
 
 .react4xp/_entries/mySubfolder/BuilderClickerEntry.jsx:
 [source,javascript]
