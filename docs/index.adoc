@@ -745,8 +745,6 @@ This is a _non-entry_ React component, that will be imported by several of the e
 
 ==== Chunks:
 
-////
-
 
 *JSX files that are _not_ under `site/` or `react4xp/_entries` won't be compiled into entries*. They don't have a jsxPath, and *need to be imported by an entry* to be used in React4XP (or to be precise: they must be part of an import tree with an entry on top).
 
@@ -779,6 +777,8 @@ Three things to note here:
 - An entry can import and nest another entry just fine (if you should ever need to),
 - The same React component, `BuilderClicker`, is imported from its chunk more than once in the same part (but only loaded once in the client),
 - The two instances of it are functional and independent in the client. The fact that it's imported into the part through two different entries doesn't matter for this - we'll show this by using _this_ entry twice in the controller.
+
+////
 
 
 
