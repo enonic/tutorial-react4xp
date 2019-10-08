@@ -792,9 +792,6 @@ Three things to note here:
 </part>
 ----
 
-////
-
-
 
 *The part view* has two target containers (with hardcoded IDs) and a horizontal divider, and clearly expects some more containers to be added:
 
@@ -813,7 +810,9 @@ Three things to note here:
 ----
 
 
-And finally, the juicy *part controller*:
+And finally, the juicy part controller:
+
+////
 
 .site/parts/chaining/chaining.es6:
 [source,javascript,linenums,options="nowrap"]
