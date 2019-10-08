@@ -634,7 +634,6 @@ image::the-blue-thing.png["Rendered preview looks the same as in Content Studio,
 Note the random but matching ID (_uniqueId_) of the target container and in the `React4xp.CLIENT.hydrate` call.
 
 
-////
 
 
 
@@ -1143,6 +1142,7 @@ Just confirming what you surely guessed would happen:
 <4> React4xp automatically traced the dependency to `myChunk.<hash>.js` and added this import to the page contributions because that's where `BuilderClicker` comes from.
 <5> Although several of the generated assets are _used_ more than once, the page contributions are trimmed for duplicates so each of them are only _downloaded to the client_ once.
 
+////
 
 
 
