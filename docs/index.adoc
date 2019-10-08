@@ -461,7 +461,7 @@ site/parts/custom-flow/
 *The part definition* now defines some other editorial data: `color`.
 
 .custom-flow.xml:
-[source,xml,linenums,options="nowrap"]
+[source,xml]
 ----
 <part>
   <display-name>Custom Flow</display-name>
@@ -476,10 +476,13 @@ site/parts/custom-flow/
 </part>
 ----
 
+
+////
+
 *The react component* is inline-styled with the color it gets from the `props`:
 
 .ColorThing.jsx:
-[source,javascript,linenums,options="nowrap"]
+[source,JavaScript]
 ----
 import React from 'react';
 
@@ -493,7 +496,7 @@ export default (props) =>
 *The Thymeleaf view* receives the ID of the target container element from Thymeleaf:
 
 .custom-flow.html
-[source,html,linenums,options="nowrap"]
+[source,html]
 ----
 <div>
     <p>Here comes the thing:</p>
@@ -504,9 +507,8 @@ export default (props) =>
 Finally, *the controller*:
 
 .custom-flow.es6:
-[source,javascript,linenums,options="nowrap"]
+[source,JavaScript]
 ----
-
 const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
 const thymeleaf = require('/lib/thymeleaf');
@@ -548,7 +550,6 @@ exports.get = function(request) {
 };
 ----
 
-////
 
 
 *Some explanations:*
