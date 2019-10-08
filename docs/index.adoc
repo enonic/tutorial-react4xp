@@ -494,9 +494,10 @@ export default (props) =>
   </div>;
 ----
 
+*The Thymeleaf view* receives the ID of the target container element from Thymeleaf:
+
 ////
 
-*The Thymeleaf view* receives the ID of the target container element from Thymeleaf:
 
 .custom-flow.html
 [source,html]
@@ -508,9 +509,7 @@ export default (props) =>
 ----
 
 
-
 Finally, the controller:
-
 
 .custom-flow.es6
 [source,JavaScript]
