@@ -495,7 +495,7 @@ export default (props) =>
 ----
 
 
-
+////
 *The Thymeleaf view* receives the ID of the target container element from Thymeleaf:
 
 .custom-flow.html
@@ -559,7 +559,7 @@ exports.get = function(request) {
 };
 ----
 
-////
+
 
 
 *Some explanations:*
