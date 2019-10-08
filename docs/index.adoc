@@ -778,14 +778,12 @@ Three things to note here:
 - The same React component, `BuilderClicker`, is imported from its chunk more than once in the same part (but only loaded once in the client),
 - The two instances of it are functional and independent in the client. The fact that it's imported into the part through two different entries doesn't matter for this - we'll show this by using _this_ entry twice in the controller.
 
-////
-
 
 
 *The part definition* doesn't define anything editorial this time:
 
 .site/parts/chaining/chaining.xml:
-[source,xml,linenums,options="nowrap"]
+[source,xml]
 ----
 <part>
   <display-name>Chaining</display-name>
@@ -793,6 +791,9 @@ Three things to note here:
   <form />
 </part>
 ----
+
+////
+
 
 
 *The part view* has two target containers (with hardcoded IDs) and a horizontal divider, and clearly expects some more containers to be added:
