@@ -431,6 +431,7 @@ Most notable differences from the first example:
 <2> The imported entry is still the same as in the previous example. This is the compiled version of the JSX component we pointed to with `jsxPath` in the controller.
 <3> Instead of `.hydrate`, we're calling `.render`. Our react component is rendered and inserted into the `"serverside-example-container"` element _by the browser_. `React4xp.CLIENT.render` has the same signature as `React4xp.CLIENT.hydrate`: `(entryJsxPath, targetElementId, props)`.
 
+////
 
 === 3: Custom flow
 
@@ -1143,7 +1144,7 @@ Just confirming what you surely guessed would happen:
 <5> Although several of the generated assets are _used_ more than once, the page contributions are trimmed for duplicates so each of them are only _downloaded to the client_ once.
 
 
-////
+
 
 == Need to go deeper?
 
