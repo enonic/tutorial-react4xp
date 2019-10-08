@@ -476,6 +476,9 @@ site/parts/custom-flow/
 </part>
 ----
 
+////
+
+
 *The react component* is inline-styled with the color it gets from the `props`:
 
 .ColorThing.jsx:
@@ -505,7 +508,6 @@ export default (props) =>
 
 Finally, *the controller*:
 
-////
 
 
 .custom-flow.es6
@@ -637,8 +639,9 @@ Note the random but matching ID (_uniqueId_) of the target container and in the 
 
 
 
-
 == 4: Chaining
+
+////
 
 Demonstrating some final features:
 
@@ -648,7 +651,6 @@ Demonstrating some final features:
   * Webpack compiles and packs code into "sub-libraries", for bundling up and optimizing code that's frequently imported by other entries (or chunks).
 
 Obviously, this is gonna be the most complex example. Also, some of the React components in this example will be _stateful and active_ on the client (this doesn't really demonstate anything - active components don't require anything special from React4XP, we've just been using passive components until now).
-
 
 
 .Files involved:
@@ -671,7 +673,6 @@ site/parts:
 Just make a mental note of a difference from before - *two added subfolders:*
 
 <1> `mySubfolder` under `react4xp/_entries/`
-
 <2> `myChunk` under `react4xp/`
 
 They are important in two ways, we'll see how in a moment.
@@ -680,7 +681,6 @@ They are important in two ways, we'll see how in a moment.
 
 === Code
 
-////
 *The first entry:*
 
 .react4xp/_entries/mySubfolder/BuilderClickerEntry.jsx:
@@ -1136,6 +1136,8 @@ The few things worth confirming here:
 
 ----
 
+////
+
 Just confirming what you surely guessed would happen:
 
 <1> While the first and third React4XP objects were server-side rendered and hydrated, the second one was client-side rendered into an empty container.
@@ -1144,7 +1146,6 @@ Just confirming what you surely guessed would happen:
 <4> React4xp automatically traced the dependency to `myChunk.<hash>.js` and added this import to the page contributions because that's where `BuilderClicker` comes from.
 <5> Although several of the generated assets are _used_ more than once, the page contributions are trimmed for duplicates so each of them are only _downloaded to the client_ once.
 
-////
 
 
 
