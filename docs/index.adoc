@@ -2,8 +2,6 @@
 :toc: right
 :imagesdir: media/
 
-image::react4xp.svg["React4xp logo" width=256px]
-
 This tutorial will show you step-by-step how to build XP sites and apps with React rendering.
 
 [NOTE]
@@ -12,6 +10,9 @@ This documentation expects basic knowledge of React, XP and Webpack.
 Check out https://reactjs.org/tutorial/tutorial.html[the official intro to React], https://developer.enonic.com/start[the Enonic XP developer portal].
 and the https://webpack.js.org/guides/getting-started/[webpack documentation] for more info.
 ====
+
+image::react4xp.svg["React4xp logo" width=256px]
+
 
 == Introduction
 
