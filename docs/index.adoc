@@ -109,12 +109,9 @@ To verify that your app started successfully, you should find an entry similar t
 ====
 
 
-== Examples
+TIP: For the examples below, you can copy/paste the code examples into your project, or download the examples along with everything needed to run, by using git and checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp].
 
-
-TIP: You can copy/paste the code examples into the starter, or download the examples along with everything needed to run, by using git and checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp].
-
-=== 1: Hello React
+== 1. Hello React
 
 Let's make a simple XP part that displays "Hello World", using a react component: `hello-react`.
 
@@ -129,7 +126,7 @@ site/parts/hello-react/
 
 
 
-==== Code
+=== Code
 
 Add a *part definition*. It doesn't need anything special, just XP boilerplate:
 
@@ -155,7 +152,7 @@ export default (props) => <p>Hello {props.greetee}!</p>;
 
 It takes a `greetee` prop and greets it with a booming "Hello"! This is our first example of an _Entry_:
 
-===== Entries
+==== Entries
 
 *_Entries_ in React4XP are the React components that can be accessed by React4XP*. They are just any standard JSX file, as long as it:
 
@@ -204,7 +201,7 @@ An important difference from Thymeleaf's renderer is that `React4XP.render` gene
 
 
 
-==== Part setup, and output
+=== Part setup
 
 Let's add it to a page in Content Studio and render it:
 
@@ -218,7 +215,7 @@ Let's add it to a page in Content Studio and render it:
 image::hello-world.png["Rendering: Hello World. In fabulous Times New Roman, because a good tutorial has no irrelevant layers of complexity.", width=492px]
 
 
-
+=== Output
 
 Curious about what happened here? *View the page source code in the browser* to see what `.render` created - something like this (the number-tagged lines):
 [source,html,options="nowrap"]
@@ -261,7 +258,7 @@ Curious about what happened here? *View the page source code in the browser* to 
 We only added the `greetee` prop in the controller. The other one, `react4xpId`, is the unique ID of the component, same as the container element ID. It's always added as a prop for each entry, conveniently helping to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
 ====
 
-=== 2: Client-side rendering
+== 2: Client-side rendering
 
 In this example we'll create another part, similar to link:#_1_hello_react_entries_server_side_rendering_by_default[the first example], but with these variations:
 
@@ -286,7 +283,7 @@ site/parts/
 
 
 
-==== Code
+=== Code
 
 *The part definition* is still pretty unremarkable. Only now there's a `greetee` TextLine input field ready for some editorial text from Content Studio.
 
@@ -370,7 +367,7 @@ What's happening here?
 
 <4> Here an important concept is introduced - the _jsxPath_:
 
-===== JsxPath:
+==== JsxPath:
 *A _jsxPath_ is the name of an entry in React4xp*. Remember how we used the `component` object to refer to the entry in the first example, which is the easiest way but _only works if the entry is in the same folder and has the same name_. Here we want to access the entry (the same entry we used before) from a different part's folder - from _anywhere_ actually. JsxPaths are _name strings_, not paths relative to the controller (so avoid `../` etc).
 
 *Rules of thumb for jsxPaths:*
@@ -384,7 +381,7 @@ What's happening here?
 *Okay, enough - time to run the example!*
 
 
-==== Output
+=== Output
 
 - The new part is ready. Add it to some content in Content Studio, the same way you did in link:#_part_setup_and_output[the previous example].
 - Change the part's `greetee` field: edit the content, click and mark the "Client-side rendering example" part, and edit the "Who or what should we greet?" field on the right-side config panel. When you save it, the preview should update.
