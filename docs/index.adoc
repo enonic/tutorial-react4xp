@@ -39,7 +39,7 @@ NOTE: *Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[
 
 
 
-=== Project structure
+== Project structure
 
 If you're used to working with an https://developer.enonic.com/guides/my-first-webapp[ordinary] XP project with https://developer.enonic.com/templates/webpack[webpack], the structure will look familiar - the biggest news is the folder `react4xp/` under `resources/`.
 
@@ -82,14 +82,16 @@ src/
 
 
 
-== The React4XP library
+== React4XP
 
-These examples will focus on *React4XP*, which comes with the starter. React4XP is an XP library with a companion build setup, that:
+This starter is based on *React4XP*, which is a library and accompanying build structures that facilitate use of React in XP.
+React4XP enables you to:
 
-- makes it easy to get started with rendering React from ordinary XP controllers - making JSX look like any other templating engine,
-- is flexible enough to cover many more advanced use cases,
-- features some tricks right out of the box to conveniently cover a couple of common needs - such as isomorphic client- or serverside rendering and hydration, build flow and compilation, automated asset serving with optimization, and more
+- use JSX in server-side rendering, similar to other XP templating engines
+- supports isomorphic client- or serverside rendering and hydration,
+- use build flow and compilation with automated optimized asset serving
 - aims to be modular and tweakable, making it possible to pop the hood, pick it apart and set things up your own way. Godspeed!
+- is flexible enough to cover many more advanced use cases,
 
 
 == Build and Deploy
