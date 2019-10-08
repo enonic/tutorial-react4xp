@@ -261,9 +261,6 @@ Curious about what happened here? *View the page source code in the browser* to 
 We only added the `greetee` prop in the controller. The other one, `react4xpId`, is the unique ID of the component, same as the container element ID. It's always added as a prop for each entry, conveniently helping to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
 ====
 
-
-////
-
 === 2: Client-side rendering (parameters, jsxPath, target body, editorial props)
 
 In this example we'll create another part, similar to link:#_1_hello_react_entries_server_side_rendering_by_default[the first example], but with these variations:
@@ -436,6 +433,7 @@ Most notable differences from the first example:
 
 
 
+////
 
 
 === 3: Custom flow (React4xp objects syntax, manual control, the _entries folder)
