@@ -506,9 +506,6 @@ export default (props) =>
 </div>
 ----
 
-////
-
-
 
 Finally, the controller:
 
@@ -556,7 +553,6 @@ exports.get = function(request) {
 };
 ----
 
-////
 
 <1> Constructing the data-holding React4XP object `reactObj`. The constructor takes *one mandatory argument*: an entry reference. Just like the first argument in `.render`, the entry reference can be a jsxPath OR an XP component object. Here it's a jsxPath. So why is `ColorThing`, and _only_ that, the jsxPath to `ColorThing.jsx`? Because the JSX file is at the root level of the React4XP _entries base folder_: `src/main/resources/react4xp/_entries`.
 
