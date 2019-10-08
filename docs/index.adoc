@@ -476,7 +476,6 @@ site/parts/custom-flow/
 </part>
 ----
 
-////
 *The react component* is inline-styled with the color it gets from the `props`:
 
 .ColorThing.jsx:
@@ -502,7 +501,12 @@ export default (props) =>
 </div>
 ----
 
+
+
 Finally, *the controller*:
+
+////
+
 
 .custom-flow.es6
 [source,JavaScript]
@@ -634,7 +638,7 @@ Note the random but matching ID (_uniqueId_) of the target container and in the 
 
 
 
-=== 4: Chaining
+== 4: Chaining
 
 Demonstrating some final features:
 
@@ -674,13 +678,13 @@ They are important in two ways, we'll see how in a moment.
 
 
 
-==== Code
+=== Code
 
 ////
 *The first entry:*
 
 .react4xp/_entries/mySubfolder/BuilderClickerEntry.jsx:
-[source,javascript,linenums,options="nowrap"]
+[source,javascript]
 ----
 import React from 'react';
 
@@ -927,7 +931,7 @@ In other words: we can use an _entry_ multiple times target1ing different contai
 
 
 
-==== Output
+=== Output
 
 Add this part the same way as in the previous examples and look at it in the Preview - you should see this:
 
@@ -945,7 +949,7 @@ The few things worth confirming here:
 *The output page source* to the client is much longer now. If you want to dive into that, it would look something like this:
 
 .Huge page source:
-[source,html,linenums,options="nowrap"]
+[source,html]
 ----
 <!DOCTYPE html>
 <html>
