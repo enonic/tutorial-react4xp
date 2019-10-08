@@ -1,8 +1,8 @@
-= Starter: Build React sites in XP
+= Server side JSX with React4XP
 :toc: right
 :imagesdir: media/
 
-This tutorial will show you step-by-step how to build XP sites and apps with React rendering.
+This tutorial will show you step-by-step how to build XP sites and apps, using React rendering.
 
 [NOTE]
 ====
