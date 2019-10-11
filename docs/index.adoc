@@ -7,9 +7,11 @@ This tutorial will show you step-by-step how to build XP sites and apps, using R
 [NOTE]
 ====
 This documentation expects basic knowledge of React, XP and Webpack.
+
 * https://reactjs.org/tutorial/tutorial.html[the official intro to React]
 * https://developer.enonic.com/start[the Enonic XP developer portal].
 * https://webpack.js.org/guides/getting-started/[webpack documentation].
+
 ====
 
 image::react4xp.svg["React4xp logo" 256px]
