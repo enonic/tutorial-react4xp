@@ -44,7 +44,8 @@ NOTE: *Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[
 
 == Project structure
 
-If you're used to working with an https://developer.enonic.com/guides/my-first-webapp[ordinary] XP project with https://developer.enonic.com/templates/webpack[webpack], the structure will look familiar - the biggest news is the folder `react4xp/` under `resources/`.
+If you're used to working with a typical XP project using https://developer.enonic.com/templates/webpack[webpack], the structure will look familiar -
+the biggest news is the folder `resources/react4xp/`.
 
 TIP: This structure is just an overview, and you don't need to know it by heart to get started. For now, *just put your JSX source files under `react4xp/_entries/` or under `site/`, and you're ready to build and run.*
 
@@ -84,17 +85,16 @@ src/
 <7> ...along with the first example from this tutorial.
 
 
-
 == React4XP
 
 This starter is based on *React4XP*, which is a library and accompanying build structures that facilitate use of React in XP.
 React4XP enables you to:
 
-- use JSX in server-side rendering, similar to other XP templating engines
-- supports isomorphic client- or serverside rendering and hydration,
-- use build flow and compilation with automated optimized asset serving
-- aims to be modular and tweakable, making it possible to pop the hood, pick it apart and set things up your own way. Godspeed!
-- is flexible enough to cover many more advanced use cases,
+* use JSX in server-side rendering, similar to other XP templating engines
+* supports isomorphic client- or serverside rendering and hydration,
+* use build flow and compilation with automated optimized asset serving
+* aims to be modular and tweakable, making it possible to pop the hood, pick it apart and set things up your own way. Godspeed!
+* is flexible enough to cover many more advanced use cases,
 
 
 == Build and Deploy
@@ -112,8 +112,9 @@ To verify that your app started successfully, you should find an entry similar t
   2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully
 ====
 
-
 TIP: For the examples below, you can copy/paste the code examples into your project, or download the examples along with everything needed to run, by using git and checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp].
+
+
 
 == Hello React
 
@@ -156,16 +157,14 @@ export default (props) => <p>Hello {props.greetee}!</p>;
 
 It takes a `greetee` prop and greets it with a booming "Hello"! This is our first example of an _Entry_:
 
-==== Entries
+=== Entries
 
 *_Entries_ in React4XP are the React components that can be accessed by React4XP*. They are just any standard JSX file, as long as it:
 
-- default-exports a function that takes an optional `props` parameter and returns a React element,
+. default-exports a function that takes an optional `props` parameter and returns a React element,
+. is placed either under the folder `/react4xp/_entries`, or in a part or page folder under `site/`.
 
-- is placed either under the folder `/react4xp/_entries`, or in a part or page folder under `site/`.
-
-As long as this is done, they are automatically handled by React4XP and can be easily used in XP controllers:
-
+When done, they are automatically handled by React4XP and can be easily used in XP controllers:
 
 
 The *part controller* uses React4XP to render the entry:
@@ -186,14 +185,14 @@ exports.get = function(request) {
 
 It basically just imports `React4xp` and uses the `.render` function, similar to how you might be familiar with from Thymeleaf or other XP template engines:
 
-- The first argument is a reference to the template. In our case the template is the React4XP entry, and React4XP uses the `component` data (for the part itself) to locate the JSX file in the part's own folder (expecting the same file name as the part).
-- The second argument, `props`, is similar to the `model` argument in the Thymeleaf renderer. No big surprise: it's passed to the entry's `props`. Here is the _world_ we're about to greet.
-- The third `request` argument is necessary for a fully activated React rendering. You _can_ leave it out to render the entry as pure HTML if you like JSX as a pure templating language, but it won't be activated (https://reactjs.org/docs/react-dom.html#hydrate[hydrated]) in the browser.
+* The first argument is a reference to the template. In our case the template is the React4XP entry, and React4XP uses the `component` data (for the part itself) to locate the JSX file in the part's own folder (expecting the same file name as the part).
+* The second argument, `props`, is similar to the `model` argument in the Thymeleaf renderer. No big surprise: it's passed to the entry's `props`. Here is the _world_ we're about to greet.
+* The third `request` argument is necessary for a fully activated React rendering. You _can_ leave it out to render the entry as pure HTML if you like JSX as a pure templating language, but it won't be activated (https://reactjs.org/docs/react-dom.html#hydrate[hydrated]) in the browser.
 
 *The returned response object* from `.render` is sent straight from the controller to the client, and contains:
 
-- a `body` field with a server-side rendering (in static HTML) of the entry with the entered props,
-- and some `pageContributions` that make the client activate the React entry (containing the necessary asset links and React hydration commands).
+* a `body` field with a server-side rendering (in static HTML) of the entry with the entered props,
+* and some `pageContributions` that make the client activate the React entry (containing the necessary asset links and React hydration commands).
 
 [NOTE]
 ====
@@ -207,11 +206,11 @@ An important difference from Thymeleaf's renderer is that `React4XP.render` gene
 
 Let's add it to a page in Content Studio and render it:
 
-- Run `enonic project deploy` from your shell, start the sandbox and point your browser to `localhost:8080/admin`.
-- Log in to XP and open Content Studio.
-- Create some content (e.g. a site with the Default Page controller included with the starter, or a https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page]). Anything with a Region will do.
-- Insert the new part into the region, and select the `hello-react` part you just made.
-- Enter the preview to view the content outside of Content Studio. You should now see:
+* Run `enonic project deploy` from your shell, start the sandbox and point your browser to `localhost:8080/admin`.
+* Log in to XP and open Content Studio.
+* Create some content (e.g. a site with the Default Page controller included with the starter, or a https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page]). Anything with a Region will do.
+* Insert the new part into the region, and select the `hello-react` part you just made.
+* Enter the preview to view the content outside of Content Studio. You should now see:
 
 [.thumb]
 image::hello-world.png["Rendering: Hello World. In fabulous Times New Roman, because a good tutorial has no irrelevant layers of complexity.", width=492px]
@@ -260,16 +259,16 @@ Curious about what happened here? *View the page source code in the browser* to 
 We only added the `greetee` prop in the controller. The other one, `react4xpId`, is the unique ID of the component, same as the container element ID. It's always added as a prop for each entry, conveniently helping to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
 ====
 
+
+
 == Client-side rendering
 
-In this example we'll create another part, similar to link:#_1_hello_react_entries_server_side_rendering_by_default[the first example], but with these variations:
+In this example we'll create another part, similar to <<Hello React>>, but with these variations:
 
-- Add optional parameters to the rendering,
-  * ...with a `clientRender` flag, turning the entire output into client-side React rendering.
-- We'll render the react entry into a target container element that already exists in an HTML body,
-  * ...which comes from a Thymeleaf template _before_ the entry is rendered into it.
-- We'll use an entry that's not in the part's own folder - we'll actually reuse to the same JSX entry "hello-react" as in the first example,
-  * ...and we'll insert editorial data from Content Studio into the props.
+* *Use client side rendering* with a `clientRender` flag, turning the entire output into client-side React component.
+* *Renter into existing target element* which comes from a Thymeleaf template _before_ the entry is rendered into it.
+* *Reuse the "hello-react" template* created in the <<Hello React>> examples
+* *Insert editorial data* And use these through the props.
 
 .Files involved:
 [source,files]
@@ -287,7 +286,8 @@ site/parts/
 
 === Code
 
-*The part definition* is still pretty unremarkable. Only now there's a `greetee` TextLine input field ready for some editorial text from Content Studio.
+*The part definition* is still pretty unremarkable.
+Only now there's a `greetee` TextLine input field ready for some editorial text from Content Studio.
 
 .client-render.xml:
 [source,xml,linenums,options="nowrap"]
@@ -318,7 +318,7 @@ site/parts/
 </div>
 ----
 
-TIP: We've hardcoded the ID here and in the controller for clarity. The best practice however, would be to pass it to thymeleaf through the model - see link:#_3_custom_flow_react4xp_objects_syntax_manual_control_the_entries_folder[example #3].
+TIP: We've hardcoded the ID here and in the controller for clarity. The best practice however, would be to pass it to thymeleaf through the model - see <<Custom flow>>.
 
 Moving on to *the part controller*, where the React4xp stuff happens:
 
@@ -355,10 +355,8 @@ exports.get = function(request) {
 
 What's happening here?
 
-<1>  The HTML with the target container element is rendered,
-
+<1> The HTML with the target container element is rendered,
 <2> We get the `greetee` value from XP and insert in into the props,
-
 <3> We're adding some *parameters* as a fourth argument object to `.render`:
   * `body` is the HTML body we're inserting the React entry into,
   * `id` is setting the ID, and targeting that container element in `body`,
@@ -366,17 +364,17 @@ What's happening here?
   * `clientRender`: if this is truthy, you get old-school client-side React rendering. `.render` doesn't render the entry on the server-side, but leaves the target container unchanged and instead makes some page contributions that makes the browser build the entry into the target container.
   * There's also an optional `pageContributions` field, for adding pre-existing page contributions to the ones that `.render` generates.
 
-
 <4> Here an important concept is introduced - the _jsxPath_:
 
-==== JsxPath:
+=== JsxPath
+
 *A _jsxPath_ is the name of an entry in React4xp*. Remember how we used the `component` object to refer to the entry in the first example, which is the easiest way but _only works if the entry is in the same folder and has the same name_. Here we want to access the entry (the same entry we used before) from a different part's folder - from _anywhere_ actually. JsxPaths are _name strings_, not paths relative to the controller (so avoid `../` etc).
 
 *Rules of thumb for jsxPaths:*
 
-- If an entry file is a JSX file under `src/main/resources/site`, the jsxPath is the file path relative to `src/main/resources/` - unix-style and without file extension.
-- An entry can also be located under `src/main/resources/react4xp/_entries`, and then the jsxPath will be relative to that folder instead.
-- If you're ever unsure: all the available jsxPaths are stored in `build/resources/main/assets/react4xp/entries.json`. This file is generated by webpack during build (and shouldn't be deleted or edited).
+* If an entry file is a JSX file under `src/main/resources/site`, the jsxPath is the file path relative to `src/main/resources/` - unix-style and without file extension.
+* An entry can also be located under `src/main/resources/react4xp/_entries`, and then the jsxPath will be relative to that folder instead.
+* If you're ever unsure: all the available jsxPaths are stored in `build/resources/main/assets/react4xp/entries.json`. This file is generated by webpack during build (and shouldn't be deleted or edited).
 
 
 
@@ -384,7 +382,7 @@ What's happening here?
 
 === Setup
 
-- The new part is ready. Add it to some content in Content Studio, the same way you did in link:#_part_setup_and_output[the previous example].
+- The new part is ready. Add it to some content in Content Studio, the same way you did in <<Client-side rendering>>.
 - Change the part's `greetee` field: edit the content, click and mark the "Client-side rendering example" part, and edit the "Who or what should we greet?" field on the right-side config panel. When you save it, the preview should update.
 
 [.thumb]
@@ -444,9 +442,9 @@ and use its built-in methods to render the `body` and the `pageContributions` se
 
 Other features demonstrated:
 
-- The target container ID is inserted into `body` by Thymeleaf, which gets it from the data-holding object
-- Using an entry outside of XP's `/site/` structure, in the base directory `/react4xp/_entries`
-- Making some raw XP page contributions before rendering, with a script with inserted editorial data. Then passing that `pageContributions` object through `.renderPageContributions`, adding it to the React4XP page contributions
+* The target container ID is inserted into `body` by Thymeleaf, which gets it from the data-holding object
+* Using an entry outside of XP's `/site/` structure, in the base directory `/react4xp/_entries`
+* Making some raw XP page contributions before rendering, with a script with inserted editorial data. Then passing that `pageContributions` object through `.renderPageContributions`, adding it to the React4XP page contributions
 
 .Files involved:
 [source,files]
@@ -557,20 +555,13 @@ exports.get = function(request) {
 
 
 <1> Constructing the data-holding React4XP object `reactObj`. The constructor takes *one mandatory argument*: an entry reference. Just like the first argument in `.render`, the entry reference can be a jsxPath OR an XP component object. Here it's a jsxPath. So why is `ColorThing`, and _only_ that, the jsxPath to `ColorThing.jsx`? Because the JSX file is at the root level of the React4XP _entries base folder_: `src/main/resources/react4xp/_entries`.
-
 <2> The React4XP object has setter methods that return the object itself, so you can set any optional attributes with a chained builder pattern like in the example, or separately. The uniqueId() method forces the ID of the object and the target container element to be unique. If an object doesn't have an ID, this will be called by default when rendering (so we could have just skipped it here). The order of the setter methods doesn't matter. This example is equivalent to:
-
 	reactObj.setProps({color: component.config.color});
 	reactObj.uniqueId();
-
 <3> We can read attributes from `reactObj` before the rendering. At this point, the ID (`react4xpId`) and `props` are set in it. We read them out and injecting them into the thymeleaf model and into some random page contributions.
-
 <4> Here, `body` and `pageContributions` are rendered separately (`renderBody` and `renderPageContributions`). Remember that this is different from `.render` which does everything in one go.
-
 <5> The Thymeleaf-rendered `body` is given to `.renderBody`, which will insert react into that HTML. Again, the `body` parameter is optional - if we don't submit it `.renderBody` will just generate a target container for you, with a matching ID.
-
 <6> The other difference from `.render`: _there's no automatic selection of rendering mode here_. If we want to *avoid active client-side JS running in Content Studio's _edit_ and _inline_ modes*, we now need to do it manually: detect the viewing mode from the `request` object and just skip the pageContributions.
-
 <7> We render the necessary page contributions for activating the entry, and pass `preExistingPageContributions` through `.renderPageContributions` - just adding it to the rendered page contributions. The `pageContributions` parameter is optional.
 
 [NOTE]
@@ -593,7 +584,6 @@ image::the-blue-thing2.png["Rendered text in Content Studio is blue, and says: t
 
 
 === Output
-
 
 If we open it in Preview and look at the browser console, we also see that the little `console.log` script from the controller has picked up the `color` prop from the React4XP object:
 
@@ -633,12 +623,10 @@ image::the-blue-thing.png["Rendered preview looks the same as in Content Studio,
 </body>
 ----
 
-Note the random but matching ID (_uniqueId_) of the target container and in the `React4xp.CLIENT.hydrate` call.
-
+NOTE: the random but matching ID (_uniqueId_) of the target container and in the `React4xp.CLIENT.hydrate` call.
 
 
 == Chaining
-
 
 Demonstrating some final features:
 
@@ -675,11 +663,9 @@ Just make a mental note of a difference from before - *two added subfolders:*
 They are important in two ways, we'll see how in a moment.
 
 
-
 === Code
 
 The first entry:
-
 
 .react4xp/_entries/mySubfolder/BuilderClickerEntry.jsx:
 [source,JavaScript]
@@ -737,7 +723,6 @@ export default (props) => <BuilderClicker {...props} />;
 ----
 
 
-
 `BuilderClicker` displays two texts in one line, and builds more by doubling each of the texts whenever they are clicked in the browser.
 
 This is a _non-entry_ React component, that will be imported by several of the entries in this example (`BuilderClickerEntry` is one of them). Because of its source file location, `BuilderClicker` will be compiled into a highly reuseable, optimized and auto-handled chunk called `myChunk`:
@@ -759,7 +744,6 @@ One recommended usage - an entry as a bridge between React4xp and more heavyweig
 ====
 
 
-
 *Another entry in the part:*
 
 .site/parts/chaining/chaining.jsx:
@@ -773,10 +757,9 @@ export default (props) => <BuilderClickerEntry {...props} />;
 
 Three things to note here:
 
-- An entry can import and nest another entry just fine (if you should ever need to),
-- The same React component, `BuilderClicker`, is imported from its chunk more than once in the same part (but only loaded once in the client),
-- The two instances of it are functional and independent in the client. The fact that it's imported into the part through two different entries doesn't matter for this - we'll show this by using _this_ entry twice in the controller.
-
+* An entry can import and nest another entry just fine (if you should ever need to),
+* The same React component, `BuilderClicker`, is imported from its chunk more than once in the same part (but only loaded once in the client),
+* The two instances of it are functional and independent in the client. The fact that it's imported into the part through two different entries doesn't matter for this - we'll show this by using _this_ entry twice in the controller.
 
 
 *The part definition* doesn't define anything editorial this time:
@@ -930,10 +913,10 @@ image::chaining2.png["You clicked, Sir? I am but a humble screenshot!" width=103
 
 The few things worth confirming here:
 
-- A *many-to-many relationship*: all of the entries and React4xp objects were visualized by a single part here. And some of the entries have been used in other parts and across several React4xp objects.
-- This is but a humble screenshot, but in the actual Preview outside of Content Studio, the green rendered `BuilderClicker` instances are now *active* and respond to clicks as defined in `BuilderClicker`: clicking the first or second half of each of them doubles the clicked text (this activation happened in the `.hydrate` steps for server-side rendered entries, and in the actual rendering for client-side rendered ones).
-- The clicks and reponses are *isolated* to the instance that was actually clicked: even though they are technically the same entry `BuilderClicker`, they each have their own state. This is not because `BuilderClicker` is nested differently in them, but because their ID's are different,
-- There's only one "...repeated thing" but four "...unique thing", as explained above (point 7 and 8 in the controller code)
+* A *many-to-many relationship*: all of the entries and React4xp objects were visualized by a single part here. And some of the entries have been used in other parts and across several React4xp objects.
+* This is but a humble screenshot, but in the actual Preview outside of Content Studio, the green rendered `BuilderClicker` instances are now *active* and respond to clicks as defined in `BuilderClicker`: clicking the first or second half of each of them doubles the clicked text (this activation happened in the `.hydrate` steps for server-side rendered entries, and in the actual rendering for client-side rendered ones).
+* The clicks and reponses are *isolated* to the instance that was actually clicked: even though they are technically the same entry `BuilderClicker`, they each have their own state. This is not because `BuilderClicker` is nested differently in them, but because their ID's are different,
+* There's only one "...repeated thing" but four "...unique thing", as explained above (point 7 and 8 in the controller code)
 
 === Output
 
@@ -1135,8 +1118,6 @@ Just confirming what you surely guessed would happen:
 <3> Only one container with _"this-is-not-unique"_ was rendered for the same reason: that ID had already been inserted. So all the corresponding React4XP objects were server-side rendered into that one. This would also happen with client-side rendering! Also look further down: the client is asked to `hydrate` all four instances, which will log errors in the console since the content doesn't match.
 <4> React4xp automatically traced the dependency to `myChunk.<hash>.js` and added this import to the page contributions because that's where `BuilderClicker` comes from.
 <5> Although several of the generated assets are _used_ more than once, the page contributions are trimmed for duplicates so each of them are only _downloaded to the client_ once.
-
-
 
 
 == Need to go deeper?
