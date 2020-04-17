@@ -2,15 +2,17 @@
 :toc: right
 :imagesdir: media/
 
-This tutorial will show you step-by-step how to build XP sites and apps, using React rendering.
 
 [NOTE]
 ====
+**UPDATED {docdate}:** multiple adaptations for starter and lib version 1.0.0.
+
 This documentation expects basic knowledge of React, XP and Webpack.
 
 * https://reactjs.org/tutorial/tutorial.html[the official intro to React]
 * https://developer.enonic.com/start[the Enonic XP developer portal].
 * https://webpack.js.org/guides/getting-started/[webpack documentation].
+
 
 ====
 
@@ -19,12 +21,12 @@ image::react4xp.svg["React4xp logo" 256px]
 
 == Introduction
 
-This tutorial takes you through the basic steps of creating a React app, helping you kickstart a React4xp project of your own.
+This tutorial will show you step-by-step how to build XP sites and apps with React rendering, helping you kickstart a React4xp project of your own.
 
 During this exercise you will:
 
 - set up the starter and meet the React4xp library,
-- learn how to use it to render a basic React component from any regular XP controller - in this case a part,
+- learn how to use it to render a basic React component from any regular XP controller,
 - inject editorial data into your React component,
 - see how to point the controller to the React components - and where to put them in your project source,
 - dig a little deeper into ways of controlling the rendering,
@@ -34,74 +36,80 @@ During this exercise you will:
 
 Set up the starter project locally. With Enonic XP 7, run the following command:
 
-  enonic project create -r starter-react4xp
+[source,bash]
+----
+enonic project create -r starter-react4xp
+----
 
 Remember to create a *new XP sandbox* when completing the project wizard.
 
-NOTE: *Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[Getting started guide] to install it.
+[TIP]
+====
+*Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[Getting started guide] to install it.
 
+*Only want to inject react4xp into your own XP project?* The https://github.com/enonic/lib-react4xp/blob/master/README.md[lib-react4xp docs] have a section on how to do without the starter. But it's recommended to go through this introduction first.
+====
 
 
 == Project structure
 
-If you're used to working with a typical XP project using https://developer.enonic.com/templates/webpack[webpack], the structure will look familiar -
+If you're used to working with a typical XP project using https://developer.enonic.com/templates/webpack[webpack], the structure in your project root folder will now look familiar -
 the biggest news is the folder `resources/react4xp/`.
 
-TIP: This structure is just an overview, and you don't need to know it by heart to get started. For now, *just put your JSX source files under `react4xp/_entries/` or under `site/`, and you're ready to build and run.*
+TIP: This structure is just an overview, and you don't need to know it by heart to get started. For now, *just put your JSX source files under `react4xp/entries/` or under `site/`, and you're ready to build and run.*
 
-Your project folder should look something like this:
-
-.Selected files:
 [source,files]
 ----
 build.gradle <--1-->
-settings.gradle <--1-->
-package.json <--2-->
+gradle.properties
+settings.gradle
+package.json
+react4xp.properties <--2-->
 src/
   main/
     resources/
       react4xp/ <!--3-->
-        _entries/ <!--4-->
-          REPLACE_ME.jsx <!--5-->
+        entries/
+        shared/
       site/
         pages/
-            default/ <!--6-->
+            default/ <!--4-->
               default.es6
               default.html
               default.xml
         parts/
-          hello-react/ <!--7-->
+          hello-react/ <!--5-->
             hello-react.es6
             hello-react.jsx
             hello-react.xml
 ----
 
-<1> The gradle files are used to set up the build system: the *lib-react4xp library* and some building tasks,
-<2> `package.json` sets up NPM import of some packages that React4XP and the build process need,
-<3> Webpack will look for your React-specific JS and JSX source files under the `react4xp/` folder.
-<4> You can add your own subfolder structure under `/react4xp/`, but note that `react4xp/_entries/` is a reserved, "magic" name. This folder is where you put *"entries"* - the source files that will be accessible to use in the XP controllers as in the examples. It's also possible to put entries (with `.JSX`-extension) along with XP components (e.g. in `/site/parts` or `/pages`).
-<5> Webpack needs _something_ in its focus folders to avoid halting the build process, so `REPLACE_ME.jsx` is just an empty placeholder. You can remove it when you've added one or more React source files under here.
-<6> For convenience, a bare-bone page controller is included with the starter...
-<7> ...along with the first example from this tutorial.
+<1> A set of gradle config files and `package.json`. These define the build process and project structure, and in particular, make sure that the *lib-react4xp library* and *react4xp npm package* are installed right.
+<2> `react4xp.properties`: this is where you can tune the most common properties of the react4xp project.
+<3> The `react4xp/` folder is opt-in: it doesn't need to contain anything, but when fine-tuning the build later we'll get back to why you might find it handy to have a separate place for some of your react components. The super-short version is that the `entries\` folder can have react components that can be used by react4xp, and the have `shared\` folder can contain common components shared between entries (entries can import any other react components).
+<4> A bare-bone page controller is included with the starter - both for convenience in general, and as a sandbox for the first simple examples here,
+<5> Also a simple part with a pre-made react view, for some other examples.
 
 
 == React4XP
 
-This starter is based on *React4XP*, which is a library and accompanying build structures that facilitate use of React in XP.
-React4XP enables you to:
+This starter is based on *React4XP*, which is a library (with a companion build structure) that facilitates use of React in Enonic XP, and:
 
-* use JSX in server-side rendering, similar to other XP templating engines
+* enables you to use JSX as a templating language, similar to other XP templating engines
 * supports isomorphic client- or serverside rendering and hydration,
-* use build flow and compilation with automated optimized asset serving
-* aims to be modular and tweakable, making it possible to pop the hood, pick it apart and set things up your own way. Godspeed!
-* is flexible enough to cover many more advanced use cases,
+* handles build flow and compilation with automated optimized asset serving
+* is modular and tweakable, making it possible to pop the hood, pick it apart and set things up your own way. Godspeed!
+* is flexible enough to cover many advanced use cases,
 
 
 == Build and Deploy
 
 To build and deploy the starter app, run this command from your shell:
 
-  enonic project deploy
+[source, bash]
+----
+enonic project deploy
+----
 
 Accept starting the sandbox.
 
@@ -109,10 +117,8 @@ Accept starting the sandbox.
 ====
 To verify that your app started successfully, you should find an entry similar to this in the sandbox log:
 
-  2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully
+`2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully`
 ====
-
-TIP: For the examples below, you can copy/paste the code examples into your project, or download the examples along with everything needed to run, by using git and checking out the https://github.com/enonic/starter-react4xp/tree/examples[examples branch of starter-react4xp].
 
 
 
