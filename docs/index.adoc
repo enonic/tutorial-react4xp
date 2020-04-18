@@ -104,8 +104,6 @@ src/
 <4> A bare-bone `default` page controller is included with the starter - both for convenience in general, and as a sandbox for the first simple examples here,
 <5> Also a simple `hello-react` part with a pre-made react view, for some other examples.
 
-
-
 === Build and Deploy
 
 To build and deploy the starter app, run this command from your shell:
@@ -124,9 +122,116 @@ To verify that your app started successfully, you should find an entry similar t
 `2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully`
 ====
 
-
+Now, let's look at some usage examples - starting from the bottom:
 
 == Hello React
+
+React4xp is made to cover many ways of combining XP and react. Let's start with the simplest possible scenario: only displaying a working react component. We'll do this from a regular XP page controller we'll call _hello-react_.
+
+.Files involved:
+[source,files]
+----
+site/pages/hello-react/
+  hello-react.xml
+  hello-react.jsx
+  hello-react.es6
+----
+
+
+=== Code
+
+First, we need a *page definition* XML file. Just XP boilerplate:
+
+.hello-react.xml:
+[source,xml,linenums,options="nowrap"]
+----
+<part>
+  <display-name>Hello React</display-name>
+  <description>Super simple example</description>
+  <form />
+</part>
+----
+
+Next, we'll add the *react component*. This displays only a "Hello world" message on the screen. But in order to demonstrate that what we get is a _working react_ component (not only using JSX as an XP templating language, although you could do that too if you want), we'll add some simple functionality to it: every time you click the message, it will print a counting-down message in the console:
+
+.hello-react.jsx
+[source,javascript,linenums,options="nowrap"]
+----
+import React from 'react';
+
+let bottleCount = 99;
+const dropBottle = () => {
+    console.log(`${bottleCount} bottles of beer on the wall`);
+    bottleCount--;
+}
+
+export default (props) => <p onClick={dropBottle}>Hello world</p>;
+----
+
+One thing is mandatory for this to work, shown in the last line: the JSX file *must default-export a function* that *takes an (optional) props object* and *returns a react object*. Apart from that, you can use ordinary ES6 and import other JS and third-party stuff from node_modules in the regular way (there are a couple of caveats to this, we'll get back to that below).
+
+Finally, we'll add a bare-bone *page controller* that calls the rendering engine:
+
+.hello-react.es6:
+[source,javascript,linenums,options="nowrap"]
+----
+const portal = require('/lib/xp/portal');
+const React4xp = require('/lib/enonic/react4xp');       // // <1>
+
+exports.get = function(request) {                       // // <2>
+    const entry = portal.getComponent();                // // <3>
+    const props = null;
+
+    return React4xp.render(                             // // <4>
+        entry,
+        props,
+        request,
+        {
+            id: "react4xpApp",                          // // <5>
+            body:                                       // // <6>
+                `<html>
+                    <body>
+                        <div id="react4xpApp"></div>
+                    </body>
+                </html>`
+        }
+    );
+};
+----
+
+The essential thing here is that at the end of the `get` function, *react4xp in a single _.render_ call creates a _full_ XP response object, that makes react work.*
+
+A few more details on what's going on here:
+
+<1> In line 2, `React4xp` is imported from the library.
+<2> In line 4, we pick up the `request` data. This is important later.
+<3> In line 5, we get the XP component data. This is a simple way to point react4xp to "this XP component". In this case, the _hello-react_ page, but you can do the same thing from a part or a layout controller. The result? `React4xp.render` uses this to search in the same folder (site/pages/hello-react/) for react components with the XP component's own name: _hello-react.jsx_.
+  A react component that is used by react4xp this way is called *an entry*. We'll come back to that, and to a different way of referring to specific entries, anywhere in your code.
+<4> In line 8, the juicy bit: *the actual render call*. The rendered response from it can be returned directly from the `get` function, since `.render` creates both an HTML string `body`, and a `pageContributions` attribute with everything needed: react (and react-dom), the asset _hello-react.js_ (automatically compiled from _hello-react.jsx_, and served and optimized by react4xp), and the react code to activate the component in the client. `React4xp.render` has the following *signature*: `React4xp.render(entry, props, request, options);` - we'll get back to that later, as well as other, more detailed ways of rendering.
+<5> In line 13, an `id` attribute is set in the options object (lines 12-20). This is the id we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
+<6> In lines 14-19, we're adding an HTML string `body` option, as a base for the output. React4xp _can_ render its own HTML without this. However, react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag (such as `<!DOCTYPE html>`). So it's easiest here to just hardcode the HTML context here. But this string could just as well have come from a Thymeleaf rendering, for example. Just make sure the `id` option matches an HTML id in `body` (what happens if not? React4xp creates a target element with that ID last in the root element of `body`. Or if there's no `body`, a matching-ID `<div>` is created. Or if there's not even an `id`, a random ID is created).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Let's make a simple XP part that displays "Hello World", using a react component: `hello-react`.
 
