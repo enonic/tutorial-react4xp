@@ -272,15 +272,15 @@ We can see the whole output is actually the `body` HTML string we passed into th
 
 (URLs are shortened for readability, and because some details may vary. At my computer, the `(...your.app.service)` part actually looks like: `/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/`)
 
-<1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component.
+<1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component (at this point, only static markup).
 <2> Next, three assets are loaded into the client. These are calls to XP services (in lib-react4xp) that serve the assets (the client and the content-hashed ones are optimized by the services, for client-side caching to minimize repeated requests). Anyway, the first one is `externals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN. If you want to read more about why, or how to tweak the externals, see the link:https://www.npmjs.com/package/react4xp-runtime-externals[externals docs on NPM].
-<3> The second loaded asset is a client-wrapper, available in the browser's namespace as `React4xp.CLIENT`. You can read the link:https://www.npmjs.com/package/react4xp-runtime-client[client wrapper docs on NPM].
+<3> The second loaded asset is a client-wrapper, available in the browser's namespace as `React4xp.CLIENT`. For more, see the link:https://www.npmjs.com/package/react4xp-runtime-client[client wrapper docs on NPM].
 <4> The third asset is the compiled version of _hello-react.jsx_. React4xp used the `component` data to resolve the link:#_jsxpath[jsxPath] that locates the asset after compiling: `site/pages/hello-react/hello-react`. The jsxPath is also used when loading the asset into the the browser's namespace as `React4xp['site/pages/hello-react/hello-react']`.
-<5> Finally the trigger. The CLIENT wrapper calls link:https://www.npmjs.com/package/react4xp-runtime-client#hydrate[hydrate] to activate react in the serverside-rendered asset `React4xp['site/pages/hello-react/hello-react']` in the target container `"react4xpApp"`. We haven't added any props yet, hence the `null` argument. The final two digits are internal react4xp housekeeping, flagging some possible need for client-side postprocessing.
+<5> Finally, the trigger. The CLIENT wrapper calls link:https://www.npmjs.com/package/react4xp-runtime-client#hydrate[hydrate] to activate react in the serverside-rendered asset `React4xp['site/pages/hello-react/hello-react']` in the target container `"react4xpApp"`. Now the `dropBottle` function works! We haven't added any props yet, hence the `null` argument. The final two digits are internal react4xp housekeeping, flagging some possible need for client-side postprocessing.
 
 == React4xp.render
 
-For context before we move on with the example, here's a closer look at the `.render` call from link:#_code[the example above]:
+For context before we move on with the example, here's a closer look at the `.render` call from the ES6 controller in link:#_code[the example above]:
 
 ====
 React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. Basically, take any HTML string and pass it through `.render` as a `body` option, and react4xp will insert the react component into the HTML string and add any necessary page contributions to make it all work.
