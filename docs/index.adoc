@@ -137,6 +137,8 @@ site/pages/hello-react/
   hello-react.es6
 ----
 
+These files are not included in the starter - just use your copy/paste skills and remember that `hello-react` must be identical between file names and folder name.
+
 === Code
 
 First, we need a *page definition* XML file. Just XP boilerplate:
@@ -213,9 +215,72 @@ What's going on in the controller?
 <5> In line 13, the `id` attribute _"react4xpApp"_ is set in the *options* argument of `.render` (lines 12-20). This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
 <6> In lines 14-19, we're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag (such as `<!DOCTYPE html>`).
 
-=== React4xp.render
 
-For context before we move on with the example, here's a closer look at the `.render` call:
+=== Setup and first render
+
+If you've added those 3 files, let's get this rendered!
+
+* Compile the project (`enonic project deploy` in a terminal from root) and start the sandbox (`enonic sandbox start`),
+* Navigate your browser to `localhost:8080/admin`. Log in to XP and open Content Studio (if you haven't already, you'll need to link:https://market.enonic.com/vendors/enonic/content-studio[install Content Studio] in XP).
+* Create a new site and edit it. Use the new _Hello-react_ page controller, store that change.
+* Enter the preview to view the content outside of Content Studio.
+
+You should now see:
+
+[.thumb]
+image::hello-world.png["Rendering: Hello World. In fabulous Times New Roman, because no good tutorial should have irrelevant complexity, and this is a good tutorial.", width=492px]
+
+And if you open the browser console, you can click that hello-world message and watch the `dropBottle` function from _hello-react.jsx_ drop bottles off the wall one by one.
+
+[TIP]
+====
+You probably noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the Nashorn server-side rendering engine warming up. It reads and caches the basics - notably, some necessary polyfilling, react and react-dom. We're looking into mitigating this delay in the future, but for now, this is nice to know:
+
+*This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app. Setting up a continuous build with XP devmode instead, helps. For this starter, here's how:
+
+`enonic project deploy && gradlew react4xp_components compileXP -t` in one terminal (from project root), and
+
+`enonic sandbox start <yourSandBoxName> --dev` in another.
+====
+
+
+=== Output
+
+Curious about what happened here? Open the page source code in the browser to look at the preview page. Here's what `.render` created:
+[source,html,options="nowrap"]
+----
+<html>
+<body>
+  <div id="react4xpApp">
+    <p data-reactroot="">Hello world</p>      <!--1-->
+  </div>
+
+  <script src="(...your.app.service)/react4xp/externals.489d97cdf.js"></script>      <!--2-->
+  <script src="(...your.app.service)/react4xp-client/"></script>                     <!--3-->
+  <script src="(...your.app.service)/react4xp/site/pages/hello-react/hello-react.js"></script> <!--4-->
+  <script defer>
+    React4xp.CLIENT.hydrate(                              // <5>
+        React4xp['site/pages/hello-react/hello-react'],
+        "react4xpApp",
+        null,
+        1, 0);
+  </script>
+</body>
+</html>
+----
+We can see the whole output is actually the `body` HTML string we passed into the `React4xp.render` call in the controller - but *a lot has been inserted*.
+
+(URLs are shortened for readability, and because some details may vary. At my computer, the `(...your.app.service)` part actually looks like: `/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/`)
+
+<1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component.
+<2> Next, three assets are loaded into the client. These are calls to XP services (in lib-react4xp) that serve the assets (the client and the content-hashed ones are optimized by the services, for client-side caching to minimize repeated requests). Anyway, the first one is `externals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN. If you want to read more about why, or how to tweak the externals, see the link:https://www.npmjs.com/package/react4xp-runtime-externals[externals docs on NPM].
+<3> The second loaded asset is a client-wrapper, available in the browser's namespace as `React4xp.CLIENT`. You can read the link:https://www.npmjs.com/package/react4xp-runtime-client[client wrapper docs on NPM].
+<4> The third asset is the compiled version of _hello-react.jsx_. React4xp used the `component` data to resolve the link:#_jsxpath[jsxPath] that locates the asset after compiling: `site/pages/hello-react/hello-react`. The jsxPath is also used when loading the asset into the the browser's namespace as `React4xp['site/pages/hello-react/hello-react']`.
+<5> Finally the trigger. The CLIENT wrapper calls link:https://www.npmjs.com/package/react4xp-runtime-client#hydrate[hydrate] to activate react in the serverside-rendered asset `React4xp['site/pages/hello-react/hello-react']` in the target container `"react4xpApp"`. We haven't added any props yet, hence the `null` argument. The final two digits are internal react4xp housekeeping, flagging some possible need for client-side postprocessing.
+
+== React4xp.render
+
+For context before we move on with the example, here's a closer look at the `.render` call from link:#_code[the example above]:
 
 ====
 React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. Basically, take any HTML string and pass it through `.render` as a `body` option, and react4xp will insert the react component into the HTML string and add any necessary page contributions to make it all work.
@@ -243,16 +308,10 @@ React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. 
 - `pageContributions`: a regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] object. Includes everything the browser needs to activate (or client-side render) the react component: auto-compiled assets for the entry (_hello-react.js_ in this example) and whatever it may depend on (most importantly, react and react-dom in an _externals_ asset), and a client-side react4xp wrapper asset. These are all optimized and served to the client by react4xp services.
 ====
 
-`.render` is just one way. React4xp has other, more detailed ways of react4xp rendering, we'll get back to those.
-
-'''
+`.render` is just one way. React4xp has other, more detailed and flexible ways of rendering, we'll get back to those in a bit.
 
 
-
-
-
-
-
+== 2
 
 
 
