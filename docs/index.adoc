@@ -124,7 +124,9 @@ To verify that your app started successfully, you should find an entry similar t
 
 Now, let's look at some usage examples - starting from the bottom.
 
-== Hello React
+
+
+== Hello React page
 
 React4xp is made to cover many ways of combining XP and react. Let's start with the simplest possible scenario: only displaying a working react component. We'll do this from a regular XP page controller we'll call _hello-react_.
 
@@ -278,6 +280,18 @@ We can see the whole output is actually the `body` HTML string we passed into th
 <4> The third asset is the compiled version of _hello-react.jsx_. React4xp used the `component` data to resolve the link:#_jsxpath[jsxPath] that locates the asset after compiling: `site/pages/hello-react/hello-react`. The jsxPath is also used when loading the asset into the the browser's namespace as `React4xp['site/pages/hello-react/hello-react']`.
 <5> Finally, the trigger. The CLIENT wrapper calls link:https://www.npmjs.com/package/react4xp-runtime-client#hydrate[hydrate] to activate react in the serverside-rendered asset `React4xp['site/pages/hello-react/hello-react']` in the target container `"react4xpApp"`. Now the `dropBottle` function works! We haven't added any props yet, hence the `null` argument. The final two digits are internal react4xp housekeeping, flagging some possible need for client-side postprocessing.
 
+
+------------------
+
+BETTER?
+<1> A container element with an ID, and inside it: an HTML representation of the JSX entry, pre-rendered by React4XP on the server with the initial props.
+<2> A standard `externals` chunk (the exact path may vary with local setups, so it's truncated to `(...)`. The same goes for the cache-busting hash in the filename). This contains React and ReactDOM, built-in with React4XP.
+<3> The React4xp client wrapper, which enables the hydration command in point #5, among other things. A global client-side object is created, `React4xp`, which will contain all things React4xp in runtime. The client wrapper is `React4xp.CLIENT`.
+<4> The entry itself - the compiled version of `hello-react.jsx`.
+<5> Calling `React4xp.CLIENT.hydrate`, the hydration of the entry along with a path pointer to the entry (we'll get back to this below, as the concept of _jsxPath_), the ID of the container element the entry is rendered into, and the props.
+
+------------------
+
 == React4xp.render
 
 For context before we move on with the example, here's a closer look at the `.render` call from the ES6 controller in link:#_code[the example above]:
@@ -319,48 +333,6 @@ React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. 
 
 
 
-
-
-
-Let's make a simple XP part that displays "Hello World", using a react component: `hello-react`.
-
-.Files involved:
-[source,files]
-----
-site/parts/hello-react/
-  hello-react.xml
-  hello-react.jsx
-  hello-react.es6
-----
-
-
-
-=== Code
-
-Add a *part definition*. It doesn't need anything special, just XP boilerplate:
-
-.hello-react.xml:
-[source,xml,linenums,options="nowrap"]
-----
-<part>
-  <display-name>Hello React</display-name>
-  <description>Simple example with server-side rendering by default</description>
-  <form />
-</part>
-----
-
-Now for *the React component* itself:
-
-.hello-react.jsx
-[source,javascript,linenums,options="nowrap"]
-----
-import React from 'react';
-
-export default (props) => <p>Hello {props.greetee}!</p>;
-----
-
-It takes a `greetee` prop and greets it with a booming "Hello"! This is our first example of an _Entry_:
-
 === Entries
 
 *_Entries_ in React4XP are the React components that can be accessed by React4XP*. They are just any standard JSX file, as long as it:
@@ -368,42 +340,9 @@ It takes a `greetee` prop and greets it with a booming "Hello"! This is our firs
 . default-exports a function that takes an optional `props` parameter and returns a React element,
 . is placed either under the folder `/react4xp/_entries`, or in a part or page folder under `site/`.
 
-When done, they are automatically handled by React4XP and can be easily used in XP controllers:
+When done, they are automatically handled by React4XP and can be easily used in XP controllers.
 
 
-The *part controller* uses React4XP to render the entry:
-
-.hello-react.es6:
-[source,javascript,linenums,options="nowrap"]
-----
-const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
-
-exports.get = function(request) {
-    const component = portal.getComponent();
-    const props = { greetee: "world" };
-
-    return React4xp.render(component, props, request);
-};
-----
-
-It basically just imports `React4xp` and uses the `.render` function, similar to how you might be familiar with from Thymeleaf or other XP template engines:
-
-* The first argument is a reference to the template. In our case the template is the React4XP entry, and React4XP uses the `component` data (for the part itself) to locate the JSX file in the part's own folder (expecting the same file name as the part).
-* The second argument, `props`, is similar to the `model` argument in the Thymeleaf renderer. No big surprise: it's passed to the entry's `props`. Here is the _world_ we're about to greet.
-* The third `request` argument is necessary for a fully activated React rendering. You _can_ leave it out to render the entry as pure HTML if you like JSX as a pure templating language, but it won't be activated (https://reactjs.org/docs/react-dom.html#hydrate[hydrated]) in the browser.
-
-*The returned response object* from `.render` is sent straight from the controller to the client, and contains:
-
-* a `body` field with a server-side rendering (in static HTML) of the entry with the entered props,
-* and some `pageContributions` that make the client activate the React entry (containing the necessary asset links and React hydration commands).
-
-[NOTE]
-====
-An important difference from Thymeleaf's renderer is that `React4XP.render` generates _a full response object_ that can be directly returned from the controller, instead of just HTML that you need to wrap in a `body` field in the controller's response object.
-====
-
-*That's it. This part is ready to display in XP!*
 
 
 === Setup
@@ -420,43 +359,6 @@ Let's add it to a page in Content Studio and render it:
 image::hello-world.png["Rendering: Hello World. In fabulous Times New Roman, because a good tutorial has no irrelevant layers of complexity.", width=492px]
 
 
-=== Output
-
-Curious about what happened here? *View the page source code in the browser* to see what `.render` created - something like this (the number-tagged lines):
-[source,html,options="nowrap"]
-----
-<!DOCTYPE html>
-<html>
-  <head>(...)</head>
-
-  <body>
-
-    <main data-portal-region="main" class="xp-region">
-      <div (...) id="parts_hello-react__main_0">
-      	<p data-reactroot="">Hello <!-- -->world<!-- -->!</p> <!--1-->
-      </div>
-    </main>
-
-    <script src="(...) /react4xp/externals.88e80cab5.js"></script>  <!--2-->
-    <script src="(...) /react4xp-client/"></script> <!--3-->
-    <script src="(...) /react4xp/site/parts/hello-react/hello-react.js"></script> <!--4-->
-    <script defer> <!--5-->
-      React4xp.CLIENT.hydrate(
-        React4xp['site/parts/hello-react/hello-react'],
-        "parts_hello-react__main_0",
-        { "greetee": "world", "react4xpId": "parts_hello-react__main_0" }
-      );
-    </script>
-
-   </body>
-</html>
-----
-
-<1> A container element with an ID, and inside it: an HTML representation of the JSX entry, pre-rendered by React4XP on the server with the initial props.
-<2> A standard `externals` chunk (the exact path may vary with local setups, so it's truncated to `(...)`. The same goes for the cache-busting hash in the filename). This contains React and ReactDOM, built-in with React4XP.
-<3> The React4xp client wrapper, which enables the hydration command in point #5, among other things. A global client-side object is created, `React4xp`, which will contain all things React4xp in runtime. The client wrapper is `React4xp.CLIENT`.
-<4> The entry itself - the compiled version of `hello-react.jsx`.
-<5> Calling `React4xp.CLIENT.hydrate`, the hydration of the entry along with a path pointer to the entry (we'll get back to this below, as the concept of _jsxPath_), the ID of the container element the entry is rendered into, and the props.
 
 [NOTE]
 ====
@@ -465,14 +367,24 @@ We only added the `greetee` prop in the controller. The other one, `react4xpId`,
 
 
 
-== Client-side rendering
 
-In this example we'll create another part, similar to <<Hello React>>, but with these variations:
 
-* *Use client side rendering* with a `clientRender` flag, turning the entire output into client-side React component.
-* *Renter into existing target element* which comes from a Thymeleaf template _before_ the entry is rendered into it.
-* *Reuse the "hello-react" template* created in the <<Hello React>> examples
-* *Insert editorial data* And use these through the props.
+
+
+
+
+
+
+
+== Client-side, props, part
+
+Now that you know the basic structure, let'do the same thing in a slightly different way - demonstrating these independent variations:
+
+* Wrap the react rendering in a *part instead of a page*,
+* Use the `clientRender` option to bypass the server-side rendering and go straight to classic *client-side react rendering*,
+* Renter react into HTML from a *thymeleaf template*,
+* Use the *props* to insert *editorial data* from XP into the react component,
+* Use the *jsxPath* to refer to a *specific entry* (and get to know what they are)
 
 .Files involved:
 [source,files]
@@ -1323,6 +1235,7 @@ Just confirming what you surely guessed would happen:
 <4> React4xp automatically traced the dependency to `myChunk.<hash>.js` and added this import to the page contributions because that's where `BuilderClicker` comes from.
 <5> Although several of the generated assets are _used_ more than once, the page contributions are trimmed for duplicates so each of them are only _downloaded to the client_ once.
 
+== React4xp Regions
 
 == Need to go deeper?
 
