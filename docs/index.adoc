@@ -68,41 +68,41 @@ Remember to create a *new XP sandbox* when completing the project wizard.
 === Project structure
 
 If you're used to working with a typical XP project using https://developer.enonic.com/templates/webpack[webpack], the structure in your project root folder will now look familiar -
-the biggest news is the folder `resources/react4xp/`. This is just an overview, and you don't need to know it by heart to get started.
+the biggest news is `react4xp.properties` and the folder `resources/react4xp/`.
 
-TIP: TL;DR: *just put your JSX source files under `react4xp/entries/` or under `site/`*, and you're ready to build and run.
+TIP: This is just an overview, no need to know it by heart to get started - we'll get back to all of these in more detail. For the most impatient, the takeaway is: *put your JSX source files somewhere below `react4xp/entries/` or `site/`*.
 
 [source,files]
 ----
-build.gradle <--1-->
+build.gradle                <--1-->
 gradle.properties
 settings.gradle
 package.json
-react4xp.properties <--2-->
+
+react4xp.properties         <--2-->
+
 src/
   main/
     resources/
-      react4xp/ <!--3-->
+      react4xp/             <!--3-->
         entries/
         shared/
       site/
         pages/
-            default/ <!--4-->
+            default/        <!--4-->
               default.es6
-              default.html
+              default.jsx
               default.xml
-        parts/
-          hello-react/ <!--5-->
-            hello-react.es6
-            hello-react.jsx
-            hello-react.xml
+
 ----
 
 <1> A set of gradle config files and `package.json`. These define the build process and project structure, and in particular, make sure that the *lib-react4xp library* and *react4xp npm package* are installed right.
 <2> `react4xp.properties`: tune the most common properties of the react4xp project.
-<3> The `react4xp/` folder is opt-in: doesn't need to contain anything, but when fine-tuning the build later we'll get back to why you might find it handy to have a separate place for some of your react components. The super-short version is that the `entries\` folder can have react components that can be used by react4xp, and the have `shared\` folder can contain common components shared between entries (entries can import any other react components).
-<4> A bare-bone `default` page controller is included with the starter - both for convenience in general, and as a sandbox for some of the examples here,
-<5> Also a simple `hello-react` part with a pre-made react view, for some other examples.
+<3> The `react4xp/` folder is opt-in: doesn't need to contain anything, but when fine-tuning the build later we'll get back to why you might find it handy to have a separate place for some of your react components. Super-short version:
+  - the `entries\` folder here is for react components that can be used directly by react4xp,
+  - the `shared\` folder is for common components shared between entries (entries can import other react components, js code, third-party libs etc).
+<4> A bare-bone `default` page controller is included with the starter, for convenience and as an example of a pure-react page controller.
+
 
 === Build and Deploy
 
@@ -128,7 +128,9 @@ Now, let's look at some usage examples - starting from the bottom.
 
 == Hello React page
 
-React4xp is made to cover many ways of combining XP and react. Let's start with the simplest possible scenario: only displaying a working react component. We'll do this from a regular XP page controller we'll call _hello-react_.
+React4xp is made to cover many ways of combining XP and react. Let's start with the simplest possible scenario: only displaying a working react component.
+
+We'll do this by adding a regular XP page controller we'll call _hello-react_:
 
 .Files involved:
 [source,files]
@@ -139,7 +141,7 @@ site/pages/hello-react/
   hello-react.es6
 ----
 
-These files are not included in the starter - just use your copy/paste skills and remember that `hello-react` must be identical between file names and folder name.
+These files are not included in the starter - use your copy/paste skills and remember that `hello-react` must be identical between file names and folder name.
 
 === Code
 
@@ -206,7 +208,7 @@ exports.get = function(request) {                       // // <2>
 
 That's it.
 
-If you've used XP before, you'll probably note that there's no HTML view file, no `thymeleaf.render`, and so on - in this example, react4xp completely handles the page view. The essential thing here is that at the end of the `get` function, *react4xp in a single _.render_ call creates a _full_ XP response object, that makes react work.*
+If you've used XP before, you'll probably note that there's no HTML view file, no `thymeleaf.render`, and so on - in this example, react4xp completely handles the page view. The essential thing here is that at the end of the `get` function, *react4xp in a single _.render_ call creates a _full_ XP response object that makes react work.*
 
 What's going on in the controller?
 
@@ -380,7 +382,7 @@ We only added the `greetee` prop in the controller. The other one, `react4xpId`,
 
 Now that you know the basic structure, let'do the same thing in a slightly different way - demonstrating these independent variations:
 
-* Wrap the react rendering in a *part instead of a page*,
+* Wrap the react rendering in an XP *part instead of a page* (or a layout, same thing),
 * Use the `clientRender` option to bypass the server-side rendering and go straight to classic *client-side react rendering*,
 * Renter react into HTML from a *thymeleaf template*,
 * Use the *props* to insert *editorial data* from XP into the react component,
