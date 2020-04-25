@@ -196,7 +196,7 @@ exports.get = function(request) {                       // // <2>
         {
             id: "react4xpApp",                          // // <5>
             body:                                       // // <6>
-                `<html>
+                `<html><head></head>
                     <body>
                         <div id="react4xpApp"></div>
                     </body>
