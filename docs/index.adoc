@@ -126,7 +126,7 @@ Now, let's look at some usage examples - starting from the bottom.
 
 
 
-== Hello React page
+== 1: Hello React page
 
 React4xp is made to cover many ways of combining XP and react. Let's start with the simplest possible scenario: only displaying a working react component.
 
@@ -283,20 +283,9 @@ We can see the whole output is actually the `body` HTML string we passed into th
 <5> Finally, the trigger. The CLIENT wrapper calls link:https://www.npmjs.com/package/react4xp-runtime-client#hydrate[hydrate] to activate react in the serverside-rendered asset `React4xp['site/pages/hello-react/hello-react']` in the target container `"react4xpApp"`. Now the `dropBottle` function works! We haven't added any props yet, hence the `null` argument. The final two digits are internal react4xp housekeeping, flagging some possible need for client-side postprocessing.
 
 
-------------------
-
-BETTER?
-<1> A container element with an ID, and inside it: an HTML representation of the JSX entry, pre-rendered by React4XP on the server with the initial props.
-<2> A standard `externals` chunk (the exact path may vary with local setups, so it's truncated to `(...)`. The same goes for the cache-busting hash in the filename). This contains React and ReactDOM, built-in with React4XP.
-<3> The React4xp client wrapper, which enables the hydration command in point #5, among other things. A global client-side object is created, `React4xp`, which will contain all things React4xp in runtime. The client wrapper is `React4xp.CLIENT`.
-<4> The entry itself - the compiled version of `hello-react.jsx`.
-<5> Calling `React4xp.CLIENT.hydrate`, the hydration of the entry along with a path pointer to the entry (we'll get back to this below, as the concept of _jsxPath_), the ID of the container element the entry is rendered into, and the props.
-
-------------------
-
 == React4xp.render
 
-For context before we move on with the example, here's a closer look at the `.render` call from the ES6 controller in link:#_code[the example above]:
+A closer look at the `.render` call from the ES6 controller in link:#_code[the example above]:
 
 ====
 React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. Basically, take any HTML string and pass it through `.render` as a `body` option, and react4xp will insert the react component into the HTML string and add any necessary page contributions to make it all work.
@@ -309,7 +298,7 @@ React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. 
 
 - `entry` (mandatory, string or component object): this is the reference to the "template", the react component to be rendered. If it's a JSX file with the same name in the same folder as an XP component, simply use the `portal.getComponent()` object here. In this example,  it's the _hello-react_ page, but you can do the same thing from part or layout controllers too. We'll come back to a more specific way to reference files anywhere in your project, under link:#_jsxpath[jsx path]. By the way, a react component that is used by react4xp this way is called link:#_entries[an entry].
 - `props` (optional object, must be serializable): data model passed into the react component.
-- `request` (link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object], kind of optional, but _mandatory for react activation_): This is used to determine if the rendering happens inside XP content studio. If so (or if `request` is omitted), only static HTML is rendered, server-side - which means that no browser react activation (or client-side rendering) happens inside content studio, you only get a visualization from the initial `props`.
+- `request` (link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object], kind of optional, but _mandatory for react activation_): This is to keep the component rendered static and serverside-render if the rendering happens inside XP content studio. No browser react activation (or client-side rendering) happens inside content studio, you only get a visualization from the initial `props`. Special case: if `request` is omitted/falsy, page-contributions rendering is completely skipped. Note: the .render `options` argument is still valid: the rendered static HTML is still inserted into the HTML from the added `body`, and `pageContributions` are still added.
 - `options` (optional object): additional options to control the rendering:
 
 ** `id` (string): ID of the component, matching the ID of an element in `body`. React will render into that container element, replacing whatever was already there. If missing, a random ID is generated.
@@ -320,34 +309,114 @@ React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. 
 
 *Returns* an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP response object] with these main attributes:
 
-- `body`: rendered HTML string.
+- `body`: react rendered to HTML string. When server-side rendered, the whole HTML is inserted into the matching-id element inside the `body` option (if the `body` option is added. If not, a surrounding div is used). When client-side rendered, no HTML is inserted into `body` (or the generated container) - that's left to the client.
 - `pageContributions`: a regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] object. Includes everything the browser needs to activate (or client-side render) the react component: auto-compiled assets for the entry (_hello-react.js_ in this example) and whatever it may depend on (most importantly, react and react-dom in an _externals_ asset), and a client-side react4xp wrapper asset. These are all optimized and served to the client by react4xp services.
 ====
 
 `.render` is just one way. React4xp has other, more detailed and flexible ways of rendering, we'll get back to those in a bit.
 
 
-== 2
 
 
 
 
+== 2: Client-side, props, part
+
+Now that you know the basic structure, let'do the same thing in a slightly different way and look at these (independent) variations:
+
+* Wrap the react rendering in an XP *part instead of a page* (or a layout, same thing),
+* Use the `clientRender` option to bypass the server-side rendering and go straight to classic *client-side react rendering*,
+* Skip the rest of the _render_ options to let react4xp generate a container with a unique id
+* Use the *props* to insert *editorial data* from XP into the react component,
+* Use the *jsxPath* to refer to a specific *entry* (and get to know what they are)
+
+.Files involved:
+[source,files]
+----
+site/parts/
+  good-day/
+    good-day.xml
+    good-day.es6
+    different-greeting.jsx
+----
 
 
 
-=== Entries
+=== Code
 
-*_Entries_ in React4XP are the React components that can be accessed by React4XP*. They are just any standard JSX file, as long as it:
+*The part definition* is still pretty unremarkable. But now there's a `greetee` TextLine input field ready for some editorial text from Content Studio.
 
-. default-exports a function that takes an optional `props` parameter and returns a React element,
-. is placed either under the folder `/react4xp/_entries`, or in a part or page folder under `site/`.
+.good-day.xml:
+[source,xml,linenums,options="nowrap"]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<part>
+    <display-name>Good day React</display-name>
+    <description>Greeting with two props, one of them editorial</description>
+    <form>
+        <input type="TextLine" name="greetee">
+            <label>Who shall we greet?</label>
+            <occurrences minimum="1" maximum="1"/>
+            <default>Earth</default>
+        </input>
+    </form>
+</part>
+----
 
-When done, they are automatically handled by React4XP and can be easily used in XP controllers.
+*The react entry* is even more minimal this time.
+
+.different-example.jsx
+[source,javascript,linenums,options="nowrap"]
+----
+import React from 'react';
+
+export default (props) => <p className="different-greeting">{props.message} {props.messageReceiver}!</p>;
+----
+
+But note that the name is not the part's own name, _"good-day"_, and that we're now using two react props: `message` and `messageReceiver` (and there's a classname to mark the message in the output).
+
+Moving on to *the part controller*, where the rendering happens:
+
+.good-day.es6:
+[source,javascript,linenums,options="nowrap"]
+----
+const portal = require('/lib/xp/portal');
+const React4xp = require('/lib/enonic/react4xp');
+
+exports.get = function(request) {
+
+    const component = portal.getComponent();
+
+    const props = {                                     // // <1>
+        message: "G'day",
+        messageReceiver: component.config.greetee
+    };
+
+    return React4xp.render(
+        "site/parts/hello-react/different-greeting",    // // <2>
+        props,
+        request,
+        { clientRender: true }                          // // <3>
+    );
+
+};
+----
+
+Some things to note, especially compared with the previous example:
+
+<1> We'll add some top-level props; info passed into the react component as it's created, and this corresponds to the props we're using in the react entry _different-example.jsx_ above. If you're used to the _model_ concept from the thymeleaf/mustache templates in XP, `props` is pretty much the same. The first prop, `message`, is just hardcoded. But it could come from anywhere in the controller (as long as the data is serializable): the second prop, `messageReceiver` is fetched from the XP part's own config data: the `greetee` field we defined in the part descriptor _good-day.xml_ above.
+<2> In the previous example, we added `component` here, to refer to the jsx file with the same name in the same folder. We could do that here too, if we wanted to point to a react entry called `site/parts/good-day/good-day.jsx`. But we'll use a string instead, to refer to a specific JSX entry: _different-greeting.jsx_ in the folder _site/parts/good-day/_. This string is the *jsxPath* of _different-greeting.jsx_. JsxPath is the way to refer to a react entry anywhere in your project - we'll look closer at that below.
+<3> In the `options` parameter, we're only adding a `clientRender: true` flag. This makes the renderer skip serverside-HTML-rendering and _only_ generate the page contributions needed for clientside-rendering (in XP live view and preview windows outside content studio. _Inside_ content studio, you'll only see an inactive serverside rendering anyway).
+
+[TIP]
+====
+Remember how in the previous example, _hello-react.es6_, we added the parameters `id` and `body` to the _.render_ options? So why aren't they needed here? Well, `body` is only the surrounding HTML that the rendered react will be inserted into. In this case, we're making a standalone part, which will be inserted into a page - which takes care of wrapping it into the right tags in the end. So no extra `body` is needed (although _.render_ will add a container element anyway). As for `id`: if that option is missing, the react component will just get a random ID (which is shared with the container element).
+====
 
 
+*Okay, enough - time to run the example!*
 
-
-=== Setup
+=== Setup 1
 
 Let's add it to a page in Content Studio and render it:
 
@@ -362,143 +431,9 @@ image::hello-world.png["Rendering: Hello World. In fabulous Times New Roman, bec
 
 
 
-[NOTE]
-====
-We only added the `greetee` prop in the controller. The other one, `react4xpId`, is the unique ID of the component, same as the container element ID. It's always added as a prop for each entry, conveniently helping to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
-====
+=== Setup 2
 
 
-
-
-
-
-
-
-
-
-
-
-== Client-side, props, part
-
-Now that you know the basic structure, let'do the same thing in a slightly different way - demonstrating these independent variations:
-
-* Wrap the react rendering in an XP *part instead of a page* (or a layout, same thing),
-* Use the `clientRender` option to bypass the server-side rendering and go straight to classic *client-side react rendering*,
-* Renter react into HTML from a *thymeleaf template*,
-* Use the *props* to insert *editorial data* from XP into the react component,
-* Use the *jsxPath* to refer to a *specific entry* (and get to know what they are)
-
-.Files involved:
-[source,files]
-----
-site/parts/
-  hello-react/
-    hello-react.jsx
-  client-render/
-    client-render.xml
-    client-render.html
-    client-render.es6
-----
-
-
-
-=== Code
-
-*The part definition* is still pretty unremarkable.
-Only now there's a `greetee` TextLine input field ready for some editorial text from Content Studio.
-
-.client-render.xml:
-[source,xml,linenums,options="nowrap"]
-----
-<part>
-	<display-name>Client Rendering</display-name>
-    <description>Client-side rendered react component</description>
-	<form>
-        <input name="greetee" type="TextLine">
-            <label>Who or what should we greet?</label>
-            <occurrences minimum="1" maximum="1"/>
-            <default>world</default>
-        </input>
-    </form>
-</part>
-----
-
-*The thymeleaf template* shows that a target container element can be anywhere in an HTML body - same as in vanilla react - as long as we point to it with a unique element ID. Here: `"second-example-container"`.
-
-.client-render.html
-[source,html,linenums,options="nowrap"]
-----
-<div class="clientrender-example">
-    <h2>Client-side rendering example</h2>
-    <p>Skips server-side rendering, and instead sets up client-side react to render the entry into the container below:</p>
-    <div id="second-example-container"></div>
-    <p>(And we're done)</p>
-</div>
-----
-
-TIP: We've hardcoded the ID here and in the controller for clarity. The best practice however, would be to pass it to thymeleaf through the model - see <<Custom flow>>.
-
-Moving on to *the part controller*, where the React4xp stuff happens:
-
-.client-render.es6:
-[source,javascript,linenums,options="nowrap"]
-----
-
-const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
-const thymeleaf = require('/lib/thymeleaf');
-
-const view = resolve('client-render.html'); <!--1-->
-
-exports.get = function(request) {
-    const component = portal.getComponent();
-
-    const preExistingBody = thymeleaf.render(view, {}); <!--1-->
-
-    const props = {
-        greetee: component.config.greetee <!--2-->
-    };
-
-    const params = {
-        <!--3-->
-        body: preExistingBody,
-        id: 'second-example-container',
-        clientRender: true,
-    };
-
-    const jsxPath = 'site/parts/hello-react/hello-react'; <!--4-->
-
-    return React4xp.render(jsxPath, props, request, params);
-----
-
-What's happening here?
-
-<1> The HTML with the target container element is rendered,
-<2> We get the `greetee` value from XP and insert in into the props,
-<3> We're adding some *parameters* as a fourth argument object to `.render`:
-  * `body` is the HTML body we're inserting the React entry into,
-  * `id` is setting the ID, and targeting that container element in `body`,
-    - A side note: in the first example, we didn't pass an `id` or a `body` parameter to `.render`, but it still worked. *They are both optional*, React4XP generates what's missing: If no `body` is found, React4xp will generate an empty HTML with a matching element ID. If there's no `id` found either, a random number is used - or data from `component` if you used that in the entry argument. If there's a `body` but it doesn't have any elements with an ID matching the `id` parameter, an empty target container element is added at the end of `body`.
-  * `clientRender`: if this is truthy, you get old-school client-side React rendering. `.render` doesn't render the entry on the server-side, but leaves the target container unchanged and instead makes some page contributions that makes the browser build the entry into the target container.
-  * There's also an optional `pageContributions` field, for adding pre-existing page contributions to the ones that `.render` generates.
-
-<4> Here an important concept is introduced - the _jsxPath_:
-
-=== JsxPath
-
-*A _jsxPath_ is the name of an entry in React4xp*. Remember how we used the `component` object to refer to the entry in the first example, which is the easiest way but _only works if the entry is in the same folder and has the same name_. Here we want to access the entry (the same entry we used before) from a different part's folder - from _anywhere_ actually. JsxPaths are _name strings_, not paths relative to the controller (so avoid `../` etc).
-
-*Rules of thumb for jsxPaths:*
-
-* If an entry file is a JSX file under `src/main/resources/site`, the jsxPath is the file path relative to `src/main/resources/` - unix-style and without file extension.
-* An entry can also be located under `src/main/resources/react4xp/_entries`, and then the jsxPath will be relative to that folder instead.
-* If you're ever unsure: all the available jsxPaths are stored in `build/resources/main/assets/react4xp/entries.json`. This file is generated by webpack during build (and shouldn't be deleted or edited).
-
-
-
-*Okay, enough - time to run the example!*
-
-=== Setup
 
 - The new part is ready. Add it to some content in Content Studio, the same way you did in <<Client-side rendering>>.
 - Change the part's `greetee` field: edit the content, click and mark the "Client-side rendering example" part, and edit the "Who or what should we greet?" field on the right-side config panel. When you save it, the preview should update.
@@ -549,8 +484,42 @@ Most notable differences from the first example:
 
 
 
+[NOTE]
+====
+We only added the `greetee` prop in the controller. The other one, `react4xpId`, is the unique ID of the component, same as the container element ID. It's always added as a prop for each entry, conveniently helping to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
+====
 
-== Custom flow
+
+
+
+== Entries
+
+*_Entries_ in React4XP are the React components that can be accessed by React4XP*. They are just any standard JSX file, as long as it:
+
+. default-exports a function that takes an optional `props` parameter and returns a React element,
+. is placed either under the folder `/react4xp/_entries`, or in a part or page folder under `site/`.
+
+When done, they are automatically handled by React4XP and can be easily used in XP controllers.
+
+
+
+
+
+
+== JsxPath
+
+*A _jsxPath_ is the name of an entry in React4xp*. Remember how we used the `component` object to refer to the entry in the first example, which is the easiest way but _only works if the entry is in the same folder and has the same name_. Here we want to access the entry (the same entry we used before) from a different part's folder - from _anywhere_ actually. JsxPaths are _name strings_, not paths relative to the controller (so avoid `../` etc).
+
+*Rules of thumb for jsxPaths:*
+
+* If an entry file is a JSX file under `src/main/resources/site`, the jsxPath is the file path relative to `src/main/resources/` - unix-style and without file extension.
+* An entry can also be located under `src/main/resources/react4xp/_entries`, and then the jsxPath will be relative to that folder instead.
+* If you're ever unsure: all the available jsxPaths are stored in `build/resources/main/assets/react4xp/entries.json`. This file is generated by webpack during build (and shouldn't be deleted or edited).
+
+
+
+
+== 3: Custom flow
 
 In this example we won't use `.render`.
 Instead, we'll look at a more direct syntax that gives you better control and opportunities for logic steps when you handle the entry.
