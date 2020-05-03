@@ -487,15 +487,21 @@ We only added the `message` and `messageReceiver` props in the controller. The l
 
 == Entries and JsxPath
 
-*_Entries_ in React4XP are the React components that can be accessed by React4XP*. They are just any standard JSX file, as long as it:
+We've mentioned React4xp _entries_ and their _jsxPath_ earlier. Let's look at what they are:
 
-. default-exports a function that takes an optional `props` parameter and returns a React element,
-. is placed either under the folder `/react4xp/_entries`, or in a part or page folder under `site/`.
+====
+*An _entry_ in React4XP is a React component that can be accessed by React4XP*.
 
-When done, they are automatically handled by React4XP and can be easily used in XP controllers.
+It's just any standard React source file, usually with a .JSX extension. It _MUST_:
+
+. default-export a function that takes an optional `props` parameter and returns a React element,
+. be located either somewhere under the `site/` folder, or under one of the folders listed as `entryDirs` in your `react4xp.properties` file.
 
 
+[.thumb]
+image::entries_cheatsheet.png["Cheatsheet: React4xp Entries", width=1000px]
 
+====
 
 
 
