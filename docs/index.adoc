@@ -232,7 +232,7 @@ If you've added those 3 files, let's get this rendered!
 You should now see:
 
 [.thumb]
-image::hello-world.png["Rendering: Hello World. In fabulous Times New Roman, because no good tutorial should have irrelevant complexity, and this is a good tutorial.", width=492px]
+image::hello-world.png["Rendering: Hello World. In fabulous Times New Roman, because no good tutorial should have irrelevant complexity, and this is a good tutorial.", width=768px]
 
 And if you open the browser console, you can click that hello-world message and watch the `dropBottle` function from _hello-react.jsx_ drop bottles off the wall one by one.
 
@@ -344,7 +344,7 @@ site/parts/
 
 === Code
 
-*The part definition* is still pretty unremarkable. But now there's a `greetee` TextLine input field ready for some editorial text from Content Studio.
+*The part definition* is still pretty unremarkable, but now there's a `greetee` TextLine input field, ready to add some editorial text from Content Studio.
 
 .good-day.xml:
 [source,xml,linenums,options="nowrap"]
@@ -363,7 +363,7 @@ site/parts/
 </part>
 ----
 
-*The react entry* is even more minimal this time.
+*The react entry* is even more minimal this time:
 
 .different-example.jsx
 [source,javascript,linenums,options="nowrap"]
@@ -373,9 +373,9 @@ import React from 'react';
 export default (props) => <p className="different-greeting">{props.message} {props.messageReceiver}!</p>;
 ----
 
-But note that the name is not the part's own name, _"good-day"_, and that we're now using two react props: `message` and `messageReceiver` (and there's a classname to mark the message in the output).
+But note that instead of using the name of the part itself (_"good-day.jsx"_), the entry is called "_different-example.jsx_". Also, we're using two react props `message` and `messageReceiver` (and a classname, just to mark the `p` element in the output HTML).
 
-Moving on to *the part controller*, where the rendering happens:
+Moving on to the rendering call in *the part controller*:
 
 .good-day.es6:
 [source,javascript,linenums,options="nowrap"]
@@ -404,95 +404,88 @@ exports.get = function(request) {
 
 Some things to note, especially compared with the previous example:
 
-<1> We'll add some top-level props; info passed into the react component as it's created, and this corresponds to the props we're using in the react entry _different-example.jsx_ above. If you're used to the _model_ concept from the thymeleaf/mustache templates in XP, `props` is pretty much the same. The first prop, `message`, is just hardcoded. But it could come from anywhere in the controller (as long as the data is serializable): the second prop, `messageReceiver` is fetched from the XP part's own config data: the `greetee` field we defined in the part descriptor _good-day.xml_ above.
-<2> In the previous example, we added `component` here, to refer to the jsx file with the same name in the same folder. We could do that here too, if we wanted to point to a react entry called `site/parts/good-day/good-day.jsx`. But we'll use a string instead, to refer to a specific JSX entry: _different-greeting.jsx_ in the folder _site/parts/good-day/_. This string is the *jsxPath* of _different-greeting.jsx_. JsxPath is the way to refer to a react entry anywhere in your project - we'll look closer at that below.
-<3> In the `options` parameter, we're only adding a `clientRender: true` flag. This makes the renderer skip serverside-HTML-rendering and _only_ generate the page contributions needed for clientside-rendering (in XP live view and preview windows outside content studio. _Inside_ content studio, you'll only see an inactive serverside rendering anyway).
+<1> Here we're adding the top-level *props*: info passed into the react component as it's created. This of course corresponds to the props we're using in the react entry _different-example.jsx_ above. If you're used to the _model_ concept from the thymeleaf/mustache templates in XP, `props` is pretty much the same. The first prop, `message`, is just hardcoded. But it could be a string from anywhere in the controller: the second prop, `messageReceiver` is fetched from the XP part's own config data - the `greetee` field we defined in the part descriptor _good-day.xml_ above.
+<2> In the previous example, we added `component` here, to refer to the jsx file with the same name in the same folder. We could do that here too, if we wanted to point to a react entry called `site/parts/good-day/good-day.jsx`. But we'll use a custom string instead, to refer to a specific JSX entry: _different-greeting.jsx_ in the folder _site/parts/good-day/_. This string is the *jsxPath* of the entry _different-greeting.jsx_: jsxPaths is the way to refer to a react entry anywhere in your project - we'll look closer at link:#_entries_and_jsxpath[jsxPaths and entries] in a moment. For now, just note that we're skipping the ".jsx" file extension.
+<3> In the `options` parameter, we're only adding a `clientRender: true` flag. This makes the renderer skip serverside-HTML-rendering and _only_ generate the page contributions needed for clientside-rendering (in XP live view and preview windows _outside content studio_, that is. Inside content studio, you'll only see an inactive serverside rendering anyway).
 
 [TIP]
 ====
-Remember how in the previous example, _hello-react.es6_, we added the parameters `id` and `body` to the _.render_ options? So why aren't they needed here? Well, `body` is only the surrounding HTML that the rendered react will be inserted into. In this case, we're making a standalone part, which will be inserted into a page - which takes care of wrapping it into the right tags in the end. So no extra `body` is needed (although _.render_ will add a container element anyway). As for `id`: if that option is missing, the react component will just get a random ID (which is shared with the container element).
+Remember how in the previous example, _hello-react.es6_, we added the parameters `id` and `body` to the _.render_ options? We could use them here too, but they aren't needed. The `body` option is only a surrounding HTML string that the rendered react will be inserted into - but in this case we're making a standalone XP Part which XP will insert into a Page anyway. So no extra `body` is needed (although _.render_ will generate a container element anyway, a placeholder for the react rendering process to work). As for the `id` option: since that's missing, the react component will just get a generated random ID (automatically shared with the generated container element).
 ====
 
 
 *Okay, enough - time to run the example!*
 
-=== Setup 1
+=== Setup and render
 
 Let's add it to a page in Content Studio and render it:
 
 * Run `enonic project deploy` from your shell, start the sandbox and point your browser to `localhost:8080/admin`.
 * Log in to XP and open Content Studio.
-* Create some content (e.g. a site with the Default Page controller included with the starter, or a https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page]). Anything with a Region will do.
-* Insert the new part into the region, and select the `hello-react` part you just made.
-* Enter the preview to view the content outside of Content Studio. You should now see:
+* Create some content, anything with a Region will do (so not the _hello-react_ page from the first example, but maybe a Site with the Default page controller from the starter, or a https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page]).
+* Insert the new Part into the Region, and select the XP Part you just made, _Good day React_:
 
 [.thumb]
-image::hello-world.png["Rendering: Hello World. In fabulous Times New Roman, because a good tutorial has no irrelevant layers of complexity.", width=492px]
+image::gday_earth.png["Rendering: G'day Earth.", width=768px]
 
-
-
-=== Setup 2
-
-
-
-- The new part is ready. Add it to some content in Content Studio, the same way you did in <<Client-side rendering>>.
-- Change the part's `greetee` field: edit the content, click and mark the "Client-side rendering example" part, and edit the "Who or what should we greet?" field on the right-side config panel. When you save it, the preview should update.
+* Of course, having both "Hello World" and "G'day Earth" in the same project might cause a little confusion. Better enter *"Bruce"*  into the _"Who shall we greet"_ textfield, to keep it clear. Apply/save to see the props change immediately; serverside-rendered since we're in content studio.
+* Enter the preview to view the content outside of Content Studio. You should now see, _clientside_-rendered:
 
 [.thumb]
-image::editing-clientside.png["Changing props editorially in Content Studio",width=1037px]
+image::gday_bruce.png["Rendering with changed props: G'day Bruce.", width=768px]
 
 
 === Output
 
-If we open a Preview tab and dig into *the output page source*, it's similar to the previous example:
+If we dig into *the output page source* of the preview tab, the HTML is similar to what we got from the previous example. Depending on your content and local setup, it'll look something like this:
+
 [source,html,options="nowrap"]
 ----
-<body>
-  <main data-portal-region="main" class="xp-region">
-
-    <div class="clientrender-example">
-      <h2>Client-side rendering example</h2>
-      <p>Skips server-side rendering, and instead sets up client-side react to render the entry into the container below:</p>
-      <div id="serverside-example-container"></div> <!--1-->
-      <p>(And we're done).</p>
+...
+<body class="xp-page">
+    <div id="react4xp_da5aa513-55aa-4787-a208-14cb8921b572">
+        <div class="default-page" data-reactroot="">
+            <div data-portal-region="main" class="xp-region">
+                <div data-portal-component-type="part" id="_23744858"></div> <!--1-->
+            </div>
+        </div>
     </div>
-
-  </main>
-
-  <script src="(...) /react4xp/externals.88e80cab5.js" ></script>
-  <script src="(...) /react4xp-client/" ></script>
-  <script src="(...) /react4xp/site/parts/hello-react/hello-react.js"></script> <!--2-->
-  <script defer> <!--3-->
-    React4xp.CLIENT.render(
-        React4xp['site/parts/hello-react/hello-react'],
-        "second-example-container" ,
-        {
-            "greetee":"from the client side",
-            "react4xpId":"second-example-container"
-        }
-    );
-  </script>
+    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>
+    <script src="(...your.app.service) /react4xp-client/"></script>
+    <script src="(...your.app.service) /react4xp/site/parts/good-day/different-greeting.js"> <!--2-->
+    </script>
+    <script defer>
+        React4xp.CLIENT.render(                                   // // <3>
+            React4xp['site/parts/good-day/different-greeting'],   // // <4>
+            "_23744858",                                          // // <5>
+            {
+                "message": "G'day",
+                "messageReceiver": "Bruce",
+                "react4xpId": "_23744858"
+            }
+        );
+    </script>
 </body>
+...
 ----
 
 Most notable differences from the first example:
 
-<1> The target container is now initially empty, there was no rendered HTML from the server.
-<2> The imported entry is still the same as in the previous example. This is the compiled version of the JSX component we pointed to with `jsxPath` in the controller.
-<3> Instead of `.hydrate`, we're calling `.render`. Our react component is rendered and inserted into the `"serverside-example-container"` element _by the browser_. `React4xp.CLIENT.render` has the same signature as `React4xp.CLIENT.hydrate`: `(entryJsxPath, targetElementId, props)`.
+<1> The target container now has a random ID (since we didn't add an `id` option in the controller). And it's initially empty; because of the `clientRender:true` flag, there was no rendered HTML from the server.
+<2> Since we selected a named entry with the jsxPath, the full path to the _compiled_ entry asset is inserted.
+<3> Again because of the `clientRender:true` flag, the browser is calling `.render` instead of `.hydrate`. `React4xp.CLIENT.render` has link:https://www.npmjs.com/package/react4xp-runtime-client#render[the same signature] as `React4xp.CLIENT.hydrate`: `(entry, targetElementId, props)`.
+<4> So the client wrapper renders our react entry...
+<4> ...and inserts it into the empty target container, the one matching the (generated) unique ID.
 
-
-
-
-[NOTE]
+[TIP]
 ====
-We only added the `greetee` prop in the controller. The other one, `react4xpId`, is the unique ID of the component, same as the container element ID. It's always added as a prop for each entry, conveniently helping to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
+We only added the `message` and `messageReceiver` props in the controller. The last prop, `react4xpId`, is the unique ID of the component, same as the target container element ID. It's always added as a prop for each entry, conveniently helping if you need to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
 ====
 
 
 
 
-== Entries
+== Entries and JsxPath
 
 *_Entries_ in React4XP are the React components that can be accessed by React4XP*. They are just any standard JSX file, as long as it:
 
