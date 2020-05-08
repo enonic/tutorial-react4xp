@@ -33,7 +33,7 @@ During this exercise you will:
 
 == React4XP
 
-image::react4xp.svg["React4xp logo" 256px]
+image:react4xp.svg[title="React4xp logo",width=256px]
 
 This starter is based on *React4XP*, which is a library (with a companion build structure) that facilitates use of React in Enonic XP, and:
 
@@ -214,7 +214,7 @@ What's going on in the controller?
 
 <1> In line 2, `React4xp` is imported from the library.
 <2> In line 4, we pick up the `request` data. The render call needs it to know the rendering context.
-<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for react4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that under link:#_react4xp_render[the render call] and link:#_jsxpath[jsx paths]).
+<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for react4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that under link:#_react4xp_render[the render call] and link:#_entries_and_jsxpath[jsx paths]).
 <4> In line 8, the juicy bit: *the actual render call*. The rendered response from it can be returned directly from the `get` function, since `.render` creates an object with a `body` HTML string and a `pageContributions` attribute with everything needed (more about this link:#_react4xp_render[below]).
 <5> In line 13, the `id` attribute _"react4xpApp"_ is set in the *options* argument of `.render` (lines 12-20). This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
 <6> In lines 14-19, we're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag (such as `<!DOCTYPE html>`).
@@ -232,7 +232,7 @@ If you've added those 3 files, let's get this rendered!
 You should now see:
 
 [.thumb]
-image::hello-world.png["Rendering: Hello World. In fabulous Times New Roman, because no good tutorial should have irrelevant complexity, and this is a good tutorial.", width=768px]
+image:hello-world.png[title="Rendering: Hello World. In fabulous Times New Roman, because no good tutorial should add irrelevant complexity and this is a good tutorial.", width=768px]
 
 And if you open the browser console, you can click that hello-world message and watch the `dropBottle` function from _hello-react.jsx_ drop bottles off the wall one by one.
 
@@ -420,19 +420,21 @@ Remember how in the previous example, _hello-react.es6_, we added the parameters
 
 Let's add it to a page in Content Studio and render it:
 
-* Run `enonic project deploy` from your shell, start the sandbox and point your browser to `localhost:8080/admin`.
-* Log in to XP and open Content Studio.
-* Create some content, anything with a Region will do (so not the _hello-react_ page from the first example, but maybe a Site with the Default page controller from the starter, or a https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page]).
-* Insert the new Part into the Region, and select the XP Part you just made, _Good day React_:
+1. Run `enonic project deploy` from your shell, start the sandbox and point your browser to `localhost:8080/admin`.
+2. Log in to XP and open Content Studio.
+3. Create some content, anything with a Region will do (so not the _hello-react_ page from the first example, but maybe a Site with the Default page controller from the starter, or a https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page]).
+4. Insert the new Part into the Region, and select the XP Part you just made, _Good day React_:
 
 [.thumb]
-image::gday_earth.png["Rendering: G'day Earth.", width=768px]
+image:gday_earth.png[title="Content studio preview: G'day Earth.", width=768px]
 
-* Of course, having both "Hello World" and "G'day Earth" in the same project might cause a little confusion. Better enter *"Bruce"*  into the _"Who shall we greet"_ textfield, to keep it clear. Apply/save to see the props change immediately; serverside-rendered since we're in content studio.
-* Enter the preview to view the content outside of Content Studio. You should now see, _clientside_-rendered:
+
+[start=5]
+5. Of course, having both "Hello World" and "G'day Earth" in the same project might cause a little confusion. Better enter *"Bruce"*  into the _"Who shall we greet"_ textfield, to keep it clear. Apply/save to see the props change immediately; serverside-rendered since we're in content studio.
+6. Enter the preview to view the content outside of Content Studio. You should now see, _clientside_-rendered:
 
 [.thumb]
-image::gday_bruce.png["Rendering with changed props: G'day Bruce.", width=768px]
+image:gday_bruce.png[title="Final rendering with an editorially changed prop: G'day Bruce.", width=768px]
 
 
 === Output
@@ -485,38 +487,54 @@ We only added the `message` and `messageReceiver` props in the controller. The l
 
 
 
-== Entries and JsxPath
+== Entries and jsxPath
 
-We've mentioned React4xp _entries_ and their _jsxPath_ earlier. Let's look at what they are:
-
-====
-*An _entry_ in React4XP is a React component that can be accessed by React4XP*.
-
-It's just any standard React source file, usually with a .JSX extension. It _MUST_:
-
-. default-export a function that takes an optional `props` parameter and returns a React element,
-. be located either somewhere under the `site/` folder, or under one of the folders listed as `entryDirs` in your `react4xp.properties` file.
-
-
-[.thumb]
-image::entries_cheatsheet.png["Cheatsheet: React4xp Entries", width=1000px]
+We've mentioned React4xp _entries_ and their _jsxPath_ earlier. Let's take a moment to look at what they are:
 
 ====
 
+*React4xp is structured around ENTRIES.*
+
+An entry is just *a React component that can be accessed by react4XP*. They are the _only_ react files that react4xp can use directly.
+
+An entry is pretty much just a *standard JSX file*, that follows two requirements (link:media/entries_howto.png[cheatsheet]):
+
+1. *default-exports a function*, this function _may_ take a `props` argument (serializable JS object) and _must_ return a react component (pure functional component or old-school React Component), and
+2. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.properties_ (see also jsxPath below).
 
 
-== JsxPath
+.A mental model (image links to another cheatsheet):
+image:entries.png[link="media/entries_cheatsheet.png",title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=600px]
 
-*A _jsxPath_ is the name of an entry in React4xp*. Remember how we used the `component` object to refer to the entry in the first example, which is the easiest way but _only works if the entry is in the same folder and has the same name_. Here we want to access the entry (the same entry we used before) from a different part's folder - from _anywhere_ actually. JsxPaths are _name strings_, not paths relative to the controller (so avoid `../` etc).
+Think of *entries as "bridge elements"*. On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can *import* stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.
 
-*Rules of thumb for jsxPaths:*
+React4xp handles them in build-time and runtime: locates entries, compiles them into *entry assets* (under _/build/resources/main/assets/react4xp_), and serves them to the client.
 
-* If an entry file is a JSX file under `src/main/resources/site`, the jsxPath is the file path relative to `src/main/resources/` - unix-style and without file extension.
-* An entry can also be located under `src/main/resources/react4xp/_entries`, and then the jsxPath will be relative to that folder instead.
-* If you're ever unsure: all the available jsxPaths are stored in `build/resources/main/assets/react4xp/entries.json`. This file is generated by webpack during build (and shouldn't be deleted or edited).
+Entries become separate *root level react apps*. Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
+
+For example, earlier in this tutorial we've seen the entries _hello-react.jsx_ and _different-greeting.jsx_, they are compiled into the assets _hello-react.js_ and _different-greeting.js_.
+====
 
 
+====
 
+*Each entry is identified by its own JSX PATH:*
+
+Short and brutal: the jsxPath is a name string generated from the path and filename of the compiled asset after building, relative to _/build/resources/main/assets/react4xp/_ - without file extension.
+
+Easier during development: if you use the `component` object like in link:#_1_hello_react_page[the first example], to point `React4xp.render` to an entry with the same folder/same name as a part/page/layout controller, you can ignore the jsxPath. But if you need to access an entry from a different folder - from anywhere actually - *here's how to find the jsxPath of an entry*:
+
+1. If an entry's source file is a JSX under _/src/main/resources/_ *_site/_*, the jsxPath is the source file's path relative to _/src/main/resources/_ - unix-style and without file extension.
+  * So the jsxPath will start with `site/...` etc (and the asset will be compiled into a folder below _/build/resources/main/assets/react4xp/_ *_site/_*, and so on).
+2. With the setup from the starter, you can also put your entries under _src/main/resources/_ *_react4xp/entries_*. Then the jsxPath (and compiled-asset path) will be relative to _/entries/_ instead.
+  * Actually, you can control this with the `entryDirs` property in _react4xp.properties_. The starter has added `entryDirs=entries` here, but this is a comma-separated list of folder names relative to _src/main/resources/react4xp/_.
+
+If you're ever unsure: after building, all the *jsxPaths of all the available entries* are stored in _build/resources/main/assets/react4xp/entries.json_. This file is generated by webpack during build. It's also used by the runtime, so it shouldn't be deleted or edited!
+
+NOTE: jsxPaths are not actually file system paths, but *static name strings*. So avoid shortcuts and relative references like `../`, etc.
+====
+
+Okay, time to move on to the next example and lesson!
 
 == 3: Custom flow
 
@@ -666,7 +684,7 @@ Like before, open Enonic XP Content Studio, add the new part to some content, se
 Save, it should look something like this:
 
 [.thumb]
-image::the-blue-thing2.png["Rendered text in Content Studio is blue, and says: the blue thing" width=1068px]
+image:the-blue-thing2.png[title="Rendered text in Content Studio is blue, and says: the blue thing" width=1068px]
 
 
 === Output
@@ -674,7 +692,7 @@ image::the-blue-thing2.png["Rendered text in Content Studio is blue, and says: t
 If we open it in Preview and look at the browser console, we also see that the little `console.log` script from the controller has picked up the `color` prop from the React4XP object:
 
 [.thumb]
-image::the-blue-thing.png["Rendered preview looks the same as in Content Studio, but now we also see that the expected output was printed in the browser console." width=1068px]
+image:the-blue-thing.png[title="Rendered preview looks the same as in Content Studio, but now we also see that the expected output was printed in the browser console." width=1068px]
 
 
 *The output page source* should similar to this (and similar to what `.render` generated earlier):
@@ -712,7 +730,7 @@ image::the-blue-thing.png["Rendered preview looks the same as in Content Studio,
 NOTE: the random but matching ID (_uniqueId_) of the target container and in the `React4xp.CLIENT.hydrate` call.
 
 
-== Chaining
+== 4: Chaining
 
 Demonstrating some final features:
 
@@ -995,7 +1013,7 @@ In other words: we can use an _entry_ multiple times target1ing different contai
 Add this part the same way as in the previous examples and look at it in the Preview - you should see this:
 
 [.thumb]
-image::chaining2.png["You clicked, Sir? I am but a humble screenshot!" width=1036px]
+image:chaining2.png[title="You clicked, Sir? Why, I am but a humble screenshot!" width=1036px]
 
 The few things worth confirming here:
 
