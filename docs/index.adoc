@@ -183,19 +183,19 @@ Finally, we'll add a bare-bone *page controller* that calls the rendering engine
 [source,javascript,linenums,options="nowrap"]
 ----
 const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');       // // <1>
+const React4xp = require('/lib/enonic/react4xp');       // <1>
 
-exports.get = function(request) {                       // // <2>
-    const entry = portal.getComponent();                // // <3>
+exports.get = function(request) {                       // <2>
+    const entry = portal.getComponent();                // <3>
     const props = null;
 
-    return React4xp.render(                             // // <4>
+    return React4xp.render(                             // <4>
         entry,
         props,
         request,
         {
-            id: "react4xpApp",                          // // <5>
-            body:                                       // // <6>
+            id: "react4xpApp",                          // <5>
+            body:                                       // <6>
                 `<html><head></head>
                     <body>
                         <div id="react4xpApp"></div>
@@ -387,16 +387,16 @@ exports.get = function(request) {
 
     const component = portal.getComponent();
 
-    const props = {                                     // // <1>
+    const props = {                                     // <1>
         message: "G'day",
         messageReceiver: component.config.greetee
     };
 
     return React4xp.render(
-        "site/parts/hello-react/different-greeting",    // // <2>
+        "site/parts/hello-react/different-greeting",    // <2>
         props,
         request,
-        { clientRender: true }                          // // <3>
+        { clientRender: true }                          // <3>
     );
 
 };
@@ -457,9 +457,9 @@ If we dig into *the output page source* of the preview tab, the HTML is similar 
     <script src="(...your.app.service) /react4xp/site/parts/good-day/different-greeting.js"> <!--2-->
     </script>
     <script defer>
-        React4xp.CLIENT.render(                                   // // <3>
-            React4xp['site/parts/good-day/different-greeting'],   // // <4>
-            "_23744858",                                          // // <5>
+        React4xp.CLIENT.render(                                   // <3>
+            React4xp['site/parts/good-day/different-greeting'],   // <4>
+            "_23744858",                                          // <5>
             {
                 "message": "G'day",
                 "messageReceiver": "Bruce",
@@ -477,7 +477,7 @@ Most notable differences from the first example:
 <2> Since we selected a named entry with the jsxPath, the full path to the _compiled_ entry asset is inserted.
 <3> Again because of the `clientRender:true` flag, the browser is calling `.render` instead of `.hydrate`. `React4xp.CLIENT.render` has link:https://www.npmjs.com/package/react4xp-runtime-client#render[the same signature] as `React4xp.CLIENT.hydrate`: `(entry, targetElementId, props)`.
 <4> So the client wrapper renders our react entry...
-<4> ...and inserts it into the empty target container, the one matching the (generated) unique ID.
+<5> ...and inserts it into the empty target container, the one matching the (generated) unique ID.
 
 [TIP]
 ====
@@ -489,7 +489,7 @@ We only added the `message` and `messageReceiver` props in the controller. The l
 
 == Entries and jsxPath
 
-We've mentioned React4xp _entries_ and their _jsxPath_ earlier. Let's take a moment to look at what they are:
+We've mentioned React4xp _entries_ and their _jsxPath_ earlier. Here are the details about what they are (feel free to just skim through this, move on with the next examples, and use this for reference later):
 
 ====
 
@@ -526,8 +526,10 @@ Easier during development: if you use the `component` object like in link:#_1_he
 
 1. If an entry's source file is a JSX under _/src/main/resources/_ *_site/_*, the jsxPath is the source file's path relative to _/src/main/resources/_ - unix-style and without file extension.
   * So the jsxPath will start with `site/...` etc (and the asset will be compiled into a folder below _/build/resources/main/assets/react4xp/_ *_site/_*, and so on).
-2. With the setup from the starter, you can also put your entries under _src/main/resources/_ *_react4xp/entries_*. Then the jsxPath (and compiled-asset path) will be relative to _/entries/_ instead.
-  * Actually, you can control this with the `entryDirs` property in _react4xp.properties_. The starter has added `entryDirs=entries` here, but this is a comma-separated list of folder names relative to _src/main/resources/react4xp/_.
+2. Or, using the setup from the starter, you can also put your entries under _src/main/resources/_ *_react4xp/entries_*. Then the jsxPath (and compiled-asset path) will be relative to _/entries/_ instead.
+  * Actually, you can control this with the `entryDirs` property in _react4xp.properties_. The starter has added `entryDirs=entries` here, but this is a comma-separated list of folder names relative to _src/main/resources/react4xp/_. Remember, if you add more entryDirs or replace `entries`, the jsxPaths will always be relative to those new entryDirs.
+
+  * *For example:* add `../myComponents` to entryDirs: `entryDirs=entries,../myComponents`. Since entryDirs and the "../" are relative to _src/main/resources/react4xp/_, the new entry source folder is _src/main/resources/myComponents/_. Now new JSX files can be put there, and get a jsxPath relative to that. So the entry _src/main/resources/myComponents/_ *_app/myEntry.jsx_* will get the jsxPath `"app/myEntry"`, and will be compiled to the entry asset _/build/resources/main/assets/react4xp/app/myEntry.js_.
 
 If you're ever unsure: after building, all the *jsxPaths of all the available entries* are stored in _build/resources/main/assets/react4xp/entries.json_. This file is generated by webpack during build. It's also used by the runtime, so it shouldn't be deleted or edited!
 
