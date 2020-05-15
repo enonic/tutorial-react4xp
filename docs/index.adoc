@@ -88,21 +88,13 @@ src/
       react4xp/             <!--3-->
         entries/
         shared/
-      site/
-        pages/
-            default/        <!--4-->
-              default.es6
-              default.jsx
-              default.xml
 
 ----
 
 <1> A set of gradle config files and `package.json`. These define the build process and project structure, and in particular, make sure that the *lib-react4xp library* and *react4xp npm package* are installed right.
 <2> `react4xp.properties`: tune the most common properties of the react4xp project.
-<3> The `react4xp/` folder is opt-in: doesn't need to contain anything, but when fine-tuning the build later we'll get back to why you might find it handy to have a separate place for some of your react components. Super-short version:
-  - the `entries\` folder here is for react components that can be used directly by react4xp,
-  - the `shared\` folder is for common components shared between entries (entries can import other react components, js code, third-party libs etc).
-<4> A bare-bone `default` page controller is included with the starter, for convenience and as an example of a pure-react page controller.
+<3> The `react4xp/` folder is opt-in: can be ignored for now, and doesn't need to contain anything. But when fine-tuning the build later in the tutorial, we'll get back to why you might find it handy to have a separate place for some of your react components (in ultra-short: the `entries\` folder is for react components that can be used directly by react4xp, the `shared\` folder is for common components imported by, and shared between, the entries).
+
 
 
 === Build and Deploy
@@ -262,7 +254,7 @@ Clicking somewhere on the rendered text in the preview window will trigger the `
 ==== Static rendering in Content Studio
 If you clicked the rendering *inside XP Content Studio* instead of a preview tab, you'd notice there was *no bottle-counting*. You see the rendering, but instead of being active react, it's just a regular static XP preview. This way, you get a placeholder/visualization of the react rendering, but can work with it in the XP workflow (react functionality may intervene with both the workflow or even Content Studio itself). This is why we added the `request` argument in `React4xp.render`.
 
-NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. link:#custom_flow[Example 3 shows you how].
+NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. link:#custom_flow[Example 4 shows you how].
 
 ==== First-serverside-rendering lag
 You may also have noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the *Nashorn server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
@@ -275,7 +267,7 @@ We're looking into mitigating this delay in the future, but for now, this is nic
 
 
 
-
+[[hello_output]]
 === Output
 
 Curious about what happened in the rendering? Open the page source code in the browser to look at the preview page. Here's what `React4xp.render` created:
@@ -569,7 +561,7 @@ image:gday_bruce.png[title="Rendering: G'day Bruce. This is all just one big phi
 
 === Output
 
-So did anything change in the rendered response, compared to the first example? Not all that much, actually. Depending on what data you inserted and the resulting `props`, your page source should look something like this:
+So did anything change in the rendered response, compared to link:#hello_output[the first example]? Not all that much, actually. Depending on what data you inserted and the resulting `props`, your page source should look something like this:
 
 [source,html,options="nowrap"]
 ----
@@ -616,7 +608,7 @@ If we hadn't used `clientRender`, this output would be identical, except:
 
 
 [[xp_pages_parts]]
-== 3: XP pages and parts
+== 3: XP pages, parts and regions
 
 Now that you know the basic structure of rendering, let's expand the scope and...
 
@@ -1081,8 +1073,11 @@ NOTE: jsxPaths are not actually file system paths, but *static name strings*. So
 ====
 
 
-[[chaining_imports_chunks]]
-== 5: Chaining, imports, chunks
+[[chaining]]
+== 5: Chaining.
+
+[[imports_chunks]]
+== 6: Imports. Dependency chunks.
 
 Finally, a slightly more life-like example. Looking at these features:
 
@@ -1564,8 +1559,6 @@ Just confirming what you surely guessed would happen:
 <3> Only one container with _"this-is-not-unique"_ was rendered for the same reason: that ID had already been inserted. So all the corresponding React4XP objects were server-side rendered into that one. This would also happen with client-side rendering! Also look further down: the client is asked to `hydrate` all four instances, which will log errors in the console since the content doesn't match.
 <4> React4xp automatically traced the dependency to `myChunk.<hash>.js` and added this import to the page contributions because that's where `BuilderClicker` comes from.
 <5> Although several of the generated assets are _used_ more than once, the page contributions are trimmed for duplicates so each of them are only _downloaded to the client_ once.
-
-== React4xp Regions
 
 == Need to go deeper?
 
