@@ -568,60 +568,55 @@ image:gday_bruce.png[title="Rendering: G'day Bruce. This amounted to one big phi
 
 === Output
 
-Curious about what happened here? Open the page source code in the browser to look at the preview page. Here's what `React4xp.render` created:
+So did anything change in the rendered response, compared to the first example? Not all that much, actually. Depending on what data you inserted and the resulting `props`, your page source should look something like this:
+
 [source,html,options="nowrap"]
 ----
 <html>
 <head></head>
 <body class="xp-page">
 
-    <div id="react4xpApp">
-        <div data-reactroot="">                     <!--1-->
-            <h1>Hello world!</h1>
-            <p>Click me: <span id="counter">99</span> bottles of beer on the wall. </p>
-        </div>
-    </div>
+    <div id="react4xpApp"></div>                                                    <!--1-->
 
-    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>      <!--2-->
-    <script src="(...your.app.service) /react4xp-client/"></script>                     <!--3-->
-    <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"></script>  <!--4-->
+    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>  <!--2-->
+    <script src="(...your.app.service) /react4xp-client/"></script>
+    <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"></script>
     <script defer>
-        React4xp.CLIENT.hydrate(                                                        <!--5-->
+        React4xp.CLIENT.render(                                                     // <3>
             React4xp['site/pages/hello-react/hello-react'],
             "react4xpApp",
-            null,
+            {                                                                       // <4>
+                "message": "G'day",
+                "messageTarget": "Bruce",
+                "droppable": "tubes",
+                "initialCount": 42,
+                "react4xpId": "react4xpApp"
+            },
             1, 0);
     </script>
 </body>
 </html>
+
 ----
-We can see this whole output is actually the `body` HTML string we passed into the `React4xp.render` call in the controller - but *a lot has been inserted*. Most importantly, three assets are loaded into the client.
+<1> The target container `react4xpApp` is now empty on the first response from the server. Using `clientRender: true` makes the server trusts the browser to use React to fill in the content.
+<2> There's no change in the asset URLs. But since we changed _hello-react.jsx_, the _content_ of _hello-react.js_ has of course been recompiled.
+<3> The client wrapper calls `.render` instead of `.hydrate` since we flagged the rendering with `clientRender`. This causes client-side react to fill in the target container with a DOM rendering from scratch...
+<4> ...based on the `props` we injected.
 
-(The asset URLs are shortened for readability, and because some details may vary. At my computer for example, the `(...your.app.service)` part actually looks like: `/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/`)
+[NOTE]
+====
+If we hadn't used `clientRender`, this output would be identical, except:
 
-<1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component (at this point, only static markup).
-<2> The first asset is `externals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN. If you want to read more about why, or how to tweak the externals, see the link:https://www.npmjs.com/package/react4xp-runtime-externals[externals docs on NPM].
-<3> The second loaded asset is a client-wrapper, available in the browser's namespace as `React4xp.CLIENT`. For more, see the link:https://www.npmjs.com/package/react4xp-runtime-client[client wrapper docs on NPM].
-<4> The third asset is the compiled version of _hello-react.jsx_. React4xp used the `component` data to resolve the link:#jsxPath[jsxPath] that locates the asset after compiling: `site/pages/hello-react/hello-react`. The jsxPath is also used when loading the asset into the the browser's namespace as `React4xp['site/pages/hello-react/hello-react']`. This asset also contains the `dropBottle` function.
-<5> Finally, the trigger. The CLIENT wrapper calls link:https://www.npmjs.com/package/react4xp-runtime-client#hydrate[hydrate] to activate react in the serverside-rendered asset `React4xp['site/pages/hello-react/hello-react']` in the target container `"react4xpApp"`. Now the `dropBottle` function works! We haven't added any props yet, hence the `null` argument. The final two digits `1, 0` are internal react4xp housekeeping, flagging some possible need for client-side postprocessing.
-
-NOTE: The assets are served by lib-react4xp services. Most of them (_react4xp-client_ and the content-hashed assets) are optimized for client-side caching, to minimize repeated requests.
-
-
-
-
-
-
-
-
-
+- The target container would arrive pre-filled with an HTML representation like the one in example 1, but with your texts from `props` already there.
+- `.hydrate` instead of `.render`.
+====
 
 
 
 [[_react4xp_render]]
 == React4xp.render
 
-A closer look at the `.render` call from the ES6 controller in link:#_code[the example above]:
+Now might be a good time to take a closer look at the `.render` call from the ES6 controller in link:#_code[the example above]:
 
 ====
 React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. Basically, take any HTML string and pass it through `.render` as a `body` option, and react4xp will insert the react component into the HTML string and add any necessary page contributions to make it all work.
@@ -649,7 +644,7 @@ React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. 
 - `pageContributions`: a regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] object. Includes everything the browser needs to activate (or client-side render) the react component: auto-compiled assets for the entry (_hello-react.js_ in this example) and whatever it may depend on (most importantly, react and react-dom in an _externals_ asset), and a client-side react4xp wrapper asset. These are all optimized and served to the client by react4xp services.
 ====
 
-`.render` is just one way. React4xp has other, more detailed and flexible ways of rendering, we'll get back to those in a bit.
+`.render` is just one way. React4xp has other, more detailed and flexible ways of rendering, we'll link:#custom_flow[look at those] in a bit.
 
 
 
