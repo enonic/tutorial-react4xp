@@ -373,7 +373,7 @@ exports.get = function(request) {
     )
 };
 ----
-<1> This (line 23) is all that's needed: a truthy `clientRender` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular call. Mixing up clientside and serverside rendering across different places is possible. Just not tested very much). And on the client, `React4xp.CLIENT.render` (which wraps `react.render) is called instead of `React4xp.CLIENT.hydrate` - making the browser fill the target element DOM from scratch.
+<1> This (line 23) is all that's needed: a truthy `clientRender` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular call. Mixing up clientside and serverside rendering across different places hasn't been tested very much, but it should work fine). And on the client, `React4xp.CLIENT.render` (which wraps `react.render`) is called instead of `React4xp.CLIENT.hydrate` - making the browser fill the target element DOM from scratch.
 
 NOTE: As link:#static_cs_rendering[before], this only applies _outside_ of Content Studio. The `clientRender` flag does not change anything inside Content Studio: still server-side rendered static HTML.
 
@@ -406,13 +406,14 @@ export default (props) => <div onClick={makeObjectDropper(props.droppable, props
 
 [TIP]
 ====
-`props` are of course the standard react way to do this. It _all_ is. As long as a _props => reactComponent_ function is default-exported, react4xp accepts standard valid ES6/JSX.
+`props` are of course the standard react way to do this. It all is. As long as a _props => reactComponent_ function is default-exported, react4xp accepts standard valid ES6/JSX.
 
-Although, if you think that _makeObjectDropper_ closure thing below is a strange way to do something react itself could do better, I won't argue. Just trying to focus on one thing at a time.
+Although, if you think that _makeObjectDropper_ closure thing is a strange way to do something react itself could do better... I won't argue. Just trying to focus on one thing at a time.
 ====
 
-Next, we're modifying *the controller* to inject data into the react component:
+Next, we'll modify *the controller* to inject data into the react component:
 
+[[controller_with_props]]
 .hello-react.es6:
 [source,javascript,linenums,options="nowrap"]
 ----
@@ -451,9 +452,9 @@ exports.get = function(request) {
 
 ----
 
-<1> The `props` are just any standard JS object, directly passed into the react component. One caveat: `props` needs to be serializable - functions can't be passed here!
-<2> This makes `React4xp.render` pretty analogous to XP's `thymeleaf.render` template engine. The first argument is just a reference to what should be rendered (_react component_ ~ _template_), the second one (_props_ ~ _model_) is a collection of data injected into it.
-<3> `clientRender` has nothing to do with props, of course.
+<1> The `props` are just any standard JS object, directly passed into the react component. One caveat: `props` needs to be *serializable* - functions can't be passed here!
+<2> This makes `React4xp.render` pretty analogous to XP's `thymeleaf.render` template engine. The first argument is just a reference to what should be rendered (_react component_ ~ _template_), the second one is a collection of data injected into it (_props_ ~ _model_).
+<3> To be clear, `clientRender` has nothing to do with props one way or the other.
 
 Okay, we're done with the `props` injection, but the data are still hardcoded - only in the controller instead of the react component. The last step is to get the data from XP.
 
@@ -461,7 +462,7 @@ Okay, we're done with the `props` injection, but the data are still hardcoded - 
 
 This part is just standard XP procedure.
 
-We define the data in the *page definition* XML file. This file is the same as in example 1,but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`. `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component.
+We define the data in the *page definition* XML file. This file is the same as in example 1, but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`. `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component.
 
 .hello-react.xml:
 [source,xml,linenums,options="nowrap"]
@@ -563,7 +564,7 @@ Of course, this is too similar to the previous example, just repeating "Hello Wo
 Open the page in a *Preview* tab to see the final rendering with your new data, all active:
 
 [.thumb]
-image:gday_bruce.png[title="Rendering: G'day Bruce. This amounted to one big philosopher's joke", width=768px]
+image:gday_bruce.png[title="Rendering: G'day Bruce. This is all just one big philosophers' joke, isn't it?", width=768px]
 
 
 === Output
@@ -616,7 +617,7 @@ If we hadn't used `clientRender`, this output would be identical, except:
 [[_react4xp_render]]
 == React4xp.render
 
-Now might be a good time to take a closer look at the `.render` call from the ES6 controller in link:#_code[the example above]:
+Now might be a good time to take a closer look at the `.render` call from the ES6 controller in link:#controller_with_props[the example above]:
 
 ====
 React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. Basically, take any HTML string and pass it through `.render` as a `body` option, and react4xp will insert the react component into the HTML string and add any necessary page contributions to make it all work.
