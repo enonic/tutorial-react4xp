@@ -241,7 +241,7 @@ What's going on in the controller?
 <5> In line 13, the `id` attribute _"react4xpApp"_ is set in the *options* argument of `.render` (lines 12-20). This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
 <6> In lines 14-19, we're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag (such as `<!DOCTYPE html>`).
 
-
+[[first_setup_render]]
 === Setup and first render
 
 If you've added those 3 files, let's get this rendered!
@@ -258,16 +258,16 @@ image:hello_bottles.png[title="Rendering: Hello World and some bottles on a wall
 
 Clicking somewhere on the rendered text in the preview window will trigger the `dropBottle` function from _hello-react.jsx_, and modify the DOM and output a message in the browser console. Look at those bottles go!
 
+[[static_cs_rendering]]
 ==== Static rendering in Content Studio
 If you clicked the rendering *inside XP Content Studio* instead of a preview tab, you'd notice there was *no bottle-counting*. You see the rendering, but instead of being active react, it's just a regular static XP preview. This way, you get a placeholder/visualization of the react rendering, but can work with it in the XP workflow (react functionality may intervene with both the workflow or even Content Studio itself). This is why we added the `request` argument in `React4xp.render`.
 
-NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. link:#custom_flow[That example shows you how].
+NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. link:#custom_flow[Example 3 shows you how].
 
 ==== First-serverside-rendering lag
 You may also have noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the *Nashorn server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
 
 We're looking into mitigating this delay in the future, but for now, this is nice to know: *This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app. Setting up a continuous build with XP devmode instead, helps. For the react4xp starter, here's how:
-
 
 `enonic sandbox start <yourSandBoxName> --dev` in one terminal (from anywhere), and
 
@@ -278,7 +278,7 @@ We're looking into mitigating this delay in the future, but for now, this is nic
 
 === Output
 
-Curious about what happened here? Open the page source code in the browser to look at the preview page. Here's what `React4xp.render` created:
+Curious about what happened in the rendering? Open the page source code in the browser to look at the preview page. Here's what `React4xp.render` created:
 [source,html,options="nowrap"]
 ----
 <html>
@@ -322,13 +322,11 @@ Ready for the next example?
 [[props_clientside]]
 == 2: Editorial props, client-side
 
-Here we'll modify the files you just made, and look at how to skip the server-side rendering and just render the same react component in the old-school, purely client-side way.
+Here we'll look at how to skip the server-side rendering and just render the same react component in the purely old-school clientside way.
 
-We'll also add some props so that editorial data from XP is displayed in react, routing it in through the props.
+We'll also add some props with editorial data from XP, displayed in the react component.
 
-React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: just displaying a working react component.
-
-We'll do this by adding a regular XP page controller we'll call _hello-react_:
+We'll do this by modifying the same files you created above:
 
 .Files involved:
 [source,files]
@@ -339,69 +337,29 @@ site/pages/hello-react/
   hello-react.es6
 ----
 
-These files are not included in the starter - use your copy/paste skills and remember that `hello-react` must be identical between file names and folder name.
-
 === Code
 
-First, we need a *page definition* XML file. Just XP boilerplate:
+==== Client-side rendering
 
-.hello-react.xml:
-[source,xml,linenums,options="nowrap"]
-----
-<part>
-  <display-name>Hello React</display-name>
-  <description>Super simple example</description>
-  <form />
-</part>
-----
-
-Next, we'll add the *react component*. This displays a "Hello world" heading, and we'll add some simple functionality to it: every time you click the message, it will update a number in the next line and print a message in the console. This is to show that we're rendering an _active_ react component; we're not only using JSX as an XP templating language for static HTML - although sure, you could do that too if you want.
-
-Obviously, the actual updating step is done with vanilla JS instead of actual react, just to keep everything as simple as possible. We'll look at stateful/dynamic components later.
-
-.hello-react.jsx
-[source,javascript,options="nowrap"]
-----
-import React from 'react';
-
-let bottleCount = 99;
-function dropBottle() {
-    bottleCount--;
-    console.log(bottleCount, 'bottles of beer on the wall.');
-    document.getElementById('counter').innerText = bottleCount;
-};
-
-export default (props) => <div onClick={dropBottle}>
-    <h1>Hello world!</h1>
-    <p>Click me: <span id="counter">{bottleCount}</span> bottles of beer on the wall.</p>
-</div>;
-----
-
-[NOTE]
-====
-One thing is mandatory for this to work, shown in the last line: the JSX file *must default-export a function* that *_may_ take a props object* and *_must_ return a react component*. More on this link:#entries[later].
-
-Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from node_modules in the regular way (there is a caveat or two here. We'll get back to that too later).
-====
-Finally, we'll add a bare-bone *page controller* that calls the rendering engine:
+First off, we'll make the component render on the client instead of on the server. That's a one-line operation:
 
 .hello-react.es6:
 [source,javascript,linenums,options="nowrap"]
 ----
 const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');       // <1>
+const React4xp = require('/lib/enonic/react4xp');
 
-exports.get = function(request) {                       // <2>
-    const entry = portal.getComponent();                // <3>
+exports.get = function(request) {
+    const entry = portal.getComponent();
     const props = null;
 
-    return React4xp.render(                             // <4>
+    return React4xp.render(
         entry,
         props,
         request,
         {
-            id: "react4xpApp",                          // <5>
-            body:                                       // <6>
+            id: "react4xpApp",
+            body:
                 `
                     <html>
                         <head></head>
@@ -409,55 +367,203 @@ exports.get = function(request) {                       // <2>
                             <div id="react4xpApp"></div>
                         </body>
                     </html>
-                `
+                `,
+            clientRender: true                          // <1>
+        }
+    )
+};
+----
+<1> This (line 23) is all that's needed: a truthy `clientRender` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular call. Mixing up clientside and serverside rendering across different places is possible. Just not tested very much). And on the client, `React4xp.CLIENT.render` (which wraps `react.render) is called instead of `React4xp.CLIENT.hydrate` - making the browser fill the target element DOM from scratch.
+
+NOTE: As link:#static_cs_rendering[before], this only applies _outside_ of Content Studio. The `clientRender` flag does not change anything inside Content Studio: still server-side rendered static HTML.
+
+==== Props
+
+Now let's change the files some more so we can use Content Studio to input some data into the react rendering.
+
+We'll start by modifying the *react component* so that it displays data from the `props` object, instead of hardcoding everything.
+
+.hello-react.jsx
+[source,javascript,options="nowrap"]
+----
+import React from 'react';
+
+
+function makeObjectDropper(droppableProp, initialCountProp) {
+    let currentCount = initialCountProp;
+    return () => {
+        currentCount--;
+        console.log(currentCount.toString(), droppableProp, 'on the wall.');
+        document.getElementById('counter').innerText = currentCount;
+    };
+}
+
+export default (props) => <div onClick={makeObjectDropper(props.droppable, props.initialCount)}>
+    <h1>{props.message} {props.messageTarget}!</h1>
+    <p>Click me: <span id="counter">{props.initialCount}</span> {props.droppable} on the wall.</p>
+</div>;
+----
+
+[TIP]
+====
+`props` are of course the standard react way to do this. It _all_ is. As long as a _props => reactComponent_ function is default-exported, react4xp accepts standard valid ES6/JSX.
+
+Although, if you think that _makeObjectDropper_ closure thing below is a strange way to do something react itself could do better, I won't argue. Just trying to focus on one thing at a time.
+====
+
+Next, we're modifying *the controller* to inject data into the react component:
+
+.hello-react.es6:
+[source,javascript,linenums,options="nowrap"]
+----
+const portal = require('/lib/xp/portal');
+const React4xp = require('/lib/enonic/react4xp');
+
+
+exports.get = function(request) {
+    const entry = portal.getComponent();
+
+    const props = {                                 // <1>
+        message: "Hello",
+        messageTarget: "world",
+        initialCount: 99,
+        droppable: "bottles of beer"
+    };
+
+    return React4xp.render(
+        entry,
+        props,                                      // <2>
+        request,
+        {
+            id: "react4xpApp",
+            body: `
+                <html>
+                    <head></head>
+                    <body class="xp-page">
+                        <div id="react4xpApp"></div>
+                    </body>
+                </html>
+            `,
+            clientRender: true                      // <3>
+        }
+    )
+};
+
+----
+
+<1> The `props` are just any standard JS object, directly passed into the react component. One caveat: `props` needs to be serializable - functions can't be passed here!
+<2> This makes `React4xp.render` pretty analogous to XP's `thymeleaf.render` template engine. The first argument is just a reference to what should be rendered (_react component_ ~ _template_), the second one (_props_ ~ _model_) is a collection of data injected into it.
+<3> `clientRender` has nothing to do with props, of course.
+
+Okay, we're done with the `props` injection, but the data are still hardcoded - only in the controller instead of the react component. The last step is to get the data from XP.
+
+==== Editorial data
+
+This part is just standard XP procedure.
+
+We define the data in the *page definition* XML file. This file is the same as in example 1,but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`. `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component.
+
+.hello-react.xml:
+[source,xml,linenums,options="nowrap"]
+----
+<page>
+  <display-name>Hello React</display-name>
+  <description>Editorial example</description>
+    <form>
+        <input type="TextLine" name="greeting">
+            <label>What's the greeting?</label>
+            <default>Hello</default>
+            <occurrences minimum="1" maximum="1"/>
+        </input>
+
+        <input type="TextLine" name="greetee">
+            <label>Who shall we greet?</label>
+            <default>world</default>
+            <occurrences minimum="1" maximum="1"/>
+        </input>
+
+        <input type="TextLine" name="counted">
+            <label>What are the things on the wall?</label>
+            <default>bottles of beer</default>
+            <occurrences minimum="1" maximum="1"/>
+        </input>
+
+        <input type="Long" name="startCount">
+            <label>How many of them are there?</label>
+            <default>99</default>
+            <occurrences minimum="1" maximum="1"/>
+        </input>
+    </form>
+</page>
+----
+
+And we return to the *page controller* to hook the dynamic XP content into the props:
+
+.hello-react.es6:
+[source,javascript,linenums,options="nowrap"]
+----
+const portal = require('/lib/xp/portal');
+const React4xp = require('/lib/enonic/react4xp');
+
+
+exports.get = function(request) {
+    const entry = portal.getComponent();
+
+    const content = portal.getContent();                    // <1>
+    const pageConfig = (content.page || {}).config || {};
+    const props = {
+        message: pageConfig.greeting,                       // <2>
+        messageTarget: pageConfig.greetee,
+        droppable: pageConfig.things,
+        initialCount: pageConfig.startCount
+    };
+
+    return React4xp.render(
+        entry,
+        props,
+        request,
+        {
+            id: "react4xpApp",
+            body: `
+                <html>
+                    <head></head>
+                    <body class="xp-page">
+                        <div id="react4xpApp"></div>
+                    </body>
+                </html>
+            `,
+            clientRender: true
         }
     )
 };
 ----
 
+<1> Fetching the content data (and in the next line: in this case, unpacking it while ensuring that missing data should just display emptiness, not throw an error)
+<2> Connecting the field names in `pageConfig` from _hello-react.xml_ to the prop names that _hello-react.jsx_ needs.
 
 
+=== Setup and rendering
 
-That's it.
+Compile the project, enter Content Studio Repeat (the first two steps in link:#first_setup_render[the previous setup]), and edit the content you created (double-click it to open a new tab).
 
-If you've used XP before, you'll probably note that there's no HTML view file, no `thymeleaf.render`, and so on - in this example, react4xp completely handles the page view. The essential thing here is that at the end of the `get` function, *react4xp in a single _.render_ call creates a _full_ XP response object that makes react work.*
-
-What's going on in the controller?
-
-<1> In line 2, `React4xp` is imported from the library.
-<2> In line 4, we pick up the `request` data. The render call needs it to know the rendering context.
-<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for react4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that under link:#_react4xp_render[the render call] and link:#jsxPath[jsx paths]).
-<4> In line 8, the juicy bit: *the actual render call*. The rendered response from it can be returned directly from the `get` function, since `.render` creates an object with a `body` HTML string and a `pageContributions` attribute with everything needed (more about this link:#_react4xp_render[below]).
-<5> In line 13, the `id` attribute _"react4xpApp"_ is set in the *options* argument of `.render` (lines 12-20). This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
-<6> In lines 14-19, we're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag (such as `<!DOCTYPE html>`).
-
-
-=== Setup and first render
-
-If you've added those 3 files, let's get this rendered!
-
-* Compile the project (`enonic project deploy` in a terminal from root) and start the sandbox (`enonic sandbox start`),
-* Navigate your browser to `localhost:8080/admin`. Log in to XP and open Content Studio (if you haven't already, you'll need to link:https://market.enonic.com/vendors/enonic/content-studio[install Content Studio] in XP).
-* Create a new site and edit it. Use the new _Hello-react_ page controller, store that change.
-* Enter the preview to view the content outside of Content Studio.
-
-You should now see:
+You should still see in the preview panel on the right:
 
 [.thumb]
-image:hello-world.png[title="Rendering: Hello World. In fabulous Times New Roman, because no good tutorial should add irrelevant complexity and this is a good tutorial.", width=768px]
+image:hello_bottles.png[title="Rendering: Hello World, same as before. You clicked this image too, didn't you?", width=768px]
 
-And if you open the browser console, you can click that hello-world message and watch the `dropBottle` function from _hello-react.jsx_ drop bottles off the wall one by one.
+But now, when you click "Hello world" (or anywhere on the preview panel), the page-config editing panel opens on the right:
 
-[TIP]
-====
-You probably noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the Nashorn server-side rendering engine warming up. It reads and caches the basics - notably, some necessary polyfilling, react and react-dom. We're looking into mitigating this delay in the future, but for now, this is nice to know:
+[.thumb]
+image:hello_editorial.png[link="media/hello_editorial.png",title="Editing Hello World in the page-config panel in Content Studio. You actually CAN click this image to see a high-res version!", width=1024px]
 
-*This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app. Setting up a continuous build with XP devmode instead, helps. For this starter, here's how:
+Of course, this is too similar to the previous example, just repeating "Hello World" might cause a little confusion. Try editing the data in the fields, for example changing _"world"_ into _"link:https://montypython.fandom.com/wiki/Bruces_sketch[Bruce]"_, etc, to keep it clear.
 
-`enonic project deploy && gradlew react4xp_components compileXP -t` in one terminal (from project root), and
+*Apply/save* your new props, and the output should change: since we're still in Content Studio you get a static serverside-rendered update immediately.
 
-`enonic sandbox start <yourSandBoxName> --dev` in another.
-====
+Open the page in a *Preview* tab to see the final rendering with your new data, all active:
+
+[.thumb]
+image:gday_bruce.png[title="Rendering: G'day Bruce. This amounted to one big philosopher's joke", width=768px]
 
 
 === Output
