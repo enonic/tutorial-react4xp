@@ -305,7 +305,7 @@ We can see this whole output is actually the `body` HTML string we passed into t
 <1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component. At this point it's only static markup, but it will be activated during step 5 below.
 <2> The first asset is `externals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN. If you want to read more about why, or how to tweak the externals, see the link:https://www.npmjs.com/package/react4xp-runtime-externals[externals docs on NPM].
 <3> The second loaded asset is a client-wrapper, available in the browser's namespace as `React4xp.CLIENT`. For more, see the link:https://www.npmjs.com/package/react4xp-runtime-client[client wrapper docs on NPM].
-<4> The third asset is the compiled version of _hello-react.jsx_. React4xp used the `component` data to resolve the link:#jsxPath[jsxPath] that locates the asset after compiling: `site/pages/hello-react/hello-react`. The jsxPath is also used when loading the asset into the the browser's namespace as `React4xp['site/pages/hello-react/hello-react']`. This asset also contains the `dropBottle` function.
+<4> The third asset is the compiled version of _hello-react.jsx_, with the react component and the `dropBottle` routine. During `React4xp.render`, react4xp used the `component` data to locate this asset _after_ compiling. The react component gets an identifier string, `site/pages/hello-react/hello-react`, which is called a _jsxPath_ in react4xp. We'll link:#jsxPath[cover jsxPaths in more detail later], but for now you just need to know that this identifier is also used when loading this asset into the the browser's namespace: `React4xp['site/pages/hello-react/hello-react']`.
 <5> Finally, the trigger. The CLIENT wrapper calls link:https://www.npmjs.com/package/react4xp-runtime-client#hydrate[hydrate] to activate react in the serverside-rendered asset `React4xp['site/pages/hello-react/hello-react']` in the target container `"react4xpApp"`. Now the `dropBottle` function works! We haven't added any props yet, hence the `null` argument. The final two digits `1, 0` are internal react4xp housekeeping, flagging some possible need for client-side postprocessing.
 
 NOTE: The assets are served by lib-react4xp services. Most of them (_react4xp-client_ and the content-hashed assets) are optimized for client-side caching, to minimize repeated requests.
@@ -379,13 +379,15 @@ If you compare with link:#hello_output[the serverside-rendered example], the `cl
 
 NOTE: As link:#static_cs_rendering[mentioned before], this only applies _outside_ of Content Studio. The `clientRender` flag does not change anything inside Content Studio: still server-side rendered static HTML.
 
-Worth mentioning: a special case where you might want to _temporarily_ clientside-render a component:
+Apart from these differences behind the scenes, the page will look and behave the same when presented to the user.
+
+Finally, it's worth mentioning a special case where you might want to _temporarily_ clientside-render a component:
 
 [TIP]
 ====
 You might get _serverside runtime errors_ in the react components that you write. The Nashorn rendering engine will dump an error message and some suspected code in the server log - but it's not always easy to make sense of those.
 
-Often, switching over to _clientside rendering_ for that particular react component, will give you a better/sourcemapped error message in the browser console, making your debugging a bit easier.
+Often, switching over to _clientside rendering_ for that particular react component, will give you a better/sourcemapped error message in the browser console, making your debugging life easier.
 ====
 
 Okay, ready for the next example lesson?
