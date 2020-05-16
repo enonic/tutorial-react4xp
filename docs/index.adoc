@@ -536,7 +536,7 @@ exports.get = function(request) {
 <1> Fetching the content data defined in the XML (and in the next line, we're unpacking it into `pageConfig` while choosing that missing data should just display emptiness, not throw an error).
 <2> The `props` object is just any standard JS object. So the data can of course come from anywhere you want and take any shape - with one exception: `props` needs to be *serializable*, so functions can't be passed here!
 <3> Connecting the field names in `pageConfig` from _hello-react.xml_ to the prop names that _hello-react.jsx_ needs.
-<4> See how this makes `React4xp.render` pretty analogous to XP's `thymeleaf.render` template engine? The first argument, `entry`, is just a reference to what should be rendered (_react component_ ~ _template_), and the second one is a collection of data injected into it (_props_ ~ _model_).
+<4> See how this makes the first two arguments of `React4xp.render` analogous to XP's `thymeleaf.render` template engine? The first argument, `entry`, is just a reference to what should be rendered (_react component_ ~ _template_), and the second one is a collection of data injected into it (_props_ ~ _model_).
 <5> To keep things simpler and clearer, just remove the `clientRender` flag from the previous example.
 
 There it is, now let's take a look!
