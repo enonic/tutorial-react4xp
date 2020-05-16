@@ -548,14 +548,14 @@ Compile the project, enter Content Studio Repeat (the first two steps in link:#f
 You should still see it in the preview panel on the right (although, since you probably created the content without any data created along with it, it might not display much of the text. We'll fix that):
 
 [.thumb]
-image:hello_cs.png[title="Editing Hello World, same as before. You actually CAN click this image, to see a high-res version", width=1024px]
+image:hello_cs.png[link="media/hello_cs.png"title="Editing Hello World, same as before. Click to see a high-res version", width=1024px]
 
 Now, when you click the preview panel, the page-config editing panel should open on the right, with the data fields containing the default text we defined. Once you click Apply/save, the preview panel to the left should update.
 
 [.thumb]
-image:hello_editorial.png[link="media/hello_editorial.png",title="Editing Hello World in the page-config panel in Content Studio. You actually CAN click this image to see a high-res version!", width=1024px]
+image:hello_editorial.png[link="media/hello_editorial.png",title="Editing Hello World in the page-config panel in Content Studio. Click to see a high-res version!", width=1024px]
 
-So now, it looks the same as before, but with editorial data instead of hardcoded text. This is too similar to the previous example; just repeating "Hello World" might cause a little confusion. *Try adding your own data in the fields*, for example changing _"world"_ into _"link:https://montypython.fandom.com/wiki/Bruces_sketch[Bruce]"_ etc, to keep it clear.
+So now, it looks the same as before, but with editorial data instead of hardcoded text. Boring, and too similar to the previous example; just repeating "Hello World" might cause a little confusion. *Try adding your own data in the fields*, for example changing _"world"_ into _"link:https://montypython.fandom.com/wiki/Bruces_sketch[Bruce]"_ etc, to keep it clear.
 
 *Apply/save* your new props, and the output should change again. But since we're still in Content Studio, it's justa static serverside-rendered update. To see the final rendering with your new data, all active, click _Preview_ on the top to open the page in a fresh tab:
 
@@ -604,8 +604,8 @@ So did anything change in the rendered response, compared to link:#hello_output[
 </html>
 
 ----
-<1> The target container `react4xpApp` now comes filled from the server, with a rendering with your texts from `props` already inserted.
-<2> There's still no change in the asset URLs, but since we changed _hello-react.jsx_, the _content_ of _hello-react.js_ has of course been recompiled.
+<1> Since we removed the `clientRender` flag again, the target container `react4xpApp` comes filled from the server. But now with a rendering with _your_ texts from `props` already inserted.
+<2> There's still no change in the asset URLs, but since we changed _hello-react.jsx_, the content of _hello-react.js_ has of course been recompiled.
 <4> The `props` are used in the clientside `.hydrate` call. For convenience, the `id` is automatically added as the `react4xpId` prop. Handy for use cases where a react component needs to uniquely identify itself.
 
 
