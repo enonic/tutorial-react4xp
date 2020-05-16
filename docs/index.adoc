@@ -117,8 +117,8 @@ To verify that your app started successfully, you should find an entry similar t
 
 Now you're ready to get started with the *5 example lessons* - starting from the basics:
 
-- link:#hello_react_page[1: Hello React Page]
-- link:#props_clientside[2: Editorial props, client-side]
+- link:#hello_react_page[1: Hello React. Server/clientside]
+- link:#editorial_props[2: Editorial props]
 - link:#xp_pages_parts[3: XP pages and parts]
 - link:#custom_flow[4: Custom flow]
 - link:#chaining_imports_chunks[5: Chaining]
@@ -126,9 +126,9 @@ Now you're ready to get started with the *5 example lessons* - starting from the
 
 
 [[hello_react_page]]
-== 1: Hello React page
+== 1: Hello React. Server/clientside
 
-React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: just displaying a working react component in content studio.
+React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: just displaying a working react component in content studio. We'll first do that in the serverside rendered way (this is the react4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
 
 We'll do this by adding a regular XP page controller we'll call _hello-react_:
 
@@ -270,7 +270,8 @@ We're looking into mitigating this delay in the future, but for now, this is nic
 [[hello_output]]
 === Output
 
-Curious about what happened in the rendering? Open the page source code in the browser to look at the preview page. Here's what `React4xp.render` created:
+Curious about what happened in the rendering of the preview page? Open the *page source* code in the browser. Here's what `React4xp.render` created - the response the client receives on the initial page request:
+
 [source,html,options="nowrap"]
 ----
 <html>
@@ -301,7 +302,7 @@ We can see this whole output is actually the `body` HTML string we passed into t
 
 (The asset URLs are shortened for readability, and because some details may vary. At my computer for example, the `(...your.app.service)` part actually looks like: `/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/`)
 
-<1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component (at this point, only static markup).
+<1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component. At this point it's only static markup, but it will be activated during step 5 below.
 <2> The first asset is `externals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN. If you want to read more about why, or how to tweak the externals, see the link:https://www.npmjs.com/package/react4xp-runtime-externals[externals docs on NPM].
 <3> The second loaded asset is a client-wrapper, available in the browser's namespace as `React4xp.CLIENT`. For more, see the link:https://www.npmjs.com/package/react4xp-runtime-client[client wrapper docs on NPM].
 <4> The third asset is the compiled version of _hello-react.jsx_. React4xp used the `component` data to resolve the link:#jsxPath[jsxPath] that locates the asset after compiling: `site/pages/hello-react/hello-react`. The jsxPath is also used when loading the asset into the the browser's namespace as `React4xp['site/pages/hello-react/hello-react']`. This asset also contains the `dropBottle` function.
@@ -309,31 +310,11 @@ We can see this whole output is actually the `body` HTML string we passed into t
 
 NOTE: The assets are served by lib-react4xp services. Most of them (_react4xp-client_ and the content-hashed assets) are optimized for client-side caching, to minimize repeated requests.
 
-Ready for the next example?
 
-[[props_clientside]]
-== 2: Editorial props, clientside render
+=== Client-side rendering
 
-Here we'll look at how to skip the server-side rendering and just render the same react component in the purely old-school clientside way.
+Sometimes you might want or need to skip the server-side rendering of a react component, and relay the react rendering entirely to the browser. This a one-line operation in `React4xp.render`. Let's return to *the controller*:
 
-We'll also add some props with editorial data from XP, displayed in the react component.
-
-We'll do this by modifying the same files you created above:
-
-.Files involved:
-[source,files]
-----
-site/pages/hello-react/
-  hello-react.xml
-  hello-react.jsx
-  hello-react.es6
-----
-
-=== Code
-
-==== Client-side rendering
-
-First off, we'll make the component render on the client instead of on the server. That's a one-line operation:
 
 .hello-react.es6:
 [source,javascript,linenums,options="nowrap"]
@@ -365,9 +346,67 @@ exports.get = function(request) {
     )
 };
 ----
-<1> This (line 23) is all that's needed: a truthy `clientRender` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular call. Mixing up clientside and serverside rendering across different places hasn't been tested very much, but it should work fine). And on the client, `React4xp.CLIENT.render` (which wraps `react.render`) is called instead of `React4xp.CLIENT.hydrate` - making the browser fill the target element DOM from scratch.
+<1> On the server, a truthy `clientRender` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular `.render` call. Mixing up clientside and serverside rendering across different places hasn't been tested very much, but it should work fine).
 
-NOTE: As link:#static_cs_rendering[before], this only applies _outside_ of Content Studio. The `clientRender` flag does not change anything inside Content Studio: still server-side rendered static HTML.
+If you compare with link:#hello_output[the serverside-rendered example], the `clientRender` flag causes the *rendered output* to change slightly, changing the behavior in the browser.
+
+[source,html,options="nowrap"]
+----
+<html>
+<head></head>
+<body class="xp-page">
+
+    <div id="react4xpApp"></div>    <!--1-->
+
+    <!--2-->
+    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>
+    <script src="(...your.app.service) /react4xp-client/"></script>
+    <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"></script>
+
+    <script defer>
+        React4xp.CLIENT.render(     <!--3-->
+            React4xp['site/pages/hello-react/hello-react'],
+            "react4xpApp",
+            null,
+            1, 0);
+    </script>
+</body>
+</html>
+----
+<1> As expected, the target container is no longer filled with a serverside-rendered HTML representation of the react component. Instead, the browser fills in the DOM from scratch in step 3 below.
+<2> The compiled assets and their URLs are exactly the same as in the serverside version.
+<3> The trigger is changed: the `React4xp.CLIENT` wrapper calls link:https://www.npmjs.com/package/react4xp-runtime-client#render[render] and makes the browser build the DOM inside the target element from scratch (instead of calling `React4xp.CLIENT.hydrate`, which activates/replaces existing HTML). The function signatures of `React4xp.CLIENT.render` and `React4xp.CLIENT.hydrate` are identical.
+
+NOTE: As link:#static_cs_rendering[mentioned before], this only applies _outside_ of Content Studio. The `clientRender` flag does not change anything inside Content Studio: still server-side rendered static HTML.
+
+Worth mentioning: a special case where you might want to _temporarily_ clientside-render a component:
+
+[TIP]
+====
+You might get _serverside runtime errors_ in the react components that you write. The Nashorn rendering engine will dump an error message and some suspected code in the server log - but it's not always easy to make sense of those.
+
+Often, switching over to _clientside rendering_ for that particular react component, will give you a better/sourcemapped error message in the browser console, making your debugging a bit easier.
+====
+
+Okay, ready for the next example lesson?
+
+[[editorial_props]]
+== 2: Editorial data and props
+
+Here we'll spice up our react component a little by using `props` to insert editorial data from XP into the react component.
+
+We'll modify the same files you created above:
+
+.Files involved:
+[source,files]
+----
+site/pages/hello-react/
+  hello-react.xml
+  hello-react.jsx
+  hello-react.es6
+----
+
+=== Code
 
 ==== Props
 
