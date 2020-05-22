@@ -748,7 +748,7 @@ export default (props) => (
 <1> Importing a Region template from an NPM package that comes with react4xp (link:https://www.npmjs.com/package/react4xp-regions[react4xp-regions]).
 <2> Nesting the Region in our component. Using mainly `props.regionsData` and selecting all regions named in `props.names`, it will render _all_ Regions given by `props`.
 
-The `props` of course come from the *Page controller*. Still similar to the previous two examples, but we're adding props that are needed by `<Region>` in the react component.
+The `props` of course come from the *Page controller*. Still similar to the previous examples, but we're adding props that are needed by `<Region>` in the react component.
 
 .default.es6:
 [source,javascript,linenums,options="nowrap"]
@@ -796,38 +796,136 @@ exports.get = function(request) {
 <4> The `tag` prop optionally sets which HTML tag will be at the root of the section rendered by `<Regions>`, instead of `<div>`. Here, we're going for `<main>`.
 <5> We're setting the `request` argument of `React4xp.render` to _null_ - switching off the auto-handling of how _this_ particular rendering is done inside/outside Content Studio, and just forcing `React4xp.render` to *always output a static, serverside rendered HTML body without page contributions*. But why? Two reasons:
   - The way it is now, _default.jsx_ and the Regions in it has no need for page contributions. Only the static HTML is of interest; no client-side JS code needs to be activated/rendered in the client, and there's no styling or anything else coming from it. So by skipping the page contributions rendering, performance is improved a little.
-  - There is a *caveat when using react4xp to render Regions* (like in default.jsx): currently, page contributions don't work for XP Parts (and Layouts) that are dropped into a react4xp _clientside_-rendered Region. So Regions must be serverside rendered if they are meant to contain XP components that need their own page contributions to work (for example react4xp parts, which rely on page contributions to be activated in the client). This way, by forcing a serverside Regions rendering, we prevent that corner case from failing and make sure _any_ XP element dropped inside the Region will work, even clientside-rendered react4xp parts.
+  - There is a *caveat when using react4xp to render Regions* (like in _default.jsx_): currently, page contributions don't work for XP Parts/Layouts if they are dropped into a _clientside_-rendered Region. So Regions must be serverside rendered if they are meant to contain XP components that will need their own page contributions to work - for example react4xp parts, which rely on page contributions to be activated in the client). So by forcing a static serverside Regions rendering, we prevent that corner case from failing, and make sure _any_ XP element dropped inside the Region will work, even clientside-rendered react4xp parts.
+
+TIP: Adding an XP Region to a Layout is exactly the same - only easier: since it will be injected inside a Page, you don't need to add an outer `body` in the _options_ parameter, and therefore you don't need an `id` parameter either - same as in the XP Part controller below.
 
 ==== XP Part
 
-*The part definition* is still pretty unremarkable, but now there's a `greetee` TextLine input field, ready to add some editorial text from Content Studio.
+Now let's add a simple Part to drop into the Region: _site/parts/color/_ .
 
-.good-day.xml:
-[source,xml,linenums,options="nowrap"]
+*The Part definition* is still pretty unremarkable, there's a `color` TextLine input field in the form:
+
+.color.xml:
+[source,xml,options="nowrap"]
 ----
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <part>
-    <display-name>Good day React</display-name>
-    <description>Greeting with two props, one of them editorial</description>
+    <display-name>Color part</display-name>
+    <description>React4xp rendered part with editorial color</description>
     <form>
-        <input type="TextLine" name="greetee">
-            <label>Who shall we greet?</label>
+        <input name="color" type="TextLine">
+            <label>What's the color of the thing?</label>
             <occurrences minimum="1" maximum="1"/>
-            <default>Earth</default>
+            <default>red</default>
         </input>
     </form>
 </part>
 ----
 
-*The react entry* is even more minimal this time:
+*The react component* only displays the color name from the props and inline-styles it with that color (as long as the `props.color` value is HTML-compliant):
 
-.different-example.jsx
-[source,javascript,linenums,options="nowrap"]
+.color.jsx
+[source,javascript,options="nowrap"]
 ----
 import React from 'react';
 
-export default (props) => <p className="different-greeting">{props.message} {props.messageReceiver}!</p>;
+export default (props) => (
+    <div style={{
+        border: `1px solid ${props.color}`,
+        margin: "8px",
+        padding: "8px",
+        borderRadius: "10px"
+    }}>
+        <p style={{color: props.color}}>Hey, I'm pretty {props.color}!</p>
+    </div>
+);
 ----
+
+Like before, *The controller* mainly hooks the editorial data into the props:
+
+.color.es6:
+[source,javascript,options="nowrap"]
+----
+const portal = require('/lib/xp/portal');
+const React4xp = require('/lib/enonic/react4xp');
+
+exports.get = function(request) {
+
+    const component = portal.getComponent();
+
+    const props = { color: component.config.color };
+
+    return React4xp.render(
+        component,
+        props,
+        request,
+        {
+            clientRender: true,         // <1>
+            pageContributions: {        // <2>
+                bodyEnd: `<script>console.log("The color of the thing is: ${component.config.color}");</script>`
+            }
+        });
+};
+----
+
+Here we don't even need the _options_ argument (the object with `clientRender` and `pageContributions`), it can be completely skipped. But just for demonstrating, let's see that this part is _independent_ - both from the _default_ Page we defined a moment ago, and from any other Parts dropped into the same Region:
+
+<1> The part is clientside rendered...
+<2> ...and adds a tiny script with the same color to the page: by passing `pageContributions` through the _options_ parameter, the same way we've passed `body` through it so far.
+
+TIP: You can skip the `body` _option_ like we did here, to just have react4xp generate an HTML container element. `body` is only needed if you need the controller to _add_ HTML around the rendered react. The ID will match the auto-generated container element, you can set the ID value with the `id` option - or skip that too and just let react4xp supply a unique ID. See the link:#_react4xp_render[React4xp.render] box.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{zwsp} +
+{zwsp} +
+
+[[free_structure]]
+== 4: Free source file structure
+
 
 But note that instead of using the name of the part itself (_"good-day.jsx"_), the entry is called "_different-example.jsx_". Also, we're using two react props `message` and `messageReceiver` (and a classname, just to mark the `p` element in the output HTML).
 
@@ -941,11 +1039,6 @@ Most notable differences from the first example:
 We only added the `message` and `messageReceiver` props in the controller. The last prop, `react4xpId`, is the unique ID of the component, same as the target container element ID. It's always added as a prop for each entry, conveniently helping if you need to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
 ====
 
-{zwsp} +
-{zwsp} +
-
-[[free_structure]]
-== 4: Free source file structure
 
 {zwsp} +
 {zwsp} +
