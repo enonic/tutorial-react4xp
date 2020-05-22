@@ -123,7 +123,7 @@ Now you're ready to get started with the *6 example lessons* - starting from the
 - link:#hello_react_page[1: Hello React: server and clientside]
 - link:#editorial_props[2: Editorial props]
 - link:#xp_pages_parts[3: XP pages, parts and regions]
-- link:#free_structure[4: Free source-file structure]
+- link:#free_structure[4: Free source file structure]
 - link:#custom_flow[5: Custom flow]
 - link:#imports_chunks[6: Imports and dependency chunks]
 
@@ -664,7 +664,7 @@ React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. 
 
 *Returns* an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP response object] with these main attributes:
 
-- `body`: react rendered to HTML string. When server-side rendered, the whole HTML is inserted into the matching-id element inside the `body` option (if the `body` option is added. If not, a surrounding div is used). When client-side rendered, no HTML is inserted into `body` (or the generated container) - that's left to the client.
+- `body`: rendered HTML string. When server-side rendered, the whole HTML is inserted into the matching-id element inside the `body` option (if the `body` option is added. If not, a surrounding `<div>` is used). When client-side rendered, no HTML is inserted into `body` (or the generated container) - that's left to the client.
 - `pageContributions`: a regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] object. Includes everything the browser needs to activate (or client-side render) the react component: auto-compiled assets for the entry (_hello-react.js_ in this example) and whatever it may depend on (most importantly, react and react-dom in an _externals_ asset), and a client-side react4xp wrapper asset. These are all optimized and served to the client by react4xp services.
 ====
 
@@ -676,28 +676,129 @@ React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. 
 {zwsp} +
 
 [[xp_pages_parts]]
-== 3: XP pages, parts and regions
+== 3: XP Pages, Parts and Regions
 
-Now that you know the basic structure of rendering, let's expand the scope and...
+So far, we've only used an XP Page and just rendered a react component directly from the controller there. It's fine, but not really making good use of XP's excellent CMS and WYSIWYG powers. So let's move into that territory.
 
-* Make a general link:https://developer.enonic.com/docs/xp/stable/cms/components[XP Page Controller] with a working XP Region - still rendered with react.
-* Make a react-rendered link:https://developer.enonic.com/docs/xp/stable/cms/components#part[XP part] that can be dragged into the Region (along with any other such XP component: layouts, other parts, text or image components, fragments)
-* See the *default behavior* of `React4xp.render`: what happens if we skip some _options_ parameters or all of them?
+React4xp can also render from XP _Part or Layout controllers_, creating react-rendered XP elements that can be dragged into any regular XP Region. And besides, react4xp can (serverside) render these XP Regions themselves, which can then accept any XP Parts/Layouts dropped into them (as well as Fragments, Text and Image components, of course).
 
+In this example, we'll do both:
+
+* Make a react-rendered general link:https://developer.enonic.com/docs/xp/stable/cms/components[XP Page Controller] with a working XP Region.
+* Make a react-rendered link:https://developer.enonic.com/docs/xp/stable/cms/components#part[XP Part] that can be dragged into the Region.
 
 .Files involved:
 [source,files]
 ----
+site/pages/
+  default/
+    default.xml
+    default.es6
+    default.jsx
+
 site/parts/
-  good-day/
-    good-day.xml
-    good-day.es6
-    different-greeting.jsx
+  color/
+    color.xml
+    color.es6
+    color.jsx
 ----
 
 
 
 === Code
+
+==== XP Page controller
+
+We'll make a bare-bone Page controller first: _site/pages/default/_ .
+
+TIP: If you make a new Page controller or modify _site/pages/hello-react/_ from the first examples, is up to you - we won't be using _hello-react_ anymore. If you modify and rename the previous files, just remember to rename the _hello-react_ *folder and file names* identically.
+
+
+*The page definition* is again very simple. We're now leaving the `<form>` node empty, but adding a `<regions>` node with a single `"main"` Region defined in it:
+
+.default.xml:
+[source,xml,linenums,options="nowrap"]
+----
+<page>
+    <display-name>Default page</display-name>
+    <description>React4xp-rendered Page controller</description>
+    <form/>
+    <regions>
+        <region name="main"/>
+    </regions>
+</page>
+----
+
+
+*The react component* has a single focus: rendering a Region:
+
+.default.jsx
+[source,javascript,linenums,options="nowrap"]
+----
+import React from 'react';
+import Regions from 'react4xp-regions/Regions';    // <1>
+
+export default (props) => (
+    <div className="default-page">
+        <Regions {...props} />                     // <2>
+    </div>
+);
+----
+
+<1> Importing a Region template from an NPM package that comes with react4xp (link:https://www.npmjs.com/package/react4xp-regions[react4xp-regions]).
+<2> Nesting the Region in our component. Using mainly `props.regionsData` and selecting all regions named in `props.names`, it will render _all_ Regions given by `props`.
+
+The `props` of course come from the *Page controller*. Still similar to the previous two examples, but we're adding props that are needed by `<Region>` in the react component.
+
+.default.es6:
+[source,javascript,linenums,options="nowrap"]
+----
+
+const portal = require('/lib/xp/portal');
+const React4xp = require('/lib/enonic/react4xp');
+
+exports.get = function(request) {
+    const content = portal.getContent();
+    const entry = portal.getComponent();
+
+    const id = `react4xp_${content._id}`;   // <1>
+
+    const props = {
+        regionsData: content.page.regions,  // <2>
+        names: "main",                      // <3>
+        tag: "main",                        // <4>
+    };
+
+    return React4xp.render(
+        entry,
+        props,
+        null,                               // <5>
+        {
+            id,
+            body: `
+                <html>
+                    <head>
+                        <title>${content.displayName}</title>
+                    </head>
+                    <body class="xp-page">
+                        <div id="${id}"></div>
+                    </body>
+                </html>
+            `
+        }
+    );
+};
+----
+
+<1> The XP content ID is nice and unique, let's just use that to bind the react component to the target element.
+<2> Here, `content.page.regions` are content data containing the Region we defined in _default.xml_ as well as data about content dropped into it. This is mapped to the `regionsData` prop.
+<3> The `names` prop can be a string or a string array. It's used to select which Regions (by Region name defined in _default.xml_) to render, in case there are more Regions in `content.page.regions`. Rendering will occur in the order of the string array. If the `names` prop is missing, all the regions defined in _default.jsx_ are rendered, but the order is less predictable.
+<4> The `tag` prop optionally sets which HTML tag will be at the root of the section rendered by `<Regions>`, instead of `<div>`. Here, we're going for `<main>`.
+<5> We're setting the `request` argument of `React4xp.render` to _null_ - switching off the auto-handling of how _this_ particular rendering is done inside/outside Content Studio, and just forcing `React4xp.render` to *always output a static, serverside rendered HTML body without page contributions*. But why? Two reasons:
+  - The way it is now, _default.jsx_ and the Regions in it has no need for page contributions. Only the static HTML is of interest; no client-side JS code needs to be activated/rendered in the client, and there's no styling or anything else coming from it. So by skipping the page contributions rendering, performance is improved a little.
+  - There is a *caveat when using react4xp to render Regions* (like in default.jsx): currently, page contributions don't work for XP Parts (and Layouts) that are dropped into a react4xp _clientside_-rendered Region. So Regions must be serverside rendered if they are meant to contain XP components that need their own page contributions to work (for example react4xp parts, which rely on page contributions to be activated in the client). This way, by forcing a serverside Regions rendering, we prevent that corner case from failing and make sure _any_ XP element dropped inside the Region will work, even clientside-rendered react4xp parts.
+
+==== XP Part
 
 *The part definition* is still pretty unremarkable, but now there's a `greetee` TextLine input field, ready to add some editorial text from Content Studio.
 
@@ -844,7 +945,7 @@ We only added the `message` and `messageReceiver` props in the controller. The l
 {zwsp} +
 
 [[free_structure]]
-== 4: Free source-file structure
+== 4: Free source file structure
 
 {zwsp} +
 {zwsp} +
