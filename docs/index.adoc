@@ -115,18 +115,24 @@ To verify that your app started successfully, you should find an entry similar t
 `2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully`
 ====
 
-Now you're ready to get started with the *5 example lessons* - starting from the basics:
+{zwsp} +
+{zwsp} +
 
-- link:#hello_react_page[1: Hello React. Server/clientside]
+Now you're ready to get started with the *6 example lessons* - starting from the basics:
+
+- link:#hello_react_page[1: Hello React: server and clientside]
 - link:#editorial_props[2: Editorial props]
-- link:#xp_pages_parts[3: XP pages and parts]
-- link:#custom_flow[4: Custom flow]
-- link:#chaining_imports_chunks[5: Chaining]
+- link:#xp_pages_parts[3: XP pages, parts and regions]
+- link:#free_structure[4: Free source-file structure]
+- link:#custom_flow[5: Custom flow]
+- link:#imports_chunks[6: Imports and dependency chunks]
 
 
+{zwsp} +
+{zwsp} +
 
 [[hello_react_page]]
-== 1: Hello React. Server/clientside
+== 1: Hello React: server and clientside
 
 React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: just displaying a working react component in content studio. We'll first do that in the serverside rendered way (this is the react4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
 
@@ -245,35 +251,47 @@ If you've added those 3 files, let's get this rendered!
 [.thumb]
 image:hello_cs.png[title="Editing in Content Studio: Hello World. Click to see a high-res version", width=1024px]
 
+{zwsp} +
+
 [start=4]
 4. Click _Preview_ on the top to open a new tab and view the content outside of Content Studio:
 
 [.thumb]
 image:hello_bottles.png[title="Rendering: Hello World and some bottles on a wall somewhere. Bet you clicked this screenshot, didn't you?", width=768px]
 
+{zwsp} +
+
 Clicking somewhere on the rendered text in the preview window will trigger the `dropBottle` function from _hello-react.jsx_, and modify the DOM and output a message in the browser console. Look at those bottles go!
 
+{zwsp} +
+
 [[static_cs_rendering]]
-==== Static rendering in Content Studio
-If you clicked the rendering *inside XP Content Studio* instead of a preview tab, you'd notice there was *no bottle-counting*. You see the rendering, but instead of being active react, it's just a regular static XP preview. This way, you get a placeholder/visualization of the react rendering, but can work with it in the XP workflow (react functionality may intervene with both the workflow or even Content Studio itself). This is why we added the `request` argument in `React4xp.render`.
+==== Two notes on the rendering before we move on:
+====
+*STATIC RENDERING IN CONTENT STUDIO*
+
+If you clicked the rendering _inside XP Content Studio_ instead of a preview tab, you'd notice there was *no bottle-counting*. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the `request` argument is used in `React4xp.render` to handle this automatically: inside Content Studio, you'll only see the rendering as a regular static XP preview / placeholder instead of active react.
 
 NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. link:#custom_flow[Example 4 shows you how].
+====
 
-==== First-serverside-rendering lag
+====
+*SLOW FIRST SERVERSIDE RENDERING*
+
 You may also have noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the *Nashorn server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
 
 We're looking into mitigating this delay in the future, but for now, this is nice to know: *This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app. Setting up a continuous build with XP devmode instead, helps. For the react4xp starter, here's how:
 
 `enonic sandbox start <yourSandBoxName> --dev` in one terminal (from anywhere), and
 
-`enonic project deploy && gradlew react4xp_components compileXP -t` from project root in another terminal. Reply No if it asks you to start the sandbox here.
-
+`enonic project deploy && gradlew react4xp_components compileXP -t` from project root in another terminal. Reply _No_ if it asks you to start the sandbox here.
+====
 
 
 [[hello_output]]
 === Output
 
-Curious about what happened in the rendering of the preview page? Open the *page source* code in the browser. Here's what `React4xp.render` created - the response the client receives on the initial page request:
+Okay, back to the rendering of the page -? Open the *page source* code in the browser. Here's what `React4xp.render` created - the response the client receives on the initial page request:
 
 [source,html,options="nowrap"]
 ----
@@ -394,6 +412,9 @@ Often, switching over to _clientside rendering_ for that particular react compon
 ====
 
 Okay, ready for the next example lesson?
+
+{zwsp} +
+{zwsp} +
 
 [[editorial_props]]
 == 2: Editorial data and props
@@ -550,10 +571,14 @@ You should still see it in the preview panel on the right (although, since you p
 [.thumb]
 image:hello_cs.png[link="media/hello_cs.png"title="Editing Hello World, same as before. Click to see a high-res version", width=1024px]
 
+{zwsp} +
+
 Now, when you click the preview panel, the page-config editing panel should open on the right, with the data fields containing the default text we defined. Once you click Apply/save, the preview panel to the left should update.
 
 [.thumb]
 image:hello_editorial.png[link="media/hello_editorial.png",title="Editing Hello World in the page-config panel in Content Studio. Click to see a high-res version!", width=1024px]
+
+{zwsp} +
 
 So now, it looks the same as before, but with editorial data instead of hardcoded text. Boring, and too similar to the previous example; just repeating "Hello World" might cause a little confusion. *Try adding your own data in the fields*, for example changing _"world"_ into _"link:https://montypython.fandom.com/wiki/Bruces_sketch[Bruce]"_ etc, to keep it clear.
 
@@ -609,9 +634,46 @@ So did anything change in the rendered response, compared to link:#hello_output[
 <4> The `props` are used in the clientside `.hydrate` call. For convenience, the `id` is automatically added as the `react4xpId` prop. Handy for use cases where a react component needs to uniquely identify itself.
 
 
+{zwsp} +
+{zwsp} +
+
+[[_react4xp_render]]
+== React4xp.render
+
+Now might be a good time to take a closer look at the `.render` call from the ES6 controller in link:#controller_with_props[the example above]:
+
+====
+React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. Basically, take any HTML string and pass it through `.render` as a `body` option, and react4xp will insert the react component into the HTML string and add any necessary page contributions to make it all work.
+
+*Signature*, analogous to thymeleaf's familiar `render(view, model`) signature - but with some extra parameters and a full XP response object returned:
+
+`{body, pageContributions} = React4xp.render(entry, props, request, options);`
+
+*Parameters:*
+
+- `entry` (mandatory, string or component object): this is the reference to the "template", the react component to be rendered. If it's a JSX file with the same name in the same folder as an XP component, simply use the `portal.getComponent()` object here. In this example,  it's the _hello-react_ page, but you can do the same thing from part or layout controllers too. We'll come back to a more specific way to reference files anywhere in your project, under link:#jsxPath[jsx path]. By the way, a react component that is used by react4xp this way is called link:#entries[an entry].
+- `props` (optional object, must be serializable): data model passed into the react component.
+- `request` (link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object], kind of optional, but _mandatory for react activation_): This is to keep the component rendered static and serverside-render if the rendering happens inside XP content studio. No browser react activation (or client-side rendering) happens inside content studio, you only get a visualization from the initial `props`. Special case: if `request` is omitted/falsy, page-contributions rendering is completely skipped. Note: the .render `options` argument is still valid: the rendered static HTML is still inserted into the HTML from the added `body`, and `pageContributions` are still added.
+- `options` (optional object): additional options to control the rendering:
+
+** `id` (string): ID of the component, matching the ID of an element in `body`. React will render into that container element, replacing whatever was already there. If missing, a random ID is generated.
+** `body` (string): HTML string, a base for the returned `body`. Can be a hardcoded string, or come from a thymeleaf/mustache/XSLT render, and so on. Just make sure the `id` option matches an HTML id here (what happens if not? React4xp creates a target element with that ID, last in the root element of `body`). If there's no `body` option, a matching-ID `<div>` target container is generated.
+
+** `pageContributions` (object): you might already have some page contributions you want to return together with the ones generated by react4xp. Same way as with `body`, just add them here to pass them through `render`. Order: the ones you add here are output before the ones rendered.
+** `clientRender` (boolean): if `true` (truthy, actually), the server-side rendering is skipped (in live mode and previews. Inside content studio's browser or edit modes, you still only get a static server-side rendered representation).
+
+*Returns* an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP response object] with these main attributes:
+
+- `body`: react rendered to HTML string. When server-side rendered, the whole HTML is inserted into the matching-id element inside the `body` option (if the `body` option is added. If not, a surrounding div is used). When client-side rendered, no HTML is inserted into `body` (or the generated container) - that's left to the client.
+- `pageContributions`: a regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] object. Includes everything the browser needs to activate (or client-side render) the react component: auto-compiled assets for the entry (_hello-react.js_ in this example) and whatever it may depend on (most importantly, react and react-dom in an _externals_ asset), and a client-side react4xp wrapper asset. These are all optimized and served to the client by react4xp services.
+====
+
+`.render` is just one way. React4xp has other, more detailed and flexible ways of rendering, we'll link:#custom_flow[look at those] in a bit.
 
 
 
+{zwsp} +
+{zwsp} +
 
 [[xp_pages_parts]]
 == 3: XP pages, parts and regions
@@ -778,49 +840,82 @@ Most notable differences from the first example:
 We only added the `message` and `messageReceiver` props in the controller. The last prop, `react4xpId`, is the unique ID of the component, same as the target container element ID. It's always added as a prop for each entry, conveniently helping if you need to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
 ====
 
+{zwsp} +
+{zwsp} +
 
+[[free_structure]]
+== 4: Free source-file structure
 
-[[_react4xp_render]]
-== React4xp.render
+{zwsp} +
+{zwsp} +
 
-Now might be a good time to take a closer look at the `.render` call from the ES6 controller in link:#controller_with_props[the example above]:
+[[entries_and_jsxpath]]
+== Entries and jsxPath
 
-====
-React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. Basically, take any HTML string and pass it through `.render` as a `body` option, and react4xp will insert the react component into the HTML string and add any necessary page contributions to make it all work.
+We've mentioned React4xp _entries_ and their _jsxPath_ earlier. Here are the details about what they are (feel free to just skim through this, move on with the next examples, and use this for reference later):
 
-*Signature*, analogous to thymeleaf's familiar `render(view, model`) signature - but with some extra parameters and a full XP response object returned:
-
-`{body, pageContributions} = React4xp.render(entry, props, request, options);`
-
-*Parameters:*
-
-- `entry` (mandatory, string or component object): this is the reference to the "template", the react component to be rendered. If it's a JSX file with the same name in the same folder as an XP component, simply use the `portal.getComponent()` object here. In this example,  it's the _hello-react_ page, but you can do the same thing from part or layout controllers too. We'll come back to a more specific way to reference files anywhere in your project, under link:#jsxPath[jsx path]. By the way, a react component that is used by react4xp this way is called link:#entries[an entry].
-- `props` (optional object, must be serializable): data model passed into the react component.
-- `request` (link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object], kind of optional, but _mandatory for react activation_): This is to keep the component rendered static and serverside-render if the rendering happens inside XP content studio. No browser react activation (or client-side rendering) happens inside content studio, you only get a visualization from the initial `props`. Special case: if `request` is omitted/falsy, page-contributions rendering is completely skipped. Note: the .render `options` argument is still valid: the rendered static HTML is still inserted into the HTML from the added `body`, and `pageContributions` are still added.
-- `options` (optional object): additional options to control the rendering:
-
-** `id` (string): ID of the component, matching the ID of an element in `body`. React will render into that container element, replacing whatever was already there. If missing, a random ID is generated.
-** `body` (string): HTML string, a base for the returned `body`. Can be a hardcoded string, or come from a thymeleaf/mustache/XSLT render, and so on. Just make sure the `id` option matches an HTML id here (what happens if not? React4xp creates a target element with that ID, last in the root element of `body`). If there's no `body` option, a matching-ID `<div>` target container is generated.
-
-** `pageContributions` (object): you might already have some page contributions you want to return together with the ones generated by react4xp. Same way as with `body`, just add them here to pass them through `render`. Order: the ones you add here are output before the ones rendered.
-** `clientRender` (boolean): if `true` (truthy, actually), the server-side rendering is skipped (in live mode and previews. Inside content studio's browser or edit modes, you still only get a static server-side rendered representation).
-
-*Returns* an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP response object] with these main attributes:
-
-- `body`: react rendered to HTML string. When server-side rendered, the whole HTML is inserted into the matching-id element inside the `body` option (if the `body` option is added. If not, a surrounding div is used). When client-side rendered, no HTML is inserted into `body` (or the generated container) - that's left to the client.
-- `pageContributions`: a regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] object. Includes everything the browser needs to activate (or client-side render) the react component: auto-compiled assets for the entry (_hello-react.js_ in this example) and whatever it may depend on (most importantly, react and react-dom in an _externals_ asset), and a client-side react4xp wrapper asset. These are all optimized and served to the client by react4xp services.
+[[entries]]
 ====
 
-`.render` is just one way. React4xp has other, more detailed and flexible ways of rendering, we'll link:#custom_flow[look at those] in a bit.
+*ENTRIES*
 
+React4xp is structured around _entries_. An entry is just *a React component that can be accessed by react4XP*. They are the _only_ react files that react4xp can use directly.
+
+An entry is pretty much just a *standard JSX file*, that follows two requirements (link:media/entries_howto.png[cheatsheet]):
+
+1. *default-exports a function*, this function _may_ take a `props` argument (serializable JS object) and _must_ return a react component (pure functional component or old-school React Component), and
+2. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.properties_ (see also jsxPath below).
+
+
+.A mental model (image links to another cheatsheet):
+image:entries.png[link="media/entries_cheatsheet.png",title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=600px]
+
+Think of *entries as "bridge elements"*. On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can *import* stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.
+
+React4xp handles them in build-time and runtime: locates entries, compiles them into *entry assets* (under _/build/resources/main/assets/react4xp_), and serves them to the client.
+
+Entries become separate *root level react apps*. Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
+
+For example, earlier in this tutorial we've seen the entries _hello-react.jsx_ and _different-greeting.jsx_, they are compiled into the assets _hello-react.js_ and _different-greeting.js_.
+====
+
+[[jsxPath]]
+====
+*JSX PATH*
+
+Each entry is identified by its own _jsxPath_.
+
+Short and brutal: the jsxPath is a name string generated from the path and filename of the compiled asset after building, relative to _/build/resources/main/assets/react4xp/_ - without file extension.
+
+During development though, these *3 rules* are probably easier:
+
+1. If you use the `component` object like in link:#hello_react_page[the first example], you can ignore the jsxPath. `React4xp.render` will use the component object to find an entry with the same folder/same name as a part/page/layout controller.
+
+But if you need to access an entry from a different folder - from anywhere actually - here's *how to find the jsxPath of an entry*:
+
+[start=2]
+2. If an entry's source file is a JSX under _/src/main/resources/_ *_site/_*, the jsxPath is the source file's path relative to _/src/main/resources/_ - unix-style and without file extension.
+* So the jsxPath will start with `site/...` etc (and the asset will be compiled into a folder below _/build/resources/main/assets/react4xp/_ *_site/_*, and so on).
+3. Or, using the setup from the starter, you can also put your entries under _src/main/resources/_ *_react4xp/entries_*. Then the jsxPath (and compiled-asset path) will be relative to _/entries/_ instead.
+* Actually, you can control this with the `entryDirs` property in _react4xp.properties_. The starter has added `entryDirs=entries` here, but this is a comma-separated list of folder names relative to _src/main/resources/react4xp/_. Remember, if you add more entryDirs or replace `entries`, the jsxPaths will always be relative to those new entryDirs.
+
+* *For example:* add `../myComponents` to entryDirs: `entryDirs=entries,../myComponents`. Since entryDirs and the "../" are relative to _src/main/resources/react4xp/_, the new entry source folder is _src/main/resources/myComponents/_. Now new JSX files can be put there, and get a jsxPath relative to that. So the entry _src/main/resources/myComponents/_ *_app/myEntry.jsx_* will get the jsxPath `"app/myEntry"`, and will be compiled to the entry asset _/build/resources/main/assets/react4xp/app/myEntry.js_.
+
+If you're ever unsure: after building, all the *jsxPaths of all the available entries* are stored in _build/resources/main/assets/react4xp/entries.json_. This file is generated by webpack during build. It's also used by the runtime, so it shouldn't be deleted or edited!
+
+NOTE: jsxPaths are not actually file system paths, but *static name strings*. So avoid shortcuts and relative references like `../`, etc.
+====
 
 
 
 
 Okay, time to move on to the next example and lesson!
 
+{zwsp} +
+{zwsp} +
+
 [[custom_flow]]
-== 4: Custom flow
+== 5: Custom flow
 
 * Use the *jsxPath* to refer to a specific *entry* (and get to know what they are)
 
@@ -1022,68 +1117,11 @@ image:the-blue-thing.png[title="Rendered preview looks the same as in Content St
 NOTE: the random but matching ID (_uniqueId_) of the target container and in the `React4xp.CLIENT.hydrate` call.
 
 
-[[entries_and_jsxpath]]
-== Entries and jsxPath
-
-We've mentioned React4xp _entries_ and their _jsxPath_ earlier. Here are the details about what they are (feel free to just skim through this, move on with the next examples, and use this for reference later):
-
-[[entries]]
-====
-
-*React4xp is structured around ENTRIES.*
-
-An entry is just *a React component that can be accessed by react4XP*. They are the _only_ react files that react4xp can use directly.
-
-An entry is pretty much just a *standard JSX file*, that follows two requirements (link:media/entries_howto.png[cheatsheet]):
-
-1. *default-exports a function*, this function _may_ take a `props` argument (serializable JS object) and _must_ return a react component (pure functional component or old-school React Component), and
-2. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.properties_ (see also jsxPath below).
-
-
-.A mental model (image links to another cheatsheet):
-image:entries.png[link="media/entries_cheatsheet.png",title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=600px]
-
-Think of *entries as "bridge elements"*. On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can *import* stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.
-
-React4xp handles them in build-time and runtime: locates entries, compiles them into *entry assets* (under _/build/resources/main/assets/react4xp_), and serves them to the client.
-
-Entries become separate *root level react apps*. Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
-
-For example, earlier in this tutorial we've seen the entries _hello-react.jsx_ and _different-greeting.jsx_, they are compiled into the assets _hello-react.js_ and _different-greeting.js_.
-====
-
-[[jsxPath]]
-====
-
-*Each entry is identified by its own JSX PATH:*
-
-Short and brutal: the jsxPath is a name string generated from the path and filename of the compiled asset after building, relative to _/build/resources/main/assets/react4xp/_ - without file extension.
-
-During development though, these 3 rules are probably easier:
-
-1. If you use the `component` object like in link:#hello_react_page[the first example], you can ignore the jsxPath. `React4xp.render` will use the component object to find an entry with the same folder/same name as a part/page/layout controller.
-
-But if you need to access an entry from a different folder - from anywhere actually - here's *how to find the jsxPath of an entry*:
-
-[start=2]
-2. If an entry's source file is a JSX under _/src/main/resources/_ *_site/_*, the jsxPath is the source file's path relative to _/src/main/resources/_ - unix-style and without file extension.
-* So the jsxPath will start with `site/...` etc (and the asset will be compiled into a folder below _/build/resources/main/assets/react4xp/_ *_site/_*, and so on).
-3. Or, using the setup from the starter, you can also put your entries under _src/main/resources/_ *_react4xp/entries_*. Then the jsxPath (and compiled-asset path) will be relative to _/entries/_ instead.
-* Actually, you can control this with the `entryDirs` property in _react4xp.properties_. The starter has added `entryDirs=entries` here, but this is a comma-separated list of folder names relative to _src/main/resources/react4xp/_. Remember, if you add more entryDirs or replace `entries`, the jsxPaths will always be relative to those new entryDirs.
-
-* *For example:* add `../myComponents` to entryDirs: `entryDirs=entries,../myComponents`. Since entryDirs and the "../" are relative to _src/main/resources/react4xp/_, the new entry source folder is _src/main/resources/myComponents/_. Now new JSX files can be put there, and get a jsxPath relative to that. So the entry _src/main/resources/myComponents/_ *_app/myEntry.jsx_* will get the jsxPath `"app/myEntry"`, and will be compiled to the entry asset _/build/resources/main/assets/react4xp/app/myEntry.js_.
-
-If you're ever unsure: after building, all the *jsxPaths of all the available entries* are stored in _build/resources/main/assets/react4xp/entries.json_. This file is generated by webpack during build. It's also used by the runtime, so it shouldn't be deleted or edited!
-
-NOTE: jsxPaths are not actually file system paths, but *static name strings*. So avoid shortcuts and relative references like `../`, etc.
-====
-
-
-[[chaining]]
-== 5: Chaining.
+{zwsp} +
+{zwsp} +
 
 [[imports_chunks]]
-== 6: Imports. Dependency chunks.
+== 6: Imports and dependency chunks
 
 Finally, a slightly more life-like example. Looking at these features:
 
