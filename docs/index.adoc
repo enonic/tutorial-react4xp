@@ -922,7 +922,7 @@ export default (props) => (
 );
 ----
 
-Like before, *the controller* mainly hooks the editorial data into the props:
+Like before, *the controller* mainly hooks the XP editorial data into the props:
 
 .color.es6:
 [source,javascript,options="nowrap"]
@@ -963,7 +963,7 @@ TIP: You can skip the `body` _option_ like we did here, to just have react4xp ge
 
 Time to get this displayed and see it all in action! Again, just XP routine: creating a _my-content_ item, and since the Template makes it show up ready with a _default_ Page controller and Region, we can just drop our new _color_ Part into it.
 
-1. In the same Site as the Template you just made (but not under _Templates_), create a new _my-content_ item:
+1. As before, recompile/deploy and enter Content Studio. In the same Site as the Template you just made (but not under _Templates_), create a new _my-content_ item:
 
 [.thumb]
 image:content_new.png[link="media/content_new.png",title="Creating a new content item in Content Studio (click for high-res version)", width=500px]
@@ -991,16 +991,13 @@ image:content_with_red_part.png[link="media/content_with_red_part.png",title="Ed
 
 [start=4]
 4. Try experimenting with dragging other XP components from the _"Insert"_ tab into the Region. Say, a Text component, and/or adding another instance of the same _color_ Part but with a different (HTML-compliant) color value in the Part config panel. You'll see that the react-rendered Region accepts all regular XP components, and that multiple instances of the same _color_ Part remain independent from each other.
-
-NOTE: As we'll come back to in more detail link:#entries_and_jsxpath[later], each time the client calls `React.CLIENT.render` or `.hydrate`, it will create a *separate root react app*. This is the outcome for each time a controller calls `React4xp.render` with the _request_ argument (omitting _request_ forces a pure serverside rendering without hydration). So in this example, there will be one independent react app in the client for each of the _color_ Parts you added to the Region.
-
-[start=5]
 5. As usual, clicking _Preview_ on the top will open a new Preview tab for your page.
 
 {zwsp} +
 
-The *HTML output* of all this? It's structurally and conceptually the same as in the previous examples. Looking at the _Page Source_, it should all make sense to you by now. One thing is worth noting though: using a react4xp Part more than once does _not_ make the client download the assets more than once - they're recycled for performance.
+What about the *HTML output* of all this? It's structurally and conceptually the same as in the previous examples. Looking at the _Page Source_, it should all make sense to you by now: the Page controller and Part are compiled to separate assets and downloaded exactly once in the client before calling `React4xp.CLIENT.render` and `.hydrate` as needed (using a react4xp Part more than once does not make the client download the assets more than once - they're recycled for performance).
 
+NOTE: As we'll come back to in more detail link:#entries_and_jsxpath[later], each time the client calls `React.CLIENT.render` or `.hydrate`, it will create a *separate root react app*. This is the outcome for each time a controller calls `React4xp.render` with the _request_ argument (omitting _request_ forces a pure serverside rendering without hydration). So in this example, there will be one independent react app in the client for each of the _color_ Parts you added to the Region.
 
 
 
