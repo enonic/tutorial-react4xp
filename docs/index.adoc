@@ -258,7 +258,7 @@ If you've added those 3 files, let's get this rendered! If you've used XP and Co
 You should now see something like this:
 
 [.thumb]
-image:hello_cs.png[title="Editing in Content Studio: Hello World. Click to see a high-res version", width=1024px]
+image:hello_cs.png[link="media/hello_cs.png",title="Editing in Content Studio: Hello World. Click to see a high-res version", width=600px]
 
 {zwsp} +
 
@@ -266,7 +266,7 @@ image:hello_cs.png[title="Editing in Content Studio: Hello World. Click to see a
 5. Click _Preview_ on the top to open a new tab and view the content outside of Content Studio:
 
 [.thumb]
-image:hello_bottles.png[title="Rendering: Hello World and some bottles on a wall somewhere. Bet you clicked this screenshot, didn't you?", width=768px]
+image:hello_bottles.png[link="media/hello_bottles.png",title="Rendering: Hello World and some bottles on a wall somewhere. Bet you clicked this screenshot, didn't you?", width=600px]
 
 {zwsp} +
 
@@ -586,14 +586,14 @@ Compile the project, enter Content Studio Repeat (the first two steps in link:#f
 You should still see it in the preview panel on the right (although, since you probably created the content without any data created along with it, it might not display much of the text. We'll fix that):
 
 [.thumb]
-image:hello_cs.png[link="media/hello_cs.png"title="Editing Hello World, same as before. Click to see a high-res version", width=1024px]
+image:hello_cs.png[link="media/hello_cs.png"title="Editing Hello World, same as before. Click to see a high-res version", width=600px]
 
 {zwsp} +
 
 Now, when you click the preview panel, the page-config editing panel should open on the right, with the data fields containing the default text we defined. Once you click Apply/save, the preview panel to the left should update.
 
 [.thumb]
-image:hello_editorial.png[link="media/hello_editorial.png",title="Editing Hello World in the page-config panel in Content Studio. Click to see a high-res version!", width=1024px]
+image:hello_editorial.png[link="media/hello_editorial.png",title="Editing Hello World in the page-config panel in Content Studio. Click to see a high-res version!", width=600px]
 
 {zwsp} +
 
@@ -602,7 +602,7 @@ So now, it looks the same as before, but with editorial data instead of hardcode
 *Apply/save* your new props, and the output should change again. But since we're still in Content Studio, it's justa static serverside-rendered update. To see the final rendering with your new data, all active, click _Preview_ on the top to open the page in a fresh tab:
 
 [.thumb]
-image:gday_bruce.png[title="Rendering: G'day Bruce. This is turning into one big philosophers' joke, isn't it?", width=768px]
+image:gday_bruce.png[link="media/gday_bruce.png",title="Rendering: G'day Bruce. This is turning into one big philosophers' joke, isn't it?", width=600px]
 
 {zwsp} +
 
@@ -706,7 +706,7 @@ So far, we've used a "raw" XP Page and just rendered the react component directl
 
 [TIP]
 ====
-*TL;DR* - Naturally, this example will focus a bit on XP Content Studio and how to use Parts, Pages, Regions and Templates. If this is familiar to you, you can pretty much just skim through it - the key takeaways are:
+*TL;DR*: Naturally, this example will focus quite a bit on XP Content Studio and how to use Parts, Pages, Regions and Templates. If this is familiar to you, you can pretty much just skim through it - the key takeaways are:
 
   - `React4xp.render` works the same way from any controller.
   - React4xp comes with an importable `<Regions>` react component for making XP Regions
@@ -869,7 +869,7 @@ Before we move on to the XP Part, let's bind this Page controller to the _my-con
 2. In the grid (Content Studio browse mode), under your Site, create a new Template content under Templates:
 
 [.thumb]
-image:template_new.png[title="Creating a new Template content in Content Studio.", width=1024px]
+image:template_new.png[link="media/template_new.png",title="Creating a new Template content in Content Studio.", width=500px]
 
 {zwsp} +
 
@@ -1192,20 +1192,27 @@ Okay, time to move on to the next example and lesson!
 [[custom_flow]]
 == 5: Custom flow
 
-* Use the *jsxPath* to refer to a specific *entry* (and get to know what they are)
+In this example we'll make another Part, and re-use the Page controller and content type we made previously *LIIIIINK*.
+
+However, this time we won't use the `React4xp.render` shorthand function. Instead, we'll look at the *explicit react4xp syntax* and construct *a data-holding React4xp object*. It gives you better control and opportunities for logic steps when you handle your entry; you can manipulate it or extract data _before_ rendering. And the rendering is done with *two separate rendering methods* for the `body` and `pageContributions` in the controller response.
+
+We will also use a thymeleaf template - and take advantage of the react4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.
+
+And we will use the link:#jsxPath[_jsxPath_ as described above] to point to an entry in a different location - we'll actually just recycle the entry from the previous part *LIIIIINK*.
 
 
-In this example we won't use `.render`.
-Instead, we'll look at a more explicit syntax that gives you better control and opportunities for logic steps when you handle your entry.
+```
 
-We'll construct *a data-holding React4xp object* from an entry, manipulate it a little,
-and use its built-in _separate_ methods for rendering the `body` and `pageContributions` for the controller response.
 
-Other options demonstrated here: we will...
 
-* use a thymeleaf template. It will have a target container for the react rendering, with an ID that comes from the data-holding object and is inserted by thymeleaf. When this template HTML string is rendered, we're _passing it through_ the `.renderBody` step.
-* make some raw XP page contributions too, before rendering. They will contain a script with inserted editorial data. Then that `pageContributions` object is _passed through_ `.renderPageContributions`, adding it to the React4XP page contributions
-* use a link:#jsxPath[jsxPath] to point to an entry outside of XP's _/site/_ structure.
+
+
+
+
+
+
+
+
 
 .Files involved:
 [source,files]
