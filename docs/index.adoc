@@ -932,6 +932,7 @@ export default (props) => (
 
 Like before, *the controller* mainly hooks the XP editorial data into the props:
 
+[[color_part_controller]]
 .color.es6:
 [source,javascript,options="nowrap"]
 ----
@@ -1016,129 +1017,99 @@ NOTE: As we'll come back to in more detail link:#entries_and_jsxpath[later], eac
 
 So far, every time we've referenced a _.jsx_ react component from react4xp in a controller, we've used a `component` object in the _entry_ argument of `React4xp.render`. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the _.jsx_ source file must be in the same folder as the controller, and have the same name.
 
-In this example, we'll take a look at a way to reference react components with any name from _anywhere_, and look at what we mean by an _entry_ in react4xp.
+It doesn't have to be that way. In this example, we'll take a look at which react components are available to `React4xp.render` - called *entries* in react4xp - and how to reference them, whatever they're called and wherever they're located.
 
-
-
-
-
-
-
-
-But note that instead of using the name of the part itself (_"good-day.jsx"_), the entry is called "_different-example.jsx_". Also, we're using two react props `message` and `messageReceiver` (and a classname, just to mark the `p` element in the output HTML).
-
-Moving on to the rendering call in *the part controller*:
-
-.good-day.es6:
-[source,javascript,linenums,options="nowrap"]
-----
-const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
-
-exports.get = function(request) {
-
-    const component = portal.getComponent();
-
-    const props = {                                     // <1>
-        message: "G'day",
-        messageReceiver: component.config.greetee
-    };
-
-    return React4xp.render(
-        "site/parts/hello-react/different-greeting",    // <2>
-        props,
-        request,
-        { clientRender: true }                          // <3>
-    );
-
-};
-----
-
-Some things to note, especially compared with the previous example:
-
-<1> Here we're adding the top-level *props*: info passed into the react component as it's created. This of course corresponds to the props we're using in the react entry _different-example.jsx_ above. If you're used to the _model_ concept from the thymeleaf/mustache templates in XP, `props` is pretty much the same. The first prop, `message`, is just hardcoded. But it could be a string from anywhere in the controller: the second prop, `messageReceiver` is fetched from the XP part's own config data - the `greetee` field we defined in the part descriptor _good-day.xml_ above.
-<2> In the previous example, we added `component` here, to refer to the jsx file with the same name in the same folder. We could do that here too, if we wanted to point to a react entry called `site/parts/good-day/good-day.jsx`. But we'll use a custom string instead, to refer to a specific JSX entry: _different-greeting.jsx_ in the folder _site/parts/good-day/_. This string is the *jsxPath* of the entry _different-greeting.jsx_: jsxPaths is the way to refer to a react entry anywhere in your project - we'll look closer at link:#entries[entries] and link:#jsxPath[jsxPath] in a moment. For now, just note that we're using the entire path down to _site/_, and skipping the ".jsx" file extension.
-<3> In the `options` parameter, we're only adding a `clientRender: true` flag. This makes the renderer skip serverside-HTML-rendering and _only_ generate the page contributions needed for clientside-rendering (in XP live view and preview windows _outside content studio_, that is. Inside content studio, you'll only see an inactive serverside rendering anyway).
-
-[TIP]
-====
-Remember how in the previous example, _hello-react.es6_, we added the parameters `id` and `body` to the _.render_ options? We could use them here too, but they aren't needed. The `body` option is only a surrounding HTML string that the rendered react will be inserted into - but in this case we're making a standalone XP Part which XP will insert into a Page anyway. So no extra `body` is needed (although _.render_ will generate a container element anyway, a placeholder for the react rendering process to work). As for the `id` option: since that's missing, the react component will just get a generated random ID (automatically shared with the generated container element).
-====
-
-
-*Okay, enough - time to run the example!*
+A link:#entries_and_jsxpath[detailed summary] follows after the examples.
 
 {zwsp} +
 
-[[_setup_and_render]]
-=== Setup and render
+=== Below _site/_
 
-Let's add it to a page in Content Studio and render it:
+Below the folder _src/main/resources/site/_, all source files with the extension _.jsx_ are detected at compile-time and available as entries to react4xp. If you take the *path relative to _resources/_* and the file name without the extension, you get a string that can be used to point react4xp to that react component:
 
-1. Run `enonic project deploy` from your shell, start the sandbox and point your browser to `localhost:8080/admin`.
-2. Log in to XP and open Content Studio.
-3. Create some content, anything with a Region will do (so not the _hello-react_ page from the first example, but maybe a Site with the Default page controller from the starter, or a https://market.enonic.com/vendors/enonic/landingpage-lib[a landing page]).
-4. Insert the new Part into the Region, and select the XP Part you just made, _Good day React_:
+- `"site/parts/hello-react/hello-react"` -> _src/main/resources/site/parts/hello-react/hello-react.jsx_
+- `"site/parts/color/color"` -> _src/main/resources/site/parts/color/color.jsx_
+- `"site/parts/color/differentEntry"` -> _src/main/resources/site/parts/color/differentEntry.jsx_
 
-[.thumb]
-image:gday_earth.png[title="Content studio preview: G'day Earth.", width=768px]
+...etc.
 
+These strings are called *jsxPaths* in react4xp, and they can be used directly in controllers as the _entry_ argument. For example in the link:#color_part_controller[_color_ Part controller] from before:
 
-[start=5]
-5. Of course, having both "Hello World" and "G'day Earth" in the same project might cause a little confusion. Better enter *"Bruce"*  into the _"Who shall we greet"_ textfield, to keep it clear. Apply/save to see the props change immediately; serverside-rendered since we're in content studio.
-6. Enter the preview to view the content outside of Content Studio. You should now see, _clientside_-rendered:
+.site/parts/color/color.es6
+[source,javascript,options="nowrap"]
+----
+React4xp.render(
+    component,
+    props,
+    request,
+    options
+);
+----
 
-[.thumb]
-image:gday_bruce.png[title="Final rendering with an editorially changed prop: G'day Bruce.", width=768px]
+...is equivalent to:
+
+[source,javascript,options="nowrap"]
+----
+React4xp.render(
+    "site/parts/color/color",
+    props,
+    request,
+    options
+);
+----
+
+And so on. Calling the _.jsx_ source file something else, or having it in a different folder, is fine as long as you refer it correctly like this.
+
+NOTE: _jsxPaths_ are name strings, not relative paths! You can't refer to _color.jsx_ from _color.es6_ as `"color"` or `"./color"` etc.
+
+TIP: If you look at the rendered HTML output in page source, you can see React4xp using the jsxPaths to refer to the compiled assets from the client - even if you used the `component` object in the _entry_ argument.
+
+TIP: All the _entries_ in your project are listed with their _jsxPath_ after compilation, in _build/resources/main/assets/react4xp/entries.json_.
+
 
 {zwsp} +
 
-=== Output
+=== Below _react4xp/_
+If you just want to keep your react components out of the regular XP file structure in _site/_ and be independent of the structure of Parts, Pages etc, the folder _src/main/resources/react4xp/_ is meant for that. Here's how (assuming you're generally following link:https://github.com/enonic/lib-react4xp/blob/0.9.0/README.adoc#setup-option-2-using-react4xp-in-an-existing-project[the recommended setup pattern] used in the react4xp starter):
 
-If we dig into *the output page source* of the preview tab, the HTML is similar to what we got from the previous example. Depending on your content and local setup, it'll look something like this:
+Open _react4xp.properties_ in the project root, and look for the property `entryDirs`. This is a (comma-separated) list of folder names *relative to the _react4xp/_ folder*. React4xp comes with a built-in suggestion here: `entryDirs = entries`. This means that all _.jsx_ (and _.js_ and _.es6_) source files below _src/main/resources/react4xp/entries_ will become entries: react components available to react4xp.
 
-[source,html,options="nowrap"]
+They will get a *_jsxPath_ relative to the closest _entryDirs_ folder*.
+
+So for example if `entryDirs = entries`, then the closest _entryDirs_ folder is _src/main/resources/react4xp/entries_, and any XP controller can render _src/main/resources/react4xp/entries/subFolder/myEntry.jsx_ like this:
+
+[source,javascript,options="nowrap"]
 ----
-...
-<body class="xp-page">
-    <div id="react4xp_da5aa513-55aa-4787-a208-14cb8921b572">
-        <div class="default-page" data-reactroot="">
-            <div data-portal-region="main" class="xp-region">
-                <div data-portal-component-type="part" id="_23744858"></div> <!--1-->
-            </div>
-        </div>
-    </div>
-    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>
-    <script src="(...your.app.service) /react4xp-client/"></script>
-    <script src="(...your.app.service) /react4xp/site/parts/good-day/different-greeting.js"> <!--2-->
-    </script>
-    <script defer>
-        React4xp.CLIENT.render(                                   // <3>
-            React4xp['site/parts/good-day/different-greeting'],   // <4>
-            "_23744858",                                          // <5>
-            {
-                "message": "G'day",
-                "messageReceiver": "Bruce",
-                "react4xpId": "_23744858"
-            }
-        );
-    </script>
-</body>
-...
+React4xp.render(
+    "subFolder/myEntry",
+    props,
+    request,
+    options
+);
 ----
 
-Most notable differences from the first example:
+TIP: *Under the _site/_ folder, entry source files must have the extension _.jsx_*. This is because regular XP source files can have _.js_ and _.es6_ extensions, and must be separated since the compilation and handling is very different. However, *under the _entryDirs_ folder(s), entries can have _.js_ and _.es6_ extensions too!*
 
-<1> The target container now has a random ID (since we didn't add an `id` option in the controller). And it's initially empty; because of the `clientRender:true` flag, there was no rendered HTML from the server.
-<2> Since we selected a named entry with the jsxPath, the full path to the _compiled_ entry asset is inserted.
-<3> Again because of the `clientRender:true` flag, the browser is calling `.render` instead of `.hydrate`. `React4xp.CLIENT.render` has link:https://www.npmjs.com/package/react4xp-runtime-client#render[the same signature] as `React4xp.CLIENT.hydrate`: `(entry, targetElementId, props)`.
-<4> So the client wrapper renders our react entry...
-<5> ...and inserts it into the empty target container, the one matching the (generated) unique ID.
+NOTE: React4xp doesn't currently separate between different _entryDirs_, they behave as one. So if `entryDirs = entries,moreEntries` then _react4xp/entries/foo/bar.jsx_ and  _react4xp/moreEntries/foo/bar.jsx_ will get the same _jsxPath_: `"foo/bar"`. Beware of *namespace collisions*; you won't be able to refer to both.
 
-[TIP]
-====
-We only added the `message` and `messageReceiver` props in the controller. The last prop, `react4xpId`, is the unique ID of the component, same as the target container element ID. It's always added as a prop for each entry, conveniently helping if you need to separate multiple instances of the same component (e.g. allowing them to share a common redux store without meddling with each other's state).
-====
+
+{zwsp} +
+
+=== Anywhere else
+
+The _entryDirs_ are paths relative to _src/main/resources/react4xp/_, so just use relative _entryDirs_ if you need entries outside of that.
+
+For example, say you've added an NPM package _externalComponents_ with react components in a _comps_ subfolder, and you want to use them as entries. Simply add it to _entryDirs_:
+
+.react4xp.properties
+[source,options="nowrap"]
+----
+entryDirs=entries,../../../../../node_modules/externalComponents/comps
+----
+
+(Or replace _entries_ if you're not using it, of course)
+
+
 
 
 {zwsp} +
@@ -1147,7 +1118,7 @@ We only added the `message` and `messageReceiver` props in the controller. The l
 [[entries_and_jsxpath]]
 == Entries and jsxPath
 
-We've mentioned React4xp _entries_ and their _jsxPath_ earlier. Here are the details about what they are (feel free to just skim through this, move on with the next examples, and use this for reference later):
+For reference, here are some more details about what _entries_ and their _jsxPath_ are:
 
 [[entries]]
 ====
@@ -1156,22 +1127,29 @@ We've mentioned React4xp _entries_ and their _jsxPath_ earlier. Here are the det
 
 React4xp is structured around _entries_. An entry is just *a React component that can be accessed by react4XP* in an XP controller. They are the _only_ react files that react4xp can use directly!
 
-Entries are pretty much just *standard JSX files* that follow two requirements (link:media/entries_howto.png[cheatsheet]):
+{zwsp} +
+
+Entries are pretty much just standard JSX files, but they must follow *two requirements* (link:media/entries_howto.png[cheatsheet]):
 
 1. *default-exports a function*, this function _may_ take a `props` argument (serializable JS object) and _must_ return a react component (pure functional component or old-school React Component), and
-2. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.properties_ (see also jsxPath below).
+2. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.properties_ (see also _jsxPath_ below).
 
+{zwsp} +
+
+Think of *entries as "bridge elements"*:
 
 .A mental model (image links to another cheatsheet):
 image:entries.png[link="media/entries_cheatsheet.png",title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=600px]
 
-Think of *entries as "bridge elements"*. On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can *import* stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.
+On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can *import* stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.
+
+{zwsp} +
 
 React4xp handles them in build-time and runtime: locates entries, compiles them into *entry assets* (under _/build/resources/main/assets/react4xp_), and serves them to the client.
 
-Entries become separate *root level react apps*. Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
+Each entry becomes a separate *root level react app*. Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
 
-For example, earlier in this tutorial we've seen the entries _hello-react.jsx_ and _different-greeting.jsx_, they are compiled into the assets _hello-react.js_ and _different-greeting.js_.
+For example, earlier in this tutorial we've seen the entries _hello-react.jsx_ and _color.jsx_, they are compiled into the assets _hello-react.js_ and _color.js_.
 ====
 
 {zwsp} +
