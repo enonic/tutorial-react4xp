@@ -65,6 +65,7 @@ Remember to create a *new XP sandbox* when completing the project wizard.
 *Only want to inject react4xp into your own XP project?* The https://github.com/enonic/lib-react4xp/blob/master/README.md[lib-react4xp docs] have a section on how to do without the starter. But it's recommended to go through this introduction first.
 ====
 
+{zwsp} +
 
 === Project structure
 
@@ -96,6 +97,7 @@ src/
 <3> The `react4xp/` folder is opt-in: can be ignored for now, and doesn't need to contain anything. But when fine-tuning the build later in the tutorial, we'll get back to why you might find it handy to have a separate place for some of your react components (in ultra-short: the `entries\` folder is for react components that can be used directly by react4xp, the `shared\` folder is for common components imported by, and shared between, the entries).
 
 
+{zwsp} +
 
 === Build and Deploy
 
@@ -148,6 +150,8 @@ site/pages/hello-react/
 ----
 
 These files are not included in the starter - use your copy/paste skills and remember that `hello-react` must be identical between file names and folder name.
+
+{zwsp} +
 
 === Code
 
@@ -239,22 +243,27 @@ What's going on in the controller?
 <5> In line 13, the `id` attribute _"react4xpApp"_ is set in the *options* argument of `.render` (lines 12-20). This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
 <6> In lines 14-19, we're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag (such as `<!DOCTYPE html>`).
 
+{zwsp} +
+
 [[first_setup_render]]
 === Setup and first render
 
-If you've added those 3 files, let's get this rendered!
+If you've added those 3 files, let's get this rendered! If you've used XP and Content Studio before, this is all run-of-the mill:
 
 1. Compile the project (`enonic project deploy` in a terminal from root) and start the sandbox (`enonic sandbox start`),
 2. Navigate your browser to `localhost:8080/admin`. Log in to XP and open Content Studio (if you haven't already, you'll need to link:https://market.enonic.com/vendors/enonic/content-studio[install Content Studio] in XP).
-3. Create a new site and edit it. Use the new _Hello-react_ page controller, store that change. You should now see something like this:
+3. Create a new Site content and Edit it in a new tab. Add your react4xp app (_"starter-react4xp"_?) on the upper left.
+4. Select the new _Hello-react_ page controller in the preview panel on the right. Store that change (and refresh the page if needed).
+
+You should now see something like this:
 
 [.thumb]
 image:hello_cs.png[title="Editing in Content Studio: Hello World. Click to see a high-res version", width=1024px]
 
 {zwsp} +
 
-[start=4]
-4. Click _Preview_ on the top to open a new tab and view the content outside of Content Studio:
+[start=5]
+5. Click _Preview_ on the top to open a new tab and view the content outside of Content Studio:
 
 [.thumb]
 image:hello_bottles.png[title="Rendering: Hello World and some bottles on a wall somewhere. Bet you clicked this screenshot, didn't you?", width=768px]
@@ -287,6 +296,7 @@ We're looking into mitigating this delay in the future, but for now, this is nic
 `enonic project deploy && gradlew react4xp_components compileXP -t` from project root in another terminal. Reply _No_ if it asks you to start the sandbox here.
 ====
 
+{zwsp} +
 
 [[hello_output]]
 === Output
@@ -331,6 +341,7 @@ We can see this whole output is actually the `body` HTML string we passed into t
 
 NOTE: The assets are served by lib-react4xp services. Most of them (_react4xp-client_ and the content-hashed assets) are optimized for client-side caching, to minimize repeated requests.
 
+{zwsp} +
 
 === Client-side rendering
 
@@ -431,6 +442,8 @@ site/pages/hello-react/
   hello-react.jsx
   hello-react.es6
 ----
+
+{zwsp} +
 
 === Code
 
@@ -562,6 +575,8 @@ exports.get = function(request) {
 
 There it is, now let's take a look!
 
+{zwsp} +
+
 === Setup and rendering
 
 Compile the project, enter Content Studio Repeat (the first two steps in link:#first_setup_render[the previous setup]), and edit the content you created (double-click it to open a new tab).
@@ -587,6 +602,7 @@ So now, it looks the same as before, but with editorial data instead of hardcode
 [.thumb]
 image:gday_bruce.png[title="Rendering: G'day Bruce. This is turning into one big philosophers' joke, isn't it?", width=768px]
 
+{zwsp} +
 
 === Output
 
@@ -676,20 +692,25 @@ React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. 
 {zwsp} +
 
 [[xp_pages_parts]]
-== 3: XP Pages, Parts and Regions
+== 3: XP Pages/Parts/Regions and Content
 
-So far, we've only used an XP Page and just rendered a react component directly from the controller there. It's fine, but not really making good use of XP's excellent CMS and WYSIWYG powers. So let's move into that territory.
+So far, we've used a "raw" XP Page and just rendered the react component directly from the controller there. It's fine in itself, but not really making good use of XP's excellent CMS powers. So let's move into that territory.
 
-React4xp can also render from XP _Part or Layout controllers_, creating react-rendered XP elements that can be dragged into any regular XP Region. And besides, react4xp can (serverside) render these XP Regions themselves, which can then accept any XP Parts/Layouts dropped into them (as well as Fragments, Text and Image components, of course).
+React4xp can also render from XP _Part or Layout controllers_, creating react-rendered XP elements that can be dragged into any regular XP Region. And besides, react4xp can (serverside) render these XP Regions themselves, which can then accept any XP Parts/Layouts dropped into them (as well as Fragments, Text and Image components of course).
 
 In this example, we'll do both:
 
 * Make a react-rendered general link:https://developer.enonic.com/docs/xp/stable/cms/components[XP Page Controller] with a working XP Region.
 * Make a react-rendered link:https://developer.enonic.com/docs/xp/stable/cms/components#part[XP Part] that can be dragged into the Region.
+* In addition, we'll display it in the "regular XP way": using a link:https://developer.enonic.com/docs/xp/stable/cms#page_templates[Page Template] to connect a link:https://developer.enonic.com/docs/xp/stable/cms/content-types[Content Type] to our new Page controller. This way, in this example and the next ones, we can just create content items of that type and have the Page controller up and running immediately instead of having to set it up manually each time.
 
 .Files involved:
 [source,files]
 ----
+site/content-types/
+  my-content/
+    my-content.xml
+
 site/pages/
   default/
     default.xml
@@ -703,21 +724,43 @@ site/parts/
     color.jsx
 ----
 
+[TIP]
+====
+If you make a new _default_ Page controller or modify _site/pages/hello-react/_ from the first examples, is up to you; we won't be using _hello-react_ anymore. If you do modify and rename the previous files, just remember this:
 
+- Rename the _hello-react_ *folder and file names* identically.
+- This renaming will cause the Site contents you've made earlier to fail: they contain _hello-react_ references. It's an easy fix though: just edit those Site contents and use the new _Default_ page controller (we're about to make it) instead.
+====
 
-=== Code
+{zwsp} +
+
+=== Page Controller + Template
+
+==== Content Type
+
+We'll start with a completely generic content type: _site/content-types/my-content/my-content.xml_. Content types tend to define more than this, but for now, this is all we need:
+
+.my-content.xml:
+[source,xml,options="nowrap"]
+----
+<content-type xmlns="urn:enonic:xp:model:1.0">
+    <display-name>My Content</display-name>
+    <description>Just some content</description>
+    <super-type>base:structured</super-type>
+    <form/>
+</content-type>
+----
+
+Again, this has nothing to do with react4xp, but it'll make the setup of this and the next examples easier.
 
 ==== XP Page controller
 
-We'll make a bare-bone Page controller first: _site/pages/default/_ .
+Now we'll make the react-based Page controller: _site/pages/default/_ will be a bare-bone page with nothing but a Region in it.
 
-TIP: If you make a new Page controller or modify _site/pages/hello-react/_ from the first examples, is up to you - we won't be using _hello-react_ anymore. If you modify and rename the previous files, just remember to rename the _hello-react_ *folder and file names* identically.
-
-
-*The page definition* is again very simple. We're now leaving the `<form>` node empty, but adding a `<regions>` node with a single `"main"` Region defined in it:
+*The page definition* is simple. We're now leaving the `<form>` node empty, but adding a `<regions>` node with a single `"main"` Region defined in it:
 
 .default.xml:
-[source,xml,linenums,options="nowrap"]
+[source,xml,options="nowrap"]
 ----
 <page>
     <display-name>Default page</display-name>
@@ -730,7 +773,7 @@ TIP: If you make a new Page controller or modify _site/pages/hello-react/_ from 
 ----
 
 
-*The react component* has a single focus: rendering a Region:
+*The react component* has a single focus, namely rendering the Region:
 
 .default.jsx
 [source,javascript,linenums,options="nowrap"]
@@ -746,9 +789,9 @@ export default (props) => (
 ----
 
 <1> Importing a Region template from an NPM package that comes with react4xp (link:https://www.npmjs.com/package/react4xp-regions[react4xp-regions]).
-<2> Nesting the Region in our component. Using mainly `props.regionsData` and selecting all regions named in `props.names`, it will render _all_ Regions given by `props`.
+<2> Nesting the Region in our component. To be precise: it uses `props.regionsData` and selects the Region name(s) in `props.names`, so it will render _all_ Regions given by `props` if more than one is defined and selected.
 
-The `props` of course come from the *Page controller*. Still similar to the previous examples, but we're adding props that are needed by `<Region>` in the react component.
+The `props` of course come from the *Page controller*. Still similar to the previous examples, we're mainly just adding props that are needed by `<Regions>` in the react component.
 
 .default.es6:
 [source,javascript,linenums,options="nowrap"]
@@ -790,21 +833,48 @@ exports.get = function(request) {
 };
 ----
 
-<1> The XP content ID is nice and unique, let's just use that to bind the react component to the target element.
+<1> The XP content ID is nice and unique, let's just use that to bind the react component to the target element in the DOM.
 <2> Here, `content.page.regions` are content data containing the Region we defined in _default.xml_ as well as data about content dropped into it. This is mapped to the `regionsData` prop.
-<3> The `names` prop can be a string or a string array. It's used to select which Regions (by Region name defined in _default.xml_) to render, in case there are more Regions in `content.page.regions`. Rendering will occur in the order of the string array. If the `names` prop is missing, all the regions defined in _default.jsx_ are rendered, but the order is less predictable.
-<4> The `tag` prop optionally sets which HTML tag will be at the root of the section rendered by `<Regions>`, instead of `<div>`. Here, we're going for `<main>`.
+<3> The `names` prop can be a string or a string array. It's used to select which Regions (by Region name defined in _default.xml_) to render, in case there are more Regions in `content.page.regions`. Rendering will occur in the order of the string array. If the `names` prop is missing, all the regions defined in _default.jsx_ are rendered (so we could technically skip this prop here), but the order is less predictable if there's more than one Region.
+<4> The optional `tag` prop sets which HTML tag will be at the root of the section rendered by `<Regions>`, instead of `<div>`. Here, we're going for `<main>`.
 <5> We're setting the `request` argument of `React4xp.render` to _null_ - switching off the auto-handling of how _this_ particular rendering is done inside/outside Content Studio, and just forcing `React4xp.render` to *always output a static, serverside rendered HTML body without page contributions*. But why? Two reasons:
   - The way it is now, _default.jsx_ and the Regions in it has no need for page contributions. Only the static HTML is of interest; no client-side JS code needs to be activated/rendered in the client, and there's no styling or anything else coming from it. So by skipping the page contributions rendering, performance is improved a little.
   - There is a *caveat when using react4xp to render Regions* (like in _default.jsx_): currently, page contributions don't work for XP Parts/Layouts if they are dropped into a _clientside_-rendered Region. So Regions must be serverside rendered if they are meant to contain XP components that will need their own page contributions to work - for example react4xp parts, which rely on page contributions to be activated in the client). So by forcing a static serverside Regions rendering, we prevent that corner case from failing, and make sure _any_ XP element dropped inside the Region will work, even clientside-rendered react4xp parts.
 
-TIP: Adding an XP Region to a Layout is exactly the same - only easier: since it will be injected inside a Page, you don't need to add an outer `body` in the _options_ parameter, and therefore you don't need an `id` parameter either - same as in the XP Part controller below.
+TIP: Adding an XP Region to a Layout is the same, only easier: since it will be injected inside a Page, you don't need to add an outer `body` in the _options_ parameter, and therefore you don't need an `id` parameter either - same as in the XP Part controller below.
 
-==== XP Part
+
+==== Setting up the Template
+
+Before we move on to the XP Part, let's connect this Page controller to the _my-content_ Content Type we just made, for this example and the later ones. If you're familiar with XP and Content Studio, this is nothing special: the regular way of making a Page Template that binds our Content Type to our new Page controller.
+
+When this is done, *using the _Default_ Page controller will be easy*: create a new _my-content_ item in your site, and it will come out ready to use with _Default_.
+
+1. When you've deployed the updated app and logged into Content Studio, make a new Site content and connect it to the react4xp app (or re-use one of your previous ones).
+2. In the grid (Content Studio browse mode), under your Site, create a new Template content under Templates:
+
+[.thumb]
+image:template_new.png[title="Creating a new Template content in Content Studio.", width=1024px]
+
+{zwsp} +
+
+[start=3]
+3. When editing your new Template, give it a display name, select your new content type _my-content_ in the _"Supports"_ drop-down menu on the left, and select the new Page controller _Default_ under the _"Template_" (or _"Page controller"_) drop-down menu on the right:
+
+[.thumb]
+image:template_edit.png[title="Using a Template to connect a content type to a page controller in Content Studio.", width=1024px]
+
+
+
+{zwsp} +
+
+=== XP Part
 
 Now let's add a simple Part to drop into the Region: _site/parts/color/_ .
 
-*The Part definition* is still pretty unremarkable, there's a `color` TextLine input field in the form:
+==== Code
+
+The *Part definition* pretty unremarkable now as well. There's just a `color` TextLine input field in the form:
 
 .color.xml:
 [source,xml,options="nowrap"]
@@ -842,7 +912,7 @@ export default (props) => (
 );
 ----
 
-Like before, *The controller* mainly hooks the editorial data into the props:
+Like before, *the controller* mainly hooks the editorial data into the props:
 
 .color.es6:
 [source,javascript,options="nowrap"]
@@ -869,19 +939,24 @@ exports.get = function(request) {
 };
 ----
 
-Here we don't even need the _options_ argument (the object with `clientRender` and `pageContributions`), it can be completely skipped. But just for demonstrating, let's see that this part is _independent_ - both from the _default_ Page we defined a moment ago, and from any other Parts dropped into the same Region:
+Actually, we don't really need the _options_ argument at all here (the object with `clientRender` and `pageContributions`), it can be completely skipped. But for demonstrating, let's use it to see that this part is _independent_ - both from the _default_ Page we defined a moment ago, and from any other Parts dropped into the same Region, react or otherwise:
 
 <1> The part is clientside rendered...
-<2> ...and adds a tiny script with the same color to the page: by passing `pageContributions` through the _options_ parameter, the same way we've passed `body` through it so far.
+<2> ...and adds a tiny script with the color: using the _options_ parameter to pass `pageContributions` through `.render`, the same way we've passed `body` through it so far.
 
 TIP: You can skip the `body` _option_ like we did here, to just have react4xp generate an HTML container element. `body` is only needed if you need the controller to _add_ HTML around the rendered react. The ID will match the auto-generated container element, you can set the ID value with the `id` option - or skip that too and just let react4xp supply a unique ID. See the link:#_react4xp_render[React4xp.render] box.
 
+{zwsp} +
+
+=== Setup and render
+
+Time to get this displayed and see it all in action! Again, just XP routing: creating a _my-content_ item, and since the Template makes it show up ready with a _Default_ Page controller and Region, we can just drop our new part into it.and
 
 
 
+- Each content can
 
-
-
+=== Output
 
 
 
@@ -970,6 +1045,8 @@ Remember how in the previous example, _hello-react.es6_, we added the parameters
 
 *Okay, enough - time to run the example!*
 
+{zwsp} +
+
 [[_setup_and_render]]
 === Setup and render
 
@@ -991,6 +1068,7 @@ image:gday_earth.png[title="Content studio preview: G'day Earth.", width=768px]
 [.thumb]
 image:gday_bruce.png[title="Final rendering with an editorially changed prop: G'day Bruce.", width=768px]
 
+{zwsp} +
 
 === Output
 
@@ -1138,7 +1216,7 @@ site/parts/custom-flow/
 ----
 
 
-
+{zwsp} +
 
 === Code
 
@@ -1257,6 +1335,7 @@ Make sure the `clientRender` parameter *matches between the two rendering functi
 
 *Okay, let's take a look!*
 
+{zwsp} +
 
 === Setup
 
@@ -1267,6 +1346,7 @@ Save, and it should look something like this:
 [.thumb]
 image:the-blue-thing2.png[title="Rendered text in Content Studio is blue, and says: the blue thing" width=1068px]
 
+{zwsp} +
 
 === Output
 
@@ -1341,6 +1421,8 @@ site/parts:
 ----
 
 <1> Just make a mental note of the two added subfolders.
+
+{zwsp} +
 
 === Code
 
@@ -1582,6 +1664,8 @@ In this example we're making a new React4xp object for each rendering. An object
 In other words: we can use an _entry_ multiple times target1ing different container elements by using different React4XP objects. And we can render the same _React4XP object_ into the same container multiple times (if we should need to). But *trying to change the ID and target element will throw an error after an object's first rendering.*
 ====
 
+{zwsp} +
+
 === Setup
 
 
@@ -1596,6 +1680,8 @@ The few things worth confirming here:
 * This is but a humble screenshot, but in the actual Preview outside of Content Studio, the green rendered `BuilderClicker` instances are now *active* and respond to clicks as defined in `BuilderClicker`: clicking the first or second half of each of them doubles the clicked text (this activation happened in the `.hydrate` steps for server-side rendered entries, and in the actual rendering for client-side rendered ones).
 * The clicks and reponses are *isolated* to the instance that was actually clicked: even though they are technically the same entry `BuilderClicker`, they each have their own state. This is not because `BuilderClicker` is nested differently in them, but because their ID's are different,
 * There's only one "...repeated thing" but four "...unique thing", as explained above (point 7 and 8 in the controller code)
+
+{zwsp} +
 
 === Output
 
