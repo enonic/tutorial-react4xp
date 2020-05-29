@@ -489,6 +489,7 @@ We start with some standard XP procedure: defining the data in the *page definit
 
 Next, we'll modify the *react component* so that it displays data from a `props` object, instead of hardcoding everything.
 
+[[hello_react_jsx_modified]]
 .hello-react.jsx
 [source,javascript,options="nowrap"]
 ----
@@ -913,6 +914,7 @@ The *Part definition* pretty unremarkable now as well. There's just a `color` Te
 
 *The react component* only displays the color name from the props and inline-styles it with that color (as long as the `props.color` value is HTML-compliant):
 
+[[color_jsx]]
 .color.jsx
 [source,javascript,options="nowrap"]
 ----
@@ -1192,14 +1194,42 @@ Okay, time to move on to the next example and lesson!
 [[custom_flow]]
 == 5: Custom flow
 
-In this example we'll make another Part, and re-use the Page controller and content type we made previously *LIIIIINK*.
+In this example things get a bit more complex. We'll make another Part, and re-use the Page controller, Template and Content type we made link:#_template_with_react_page_controller[previously].
 
-However, this time we won't use the `React4xp.render` shorthand function. Instead, we'll look at the *explicit react4xp syntax* and construct *a data-holding React4xp object*. It gives you better control and opportunities for logic steps when you handle your entry; you can manipulate it or extract data _before_ rendering. And the rendering is done with *two separate rendering methods* for the `body` and `pageContributions` in the controller response.
+1. However, we won't use the `React4xp.render` shorthand function from before. Instead, we'll look at a more *explicit react4xp syntax*:
+  - It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your link:#entries[JSX entry]; you can manipulate the object(s) or extract data from them _before_ rendering.
+  - Here, each entry is rendered in *two separate methods*, for `body` and `pageContributions`.
+  - You can pretty easily render *multiple entries* from the same controller, by chaining together their rendering.
 
-We will also use a thymeleaf template - and take advantage of the react4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.
+2. We will also use a *thymeleaf* template for one of the entries - and take advantage of the react4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.
 
-And we will use the link:#jsxPath[_jsxPath_ as described above] to point to an entry in a different location - we'll actually just recycle the entry from the previous part *LIIIIINK*.
+3. In addition to chain-rendering more than one entry, we will use the link:#jsxPath[_jsxPath_] as described above to point to entries in a _different location_. Actually, let's just recycle the entries from before:
 
+
+.Files involved:
+[source,files]
+----
+site/
+    pages/hello-react/
+        hello-react.jsx     <!--1-->
+
+    parts/
+        color/
+            color.jsx       <!--2-->
+
+        custom-flow/
+            custom-flow.xml
+            custom-flow.es6
+            custom-flow-view.html
+----
+
+<1> We're using the existing entry link:#hello_react_jsx_modified[_hello-react.jsx_] (with props, not the first hardcoded one). This is located under _site/*pages*/hello-react/_ - even though what we're making here is a _custom-flow_ *Part*. Location doesn't matter: when using jsxPaths, all entries are equal.
+<2> This is the existing entry link:#color_jsx[_color.jsx_].
+
+
+{zwsp} +
+
+=== Code
 
 ```
 
@@ -1214,21 +1244,7 @@ And we will use the link:#jsxPath[_jsxPath_ as described above] to point to an e
 
 
 
-.Files involved:
-[source,files]
-----
-react4xp/entries/
-  ColorThing.jsx
-site/parts/custom-flow/
-  custom-flow.xml
-  custom-flow.html
-  custom-flow.es6
-----
 
-
-{zwsp} +
-
-=== Code
 
 *The part definition* again defines some editorial data: `color`.
 
