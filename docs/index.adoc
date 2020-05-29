@@ -1198,150 +1198,187 @@ In this example things get a bit more complex. We'll make another Part, and re-u
 
 1. However, we won't use the `React4xp.render` shorthand function from before. Instead, we'll look at a more *explicit react4xp syntax*:
   - It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your link:#entries[JSX entry]; you can manipulate the object(s) or extract data from them _before_ rendering.
-  - Here, each entry is rendered in *two separate methods*, for `body` and `pageContributions`.
+  - Here, each entry is rendered in *two separate methods*: `renderBody` and `renderPageContributions`.
   - You can pretty easily render *multiple entries* from the same controller, by chaining together their rendering.
 
 2. We will also use a *thymeleaf* template for one of the entries - and take advantage of the react4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.
 
-3. In addition to chain-rendering more than one entry, we will use the link:#jsxPath[_jsxPath_] as described above to point to entries in a _different location_. Actually, let's just recycle the entries from before:
+3. In addition to chain-rendering more than one entry, we will use the link:#jsxPath[_jsxPath_] as described above to point to entries in a *different location*. Actually, let's just recycle the entries from before:
 
 
 .Files involved:
 [source,files]
 ----
-site/
-    pages/hello-react/
-        hello-react.jsx     <!--1-->
+site/parts/
+    custom-flow/            <!--1-->
+        custom-flow.xml
+        custom-flow.es6
+        custom-flow-view.html
 
-    parts/
-        color/
-            color.jsx       <!--2-->
+    color/
+        color.jsx           <!--2-->
 
-        custom-flow/
-            custom-flow.xml
-            custom-flow.es6
-            custom-flow-view.html
+site/pages/
+    hello-react/
+        hello-react.jsx     <!--3-->
 ----
 
-<1> We're using the existing entry link:#hello_react_jsx_modified[_hello-react.jsx_] (with props, not the first hardcoded one). This is located under _site/*pages*/hello-react/_ - even though what we're making here is a _custom-flow_ *Part*. Location doesn't matter: when using jsxPaths, all entries are equal.
-<2> This is the existing entry link:#color_jsx[_color.jsx_].
+<1> The new Part we're making, _custom-flow_.
+<2> The already existing entry link:#color_jsx[_color.jsx_]: different location, and different name.
+<3> We're also reusing the existing entry link:#hello_react_jsx_modified[_hello-react.jsx_] (with props, not the first hardcoded one), located under _site/*pages*/hello-react/_ - even though what we're making here is a Part. Location doesn't matter: when using jsxPaths, all entries are equal.
 
 
 {zwsp} +
 
 === Code
 
-```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-*The part definition* again defines some editorial data: `color`.
+*The Part definition* again defines some base data for us to play with. This is exactly the same definitions as before, just merged together into one Part: the greeting and bottle/thing counter from _hello-react.xml_, and the color from _color.xml_.
 
 .custom-flow.xml:
-[source,xml,linenums,options="nowrap"]
+[source,xml,options="nowrap"]
 ----
 <part>
-  <display-name>CustomFlow example</display-name>
-  <description>AKA. The color thing</description>
-  <form>
-    <input name="color" type="TextLine">
-      <label>What's the color of the thing?</label>
-      <occurrences minimum="1" maximum="1"/>
-      <default>red</default>
-    </input>
-  </form>
+    <display-name>CustomFlow example</display-name>
+    <description>Single part with multiple entries</description>
+    <form>
+        <input name="color" type="TextLine">
+            <label>What's the color of the thing?</label>
+            <occurrences minimum="1" maximum="1"/>
+            <default>red</default>
+        </input>
+
+        <input type="TextLine" name="greeting">
+            <label>What's the greeting?</label>
+            <default>Hello</default>
+            <occurrences minimum="1" maximum="1"/>
+        </input>
+
+        <input type="TextLine" name="greetee">
+            <label>Who shall we greet?</label>
+            <occurrences minimum="1" maximum="1"/>
+            <default>world</default>
+        </input>
+
+        <input type="TextLine" name="things">
+            <label>What are the things on the wall?</label>
+            <occurrences minimum="1" maximum="1"/>
+            <default>bottles of beer</default>
+        </input>
+
+        <input type="Long" name="startCount">
+            <label>How many of them are there?</label>
+            <occurrences minimum="1" maximum="1"/>
+            <default>99</default>
+        </input>
+    </form>
 </part>
+
 ----
 
+Next, we're adding a *thymeleaf view template*. This will get the `color` data from the same source as the _color.jsx_ entry: from the definition above. The entry will be rendered into the `<div>` container based on the element ID. The `react4xpId` value will come from the react4xp data-holding object itself:
 
-*The react entry* uses that `color` from `props`, both as text and inline style:
-
-.ColorThing.jsx:
-[source,javascript,linenums,options="nowrap"]
+.custom-flow-view.html:
+[source,html,options="nowrap"]
 ----
-import React from 'react';
-
-export default (props) =>
-  <div style={{border: `1px dotted ${props.color}`,margin:"5px",padding:"5px" }}>
-    <h2>The {props.color} thing</h2>
-    <p style={{color: props.color}}>Hey, I'm pretty {props.color}!</p>
-  </div>;
-----
-
-*The Thymeleaf view* receives the ID of the target container element from Thymeleaf:
-
-
-.custom-flow.html
-[source,html,linenums,options="nowrap"]
-----
-<div>
-    <p>Here comes the thing:</p>
-    <div data-th-id="${targetId}"></div>
+<div class="custom-flow-view">
+    <section class="color-section">
+        <h2 data-th-text="|Ain't nothing but a ${color} thing|"></h2>
+        <p>Here it comes:</p>
+        <div data-th-id="${react4xpId}"></div>
+</section>
 </div>
 ----
 
 
-Finally, *the controller*:
+
+Finally, *the controller*, a bit juicier than before:
 
 .custom-flow.es6
-[source,javascript,linenums,options="nowrap"]
+[source,javascript,options="nowrap"]
 ----
 const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
 const thymeleaf = require('/lib/thymeleaf');
 
-const view = resolve('custom-flow.html');
+const view = resolve('custom-flow-view.html');
+
 
 exports.get = function(request) {
+    // Fetching data from the part config:
     const component = portal.getComponent();
+    const partConfig = (component || {}).config || {};
 
-    const reactObj = new React4xp('ColorThing');            // <1>
 
-    reactObj
-        .setProps({ color: component.config.color })
-        .uniqueId();                                        // <2>
 
-    const model = {
-        targetId: reactObj.react4xpId                       // <3>
-    };
-    const preRenderedBody = thymeleaf.render(view, model);
+    // Setting up the data-holding object for hello-react.jsx:
+    const helloObj = new React4xp(`site/pages/hello-react/hello-react`);     <!--1-->
+    helloObj.setProps({                                                      <!--2-->
+            message: partConfig.greeting,
+            messageTarget: partConfig.greetee,
+            droppableThing: partConfig.things,
+            initialCount: partConfig.startCount
+        })
 
-    const preExistingPageContributions = {
-        bodyEnd: `<script>
-        	console.log('Okay, rendered the ${reactObj.props.color} thing.');
-        		</script>`
-    };                                                      // <3>
 
-    return {                                                // <4>
+    // Setting up colorObj, the data-holding object for color.jsx:
+    const colorObj = new React4xp(`site/parts/color/color`);
+    colorObj                                                                 <!--3-->
+        .setProps({ color: partConfig.color })
+        .setId("myColorThing")                                               <!--4-->
+        .uniqueId()                                                          <!--5-->
 
-        body: reactObj.renderBody({
-            body: preRenderedBody,                          // <5>
-        }),
 
-        pageContributions: (
-            request.mode === 'live' ||                      // <6>
-            request.mode === 'preview'
-        ) ?
-            reactObj.renderPageContributions({              // <7>
-                pageContributions: preExistingPageContributions
-            }) :
-            undefined
+    // Using thymeleaf to render container HTML,
+    // inserting the colorObj's ID into the target container where colorObj will be rendered:
+    const thymeleafModel = {
+        color: colorObj.props.color,
+        targetId: colorObj.react4xpId
+    }
+    const colorSectionContainer = thymeleaf.render(view, thymeleafModel);    <!--6-->
+
+
+    // Render the color.jsx entry into the same-ID target container in the container HTML:
+    const colorBody = colorObj.renderBody({
+        body: colorSectionContainer                                          <!--7-->
+    });
+
+    // Rendering the activating page contributions of color.jsx.
+    // Also adding an extra page contribution, just for demonstrating that they can be passed through here too:
+    const colorPageContributions = colorObj.renderPageContributions({
+        pageContributions: {                                                 <!--8-->
+            bodyEnd: `<script>console.log('Created: ${colorObj.props.color} thing.');</script>`
+        }
+    });
+
+
+    // Rendering helloObj's entry into colorBody (which is basically custom-flow-view.html with color.jsx added).
+    const finalBody = helloObj.renderBody({
+        body: colorBody                                                      <!--9-->
+    });
+    // Adding helloObj's page contributions to the previously rendered page contributions:
+    const finalPageContributions = helloObj.renderPageContributions({
+        pageContributions: colorPageContributions                            <!--10-->
+    })
+
+
+    // Determining if the rendering context is not inside Content Studio:
+    const isOutsideContentStudio = (                                         <!--11-->
+        request.mode === 'live' ||
+        request.mode === 'preview'
+    );
+
+
+    // Finally, returning the response object - omitting the page contributions if rendering from inside Content Studio:
+    return {
+        body: finalBody,
+        pageContributions: isOutsideContentStudio ? finalPageContributions : undefined
     }
 };
+
 ----
 
-
+```
 <1> Constructing the data-holding React4XP object `reactObj`. The constructor takes *one mandatory argument*: an link:#entries[entry reference]. Just like the first argument in `.render`, the entry reference can be a link:#jsxPath[jsxPath] OR an XP component object. Here it's a jsxPath. So why is `ColorThing`, and _only_ that, the jsxPath to _ColorThing.jsx_? Because the JSX file is at the root level of the React4XP entries base folder: _src/main/resources/react4xp/entries_.
 <2> The React4XP object has setter methods that return the object itself, so you can set any optional attributes with a chained builder pattern like here. The uniqueId() method generates a unique ID of the object (and the target container element that uses `model.targetId`). If an object doesn't have an ID, this will be called by default when rendering (so we could have just skipped it here). The order of the setter methods doesn't matter. This example is equivalent to:
 	`reactObj.setProps({color: component.config.color});`
