@@ -1530,7 +1530,7 @@ exports.get = function(request) {
 
 Before we do that react4xp / webpack configuration though, let's make *the _MultiColor.jsx_ entry* and its dependencies.
 
-This is a more complex entry than before: it's a *stateful* react component that not only *imports and nests secondary react components*, but also imports *styling* - both its own specific and shared general styling - and relies on webpack and react4xp to handle all the compilation and assets behind the scenes.
+This is a more complex entry than before (and the most complex part of this example): it's a *stateful* react component that not only *imports and nests secondary react components*, but also imports *styling* - both its own specific and shared general styling - and relies on webpack and react4xp to handle all the compilation and assets behind the scenes.
 
 .src/main/resources/react4xp/entries/MultiColor.jsx:
 [source,javascript,options="nowrap"]
@@ -1610,6 +1610,159 @@ export default (props) => <MultiColor {...props} />;
 <11> Next, a list of buttons collected in a `ColorButtons` component. It's given the list of colors and the currently selected index (5), as well as a function that changes the selection index. All in all: click the a color's button to select it.
 <12> The fallback rendering if no colors have been added.
 <13> Remember that link:#entries[entries need to export a function] (_props? => react component_). Since this component is written in the class syntax (4), it needs to be exported like this.
+
+Now, with the entry done, we can look at the *entry's styling* - a lot simpler, only the buttons' class `my-button` is targeted and styled:
+
+.src/main/resources/react4xp/entries/MultiColor.scss:
+[source,sass,options="nowrap"]
+----
+.my-button {
+    padding: 16px 35px;
+    border-radius: 5px;
+    border: 2px solid black;
+    font-weight: bold;
+    margin: 10px 40px;
+}
+----
+
+{zwsp} +
+
+*Moving on to the _shared/_ folder*, this is where we find source files that will be compiled into common assets: dependency chunks with the _"shared"_ prefix and a content-dependent _"<HASH>"_ (reminder: this will happen because we later will mark _shared/_ as a `chunkDir` in _react4xp.properites_).
+
+First, some *_shared-styles.scss_*, also imported by the entry _MultiColor.jsx_. This could for example serve as common, normalizing styling imported by many react components across wide parts of a site:
+
+.src/main/resources/react4xp/shared/shared-styles.scss:
+[source,sass,options="nowrap"]
+----
+* {
+  font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+  font-size: 15pt;
+}
+----
+
+Next, _shared/_ also contains the *secondary react components* imported by  _MultiColor.jsx_. Note how each of them imports their own specific styling the same way as the entry _MultiColor.jsx_.
+
+There's the generic *Button* component. This is used both by _MultiColor.jsx_ and the secondary component _ColorButtons.jsx_. It gets custom onClick function, HTML class, inline styling (for single-button-specific attributes) and label (`children`) from `props` (the spread-out function parameters):
+
+
+.src/main/resources/react4xp/shared/Button.jsx:
+[source,javascript,options="nowrap"]
+----
+import React from 'react';
+
+import './Button.scss';    <!--1-->
+
+export default ({clickFunc, className, style, children}) =>
+    <button className={className}
+            type="button"
+            onClick={clickFunc}
+            style={style}
+    >
+        {children}
+    </button>;
+----
+<1> The specific Button styling it imports is marginal - this is just a generic button, so most of the styling is left to the class it's given, or inline attributes:
+
+.src/main/resources/react4xp/shared/Button.scss:
+[source,sass,options="nowrap"]
+----
+button {
+  cursor:pointer;
+}
+----
+
+{zwsp} +
+
+Then there's the *ActiveColorOval* component, which just displays `props.color` inside a circle/ellipse thing, filled with the same color:
+
+.src/main/resources/react4xp/shared/ActiveColorOval.jsx:
+[source,javascript,options="nowrap"]
+----
+import React from 'react';
+
+import './ActiveColorOval.scss';
+
+export default ({color}) =>
+    <div className="activeColorOval"
+         style={{backgroundColor: color}}
+    >
+        {color}
+    </div>
+----
+
+.src/main/resources/react4xp/shared/ActiveColorOval.scss:
+[source,sass,options="nowrap"]
+----
+.activeColorOval {
+  margin: 10px 40px;
+  background-color: transparent;
+  padding: 20px;
+  border-radius: 50%;
+  float: right;
+  color: white;
+}
+----
+
+{zwsp} +
+
+And finally a *ColorButtons* component. It takes the list of `props.colors` (from the editorial data), and assigns each of them to a `Button` labeled with the color, each of them triggering the change-color-selection from _MultiColor.jsx_ with its own specific color index `i` in the list of colors. In addition, the HTML class name(s) is assigned dynamically: the buttons all have a `color` class, and each button checks if its own index matches the currently selected index, and if it does, the class `selected` is added - which is differently styled than the unselected ones:
+
+.src/main/resources/react4xp/shared/ColorButtons.jsx:
+[source,javascript,options="nowrap"]
+----
+import React from 'react';
+
+import Button from './Button';
+
+import './ColorButtons.scss';
+
+export default ({colors, selectedIndex, clickFunc}) =>
+    <ul className="colorList">
+        {colors.map( (color, i) =>
+
+            <li key={i} className={`color${i === selectedIndex ? ' selected' : ''}`}>
+                <Button clickFunc={ ()=>clickFunc(i) } style={{backgroundColor: color, borderColor: color}}>
+                    {color}
+                </Button>
+            </li>
+
+        )}
+    </ul>;
+----
+
+.src/main/resources/react4xp/shared/ColorButtons.scss:
+[source,sass,options="nowrap"]
+----
+.color {
+  width: 50%;
+  list-style-type: none;
+  margin-bottom: 5px;
+
+  &.selected button {
+    color: white;
+    font-weight: bold;
+    border: none !important;
+  }
+
+  &:not(.selected) button {
+    background-color: white !important;
+  }
+
+  button {
+    width: 100%;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid black;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+----
+
+{zwsp} +
+
 
 
 ----
