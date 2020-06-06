@@ -1683,7 +1683,7 @@ import React from 'react';
 import './ActiveColorOval.scss';
 
 export default ({color}) =>
-    <div className="activeColorOval"
+    <div className="active-color-oval"
          style={{backgroundColor: color}}
     >
         {color}
@@ -1693,7 +1693,7 @@ export default ({color}) =>
 .src/main/resources/react4xp/shared/ActiveColorOval.scss:
 [source,sass,options="nowrap"]
 ----
-.activeColorOval {
+.active-color-oval {
   margin: 10px 40px;
   background-color: transparent;
   padding: 20px;
@@ -1705,7 +1705,7 @@ export default ({color}) =>
 
 {zwsp} +
 
-And finally a *ColorButtons* component. It takes the list of `props.colors` (from the editorial data), and assigns each of them to a `Button` labeled with the color, each of them triggering the change-color-selection from _MultiColor.jsx_ with its own specific color index `i` in the list of colors. In addition, the HTML class name(s) is assigned dynamically: the buttons all have a `color` class, and each button checks if its own index matches the currently selected index, and if it does, the class `selected` is added - which is differently styled than the unselected ones:
+And finally a *ColorButtons* component. It takes the list of `props.colors` (from the editorial data), and assigns each of them to a `Button` labeled with the color, each of them triggering the change-color-selection from _MultiColor.jsx_ with its own specific color index `i` in the list of colors. In addition, the HTML class name(s) of the buttons is assigned dynamically: the buttons all have a `color-button` class, and each item checks if its own index matches the currently selected index, and if it does, the class `selected` is added - which is differently styled than the unselected ones:
 
 .src/main/resources/react4xp/shared/ColorButtons.jsx:
 [source,javascript,options="nowrap"]
@@ -1717,11 +1717,14 @@ import Button from './Button';
 import './ColorButtons.scss';
 
 export default ({colors, selectedIndex, clickFunc}) =>
-    <ul className="colorList">
+    <ul className="color-list">
         {colors.map( (color, i) =>
 
-            <li key={i} className={`color${i === selectedIndex ? ' selected' : ''}`}>
-                <Button clickFunc={ ()=>clickFunc(i) } style={{backgroundColor: color, borderColor: color}}>
+            <li key={i} className="color">
+                <Button className={`color-button${i === selectedIndex ? ' selected' : ''}`}
+                        clickFunc={ ()=>clickFunc(i) }
+                        style={{backgroundColor: color, borderColor: color}}
+                >
                     {color}
                 </Button>
             </li>
@@ -1737,32 +1740,48 @@ export default ({colors, selectedIndex, clickFunc}) =>
   width: 50%;
   list-style-type: none;
   margin-bottom: 5px;
+}
 
-  &.selected button {
+.color-button {
+  min-width: 100%;
+  padding: 6px;
+  border-radius: 5px;
+  border: 1px solid black;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.selected {
     color: white;
     font-weight: bold;
-    border: none !important;
   }
 
-  &:not(.selected) button {
+  &:not(.selected) {
     background-color: white !important;
-  }
-
-  button {
-    width: 100%;
-    padding: 6px;
-    border-radius: 5px;
-    border: 1px solid black;
-
-    &:focus {
-      outline: none;
-    }
   }
 }
 ----
 
+
 {zwsp} +
 
+=== Configuring react4xp and webpack
+
+In this section we'll adjust some settings to make the code above work.
+
+TIP: Some of this has already been covered in more detail in the link:#entries[entries] and link:#jsxPath[jsxPath] boxes.
+
+First, open _react.properties_ in your project root and look up the attributes `entryDirs` and `chunkDirs`. These values are comma-separated lists, so make sure `entries` are added as an `entryDir` and `shared` is added as a `chunkDir`:
+
+.react4xp.properties:
+[source,properties,options="nowrap"]
+----
+entryDirs = entries   <!--1-->
+
+chunkDirs = shared    <!--2-->
+----
+<1> Entrydirs are relative to _src/main/resource/react4xp/_, and more than one relative path can be added here, separated by commas. Think of this as a list of where, in addition to XP's _site/_ folder, react4xp will look for .JSX source files to 
 
 
 ----

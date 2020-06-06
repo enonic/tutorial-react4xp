@@ -1,0 +1,46 @@
+button {
+    cursor: pointer
+}
+
+.color {
+    width: 50%;
+    list-style-type: none;
+    margin-bottom: 5px
+}
+
+.color-button {
+    min-width: 100%;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid black
+}
+
+.color-button:focus {
+    outline: none
+}
+
+.color-button.selected {
+    color: white;
+    font-weight: bold
+}
+
+.color-button:not(.selected) {
+    background-color: white !important
+}
+
+.active-color-oval {
+    margin: 10px 40px;
+    background-color: transparent;
+    padding: 20px;
+    border-radius: 50%;
+    float: right;
+    color: white
+}
+
+* {
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size: 15pt
+}
+
+
+/*# sourceMappingURL=shared.9fa09c20d.css.map*/
