@@ -1772,7 +1772,7 @@ In this section we'll adjust some settings to make the code above work.
 
 TIP: Some of this has already been covered in more detail in the link:#entries[entries] and link:#jsxPath[jsxPath] boxes.
 
-First, open _react.properties_ in your project root and look up the attributes `entryDirs` and `chunkDirs`. These values are comma-separated lists, so make sure `entries` are added as an `entryDir` and `shared` is added as a `chunkDir`:
+First, open _react4xp.properties_ in your project root and look up the attributes `entryDirs` and `chunkDirs`. These values are comma-separated lists, so make sure `entries` are added as an `entryDir` and `shared` is added as a `chunkDir`:
 
 .react4xp.properties:
 [source,properties,options="nowrap"]
@@ -1781,7 +1781,24 @@ entryDirs = entries   <!--1-->
 
 chunkDirs = shared    <!--2-->
 ----
-<1> Entrydirs are relative to _src/main/resource/react4xp/_, and more than one relative path can be added here, separated by commas. Think of this as a list of where, in addition to XP's _site/_ folder, react4xp will look for .JSX source files to 
+<1> `entryDirs` is a list of where react4xp will look for .JSX (and .ES6/.JS) source files to compile and serve as entries. This is in addition to XP's _site/_ folder, which is a special-case default entryDir. Under _site/_ only .JSX files are picked up as entries.
+<2> `chunkDirs` is a list of folders that will be turned into collection/library assets. One chunk asset for each file type in each chunkDir, named after the closest parent chunkDir.
+
+So in our example here, JSX files under _entries/_ are available to `React4xp.render` and friends, in XP controllers. And everything they import from under _shared/_ and that is compiled into JS (both react and otherwise), will be collected into the chunk `shared.<HASH>.js` - and everything that's compiled into CSS (our SASS, for example) is collected into `shared.<HASH>.css`. And so on.
+
+Both `entrydirs` and `chunkDirs` are comma-separated *lists of relative paths*, relative to _src/main/resource/react4xp/_.
+
+What happens to imports into entries from folders not marked as chunkDirs, then?
+
+- Importing an entry into anonther entry is possible, and leaves both entries as they are.
+- Importing JS like react etc, _will be collected into the compiled entry asset!_.
+- Other imports, such as CSS, are compiled to separate assets under their own name.
+
+{zwsp} +
+
+Next, we'll add a *webpack config file* reference to the same _react4xp.properties_ and add that file:
+
+GJØØØR DEEEET DAAAA. GJØØØØR DEEEET NÅÅÅÅÅÅ.
 
 
 ----
