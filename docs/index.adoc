@@ -1863,6 +1863,99 @@ module.exports = function(env, config) {                     <!--1-->
 <2> That function may *mutate (or replace!) the react4xp webpack `config` object* (on this line and later: "take any incoming `config.module.rules` and add this style-compilation-rule object"). So previously existing attributes will be overwritten by the new ones from this file.
 <3> The function *must return the changed (or replaced) config object*.
 
+And that's the last of it. We're ready to look at it running.
+
+{zwsp} +
+
+=== Setup and rendering
+
+Build again and add the _multi-color_ Part in Content Studio, link:#adding_parts_to_new_content[the same way as before].
+
+.Empty multicolor Part:
+image:multicolor-add.png[title="Empty MultiColor part in Content Studio", width=720px]
+
+{zwsp} +
+
+Click it in edit mode to edit the Part config. Here you can choose to render the part in serverside or clientside mode, as well as enter any number of colors. As long as they are link:https://en.wikipedia.org/wiki/Web_colors[standard web colors], they will create an array of colored buttons.
+
+.Multicolor Part with colors filled in:
+image:multicolor-added.png[title="MultiColor part in Content Studio, with four colors added", width=720px]
+
+{zwsp} +
+
+Outside of Content Studio, in the preview, the buttons are of course active and clickable. Each button selects itself, the Previous/Next buttons cycle through them, and the little elliptic label (the ActiveColorOval) is updated with both text and color:
+
+.Multicolor Part, active view:
+image:multicolor-preview.png[,title="MultiColor part outside of Content Studio, active view after clicking the #5d0015 button", width=720px]
+
+{zwsp} +
+
+
+=== Output
+Several things can be noted:
+
+Even though it's composed of multiple components, this is still a *single XP Part*.
+
+You can add more than one into the Region, and each Part will host an independent react root app.
+
+And let's take a look at the rendered response from the controller:
+
+.Page source from the Multicolor Part, active view (serverside rendered not selected):
+[source,html,options="nowrap"]
+----
+<html>
+    <head>
+        <title>MultColor</title>
+
+        <!--1-->
+        <link href="(...your.app.service) /react4xp/shared.9fa09c20d.css"
+              rel="stylesheet"
+              type="text/css"/>
+        <link href="(...your.app.service) /react4xp/MultiColor.css"
+              rel="stylesheet"
+              type="text/css"/>
+    </head>
+
+    <body class="xp-page">
+        <div id="react4xp_453f84f9-043f-4376-89fc-93855501e063">
+            <div class="default-page" data-reactroot="">
+                <div data-portal-region="main" class="xp-region">
+
+                    <!--2-->
+                    <div data-portal-component-type="part" id="_67815286"></div>
+                </div>
+            </div>
+        </div>
+
+        <!--3-->
+        <script src="(...your.app.service) /react4xp/shared.27a8a0669.js"></script>
+        <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>
+        <script src="(...your.app.service) /react4xp-client/"></script>
+        <script src="(...your.app.service) /react4xp/MultiColor.js"></script>
+
+        <script defer>
+            React4xp.CLIENT.render(
+                React4xp['MultiColor'],
+                "_67815286",
+                {
+                    "colors": ["Red", "Khaki", "#c0ffee", "#5d0015"],
+                    "react4xpId": "_67815286"
+                }
+            );
+        </script>
+    </body>
+</html>
+----
+<1> Firstly, the SASS files have all been compiled to .CSS assets, and stylesheet links to them are inserted into the header by `React4xp.render` (if we had used the link:#custom_flow[custom flow syntax], this would have been handled by `.renderPageContributions`). And secondly: while `MultiColor.scss` was compiled into a .CSS file by itself (because the source file is under the entryDir _entries/_), we see that all the other imported assets have been compiled into the common dependency chunk _shared.<HASH>.css_ (_not_ because they were imported by .JSX files under _shared/_ - the import location doesn't matter. But because the .SCSS source files were under _shared/_).
+<2> Again, since we didn't check the "Server-side rendering" checkbox, the `clientRender` flag became true and we got a clientside rendering. So this is just the target container element, filled in by the browser on `React4xp.CLIENT.render` below. Had we checked the checkbox, this would have contained the pre-rendered MultiColor entry, of course.
+<3> Among the dependencies are still the externals, the client wrapper code and the code to the compiled MultiColor entry. And in addition, there's the `shared.<HASH>.js` dependency chunk, containing the compiled code for all the ES6/JS/JSX found under the _shared/_ folder.
+
+{zwsp} +
+
+
+== Using chunks
+
+
 ----
 HERE BE DRAGONS!
 
