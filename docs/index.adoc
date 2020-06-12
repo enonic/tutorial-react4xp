@@ -1790,18 +1790,10 @@ So in our example here, JSX files under _entries/_ are available to `React4xp.re
 
 And everything they import from under _shared/_ and that is compiled into JS (both react and otherwise), will be collected into the chunk `shared.<HASH>.js` - and everything under _shared/_ that's compiled into CSS (our SASS, for example) is collected into `shared.<HASH>.css`. And so on.
 
-[NOTE]
-====
-What happens if an entry imports something from folders *not marked as chunkDirs*?
-
-- Importing an entry into anonther entry is possible, and leaves both entries compiled and handled as regular entries.
-- Imported JS (react components etc) from non-entry folders will be *compiled into the entry asset* itself. Try to avoid this, since the entries can become bloated, and code can become repeated if it's imported into more than entry. The entry assets are also less performance optimized.
-- Non-JS imports (CSS etc), are compiled to separate assets under their own name, the same way as entries (but are not given a _jsxPath_, of course).
-====
 
 {zwsp} +
 
-Next, we'll add some *custom webpack rules to handle the style imports*. First, we need to tell react4xp to use an extra webpack config file, with another reference in _react4xp.properties_:
+Next, we'll add some *custom webpack rules to handle the style imports*. First, we need to tell react4xp to use an extra webpack config file. Return to _react4xp.properties_ to add another property:
 
 .react4xp.properties:
 [source,properties,options="nowrap"]
@@ -1952,15 +1944,33 @@ And let's take a look at the rendered response from the controller:
 
 {zwsp} +
 
-
-== Using chunks
-
-
 ----
 HERE BE DRAGONS!
 
 Everything below this box is work in progress / not finished / dangerous
 ----
+
+
+== Using chunks
+
+chunkDirs
+Hashing
+Optimization
+    Clientside hashing
+    Hashing for cache-busting
+    Each asset (entry and/or chunk) only downloaded once
+Not entries, no JSX path
+Fire and forget
+Recommended usage
+
+[NOTE]
+====
+What happens if an entry imports something from folders *not marked as chunkDirs*?
+
+- Importing an entry into anonther entry is possible, and leaves both entries compiled and handled as regular entries.
+- Imported JS (react components etc) from non-entry folders will be *compiled into the entry asset* itself. Try to avoid this, since the entries can become bloated, and code can become repeated if it's imported into more than entry. The entry assets are also less performance optimized.
+- Non-JS imports (CSS etc), are compiled to separate assets under their own name, the same way as entries (but are not given a _jsxPath_, of course).
+====
 
 ----
     TIP: This is why [entries] are used as a separate word from react components, even though they technically _are_ just react components: Webpack makes entries runtime-available to react4xp (entries is even a Webpack term).
@@ -1968,12 +1978,6 @@ Everything below this box is work in progress / not finished / dangerous
 
 
 
-
-.ICANHASCONTROL.es6:
-[source,javascript,linenums,options="nowrap"]
-----
-dis is controller
-----
 
 ----
 This is a _non-entry_ React component, that will be imported by several of the entries in this example (`BuilderClickerEntry` is one of them). Because of its source file location, `BuilderClicker` will be compiled into a highly reuseable, optimized and auto-handled chunk called `myChunk`:
