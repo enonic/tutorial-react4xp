@@ -14,7 +14,7 @@ This documentation expects basic knowledge of React, XP and Webpack.
 * https://developer.enonic.com/start[the Enonic XP developer portal].
 * https://webpack.js.org/guides/getting-started/[webpack documentation].
 
-
+Beyond that, this document is super detailed. It's probably fine to *focus on the code*, and just use the text for context and a closer look.
 ====
 
 
