@@ -120,9 +120,9 @@ To verify that your app started successfully, you should find an entry similar t
 `2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully`
 ====
 
-Now you're ready to get started with the *example lessons*.
-
 == {zwsp} +
+
+Now you're ready to get started with the *example lessons*.
 
 [.right]
 -> 1. link:1-hello-react.adoc#hello_react_page[Hello React: server and clientside]
@@ -151,16 +151,14 @@ The next three present a few more *advanced usages*:
 
 == Need to go deeper?
 
-API documentation:
-
-====== link:api.html#_react4xp_render[React4xp.render]
-
-{zwsp} +
-
-Concept overviews and optimization:
+Conceptual overviews and optimization:
 
 ====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
 ====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
 ====== link:faq.html#faq[FAQ]
 
+{zwsp} +
 
+API documentation:
+
+====== link:api.html#_react4xp_render[React4xp.render]
