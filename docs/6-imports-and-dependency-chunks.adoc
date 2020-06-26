@@ -559,7 +559,9 @@ Let's take a look at the rendered response from the controller and underline a f
 
 == {zwsp} +
 
-That concludes the lessons! If you haven't already, it's recommended to take a look at the additional explanations of central concepts and API, in the documentation below.
+That concludes the lessons!
+
+If you haven't already, it's recommended to take a look at the additional explanations of central concepts and API, in the documentation below - especially the dependency chunks which we touched upon in this chapter.
 
 {zwsp} +
 {zwsp} +
