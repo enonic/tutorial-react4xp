@@ -5,22 +5,22 @@
 
 {zwsp} +
 
-== Previous chapters
+== Previously:
 
 ====== link:index.html#introduction[Introduction]
 
 {zwsp} +
-Basic:
+Basic lessons:
 
-====== 1: link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
-====== 2: link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
-====== 3: link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
+====== 1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
+====== 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
+====== 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
 
 
 {zwsp} +
-Advanced:
+Advanced lesson:
 
-====== 4: link:4-source-file-structure.html#free_structure[Free source file structure]
+====== 4. link:4-source-file-structure.html#free_structure[Free source file structure]
 
 {zwsp} +
 
@@ -34,7 +34,7 @@ image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== 5: Custom flow
+== 5. CUSTOM FLOW SYNTAX
 
 In this example things get a bit more complex. We'll make another Part, and re-use the Page controller, Template and Content type we made link:#_template_with_react_page_controller[previously].
 
@@ -270,24 +270,20 @@ Again, if you add more than one _custom-flow_ Part to a Region, you'll see that 
 {zwsp} +
 {zwsp} +
 
-== Next chapters
-
-Advanced:
+== Next: advanced lesson
 
 ====== 6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
 
-{zwsp} +
+== {zwsp} +
 
-== Need to go deeper?
+== Explanations and API
 
-Conceptual overviews and optimization:
+Lookup and explanations:
 
 ====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
 ====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
 ====== link:faq.html#faq[FAQ]
 
 {zwsp} +
-
-API documentation:
 
 ====== link:api.html#_react4xp_render[React4xp.render]

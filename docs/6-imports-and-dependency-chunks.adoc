@@ -5,23 +5,23 @@
 
 {zwsp} +
 
-== Previous chapters
+== Previously:
 
 ====== link:index.html#introduction[Introduction]
 
 {zwsp} +
 Basic:
 
-====== 1: link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
-====== 2: link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
-====== 3: link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
+====== 1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
+====== 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
+====== 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
 
 
 {zwsp} +
 Advanced:
 
-====== 4: link:4-source-file-structure.html#free_structure[Free source file structure]
-====== 5: link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
+====== 4. link:4-source-file-structure.html#free_structure[Free source file structure]
+====== 5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
 
 {zwsp} +
 
@@ -35,7 +35,7 @@ image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== 6: Imports, chunks, config, webpack
+== 6. IMPORTS, CHUNKS, CONFIG, WEBPACK
 
 This final example is going to be more reallife-like. We'll focus on these features:
 
@@ -559,14 +559,14 @@ Let's take a look at the rendered response from the controller and underline a f
 
 == {zwsp} +
 
-That concludes the lessons! Take a look at the additional documentation and explanations below, if you haven't already.
+That concludes the lessons! If you haven't already, it's recommended to take a look at the additional explanations of central concepts and API, in the documentation below.
 
 {zwsp} +
 {zwsp} +
 
-== Need to go deeper?
+== Explanations and API
 
-Conceptual overviews and optimization:
+More details, overviews and optimization:
 
 ====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
 ====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
@@ -577,4 +577,3 @@ Conceptual overviews and optimization:
 API documentation:
 
 ====== link:api.html#_react4xp_render[React4xp.render]
-

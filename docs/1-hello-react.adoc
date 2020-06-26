@@ -5,7 +5,7 @@
 
 {zwsp} +
 
-== Previous chapters
+== Previously:
 
 ====== link:index.html#introduction[Introduction]
 
@@ -21,7 +21,7 @@ image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== 1. Hello React: server and clientside
+== 1. HELLO REACT: RENDERING ON SERVER AND CLIENT
 
 React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: just displaying a working react component in content studio. We'll first do that in the serverside rendered way (this is the react4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
 
@@ -322,30 +322,29 @@ Okay, ready for the next example lesson?
 {zwsp} +
 {zwsp} +
 
-== Next chapters
+== Next: basic lessons
 
 ====== 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
 ====== 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
 
 {zwsp} +
-Advanced:
+
+== Advanced lessons
 
 ====== 4. link:4-source-file-structure.html#free_structure[Free source file structure]
 ====== 5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
 ====== 6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
 
-{zwsp} +
+== {zwsp} +
 
-== Need to go deeper?
+== Explanations and API
 
-Conceptual overviews and optimization:
+Lookup and explanations:
 
 ====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
 ====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
 ====== link:faq.html#faq[FAQ]
 
 {zwsp} +
-
-API documentation:
 
 ====== link:api.html#_react4xp_render[React4xp.render]

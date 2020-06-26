@@ -22,7 +22,7 @@ image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== Introduction
+== INTRODUCTION
 
 This tutorial will show you step-by-step how to build XP sites and apps with React rendering, helping you kickstart a React4xp project of your own.
 
@@ -122,7 +122,7 @@ To verify that your app started successfully, you should find an entry similar t
 
 == {zwsp} +
 
-Now you're ready to get started with the *example lessons*.
+Now you're ready to get started with the first example *lessons*.
 
 [.right]
 -> 1. link:1-hello-react.adoc#hello_react_page[Hello React: server and clientside]
@@ -130,10 +130,9 @@ Now you're ready to get started with the *example lessons*.
 {zwsp} +
 {zwsp} +
 
-== Next chapters
+== Next: basic lessons
 
-
-The first three chapters are the *basic-level tutorial*. This is what you need to get started:
+The first three chapters are the basic-level tutorial - just what you need to get started:
 
 ====== 1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
 ====== 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
@@ -141,24 +140,24 @@ The first three chapters are the *basic-level tutorial*. This is what you need t
 
 {zwsp} +
 
-The next three present a few more *advanced usages*:
+== Advanced lessons
+
+The next three chapters present a few more advanced usages:
 
 ====== 4. link:4-source-file-structure.html#free_structure[Free source file structure]
 ====== 5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
 ====== 6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
 
-{zwsp} +
+== {zwsp} +
 
-== Need to go deeper?
+== Explanations and API
 
-Conceptual overviews and optimization:
+Need to go deeper? Here are some more detailed explanations and API documentaion:
 
 ====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
 ====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
 ====== link:faq.html#faq[FAQ]
 
 {zwsp} +
-
-API documentation:
 
 ====== link:api.html#_react4xp_render[React4xp.render]

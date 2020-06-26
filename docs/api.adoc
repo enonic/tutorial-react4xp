@@ -1,4 +1,4 @@
-= Server side JSX with React4XP
+= React4XP: API
 :toc: right
 :toclevels: 2
 :imagesdir: media/
