@@ -3,39 +3,13 @@
 :toclevels: 2
 :imagesdir: media/
 
-== Previous chapters
+== Back to:
 
 ====== link:index.html#introduction[Introduction]
+====== link:index.html#_next_basic_lessons[Basic lessons]
+====== link:index.html#_advanced_lessons[Advanced lessons]
 
-{zwsp} +
-Basic lessons:
-
-====== 1: link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
-====== 2: link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
-====== 3: link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
-
-
-{zwsp} +
-Advanced usage:
-
-====== 4: link:4-source-file-structure.html#free_structure[Free source file structure]
-====== 5: link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
-====== 6: link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
-
-{zwsp} +
-
-== Need to go deeper?
-
-API documentation:
-
-====== link:api.html#_react4xp_render[React4xp.render]
-
-{zwsp} +
-
-Concept overviews and optimization:
-
-====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
-====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
+== {zwsp} +
 
 {zwsp} +
 {zwsp} +
@@ -45,41 +19,21 @@ image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== link:faq.html#faq[FAQ]
+== FREQUENTLY ASKED QUESTIONS
 
-Why are there no questions here?
+(Why are there no questions here? Aren't they supposed to be frequent?)
 
-== Next chapters
+== {zwsp} +
 
-====== link:index.html#introduction[Introduction]
+== More details and API
 
-{zwsp} +
-Basic lessons:
-
-====== 1: link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
-====== 2: link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
-====== 3: link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
-
+====== link:entries-and-jsxpath.html#entries[Entries]
+====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
+====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
 
 {zwsp} +
-Advanced usage:
-
-====== 4: link:4-source-file-structure.html#free_structure[Free source file structure]
-====== 5: link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
-====== 6: link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
-
-{zwsp} +
-
-== Need to go deeper?
-
-API documentation:
 
 ====== link:api.html#_react4xp_render[React4xp.render]
 
 {zwsp} +
-
-Concept overviews and optimization:
-
-====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
-====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
-====== link:faq.html#faq[FAQ]
+{zwsp} +

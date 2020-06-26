@@ -564,16 +564,19 @@ That concludes the lessons! If you haven't already, it's recommended to take a l
 {zwsp} +
 {zwsp} +
 
-== Explanations and API
+== Details and API
 
 More details, overviews and optimization:
 
-====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
-====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
+
+====== link:entries-and-jsxpath.html#entries[Entries]
+====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
+====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
 ====== link:faq.html#faq[FAQ]
 
 {zwsp} +
 
-API documentation:
-
 ====== link:api.html#_react4xp_render[React4xp.render]
+
+{zwsp} +
+{zwsp} +

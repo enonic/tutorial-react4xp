@@ -337,14 +337,18 @@ Okay, ready for the next example lesson?
 
 == {zwsp} +
 
-== Explanations and API
+== Details and API
 
-Lookup and explanations:
+Need to go deeper? Here are some more detailed explanations and API documentaion:
 
-====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
-====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
+====== link:entries-and-jsxpath.html#entries[Entries]
+====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
+====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
 ====== link:faq.html#faq[FAQ]
 
 {zwsp} +
 
 ====== link:api.html#_react4xp_render[React4xp.render]
+
+{zwsp} +
+{zwsp} +

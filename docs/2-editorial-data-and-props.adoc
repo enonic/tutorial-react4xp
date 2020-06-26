@@ -251,6 +251,11 @@ So did anything change in the rendered response, compared to link:#hello_output[
 
 == {zwsp} +
 
+Now might be a good time to take a closer look at link:api.html#_react4xp_render[the full overview of the `.render` call] from the ES6 controller in link:#controller_with_props[the example above].
+
+{zwsp} +
+Either way, you should be ready for the final basic lesson chapter:
+
 [.right]
 -> 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
 
@@ -271,14 +276,18 @@ So did anything change in the rendered response, compared to link:#hello_output[
 
 == {zwsp} +
 
-== Explanations and API
+== Details and API
 
-Lookup and explanations:
+Need to go deeper? Here are some more detailed explanations and API documentaion:
 
-====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
-====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
+====== link:entries-and-jsxpath.html#entries[Entries]
+====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
+====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
 ====== link:faq.html#faq[FAQ]
 
 {zwsp} +
 
 ====== link:api.html#_react4xp_render[React4xp.render]
+
+{zwsp} +
+{zwsp} +

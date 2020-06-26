@@ -7,11 +7,11 @@
 
 [NOTE]
 ====
-**UPDATED {docdate}:** multiple adaptations for starter and lib version 1.0.0.
-
 This guide expects at least some bare-bone knowledge of link:https://reactjs.org/tutorial/tutorial.html[React] and link:https://developer.enonic.com/start[Enonic XP]. Beyond that, it's super detailed.
 
 So it's probably fine to *focus on the code*, and just use the text for context, a closer look, and troubleshooting.
+
+**UPDATED {docdate}:** multiple adaptations for starter and lib version 1.0.0.
 ====
 
 {zwsp} +
@@ -79,12 +79,12 @@ TIP: This is just an overview, no need to know it by heart to get started - we'l
 
 [source,files]
 ----
-build.gradle                <--1-->
+build.gradle                <!--1-->
 gradle.properties
 settings.gradle
 package.json
 
-react4xp.properties         <--2-->
+react4xp.properties         <!--2-->
 
 src/
   main/
@@ -150,14 +150,18 @@ The next three chapters present a few more advanced usages:
 
 == {zwsp} +
 
-== Explanations and API
+== Details and API
 
 Need to go deeper? Here are some more detailed explanations and API documentaion:
 
-====== link:entries-and-jsxpath.html#entries[Entries] and link:entries-and-jsxpath.html#jsxPath[jsxPath]
-====== link:optimizing-with-dependency-chunks.html#chunks[Dependency chunks]
+====== link:entries-and-jsxpath.html#entries[Entries]
+====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
+====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
 ====== link:faq.html#faq[FAQ]
 
 {zwsp} +
 
 ====== link:api.html#_react4xp_render[React4xp.render]
+
+{zwsp} +
+{zwsp} +
