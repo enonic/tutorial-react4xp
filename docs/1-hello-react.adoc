@@ -1,27 +1,17 @@
-= React4xp, lesson 1: server and clientside rendering
+= React4xp lesson 1: Hello React - server and clientside rendering
 :toc: right
 :toclevels: 2
 :imagesdir: media/
 
 {zwsp} +
 
-== Previously:
-
-====== link:index.html#introduction[Introduction]
-
-{zwsp} +
-
-== {zwsp} +
-
-{zwsp} +
-{zwsp} +
 
 [[hello_react_page]]
 image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== 1. HELLO REACT: RENDERING ON SERVER AND CLIENT
+== Lesson 1 overview
 
 React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: just displaying a working react component in content studio. We'll first do that in the serverside rendered way (this is the react4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
 
@@ -40,8 +30,9 @@ These files are not included in the starter - use your copy/paste skills and rem
 
 {zwsp} +
 
-=== Code
+== Code
 
+=== Page definition
 First, we need a *page definition* XML file. Just XP boilerplate:
 
 .hello-react.xml:
@@ -54,6 +45,9 @@ First, we need a *page definition* XML file. Just XP boilerplate:
 </page>
 ----
 
+{zwsp} +
+
+=== React component
 Next, we'll add the *react component*. This displays a "Hello world" heading, and we'll add some simple functionality to it: every time you click the message, it will update a number in the next line and print a message in the console. This is to show that we're rendering an _active_ react component; we're not only using JSX as an XP templating language for static HTML - although sure, you could do that too if you want.
 
 Obviously, the actual updating step is done with vanilla JS instead of actual react, just to keep everything as simple as possible. We'll look at stateful/dynamic components later.
@@ -82,6 +76,10 @@ One thing is mandatory for this to work, shown in the last line: the JSX file *m
 
 Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from node_modules in the regular way (there is a caveat or two here. We'll get back to that too later).
 ====
+
+{zwsp} +
+
+=== Page controller
 Finally, we'll add a bare-bone *page controller* that calls the rendering engine:
 
 [[first_helloreact_jsx]]
@@ -115,9 +113,6 @@ exports.get = function(request) {                       // <2>
 };
 ----
 
-
-
-
 That's it.
 
 If you've used XP before, you'll probably note that there's no HTML view file, no `thymeleaf.render`, and so on - in this example, react4xp completely handles the page view. The essential thing here is that at the end of the `get` function, *react4xp in a single _.render_ call creates a _full_ XP response object that makes react work.*
@@ -134,7 +129,7 @@ What's going on in the controller?
 {zwsp} +
 
 [[first_setup_render]]
-=== Setup and first render
+== Setup and first render
 
 If you've added those 3 files, let's get this rendered! If you've used XP and Content Studio before, this is all run-of-the mill:
 
@@ -162,34 +157,34 @@ Clicking somewhere on the rendered text in the preview window will trigger the `
 
 {zwsp} +
 
-[[static_cs_rendering]]
-==== Two notes on the rendering before we move on:
-====
-*STATIC RENDERING IN CONTENT STUDIO*
+== Two notes on rendering
+
+Two things are worth knowing about the rendering, before we move on:
+
+{zwsp} +
+
+=== Content studio only has static rendering
 
 If you clicked the rendering _inside XP Content Studio_ instead of a preview tab, you'd notice there was *no bottle-counting*. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the `request` argument is used in `React4xp.render` to handle this automatically: inside Content Studio, you'll only see the rendering as a regular static XP preview / placeholder instead of active react.
 
 NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. link:#custom_flow[Example 4 shows you how].
-====
 
 {zwsp} +
 
-====
-*SLOW FIRST SERVERSIDE RENDERING*
+=== First serverside render can be slow
 
 You may also have noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the *Nashorn server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
 
 We're looking into mitigating this delay in the future, but for now, this is nice to know: *This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app. Setting up a continuous build with XP devmode instead, helps. For the react4xp starter, here's how:
 
-`enonic sandbox start <yourSandBoxName> --dev` in one terminal (from anywhere), and
+  1. `enonic sandbox start <yourSandBoxName> --dev` in one terminal (from anywhere), and
 
-`enonic project deploy && gradlew react4xp_components compileXP -t` from project root in another terminal. Reply _No_ if it asks you to start the sandbox here.
-====
+  2. `enonic project deploy && gradlew react4xp_components compileXP -t` from project root in another terminal. Reply _No_ if it asks you to start the sandbox here.
 
 {zwsp} +
 
 [[hello_output]]
-=== Output
+== Output
 
 Okay, back to the rendering of the page. Open the *page source* code in the browser. Here's what `React4xp.render` created - the response the client receives on the initial page request:
 
@@ -233,13 +228,15 @@ NOTE: The assets are served by lib-react4xp services. Most of them (_react4xp-cl
 
 {zwsp} +
 
-=== Client-side rendering
+== Client-side rendering
 
-Sometimes you might want or need to skip the server-side rendering of a react component, and relay the react rendering entirely to the browser. This a one-line operation in `React4xp.render`. Let's return to *the controller*:
+Sometimes you might want or need to skip the server-side rendering of a react component, and relay the react rendering entirely to the browser. This a one-line operation in `React4xp.render`.
+
+Let's return to *the controller* and add a line on line 23:
 
 
 .hello-react.es6:
-[source,javascript,linenums,options="nowrap"]
+[source,javascript,options="nowrap"]
 ----
 const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
@@ -286,7 +283,8 @@ If you compare with link:#hello_output[the serverside-rendered example], the `cl
     <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"></script>
 
     <script defer>
-        React4xp.CLIENT.render(     <!--3-->
+        <!--3-->
+        React4xp.CLIENT.render(
             React4xp['site/pages/hello-react/hello-react'],
             "react4xpApp",
             null,
@@ -316,39 +314,14 @@ Often, switching over to _clientside rendering_ for that particular react compon
 
 Okay, ready for the next example lesson?
 
-[.right]
--> 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
 
 {zwsp} +
-{zwsp} +
+[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
+|====
+||Next ->
 
-== Next: basic lessons
-
-====== 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
-====== 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
-
-{zwsp} +
-
-== Advanced lessons
-
-====== 4. link:4-source-file-structure.html#free_structure[Free source file structure]
-====== 5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
-====== 6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
-
-== {zwsp} +
-
-== Details and API
-
-Need to go deeper? Here are some more detailed explanations and API documentaion:
-
-====== link:entries-and-jsxpath.html#entries[Entries]
-====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
-====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
-====== link:faq.html#faq[FAQ]
-
-{zwsp} +
-
-====== link:api.html#_react4xp_render[React4xp.render]
+2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
+|====
 
 {zwsp} +
 {zwsp} +

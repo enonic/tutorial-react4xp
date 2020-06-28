@@ -5,36 +5,27 @@
 
 {zwsp} +
 
-== Previously:
-
-====== link:index.html#introduction[Introduction]
-
-{zwsp} +
-Basic lessons:
-
-====== 1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
-====== 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
-====== 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
-
-{zwsp} +
-
-== {zwsp} +
-
-{zwsp} +
-{zwsp} +
-
-[[free_structure]]
+[[xp_pages_parts]]
 image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== 4. FREE SOURCE STRUCTURE
+== Lesson 4 overview
 
 So far, every time we've referenced a _.jsx_ react component from react4xp in a controller, we've used a `component` object in the _entry_ argument of `React4xp.render`. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the _.jsx_ source file must be in the same folder as the controller, and have the same name.
 
 It doesn't have to be that way. In this example, we'll take a look at which react components are available to `React4xp.render` - called *entries* in react4xp - and how to reference them, whatever they're called and wherever they're located.
 
 A link:#entries_and_jsxpath[detailed summary] follows after the examples.
+
+
+{zwsp} +
+
+== Entries and locations
+
+For react components to be available to React4xp the way we've seen so far, their *JSX source files must be located in certain folders* where react4xp is looking for them and auto-compiles them (they must also export a function of <<entries#_how_to_make_an_entry, props->component>>, but we'll focus on the file locations for now).
+
+React components like that are called *entries* in react4xp.
 
 {zwsp} +
 
@@ -125,35 +116,28 @@ entryDirs=entries,../../../../../node_modules/externalComponents/comps
 (Or replace _entries_ if you're not using it, of course)
 
 
-== {zwsp} +
-
-Okay, time to move on to the next example and lesson!
-
-[.right]
--> 5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
-
-{zwsp} +
 {zwsp} +
 
-== Next: advanced lessons
+== Further reading
 
-====== 5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
-====== 6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
+If you want a deeper dive into details before moving on, here's more about <<entries#, entries>> and the <<jsxPath#, jsxPaths>> that point react4xp to them.
+
+{zwsp} +
+
+Okay, next example lessons!
+
 
 == {zwsp} +
+[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
+|====
+|<- Back
 
-== Details and API
+3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]|
 
-Need to go deeper? Here are some more detailed explanations and API documentaion:
+Next ->
 
-====== link:entries-and-jsxpath.html#entries[Entries]
-====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
-====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
-====== link:faq.html#faq[FAQ]
-
-{zwsp} +
-
-====== link:api.html#_react4xp_render[React4xp.render]
+5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
+|====
 
 {zwsp} +
 {zwsp} +

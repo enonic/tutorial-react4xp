@@ -1,0 +1,62 @@
+{
+  "title": "React4xp",
+  "document": "index",
+  "menuItems": [
+    {
+      "title": "Introduction and setup",
+      "document": "index"
+    },
+    {
+      "title": "Basic lessons",
+      "document": "1-hello-react",
+      "menuItems": [
+        {
+          "title": "1. Hello React: rendering on server and client",
+          "document": "1-hello-react"
+        },
+        {
+          "title": "2. Editorial data and props",
+          "document": "2-editorial-data-and-props"
+        },
+        {
+          "title": "3. Content Studio: pages, parts, regions and content",
+          "document": "3-pages-parts-and-regions"
+        }
+      ]
+    },
+    {
+      "title": "Advanced lessons",
+      "document": "4-source-file-structure",
+      "menuItems": [
+        {
+          "title": "4. Free source file structure",
+          "document": "4-source-file-structure"
+        },
+        {
+          "title": "5. Custom flow syntax",
+          "document": "5-custom-flow-syntax"
+        },
+        {
+          "title": "6. Imports, chunks, config, webpack",
+          "document": "6-imports-and-dependency-chunks"
+        }
+      ]
+    },
+    {
+      "title": "API",
+      "document": "api"
+    },
+    {
+      "title": "Entries",
+      "document": "entries-and-jsxpath"
+    },
+    {
+      "title": "JsxPath",
+      "document": "entries-and-jsxpath"
+    },
+    {
+      "title": "Dependency chunks",
+      "document": "entries-and-jsxpath"
+    }
+  ]
+}

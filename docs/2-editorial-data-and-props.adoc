@@ -1,36 +1,18 @@
-= React4xp, lesson 2: editorial data and props
+= React4xp lesson 2: Editorial data and props
 :toc: right
 :toclevels: 2
 :imagesdir: media/
 
 {zwsp} +
 
-== Previously:
-
-====== link:index.html#introduction[Introduction]
-
-{zwsp} +
-Basic lessons:
-
-====== 1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
-
-{zwsp} +
-
-== {zwsp} +
-
-{zwsp} +
-{zwsp} +
-
 [[editorial_props]]
 image:react4xp.svg[title="React4xp logo",width=256px]
 
-{zwsp} +
+== Lesson 2 overview
 
-== 2. EDITORIAL DATA AND PROPS
+Here we'll spice up our react component a little bit, by using `props` to insert editorial data from XP into the react component.
 
-Here we'll spice up our react component a little bit by using `props` to insert editorial data from XP into the react component.
-
-We'll modify the same files you created above:
+We'll modify the same files you created <<1-hello-react#_code, previously>>:
 
 .Files involved:
 [source,files]
@@ -43,11 +25,14 @@ site/pages/hello-react/
 
 {zwsp} +
 
-=== Code
+== Code
 
-Now let's change the files some more so we can use Content Studio to input some data into the react rendering.
+Let's change the files some more so we can use Content Studio to input some data into the react rendering.
 
-We start with some standard XP procedure: defining the data in the *page definition* XML file. This file is the same as in example 1, but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`. `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component:
+{zwsp} +
+
+=== Page definition
+We start with some standard XP procedure: defining the data in the page definition XML file. This file is the same as in <<1-hello-react#_page_definition, example 1>>, but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`: `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component:
 
 .hello-react.xml:
 [source,xml,linenums,options="nowrap"]
@@ -83,7 +68,10 @@ We start with some standard XP procedure: defining the data in the *page definit
 </page>
 ----
 
-Next, we'll modify the *react component* so that it displays data from a `props` object, instead of hardcoding everything.
+{zwsp} +
+
+=== React component
+Next, we'll modify the react component so that it displays data from a `props` object, instead of hardcoding everything.
 
 [[hello_react_jsx_modified]]
 .hello-react.jsx
@@ -123,6 +111,9 @@ export default (props) => {
 Although, if you think that the _makeObjectDropper_ closure thing is a strange way to do something react itself could do better... I can't argue with that. Just trying to stay focused on one thing at a time.
 ====
 
+{zwsp} +
+
+=== Page controller
 And lastly, we'll hook them together: modify *the controller* to fetch the data we defined in XML, then use a `props` object to inject the data into the react component:
 
 [[controller_with_props]]
@@ -176,7 +167,7 @@ There it is, now let's take a look!
 
 {zwsp} +
 
-=== Setup and rendering
+== Setup and rendering
 
 Compile the project, enter Content Studio Repeat (the first two steps in link:#first_setup_render[the previous setup]), and edit the content you created (double-click it to open a new tab).
 
@@ -203,7 +194,7 @@ image:gday_bruce.png[link="media/gday_bruce.png",title="Rendering: G'day Bruce. 
 
 {zwsp} +
 
-=== Output
+== Output
 
 So did anything change in the rendered response, compared to link:#hello_output[the first serverside-rendered example]? Not all that much, actually. Depending on what data you inserted and the resulting `props`, your page source should look something like this:
 
@@ -248,46 +239,26 @@ So did anything change in the rendered response, compared to link:#hello_output[
 <2> There's still no change in the asset URLs, but since we changed _hello-react.jsx_, the content of _hello-react.js_ has of course been recompiled.
 <4> The `props` are used in the clientside `.hydrate` call. For convenience, the `id` is automatically added as the `react4xpId` prop. Handy for use cases where a react component needs to uniquely identify itself.
 
-
-== {zwsp} +
-
-Now might be a good time to take a closer look at link:api.html#_react4xp_render[the full overview of the `.render` call] from the ES6 controller in link:#controller_with_props[the example above].
-
-{zwsp} +
-Either way, you should be ready for the final basic lesson chapter:
-
-[.right]
--> 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
-
-{zwsp} +
 {zwsp} +
 
-== Next basic lesson:
+== Further reading
 
-====== 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
+Now might be a good time to take a closer look at <<api#react4xp_render, the API overview of the .render call>> from the ES6 controller in the example above.
 
 {zwsp} +
 
-== Advanced lessons
+Either way, you should be ready for the last of the three basic lesson chapters.
 
-====== 4. link:4-source-file-structure.html#free_structure[Free source file structure]
-====== 5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
-====== 6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
+[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
+|====
+|<- Back
 
-== {zwsp} +
+1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]|
 
-== Details and API
+Next ->
 
-Need to go deeper? Here are some more detailed explanations and API documentaion:
-
-====== link:entries-and-jsxpath.html#entries[Entries]
-====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
-====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
-====== link:faq.html#faq[FAQ]
-
-{zwsp} +
-
-====== link:api.html#_react4xp_render[React4xp.render]
+3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
+|====
 
 {zwsp} +
 {zwsp} +

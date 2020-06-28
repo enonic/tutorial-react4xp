@@ -3,49 +3,26 @@
 :toclevels: 2
 :imagesdir: media/
 
-{zwsp} +
 
-== Previously:
-
-====== link:index.html#introduction[Introduction]
-
-{zwsp} +
-Basic lessons:
-
-====== 1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
-====== 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
-====== 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
-
-
-{zwsp} +
-Advanced lesson:
-
-====== 4. link:4-source-file-structure.html#free_structure[Free source file structure]
-
-{zwsp} +
-
-== {zwsp} +
-
-{zwsp} +
-{zwsp} +
-
-[[custom_flow]]
+[[hello_react_page]]
 image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== 5. CUSTOM FLOW SYNTAX
+== Lesson 5 overview
 
 In this example things get a bit more complex. We'll make another Part, and re-use the Page controller, Template and Content type we made link:#_template_with_react_page_controller[previously].
 
-1. However, we won't use the `React4xp.render` shorthand function from before. Instead, we'll look at a more *explicit react4xp syntax*:
-  - It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your link:#entries[JSX entry]; you can manipulate the object(s) or extract data from them _before_ rendering.
-  - Here, each entry is rendered in *two separate methods*: `renderBody` and `renderPageContributions`.
-  - You can pretty easily render *multiple entries* from the same controller, by chaining together their rendering.
+- However, we won't use the `React4xp.render` shorthand function from before. Instead, we'll look at a more *explicit react4xp syntax*:
+    a. It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your link:#entries[JSX entry]; you can manipulate the object(s) or extract data from them _before_ rendering.
+    b. Here, each entry is rendered in *two separate methods*: `renderBody` and `renderPageContributions`.
+    c. You can pretty easily render *multiple entries* from the same controller, by chaining together their rendering.
 
-2. We will also use a *thymeleaf* template for one of the entries - and take advantage of the react4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.
+- We will also use a *thymeleaf* template for one of the entries - and take advantage of the react4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.
 
-3. In addition to chain-rendering more than one entry, we will use the _jsxPath_ link:#jsxPath[as described above] to point to entries in a *different location*. Actually, let's just recycle the entries from before:
+- In addition to chain-rendering more than one entry, we will use the _jsxPath_ link:#jsxPath[as described above] to point to entries in a *different location*.
+
+Actually, let's just recycle the entries from before:
 
 
 .Files involved:
@@ -72,10 +49,11 @@ site/pages/
 
 {zwsp} +
 
-=== Code
+== Code
 
+=== Part definition
 
-*The Part definition* again defines some base data for us to play with. This is exactly the same definitions as before, just merged together into one Part: the greeting and bottle/thing counter from _hello-react.xml_, and the color from _color.xml_.
+The Part definition again defines some base data for us to play with. This is exactly the same definitions as before, just merged together into one Part: the greeting and bottle/thing counter from _hello-react.xml_, and the color from _color.xml_.
 
 .custom-flow.xml:
 [source,xml,options="nowrap"]
@@ -118,7 +96,10 @@ site/pages/
 
 ----
 
-Next, we're adding a *thymeleaf view template*:
+{zwsp} +
+
+=== Thymeleaf view
+Next, we're adding a regular *thymeleaf view template file*.
 
 This forms the initial HTML base, with `color` and `targetId` inserted by thymeleaf. This is actually not different from before: link:#first_helloreact_jsx[previously] we've used a hardcoded string as the HTML base that react is rendered into. Now we're just letting thymeleaf make it. Same thing, the base HTML string can come from anywhere.
 
@@ -136,6 +117,9 @@ The controller will render _two_ entries into this base HTML. To be clear: even 
 </div>
 ----
 
+{zwsp} +
+
+=== Part controller
 *The controller* now has more complexity than before, so here's an overview:
 
 - Each entry is used to set up a data-holding reactxp object, in steps _before the rendering_ is called. In these steps, data (options and props) can be both injected into the react4xp objects, and extracted from them.
@@ -250,7 +234,7 @@ And we're done, our new _custom-flow_ Part is now ready.
 
 {zwsp} +
 
-=== Setup
+== Setup
 
 All of this amounted to a new Part, _custom-flow_. It can be added to any Region, so just follow link:#adding_parts_to_new_content[the same setup steps] in Content Studio to add and see it.
 
@@ -261,33 +245,18 @@ Again, if you add more than one _custom-flow_ Part to a Region, you'll see that 
 {zwsp} +
 
 
-== {zwsp} +
-
-
-[.right]
--> 6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
-
-{zwsp} +
-{zwsp} +
-
-== Next: advanced lesson
-
-====== 6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
 
 == {zwsp} +
+[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
+|====
+|<- Back
 
-== Details and API
+4. link:4-source-file-structure.html#free_structure[Free source file structure]|
 
-Need to go deeper? Here are some more detailed explanations and API documentaion:
+Next ->
 
-====== link:entries-and-jsxpath.html#entries[Entries]
-====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
-====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
-====== link:faq.html#faq[FAQ]
-
-{zwsp} +
-
-====== link:api.html#_react4xp_render[React4xp.render]
+6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
+|====
 
 {zwsp} +
 {zwsp} +

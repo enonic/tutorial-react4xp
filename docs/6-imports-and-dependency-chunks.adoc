@@ -1,45 +1,21 @@
 = React4xp, lesson 6: imports, chunks, config, webpack
 :toc: right
-:toclevels: 2
+:toclevels: 3
 :imagesdir: media/
 
 {zwsp} +
 
-== Previously:
-
-====== link:index.html#introduction[Introduction]
-
-{zwsp} +
-Basic:
-
-====== 1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
-====== 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
-====== 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
-
-
-{zwsp} +
-Advanced:
-
-====== 4. link:4-source-file-structure.html#free_structure[Free source file structure]
-====== 5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
-
-{zwsp} +
-
-== {zwsp} +
-
-{zwsp} +
-{zwsp} +
-
-[[imports_chunks]]
+[[hello_react_page]]
 image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== 6. IMPORTS, CHUNKS, CONFIG, WEBPACK
+== Lesson 6 overview
 
-This final example is going to be more reallife-like. We'll focus on these features:
 
-- Using an entry from a *shared entries* folder outside of the _site/_ structure
+This final example is going to be more real-life-like. We'll focus on these features:
+
+- Using an entry from a *myEntries* folder outside of the _site/_ structure
 - Letting the entry itself *import and nest its own react components*. Imports like this are just regular frontend ES6, and happen at compile time, done by webpack.
 - Importing those secondary assets from a shared non-entry folder, and marking that folder so everything in it is turned into a separate bundle - a *dependency chunk*. These chunks are repeatedly-used, effectively-cached and rarely-downloaded "library assets" of shared secondary components. They're meant to take care of bigger stuff while keeping the footprint of the entry small (while still automatically compiled and tracked by react4xp).
 - Our react components will need some compilation that react4xp doesn't handle: styling our react components (but it could be anything on the webpack step: asset handling, loaders etc). So we'll see how to *add custom webpack config* to the react4xp setup.
@@ -53,7 +29,7 @@ site/parts/
         multi-color.xml
 
 react4xp/
-    entries/
+    myEntries/
         MultiColor.jsx
         MultiColor.scss
     shared/
@@ -69,6 +45,7 @@ react4xp.properties
 webpack.config.react4xp.js
 ----
 
+{zwsp} +
 
 As you can see, there are more moving parts than before to coordinate here, so we'll divide the code into *three sections*:
 
@@ -79,9 +56,14 @@ As you can see, there are more moving parts than before to coordinate here, so w
 
 {zwsp} +
 
-=== The multi-color Part
+== The _multi-color_ Part
 
-Starting out with the _multi-color_ Part at the core of it all, everything in this section should be familiar by now. The *Part definition* enables two editorial configurations:
+Starting out with the _multi-color_ Part at the core of it all, everything in this section will probably be familiar by now.
+
+{zwsp} +
+
+=== Part definition
+The Part definition enables two editorial configurations:
 
 .site/parts/multi-color/multi-color.xml:
 [source,xml,options="nowrap"]
@@ -107,7 +89,11 @@ Starting out with the _multi-color_ Part at the core of it all, everything in th
 <1> a checkbox for making the entry serverside or clientside rendered,
 <2> and an array of colors where a user in Content Studio can add any number of HTML-compliant color tags.
 
-As for the *Part controller*, we don't need any more than this in this example:
+{zwsp} +
+
+=== Part controller
+
+For the Part controller, we don't need any more than this in this example:
 
 .site/parts/multi-color/multi-color.es6:
 [source,javascript,options="nowrap"]
@@ -135,19 +121,24 @@ exports.get = function(request) {
 ----
 <1> Taking the serverside-rendering checkbox from the Part's config, and turning it into a `clientRender` flag that's sent into the _options_ argument link:#_client_side_rendering[just like before].
 <2> Creating a `colors` array of the color names from the Part's config, trimming them and removing empty ones. This is passed into the _props_ argument link:#editorial_props[like before].
-<3> This one is a little bit different compared to previously. `"MultiColor"` is a link:#jsxPath[jsxPath] to an entry, but why does it look so... naked? Where does it point to? As we'll see link:#[webpack_config[later], we'll set up react4xp to look for entries below an `entryDir` in react4xp.properties: _src/main/resources/react4xp/entries/_. Since a jsxPath is relative to the closest parent `entryDir` and we'll put an entry _MultiColor.jsx_ at the root of _entries/_, the jsxPath becomes just the clean file name.
+<3> This one is a little bit different compared to previously. `"MultiColor"` is a link:#jsxPath[jsxPath] to an entry, but why does it look so... naked? Where does it point to? As we'll see link:#[webpack_config[later], we'll set up react4xp to look for entries below an `entryDir` in react4xp.properties: _src/main/resources/react4xp/myEntries/_. Since a jsxPath is relative to the closest parent `entryDir` and we'll put an entry _MultiColor.jsx_ at the root of _entries/_, the jsxPath becomes just the clean file name.
 
 
 
 {zwsp} +
 
-=== The Entry and its dependencies
+== The _MultiColor_ Entry
+Before we do the react4xp / webpack configuration, we'll make *the _MultiColor.jsx_ entry* and its dependencies.
 
-Before we do that react4xp / webpack configuration though, let's make *the _MultiColor.jsx_ entry* and its dependencies.
+This is a more complex entry than before (and the most complex part of this example) - it's composed of main react code that *imports secondary dependencies*.
 
-This is a more complex entry than before (and the most complex part of this example): it's a *stateful* react component that not only *imports and nests secondary react components*, but also imports *styling* - both its own specific and shared general styling - and relies on webpack and react4xp to handle all the compilation and assets behind the scenes.
+{zwsp} +
 
-.src/main/resources/react4xp/entries/MultiColor.jsx:
+=== React component
+
+This is a *stateful* react component that not only *imports and nests secondary react components*, but also imports *styling* - both its own specific and shared general styling - and relies on webpack and react4xp to handle all the compilation and assets behind the scenes.
+
+.src/main/resources/react4xp/myEntries/MultiColor.jsx:
 [source,javascript,options="nowrap"]
 ----
 import React from 'react';
@@ -228,9 +219,11 @@ export default (props) => <MultiColor {...props} />;
 
 {zwsp} +
 
+=== Dependencies for the entry
+==== Styling
 Now, with the entry done, we can look at the *entry's styling* - a lot simpler, only the buttons' class `my-button` is targeted and styled:
 
-.src/main/resources/react4xp/entries/MultiColor.scss:
+.src/main/resources/react4xp/myEntries/MultiColor.scss:
 [source,sass,options="nowrap"]
 ----
 .my-button {
@@ -257,8 +250,16 @@ First, some *_shared-styles.scss_*, also imported by the entry _MultiColor.jsx_.
 }
 ----
 
+{zwsp} +
+
+==== Imported react components
 Next, _shared/_ also contains the *secondary react components* imported by  _MultiColor.jsx_. Note how each of them imports their own specific styling the same way as the entry _MultiColor.jsx_.
 
+NOTE: It's important that these react components are *not <<entries#, entries>>* themselves. They are only imported by the MultiColor entry - hence the folder name _shared/_.
+
+{zwsp} +
+
+===== Button
 There's the generic *Button* component. This is used both by _MultiColor.jsx_ and the secondary component _ColorButtons.jsx_. It gets custom onClick function, HTML class, inline styling (for single-button-specific attributes) and label (`children`) from `props` (the spread-out function parameters):
 
 
@@ -290,6 +291,7 @@ button {
 
 {zwsp} +
 
+===== ActiveColorOval
 Then there's the *ActiveColorOval* component, which just displays `props.color` inside a circle/ellipse thing, filled with the same color:
 
 .src/main/resources/react4xp/shared/ActiveColorOval.jsx:
@@ -322,6 +324,7 @@ export default ({color}) =>
 
 {zwsp} +
 
+===== ColorButtons
 And finally a *ColorButtons* component. It takes the list of `props.colors` (from the editorial data), and assigns each of them to a `Button` labeled with the color, each of them triggering the change-color-selection from _MultiColor.jsx_ with its own specific color index `i` in the list of colors. In addition, the HTML class name(s) of the buttons is assigned dynamically: the buttons all have a `color-button` class, and each item checks if its own array index `i` matches the current `selectedIndex`. If it does, the class `selected` is added, making that button differently styled:
 
 .src/main/resources/react4xp/shared/ColorButtons.jsx:
@@ -384,33 +387,43 @@ export default ({colors, selectedIndex, clickFunc}) =>
 {zwsp} +
 
 [[webpack_config]]
-=== Configuring react4xp and webpack
+== Configuring react4xp and webpack
 
 In this section we'll adjust some settings to make the code above work.
 
 TIP: Some of this has already been covered in more detail in the link:#entries[entries] and link:#jsxPath[jsxPath] boxes.
 
-First, open _react4xp.properties_ in your project root and add/look up the attributes `entryDirs` and `chunkDirs`. Make sure `entries` are added as an `entryDir` and `shared` is added as a `chunkDir`.
+{zwsp} +
 
-NOTE: Both `entrydirs` and `chunkDirs` are comma-separated *lists of relative paths*. They are relative to _src/main/resource/react4xp/_, and adding paths like `foo/bar/baz` or `../../hey/ho/lets/go` is just fine.
+=== Folders for entries and chunks
+
+First, open _react4xp.properties_ in your project root and add/look up the attributes `entryDirs` and `chunkDirs`. Make sure `myEntries` are added as an `entryDir` and `shared` is added as a `chunkDir`.
+
 
 .react4xp.properties:
 [source,properties,options="nowrap"]
 ----
-entryDirs = entries   <!--1-->
+entryDirs = myEntries   <!--1-->
 
 chunkDirs = shared    <!--2-->
 ----
-<1> `entryDirs` is a list of where react4xp will look for source files to compile and serve as entries: in this case _src/main/resource/react4xp/entries_. This list is *in addition* to XP's _site/_ folder - _site/_ always acts as a sort of default, special-case entryDir: under _site/_ only .JSX files are picked up as entries, while in all other entryDirs, .ES6 and .JS are picked up as well.
+<1> `entryDirs` is a list of where react4xp will look for source files to compile and serve as entries: in this case _src/main/resource/react4xp/myEntries_. This list is *in addition* to XP's _site/_ folder - _site/_ always acts as a sort of default, special-case entryDir: under _site/_ only .JSX files are picked up as entries, while in all other entryDirs, .ES6 and .JS are picked up as well.
 <2> `chunkDirs` is a list of folders that will be turned into collection/library assets (dependency chunks): in this case _src/main/resource/react4xp/shared_. One chunk asset for each file type in each chunkDir, named after the chunkDir.
 
-So in our example here, JSX files under _entries/_ are available to `React4xp.render` and friends, in XP controllers. Each entry becomes an asset file in itself.
+So in our example here, JSX files under _myEntries/_ are available to `React4xp.render` and friends, in XP controllers. Each entry becomes an asset file in itself.
 
 And everything they import from under _shared/_ and that is compiled into JS (both react and otherwise), will be collected into the chunk `shared.<HASH>.js` - and everything under _shared/_ that's compiled into CSS (our SASS, for example) is collected into `shared.<HASH>.css`. And so on.
 
+[NOTE]
+====
+Both `entrydirs` and `chunkDirs` are comma-separated *lists of relative paths*. They are relative to _src/main/resource/react4xp/_.
+
+Adding paths like e.g. `foo/bar/baz` or `../../hey/ho/lets/go` is perfectly fine (_src/main/resource/react4xp/foo/bar/baz_ and _src/main/hey/ho/lets/go_, respectively).
+====
 
 {zwsp} +
 
+=== Adding webpack rules
 Next, we'll add some *custom webpack rules to handle the style imports*. First, we need to tell react4xp to use an extra webpack config file. Return to _react4xp.properties_ to add another property:
 
 .react4xp.properties:
@@ -477,7 +490,7 @@ And that's the last of it. We're ready to look at it running.
 
 {zwsp} +
 
-=== Setup and rendering
+== Setup and rendering
 
 Build again and add the _multi-color_ Part in Content Studio, link:#adding_parts_to_new_content[the same way as before].
 
@@ -501,7 +514,7 @@ image:multicolor-preview.png[,title="MultiColor part outside of Content Studio, 
 {zwsp} +
 
 
-=== Output
+== Output
 Let's take a look at the rendered response from the controller and underline a few things that by now might be as you expected:
 
 .Page source from the Multicolor Part, active view (serverside rendered not selected):
@@ -555,30 +568,35 @@ Let's take a look at the rendered response from the controller and underline a f
 <3> Among the dependencies are still the externals, the client wrapper code and the code to the compiled MultiColor entry. And in addition, there's the `shared.<HASH>.js` dependency chunk, containing the compiled code for all the ES6/JS/JSX found under the _shared/_ folder.
 
 {zwsp} +
+
+== Further reading
+That concludes the lessons!
+
+If you haven't already, it's recommended to take a look at the additional explanations of central concepts and API, in the documentation below - especially the dependency chunks which are used for optimization, as we touched upon in this chapter:
+
+
+-> link:entries-and-jsxpath.html#entries[Entries]
+
+-> link:entries-and-jsxpath.html#jsxPath[JsxPath]
+
+-> link:entries-and-jsxpath.html#chunks[Dependency chunks]
+
+{zwsp} +
+
+API reference:
+
+-> link:api.html#_react4xp_render[React4xp.render]
+
+{zwsp} +
 {zwsp} +
 
 == {zwsp} +
+[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
+|====
+|<- Back
 
-That concludes the lessons!
-
-If you haven't already, it's recommended to take a look at the additional explanations of central concepts and API, in the documentation below - especially the dependency chunks which we touched upon in this chapter.
-
-{zwsp} +
-{zwsp} +
-
-== Details and API
-
-More details, overviews and optimization:
-
-
-====== link:entries-and-jsxpath.html#entries[Entries]
-====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
-====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
-====== link:faq.html#faq[FAQ]
-
-{zwsp} +
-
-====== link:api.html#_react4xp_render[React4xp.render]
+5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]|
+|====
 
 {zwsp} +
 {zwsp} +

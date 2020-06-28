@@ -1,25 +1,8 @@
-= React4xp, lesson 3: XP content studio, and pages, parts, regions and content
+= React4xp lesson 3: XP content studio -  pages, parts, regions and content
 :toc: right
-:toclevels: 2
+:toclevels: 3
 :imagesdir: media/
 
-{zwsp} +
-
-== Previously:
-
-====== link:index.html#introduction[Introduction]
-
-{zwsp} +
-Basic lessons:
-
-====== 1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
-====== 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
-
-{zwsp} +
-
-== {zwsp} +
-
-{zwsp} +
 {zwsp} +
 
 [[xp_pages_parts]]
@@ -27,7 +10,7 @@ image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== 3. XP PAGES, PARTS, REGIONS AND CONTENT
+== Lesson 3 overview
 
 So far, we've used a "raw" XP Page and just rendered the react component directly from the controller there. It's fine in itself, but not really making good use of XP's excellent CMS powers. So let's move into that territory!
 
@@ -68,6 +51,14 @@ site/parts/
     color.jsx
 ----
 
+
+
+{zwsp} +
+
+== Template with React Page Controller
+
+We'll make a generic XP content type, then make a Template in Content Studio and connect the content type to a react-based XP Page, _site/pages/default/_, which is just a bare-bone page with nothing but a Region in it.
+
 [NOTE]
 ====
 The Page controller _default_ can be made from scratch, or you can copy _site/pages/hello-react_ and change the copy (don't delete _hello-react.jsx_ just yet, we're going to re-use it link:#custom_flow[later]). If you copy and modify, just remember this as usual: name the the *folder and file names* identically.
@@ -75,11 +66,12 @@ The Page controller _default_ can be made from scratch, or you can copy _site/pa
 
 {zwsp} +
 
-=== Template with React Page Controller
+=== Code
 
-==== Code: XP Content Type
 
-We'll start with a completely generic content type: _site/content-types/my-content/my-content.xml_. Content types tend to define more than this, but for now, this is all we need:
+==== Content Type
+
+Start with a completely generic content type: _site/content-types/my-content/my-content.xml_. Content types tend to define more than this, but for now, this is all we need:
 
 .my-content.xml:
 [source,xml,options="nowrap"]
@@ -92,13 +84,13 @@ We'll start with a completely generic content type: _site/content-types/my-conte
 </content-type>
 ----
 
-Again, this has nothing to do with react4xp, but it'll make the setup of this and the next examples easier.
+Again, this content type has nothing to do with react4xp, but it'll make the setup of this and the next examples easier.
 
-==== Code: XP Page controller
+{zwsp} +
 
-Now we'll make the react-based Page controller: _site/pages/default/_ will be a bare-bone page with nothing but a Region in it.
+==== XP Page definition
 
-*The page definition* is simple. We're now leaving the `<form>` node empty, but adding a `<regions>` node with a single `"main"` Region defined in it:
+The page definition is simple. We're now leaving the `<form>` node empty, but adding a `<regions>` node with a single `"main"` Region defined in it:
 
 .default.xml:
 [source,xml,options="nowrap"]
@@ -113,8 +105,11 @@ Now we'll make the react-based Page controller: _site/pages/default/_ will be a 
 </page>
 ----
 
+{zwsp} +
 
-*The react component* has a single focus, namely rendering the Region:
+==== React component
+
+The react component has a single focus, namely rendering the Region:
 
 .default.jsx
 [source,javascript,linenums,options="nowrap"]
@@ -131,6 +126,10 @@ export default (props) => (
 
 <1> Importing a Region template from an NPM package that comes with react4xp (link:https://www.npmjs.com/package/react4xp-regions[react4xp-regions]).
 <2> Nesting the Region in our component. To be precise: it uses `props.regionsData` and selects the Region name(s) in `props.names`, so it will render _all_ Regions given by `props` if more than one is defined and selected.
+
+{zwsp} +
+
+==== Page controller
 
 The `props` of course come from the *Page controller*. Still similar to the previous examples, we're mainly just adding props that are needed by `<Regions>` in the react component.
 
@@ -184,10 +183,14 @@ exports.get = function(request) {
 
 TIP: Adding an XP Region to a Layout is the same, only easier: since it will be injected inside a Page, you don't need to add an outer `body` in the _options_ parameter, and therefore you don't need an `id` parameter either - same as in the XP Part controller below.
 
-[[page_template_setup]]
-==== Setting up the Template
+{zwsp} +
 
-Before we move on to the XP Part, let's bind this Page controller to the _my-content_ Content Type we just made, in the regular XP way. This lays the foundation for this example and also the later ones. When this is done, *using the _default_ Page controller will be easy*: create a new _my-content_ item in your site, and it will come out ready to use with the Region from _default_.
+[[page_template_setup]]
+=== Setting up the Template
+
+Before we move on to the XP Part, we need to bind this Page controller to the _my-content_ Content Type we just made, in the regular XP way: a Page Template.
+
+This lays the foundation for this example and also the later ones. When this is done, *using the _default_ Page controller will be easy*: create a new _my-content_ item in your site, and it will come out ready to use with the Region from _default_.
 
 1. When you've deployed the updated app and logged into Content Studio, make a new Site content and connect it to the react4xp app (or re-use one of your previous ones).
 2. In the grid (Content Studio browse mode), under your Site, create a new Template content under Templates:
@@ -206,17 +209,21 @@ image:template_edit.png[title="Using a Template to connect a content type to a p
 {zwsp} +
 
 [start=4]
-4. Apply/save and you're done.
+4. Apply/save and you're done. Now every new _myContent_ item in every site with this Template will be rendered with the _default_ page controller.
 
 {zwsp} +
 
-=== XP Part
+== XP Part
 
 Now we're ready to add a simple react-rendered Part to drop into the Region: _site/parts/color/_ .
 
-==== Code
+{zwsp} +
 
-The *Part definition* pretty unremarkable now as well. There's just a `color` TextLine input field in the form:
+=== Code
+
+==== Part definition
+
+The Part definition is still pretty unremarkable. There's just a `color` TextLine input field in the form:
 
 .color.xml:
 [source,xml,options="nowrap"]
@@ -235,7 +242,10 @@ The *Part definition* pretty unremarkable now as well. There's just a `color` Te
 </part>
 ----
 
-*The react component* only displays the color name from the props and inline-styles it with that color (as long as the `props.color` value is HTML-compliant):
+{zwsp} +
+
+==== React component
+The react component only displays the color name from the props and inline-styles it with that color (as long as the `props.color` value is HTML-compliant):
 
 [[color_jsx]]
 .color.jsx
@@ -255,7 +265,10 @@ export default (props) => (
 );
 ----
 
-Like before, *the controller* mainly hooks the XP editorial data into the props:
+{zwsp} +
+
+==== Part controller
+Like before, the controller mainly hooks the XP editorial data into the props:
 
 [[color_part_controller]]
 .color.es6:
@@ -291,7 +304,7 @@ exports.get = function(request) {
 {zwsp} +
 
 [[adding_parts_to_new_content]]
-=== Setup and render
+== Setup and render
 
 Time to get this displayed and see it all in action! Again, just XP routine: creating a _my-content_ item, and since the Template makes it show up ready with a _default_ Page controller and Region, we can just drop our new _color_ Part into it.
 
@@ -327,7 +340,7 @@ image:content_with_red_part.png[link="media/content_with_red_part.png",title="Ed
 
 {zwsp} +
 
-=== Output
+== Output
 We won't go into the details about the HTML output anymore - it's structurally and conceptually *the same as in the previous examples*. Looking at the _Page Source_, it should all make sense to you by now: the Page controller and Part are *compiled to separate assets and downloaded exactly once* in the client before calling `React4xp.CLIENT.render` and `.hydrate` as needed (using a react4xp Part more than once does not make the client download the assets more than once - they're recycled for performance).
 
 NOTE: As we'll come back to in more detail link:#entries_and_jsxpath[later], each time the client calls `React.CLIENT.render` or `.hydrate`, it will create a *separate root react app*. This is the outcome for each time a controller calls `React4xp.render` with the _request_ argument (omitting _request_ forces a pure serverside rendering without hydration). So in this example, there will be one independent react app in the client for each of the _color_ Parts you added to the Region.
@@ -335,34 +348,21 @@ NOTE: As we'll come back to in more detail link:#entries_and_jsxpath[later], eac
 
 == {zwsp} +
 
-Moving on from here, we'll take a look at more advanced (and useful!) ways to use react4xp.
+Now we've covered the basics of how to use react4xp. It'll be enough for most simple setups and use cases.
 
-[.right]
--> 4. link:4-source-file-structure.html#free_structure[Free source file structure]
-
-{zwsp} +
-{zwsp} +
-
-== Next: advanced lessons
-
-====== 4. link:4-source-file-structure.html#free_structure[Free source file structure]
-====== 5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
-====== 6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
-
-== {zwsp} +
-
-== Details and API
-
-Need to go deeper? Here are some more detailed explanations and API documentaion:
-
-====== link:entries-and-jsxpath.html#entries[Entries]
-====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
-====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
-====== link:faq.html#faq[FAQ]
+Moving on from here, we'll take a look at more advanced ways to use react4xp, giving you more control.
 
 {zwsp} +
+[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
+|====
+|<- Back
 
-====== link:api.html#_react4xp_render[React4xp.render]
+2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]|
+
+Next: advanced ->
+
+4. link:4-source-file-structure.html#free_structure[Free source file structure]
+|====
 
 {zwsp} +
 {zwsp} +
