@@ -1,0 +1,48 @@
+{
+  "menuItems": [
+    {
+      "title": "Introduction",
+      "document": "index"
+    },
+    {
+      "title": "1. Hello React: rendering on server and client",
+      "document": "1-hello-react"
+    },
+    {
+      "title": "2. Editorial data and props",
+      "document": "2-editorial-data-and-props"
+    },
+    {
+      "title": "3. Content Studio: pages, parts, regions and content",
+      "document": "3-pages-parts-and-regions"
+    },
+    {
+      "title": "4. Free source file structure",
+      "document": "4-source-file-structure"
+    },
+    {
+      "title": "5. Custom flow syntax",
+      "document": "5-custom-flow-syntax"
+    },
+    {
+      "title": "6. Imports, chunks, config, webpack",
+      "document": "6-imports-and-dependency-chunks"
+    },
+    {
+      "title": "API",
+      "document": "api"
+    },
+    {
+      "title": "Entries",
+      "document": "entries"
+    },
+    {
+      "title": "JsxPath",
+      "document": "jsxpath"
+    },
+    {
+      "title": "Dependency chunks",
+      "document": "chunks"
+    }
+  ]
+}

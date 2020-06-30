@@ -1,0 +1,141 @@
+= React4xp, lesson 4: defining your own source structure
+:toc: right
+:toclevels: 2
+:imagesdir: media/
+
+{zwsp} +
+
+image:react4xp.svg[title="React4xp logo",width=256px]
+
+{zwsp} +
+
+== Lesson 4 overview
+
+So far, every time we've referenced a _.jsx_ react component from react4xp in a controller, we've used a `component` object in the _entry_ argument of `React4xp.render`. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the _.jsx_ source file must be in the same folder as the controller, and have the same name.
+
+It doesn't have to be that way. In this example, we'll take a look at which react components are available to `React4xp.render` - called *entries* in react4xp - and how to reference them, whatever they're called and wherever they're located.
+
+
+
+{zwsp} +
+
+== Entries and locations
+
+For react components to be available to React4xp the way we've seen so far, their *JSX source files must be located in certain folders* where react4xp is looking for them and auto-compiles them.
+
+When they are located where they should (and export a `props=>component` function), those react components are called *entries* (<<entries#, full reference>>).
+
+{zwsp} +
+
+=== 1: Below _site/_
+
+Below the folder _src/main/resources/site/_, all source files with the extension _.jsx_ are detected at compile-time and available as entries to react4xp. If you take the *path relative to _resources/_* and the file name without the extension, you get a string that can be used to point react4xp to that react component:
+
+- `"site/parts/hello-react/hello-react"` -> _src/main/resources/site/parts/hello-react/hello-react.jsx_
+- `"site/parts/color/color"` -> _src/main/resources/site/parts/color/color.jsx_
+- `"site/parts/color/differentEntry"` -> _src/main/resources/site/parts/color/differentEntry.jsx_
+
+...etc.
+
+These strings are called *jsxPaths* in react4xp, and they can be used directly in controllers as the _entry_ argument. For example in the <<3-pages-parts-and-regions#color_part_controller, _color_ Part controller>> from before:
+
+.site/parts/color/color.es6
+[source,javascript,options="nowrap"]
+----
+React4xp.render(
+    component,
+    props,
+    request,
+    options
+);
+----
+
+...is equivalent to:
+
+[source,javascript,options="nowrap"]
+----
+React4xp.render(
+    "site/parts/color/color",
+    props,
+    request,
+    options
+);
+----
+
+And so on. Calling the _.jsx_ source file something else, or having it in a different folder, is fine as long as you refer it correctly like this.
+
+NOTE: _jsxPaths_ are name strings, not relative paths! You can't refer to _color.jsx_ from _color.es6_ as `"color"` or `"./color"` etc.
+
+TIP: If you look at the rendered HTML output in page source, you can see React4xp using the jsxPaths to refer to the compiled assets from the client - even if you used the `component` object in the _entry_ argument.
+
+TIP: All the _entries_ in your project are listed with their _jsxPath_ after compilation, in _build/resources/main/assets/react4xp/entries.json_.
+
+
+{zwsp} +
+
+=== 2: Below _react4xp/_
+If you just want to keep your react components out of the regular XP file structure in _site/_ and be independent of the structure of Parts, Pages etc, the folder _src/main/resources/react4xp/_ is meant for that. Here's how (assuming you're generally following link:https://github.com/enonic/lib-react4xp/blob/0.9.0/README.adoc#setup-option-2-using-react4xp-in-an-existing-project[the recommended setup pattern] used in the react4xp starter):
+
+Open _react4xp.properties_ in the project root, and look for the property `entryDirs`. This is a (comma-separated) list of folder names *relative to the _react4xp/_ folder*. React4xp comes with a built-in suggestion here: `entryDirs = entries`. This means that all _.jsx_ (and _.js_ and _.es6_) source files below _src/main/resources/react4xp/entries_ will become entries: react components available to react4xp.
+
+They will get a *_jsxPath_ relative to the closest _entryDirs_ folder*.
+
+So for example if `entryDirs = entries`, then the closest _entryDirs_ folder is _src/main/resources/react4xp/entries_, and any XP controller can render _src/main/resources/react4xp/entries/subFolder/myEntry.jsx_ like this:
+
+[source,javascript,options="nowrap"]
+----
+React4xp.render(
+    "subFolder/myEntry",
+    props,
+    request,
+    options
+);
+----
+
+TIP: *Under the _site/_ folder, entry source files must have the extension _.jsx_*. This is because regular XP source files can have _.js_ and _.es6_ extensions, and must be separated since the compilation and handling is very different. However, *under the _entryDirs_ folder(s), entries can have _.js_ and _.es6_ extensions too!*
+
+NOTE: React4xp doesn't currently separate between different _entryDirs_, they behave as one. So if `entryDirs = entries,moreEntries` then _react4xp/entries/foo/bar.jsx_ and  _react4xp/moreEntries/foo/bar.jsx_ will get the same _jsxPath_: `"foo/bar"`. Beware of *namespace collisions*; you won't be able to refer to both.
+
+
+{zwsp} +
+
+=== 3: Anywhere else
+
+The _entryDirs_ are paths relative to _src/main/resources/react4xp/_, so just use relative _entryDirs_ if you need entries outside of that.
+
+For example, say you've added an NPM package _externalComponents_ with react components in a _comps_ subfolder, and you want to use them as entries. Simply add it to _entryDirs_:
+
+.react4xp.properties
+[source,options="nowrap"]
+----
+entryDirs=entries,../../../../../node_modules/externalComponents/comps
+----
+
+(Or replace _entries_ if you're not using it, of course)
+
+
+{zwsp} +
+
+== Further reading
+
+If you want a deeper dive into details before moving on, here's more about <<entries#, entries>> and the <<jsxpath#, jsxPaths>> that point react4xp to them.
+
+{zwsp} +
+
+Okay, next example lessons!
+
+
+== {zwsp} +
+[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
+|====
+|<- Back
+
+3. <<3-pages-parts-and-regions#, XP Pages, Parts, Regions and Content>>|
+
+Next ->
+
+5. <<5-custom-flow-syntax#, Custom flow syntax>>
+|====
+
+{zwsp} +
+{zwsp} +

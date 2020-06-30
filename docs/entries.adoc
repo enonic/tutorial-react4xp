@@ -1,0 +1,44 @@
+= React4XP: Entries
+:toc: right
+:toclevels: 2
+:imagesdir: media/
+
+
+image:react4xp.svg[title="React4xp logo",width=256px]
+
+{zwsp} +
+
+[[entries]]
+== What is an entry?
+React4xp is structured around _entries_.
+
+It's actually a webpack term, but in react4xp we use the word entry for *a React component that can be accessed by react4XP* in an XP controller. They are the _only_ react files that react4xp can use directly.
+
+Think of entries as *"bridge elements"*:
+
+.A mental model (image links to a cheatsheet):
+image:entries.png[link="media/entries_cheatsheet.png",title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=600px]
+
+(See also chunks, for a <<chunks#entries_and_chunks,complete picture>>)
+
+On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can *import* stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.
+
+
+== How to make an entry
+
+Entries are pretty much just standard JSX files, but they must follow *two requirements* (link:media/entries_howto.png[cheatsheet]):
+
+1. *default-exports a function*: `props?=>reactComponent` - a function that _may_ take a `props` argument (serializable JS object) and _must_ return a react component (pure functional component or old-school React Component), and
+2. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.properties_ (see also <<jsxpath#, jsxPath>>).
+
+{zwsp} +
+
+== Asset and react app
+React4xp handles them in build-time and runtime: locates entries, compiles each entry into its own *entry asset* (under _/build/resources/main/assets/react4xp_). React4xp's render methods also generate page contributions that make sure these assets are served to the client.
+
+Each entry becomes a separate *root level react app*. Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
+
+For example, early in this tutorial we've seen the entries _hello-react.jsx_ and _color.jsx_, they are compiled into the assets _hello-react.js_ and _color.js_.
+
+{zwsp} +
+{zwsp} +
