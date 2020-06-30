@@ -1,11 +1,7 @@
-= React4XP: JsxPath
+= React4XP - JsxPath
 :toc: right
-:toclevels: 2
 :imagesdir: media/
 
-image:react4xp.svg[title="React4xp logo",width=256px]
-
-{zwsp} +
 
 [[jsxPath]]
 == What is the jsxPath?

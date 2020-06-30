@@ -1,12 +1,7 @@
-= React4XP: Entries
+= React4XP - Entries
 :toc: right
-:toclevels: 2
 :imagesdir: media/
 
-
-image:react4xp.svg[title="React4xp logo",width=256px]
-
-{zwsp} +
 
 [[entries]]
 == What is an entry?

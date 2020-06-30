@@ -1,11 +1,6 @@
-= React4XP: Dependency chunks
+= React4XP - Dependency chunks
 :toc: right
-:toclevels: 2
 :imagesdir: media/
-
-image:react4xp.svg[title="React4xp logo",width=256px]
-
-{zwsp} +
 
 
 == What is a chunk?
