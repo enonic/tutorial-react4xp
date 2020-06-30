@@ -5,7 +5,6 @@
 
 {zwsp} +
 
-[[xp_pages_parts]]
 image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +

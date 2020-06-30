@@ -28,7 +28,7 @@ On the XP/server side, you have the controllers with their backend XP flow, logi
 
 Entries are pretty much just standard JSX files, but they must follow *two requirements* (link:media/entries_howto.png[cheatsheet]):
 
-1. *default-exports a function*, this function _may_ take a `props` argument (serializable JS object) and _must_ return a react component (pure functional component or old-school React Component), and
+1. *default-exports a function*: `props?=>reactComponent` - a function that _may_ take a `props` argument (serializable JS object) and _must_ return a react component (pure functional component or old-school React Component), and
 2. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.properties_ (see also <<jsxpath#, jsxPath>>).
 
 {zwsp} +

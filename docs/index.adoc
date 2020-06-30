@@ -17,7 +17,6 @@ So it's probably fine to *focus on the code*, and just use the text for context,
 {zwsp} +
 {zwsp} +
 
-[[introduction]]
 image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
