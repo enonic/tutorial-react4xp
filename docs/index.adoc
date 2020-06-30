@@ -7,7 +7,7 @@
 
 [NOTE]
 ====
-This guide expects at least some bare-bone knowledge of link:https://reactjs.org/tutorial/tutorial.html[React] and link:https://developer.enonic.com/start[Enonic XP]. Beyond that, it's super detailed.
+This guide expects at least a little bare-bone knowledge of link:https://reactjs.org/tutorial/tutorial.html[React] and link:https://developer.enonic.com/start[Enonic XP]. Beyond that, it's super detailed.
 
 So it's probably fine to *focus on the code*, and just use the text for context, a closer look, and troubleshooting.
 
@@ -22,7 +22,7 @@ image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
-== INTRODUCTION
+== Introduction
 
 This tutorial will show you step-by-step how to build XP sites and apps with React rendering, helping you kickstart a React4xp project of your own.
 
@@ -122,46 +122,74 @@ To verify that your app started successfully, you should find an entry similar t
 
 == {zwsp} +
 
-Now you're ready to get started with the first example *lessons*.
+Now you're ready to get started with the first lesson chapters.
 
 [.right]
--> 1. link:1-hello-react.adoc#hello_react_page[Hello React: server and clientside]
+-> 1. <<1-hello-react#, Hello React: server and clientside>>
 
 {zwsp} +
 {zwsp} +
+{zwsp} +
+{zwsp} +
 
-== Next: basic lessons
+== Docs overview
 
-The first three chapters are the basic-level tutorial - just what you need to get started:
+=== The lessons
 
-====== 1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]
-====== 2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
-====== 3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
+==== Basic
+The first three chapters are a basic-level tutorial, just what you need to get started:
+
+1. <<1-hello-react#, Hello React: server and clientside>>: Display a react component from content studio, first serverside rendered, then clientside.
+
+2. <<2-editorial-data-and-props#, Editorial data and props>>: Insert editorial data from XP into the react component.
+
+3. <<3-pages-parts-and-regions#, XP Pages, Parts, Regions and Content>>: Taking more advantage of the page-building powers in Content Studio - all react rendered.
+
+
 
 {zwsp} +
 
-== Advanced lessons
+==== Advanced
 
 The next three chapters present a few more advanced usages:
 
-====== 4. link:4-source-file-structure.html#free_structure[Free source file structure]
-====== 5. link:5-custom-flow-syntax.html#custom_flow[Custom flow syntax]
-====== 6. link:6-imports-and-dependency-chunks.html#imports_chunks[Imports, chunks, config, webpack]
+[start=4]
+4. <<4-source-file-structure#, Free source file structure>>: Which react components are available to react4xp (called _entries_), and how to reference them.
 
-== {zwsp} +
+5. <<5-custom-flow-syntax#, Custom flow syntax>>: A more detailed and explicit syntax, for when you need more control.
 
-== Details and API
+6. <<6-imports-and-dependency-chunks#, Imports, chunks, config, webpack>>: Importing things into your entries, and controlling the compilation rules and output.
 
-Need to go deeper? Here are some more detailed explanations and API documentaion:
+{zwsp} +
+{zwsp} +
 
-====== link:entries-and-jsxpath.html#entries[Entries]
-====== link:entries-and-jsxpath.html#jsxPath[JsxPath]
-====== link:entries-and-jsxpath.html#chunks[Optimizing dependency chunks]
-====== link:faq.html#faq[FAQ]
+=== The details
+
+Need to go deeper? Take a look at some more detailed explanations and docs:
+
+==== Concepts
+
+<<entries#, Entries>>
+
+<<jsxpath#, JsxPath>>
+
+<<chunks#, Optimizing dependency chunks>>
 
 {zwsp} +
 
-====== link:api.html#_react4xp_render[React4xp.render]
+==== API
+
+<<api#react4xp_render, React4xp.render>>
+
+{zwsp} +
+{zwsp} +
+
+== Issues
+Questions, bug reports or suggestions are welcome!
+
+- link:https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Abug[Known bugs we're working on] - and a few workarounds
+- link:https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement[Future improvements, requested features]
+- link:https://discuss.enonic.com[The Enonic Forums]
 
 {zwsp} +
 {zwsp} +
