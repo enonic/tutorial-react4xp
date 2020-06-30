@@ -39,3 +39,6 @@ React4xp handles them in build-time and runtime: locates entries, compiles each 
 Each entry becomes a separate *root level react app*. Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
 
 For example, early in this tutorial we've seen the entries _hello-react.jsx_ and _color.jsx_, they are compiled into the assets _hello-react.js_ and _color.js_.
+
+{zwsp} +
+{zwsp} +

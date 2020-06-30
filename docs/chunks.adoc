@@ -18,7 +18,7 @@ Dependency chunks are served by react4xp to the client and used there. They may 
 {zwsp} +
 
 == Importing
-Entries and other chunks can import resources from chunks using *ordinary ES6 imports*, as long as the necessary webpack rules are added. Compilation rules for regular ES6 and JSX are included with react4xp. Other rules (loaders etc) you must add yourself - see link:#imports_chunks[example 6].
+Entries and other chunks can import resources from chunks using *ordinary ES6 imports*, as long as the necessary webpack rules are added. Compilation rules for regular ES6 and JSX are included with react4xp. Other rules (loaders etc) you must add yourself - see <<6-imports-and-dependency-chunks#_adding_webpack_rules, lesson 6>>.
 
 [[entries_and_chunks]]
 .Entries and chunks - the full picture:
@@ -60,7 +60,7 @@ What happens if an entry imports something from folders *not marked as chunkDirs
 
 == Entries vs chunks
 
-Dependency chunks never contain link:#entries[entries]; each entry is an asset file of its own. Consequently, nothing inside a dependency chunk will have a jsxPath.
+Dependency chunks never contain <<entries#, entries>>; each entry is an asset file of its own. Consequently, nothing inside a dependency chunk will have a jsxPath.
 
 This is why entries are used as a separate word from react components: all entries are react components, but all react components are not necessarily entries: react components can also be secondary imports from chunks / chunkDirs.
 
@@ -85,3 +85,6 @@ But most importantly, they are *automatically optimized for performance*:
 *Recommended usage:* chunks are made to be *fire-and-forget*. Define the chunkDir, some webpack rules if necessary, and import it from your entry (or your secondary components inside chunks) - react4xp will handle the rest. Dependencies are tracked, so `React4xp.render` (and `.renderPageContributions`) automatically adds extra client-side links to necessary chunks.
 
 Since chunks are most optimized for repeated usage, it's best to put your heavy components and resources in chunks, and *let the entries stay slim and lightweight*.
+
+{zwsp} +
+{zwsp} +
