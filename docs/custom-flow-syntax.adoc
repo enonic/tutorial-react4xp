@@ -1,16 +1,11 @@
-= React4xp, lesson 5: custom flow syntax
+= Custom flow syntax
 :toc: right
-:toclevels: 2
 :imagesdir: media/
 
 
-image:react4xp.svg[title="React4xp logo",width=256px]
+== Lesson overview
 
-{zwsp} +
-
-== Lesson 5 overview
-
-In this example things get a bit more complex. We'll make another Part, and re-use the Page controller, Template and Content type we made <<3-pages-parts-and-regions#_template_with_react_page_controller, previously>>.
+In this example things get a bit more complex. We'll make another Part, and re-use the Page controller, Template and Content type we made <<pages-parts-and-regions#_template_with_react_page_controller, previously>>.
 
 - However, we won't use the `React4xp.render` shorthand function from before. Instead, we'll look at a more *explicit react4xp syntax*:
     a. It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your <<entries#, entry>>; you can manipulate the object(s) or extract data from them _before_ rendering.
@@ -40,8 +35,8 @@ site/pages/
 ----
 
 <1> The new Part we're making, _custom-flow_.
-<2> The already existing entry <<3-pages-parts-and-regions#color_jsx, _color.jsx_>>: a different folder from our _custom-flow_ Part, and different name.
-<3> We're also reusing another existing entry <<2-editorial-data-and-props#hello_react_jsx_modified, _hello-react.jsx_>> (with props, not the first hardcoded one), located under _site/*pages*/hello-react/_. So even though what we're making here is a Part, an entry from a Page, or anywhere, is fine: when using jsxPaths, all entries are equal.
+<2> The already existing entry <<pages-parts-and-regions#color_jsx, _color.jsx_>>: a different folder from our _custom-flow_ Part, and different name.
+<3> We're also reusing another existing entry <<editorial-data-and-props#hello_react_jsx_modified, _hello-react.jsx_>> (with props, not the first hardcoded one), located under _site/*pages*/hello-react/_. So even though what we're making here is a Part, an entry from a Page, or anywhere, is fine: when using jsxPaths, all entries are equal.
 
 
 {zwsp} +
@@ -98,7 +93,7 @@ The Part definition again defines some base data for us to play with. This is ex
 === Thymeleaf view
 Next, we're adding a regular *thymeleaf view template file*.
 
-This forms the initial HTML base, with `color` and `targetId` inserted by thymeleaf. This is actually not different from before: <<1-hello-react#first_helloreact_jsx, previously>> we've used a hardcoded string as the HTML base that react is rendered into. Now we're just letting thymeleaf make it. Same thing, the base HTML string can come from anywhere.
+This forms the initial HTML base, with `color` and `targetId` inserted by thymeleaf. This is actually not different from before: <<hello-react#first_helloreact_jsx, previously>> we've used a hardcoded string as the HTML base that react is rendered into. Now we're just letting thymeleaf make it. Same thing, the base HTML string can come from anywhere.
 
 The controller will render _two_ entries into this base HTML. To be clear: even though we're using two entries, this is still _one single XP Part_. The first entry is _color.jsx_ which will be inserted into the element `<div data-th-id="${targetId}"></div>`. The second one, _hello-react.jsx_ will also be rendered and inserted into this base HTML, but it will have a react4xp-ID that does not match any element ID here. This will cause react4xp to revert to the default behavior: generate a new container `<div>` and insert it right at the end of the root element: after `</section>` here:
 
@@ -208,7 +203,7 @@ exports.get = function(request) {
 };
 
 ----
-<1> Constructing the data-holding react4XP object `helloObj` from the _hello-react.jsx_ entry we finalized <<2-editorial-data-and-props#hello_react_jsx_modified, before>>. The constructor takes one argument, which is mandatory: an <<entries#, entry reference>>. This can be an XP `component` object like before, OR like we're doing here: a <<jsxpath#, jsxPath>>. This entry reference is used the same way as the first argument, _entry_, in <<api#react4xp_render, `React.render`>>.
+<1> Constructing the data-holding react4XP object `helloObj` from the _hello-react.jsx_ entry we finalized <<editorial-data-and-props#hello_react_jsx_modified, before>>. The constructor takes one argument, which is mandatory: an <<entries#, entry reference>>. This can be an XP `component` object like before, OR like we're doing here: a <<jsxpath#, jsxPath>>. This entry reference is used the same way as the first argument, _entry_, in <<api#react4xp_render, `React.render`>>.
 <2> `setProps` modifies `helloObj`, to add some `props`. This of course corresponds to the second argument, `props`, in `React4xp.render`.
 <3> After creating a react4xp object `colorObj` for the second entry, _color.jsx_, we're modifying that too, starting with adding props. Note the *builder-like pattern* here: each of the setter methods (`setProps`, `setId` and `uniqueId`) returns the react4xp object itself. This allows you to run them directly after each other like this, so this example is just a shorter way of writing `colorObj.setProps({ color: partConfig.color });  colorObj.setId("myColorThing");  colorObj.uniqueId();`.
 <4> `setId` sets the ID of the react4xp object and the target element that the rendering will look for in the HTML. If an ID has previously been set for the react4xp object, `setId` will overwrite it.
@@ -233,7 +228,7 @@ And we're done, our new _custom-flow_ Part is now ready.
 
 == Setup
 
-All of this amounted to a new Part, _custom-flow_. It can be added to any Region, so just follow <<3-pages-parts-and-regions#adding_parts_to_new_content, the same setup steps>> in Content Studio to add and see it.
+All of this amounted to a new Part, _custom-flow_. It can be added to any Region, so just follow <<pages-parts-and-regions#adding_parts_to_new_content, the same setup steps>> in Content Studio to add and see it.
 
 Again, if you add more than one _custom-flow_ Part to a Region, you'll see that they are independent both in behavior and output; separated by their unique ID.
 
@@ -248,11 +243,11 @@ Again, if you add more than one _custom-flow_ Part to a Region, you'll see that 
 |====
 |<- Back
 
-4. <<4-source-file-structure#, Free source file structure>>|
+<<source-file-structure#, Free source file structure>>|
 
 Next ->
 
-6. <<6-imports-and-dependency-chunks#, Imports, chunks, config, webpack>>
+<<imports-and-dependency-chunks#, Imports, chunks, config, webpack>>
 |====
 
 {zwsp} +

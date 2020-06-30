@@ -18,7 +18,7 @@ Dependency chunks are served by react4xp to the client and used there. They may 
 {zwsp} +
 
 == Importing
-Entries and other chunks can import resources from chunks using *ordinary ES6 imports*, as long as the necessary webpack rules are added. Compilation rules for regular ES6 and JSX are included with react4xp. Other rules (loaders etc) you must add yourself - see <<6-imports-and-dependency-chunks#_adding_webpack_rules, lesson 6>>.
+Entries and other chunks can import resources from chunks using *ordinary ES6 imports*, as long as the necessary webpack rules are added. Compilation rules for regular ES6 and JSX are included with react4xp. Other rules (loaders etc) you must add yourself - see <<imports-and-dependency-chunks#_adding_webpack_rules, lesson 6>>.
 
 [[entries_and_chunks]]
 .Entries and chunks - the full picture:

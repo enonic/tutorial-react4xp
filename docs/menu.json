@@ -1,36 +1,32 @@
 {
   "menuItems": [
     {
-      "title": "Introduction",
-      "document": "index"
+      "title": "1 - Project setup",
+      "document": "setup"
     },
     {
-      "title": "1. Hello React: rendering on server and client",
-      "document": "1-hello-react"
+      "title": "2 - Hello React",
+      "document": "hello-react"
     },
     {
-      "title": "2. Editorial data and props",
-      "document": "2-editorial-data-and-props"
+      "title": "3 - Editorial data and props",
+      "document": "editorial-data-and-props"
     },
     {
-      "title": "3. Content Studio: pages, parts, regions and content",
-      "document": "3-pages-parts-and-regions"
+      "title": "4 - Pages and components",
+      "document": "pages-parts-and-regions"
     },
     {
-      "title": "4. Free source file structure",
-      "document": "4-source-file-structure"
+      "title": "5 - File structure",
+      "document": "source-file-structure"
     },
     {
-      "title": "5. Custom flow syntax",
-      "document": "5-custom-flow-syntax"
+      "title": "6 - Custom flow syntax",
+      "document": "custom-flow-syntax"
     },
     {
-      "title": "6. Imports, chunks, config, webpack",
-      "document": "6-imports-and-dependency-chunks"
-    },
-    {
-      "title": "API",
-      "document": "api"
+      "title": "7 - Imports and chunks",
+      "document": "imports-and-dependency-chunks"
     },
     {
       "title": "Entries",
@@ -43,6 +39,10 @@
     {
       "title": "Dependency chunks",
       "document": "chunks"
+    },
+    {
+      "title": "API",
+      "document": "api"
     }
   ]
 }

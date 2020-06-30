@@ -1,0 +1,86 @@
+= Setting up your project
+:toc: right
+:imagesdir: media/
+
+{zwsp} +
+
+
+== Create project
+
+Set up the starter project locally, run the following command:
+
+[source,bash]
+----
+enonic project create -r starter-react4xp
+----
+
+Remember to create a *new XP sandbox* when completing the project wizard.
+
+[TIP]
+====
+*Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[Getting started guide] to install it.
+
+*Only want to inject react4xp into your own XP project?* The https://github.com/enonic/lib-react4xp/blob/master/README.md[lib-react4xp docs] have a section on how to do without the starter. But it's recommended to go through this introduction first.
+====
+
+{zwsp} +
+
+== Project structure
+
+If you're used to working with a typical XP project using https://developer.enonic.com/templates/webpack[webpack], the structure in your project root folder will now look familiar -
+the biggest news is `react4xp.properties` and the folder `resources/react4xp/`.
+
+TIP: This is just an overview, no need to know it by heart to get started - we'll get back to all of these in more detail. For the most impatient, the takeaway is: *put your JSX source files somewhere below `react4xp/entries/` or `site/`*.
+
+[source,files]
+----
+build.gradle                <!--1-->
+gradle.properties
+settings.gradle
+package.json
+
+react4xp.properties         <!--2-->
+
+src/
+  main/
+    resources/
+      react4xp/             <!--3-->
+        entries/
+        shared/
+
+----
+
+<1> A set of gradle config files and `package.json`. These define the build process and project structure, and in particular, make sure that the *lib-react4xp library* and *react4xp npm package* are installed right.
+<2> `react4xp.properties`: tune the most common properties of the react4xp project.
+<3> The `react4xp/` folder is opt-in: can be ignored for now, and doesn't need to contain anything. But when fine-tuning the build later in the tutorial, we'll get back to why you might find it handy to have a separate place for some of your react components (in ultra-short: the `entries\` folder is for react components that can be used directly by react4xp, the `shared\` folder is for common components imported by, and shared between, the entries).
+
+
+{zwsp} +
+
+== Build and Deploy
+
+To build and deploy the starter app, run this command from your shell:
+
+[source, bash]
+----
+enonic project deploy
+----
+
+Accept starting the sandbox.
+
+[NOTE]
+====
+To verify that your app started successfully, you should find an entry similar to this in the sandbox log:
+
+`2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully`
+====
+
+== {zwsp} +
+
+Now you're ready to get started with the first lesson chapters.
+
+[.right]
+-> <<hello-react#, Hello React>>
+
+{zwsp} +
+{zwsp} +

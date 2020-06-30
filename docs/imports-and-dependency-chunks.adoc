@@ -1,15 +1,10 @@
-= React4xp, lesson 6: imports, chunks, config, webpack
+= Imports, chunks, config, webpack
 :toc: right
 :toclevels: 3
 :imagesdir: media/
 
-{zwsp} +
 
-image:react4xp.svg[title="React4xp logo",width=256px]
-
-{zwsp} +
-
-== Lesson 6 overview
+== Lesson overview
 
 This final example is going to be more real-life-like. We'll focus on these features:
 
@@ -117,8 +112,8 @@ exports.get = function(request) {
     );
 };
 ----
-<1> Taking the serverside-rendering checkbox from the Part's config, and turning it into a `clientRender` flag that's sent into the _options_ argument <<1-hello-react#_client_side_rendering, just like before>>.
-<2> Creating a `colors` array of the color names from the Part's config, trimming them and removing empty ones. This is passed into the _props_ argument <<2-editorial-data-and-props#, like before>>.
+<1> Taking the serverside-rendering checkbox from the Part's config, and turning it into a `clientRender` flag that's sent into the _options_ argument <<hello-react#_client_side_rendering, just like before>>.
+<2> Creating a `colors` array of the color names from the Part's config, trimming them and removing empty ones. This is passed into the _props_ argument <<editorial-data-and-props#, like before>>.
 <3> This argument is slightly different compared to previously. `"MultiColor"` is a <<jsxpath#, jsxPath>> to an entry, as you'd expect. But why does it look so... naked? Where does it point to? As we'll see <<#webpack_config, in a moment>>, we'll set up react4xp to look for entries below an `entryDir` in react4xp.properties: _src/main/resources/react4xp/myEntries/_. Since a jsxPath is relative to the closest parent `entryDir` and we'll put an entry _MultiColor.jsx_ at the root of _entries/_, the jsxPath becomes just the clean file name.
 
 
@@ -490,7 +485,7 @@ And that's the last of it. We're ready to look at it running.
 
 == Setup and rendering
 
-Build again and add the _multi-color_ Part in Content Studio, <<3-pages-parts-and-regions#adding_parts_to_new_content, the same way as before>>.
+Build again and add the _multi-color_ Part in Content Studio, <<pages-parts-and-regions#adding_parts_to_new_content, the same way as before>>.
 
 .Empty multicolor Part:
 image:multicolor-add.png[title="Empty MultiColor part in Content Studio", width=720px]
@@ -561,7 +556,7 @@ Let's take a look at the rendered response from the controller and underline a f
     </body>
 </html>
 ----
-<1> Firstly, the SASS files have all been compiled to .CSS assets, and stylesheet links to them are inserted into the header by `React4xp.render` (if we had used the <<5-custom-flow-syntax#, custom flow syntax>>, this would have been handled by `.renderPageContributions`). And secondly: while `MultiColor.scss` was compiled into a .CSS file by itself (because the source file is under the entryDir _entries/_), we see that all the other imported assets have been compiled into the common dependency chunk _shared.<HASH>.css_ (_not_ because they were imported by .JSX files under _shared/_ - the import location doesn't matter. But because the .SCSS source files were under _shared/_).
+<1> Firstly, the SASS files have all been compiled to .CSS assets, and stylesheet links to them are inserted into the header by `React4xp.render` (if we had used the <<custom-flow-syntax#, custom flow syntax>>, this would have been handled by `.renderPageContributions`). And secondly: while `MultiColor.scss` was compiled into a .CSS file by itself (because the source file is under the entryDir _entries/_), we see that all the other imported assets have been compiled into the common dependency chunk _shared.<HASH>.css_ (_not_ because they were imported by .JSX files under _shared/_ - the import location doesn't matter. But because the .SCSS source files were under _shared/_).
 <2> Again, since we didn't check the "Server-side rendering" checkbox, the `clientRender` flag became true and we got a clientside rendering. So this is just the target container element, filled in by the browser on `React4xp.CLIENT.render` below. Had we checked the checkbox, this would have contained the pre-rendered MultiColor entry, of course.
 <3> Among the dependencies are still the externals, the client wrapper code and the code to the compiled MultiColor entry. And in addition, there's the `shared.<HASH>.js` dependency chunk, containing the compiled code for all the ES6/JS/JSX found under the _shared/_ folder.
 
@@ -593,7 +588,7 @@ API reference:
 |====
 |<- Back
 
-5. <<5-custom-flow-syntax#, Custom flow syntax>>|
+<<custom-flow-syntax#, Custom flow syntax>>|
 |====
 
 {zwsp} +

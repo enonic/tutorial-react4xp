@@ -1,17 +1,13 @@
-= React4xp lesson 2: Editorial data and props
+= Editorial data and props
 :toc: right
-:toclevels: 2
 :imagesdir: media/
 
-{zwsp} +
 
-image:react4xp.svg[title="React4xp logo",width=256px]
-
-== Lesson 2 overview
+== Lesson overview
 
 Here we'll spice up our react component a little bit, by using `props` to insert editorial data from XP into the react component.
 
-We'll modify the same files you created <<1-hello-react#_code, previously>>:
+We'll modify the same files you created <<hello-react#_code, previously>>:
 
 .Files involved:
 [source,files]
@@ -31,7 +27,7 @@ Let's change the files some more so we can use Content Studio to input some data
 {zwsp} +
 
 === Page definition
-We start with some standard XP procedure: defining the data in the page definition XML file. This file is the same as in <<1-hello-react#_page_definition, example 1>>, but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`: `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component:
+We start with some standard XP procedure: defining the data in the page definition XML file. This file is the same as in <<hello-react#_page_definition, example 1>>, but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`: `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component:
 
 .hello-react.xml:
 [source,xml,linenums,options="nowrap"]
@@ -70,7 +66,7 @@ We start with some standard XP procedure: defining the data in the page definiti
 {zwsp} +
 
 === React component
-Next, we'll modify <<1-hello-react#_react_component, the react component>> so that it displays data from a `props` object, instead of hardcoding everything.
+Next, we'll modify <<hello-react#_react_component, the react component>> so that it displays data from a `props` object, instead of hardcoding everything.
 
 [[hello_react_jsx_modified]]
 .hello-react.jsx
@@ -113,7 +109,7 @@ Although, if you think that the _makeObjectDropper_ closure thing is a strange w
 {zwsp} +
 
 === Page controller
-And lastly, we'll hook them together: modify <<1-hello-react#_page_controller, the controller>> to fetch the data we defined in XML, then use a `props` object to inject the data into the react component:
+And lastly, we'll hook them together: modify <<hello-react#_page_controller, the controller>> to fetch the data we defined in XML, then use a `props` object to inject the data into the react component:
 
 [[controller_with_props]]
 .hello-react.es6:
@@ -168,7 +164,7 @@ There it is, now let's take a look!
 
 == Setup and rendering
 
-Compile the project, enter Content Studio (see the first two steps in <<1-hello-react#first_setup_render, the previous setup>>), and edit the content you created (double-click it to open a new tab).
+Compile the project, enter Content Studio (see the first two steps in <<hello-react#first_setup_render, the previous setup>>), and edit the content you created (double-click it to open a new tab).
 
 You should still see it in the preview panel on the right (although, since you probably created the content without any data created along with it, it might not display much of the text. We'll fix that):
 
@@ -195,7 +191,7 @@ image:gday_bruce.png[link="media/gday_bruce.png",title="Rendering: G'day Bruce. 
 
 == Output
 
-So did anything change in the rendered response, compared to <<1-hello-react#hello_output, the first serverside-rendered example>>? Not all that much, actually. Depending on what data you inserted and the resulting `props`, your page source should look something like this:
+So did anything change in the rendered response, compared to <<hello-react#hello_output, the first serverside-rendered example>>? Not all that much, actually. Depending on what data you inserted and the resulting `props`, your page source should look something like this:
 
 [source,html,options="nowrap"]
 ----
@@ -236,7 +232,7 @@ So did anything change in the rendered response, compared to <<1-hello-react#hel
 ----
 <1> Since we removed the `clientRender` flag again, the target container `react4xpApp` comes filled from the server. But now with a rendering with _your_ texts from `props` already inserted.
 <2> There's still no change in the asset URLs, but since we changed _hello-react.jsx_, the content of _hello-react.js_ has of course been recompiled.
-<4> The `props` are used in the clientside `.hydrate` call. For convenience, the `id` is automatically added as the `react4xpId` prop. Handy for use cases where a react component needs to uniquely identify itself.
+<3> The `props` are used in the clientside `.hydrate` call. For convenience, the `id` is automatically added as the `react4xpId` prop. Handy for use cases where a react component needs to uniquely identify itself.
 
 {zwsp} +
 
@@ -252,11 +248,11 @@ Either way, you should be ready for the last of the three basic lesson chapters.
 |====
 |<- Back
 
-1. <<1-hello-react#, Hello React: server and clientside>>|
+<<hello-react#, Hello React: server and clientside>>|
 
 Next ->
 
-3. <<3-pages-parts-and-regions#, XP Pages, Parts, Regions and Content>>
+<<pages-parts-and-regions#, Pages, Parts, Regions and Content>>
 |====
 
 {zwsp} +

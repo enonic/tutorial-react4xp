@@ -1,15 +1,9 @@
-= React4xp, lesson 4: defining your own source structure
+= defining your own source structure
 :toc: right
-:toclevels: 2
 :imagesdir: media/
 
-{zwsp} +
 
-image:react4xp.svg[title="React4xp logo",width=256px]
-
-{zwsp} +
-
-== Lesson 4 overview
+== Lesson overview
 
 So far, every time we've referenced a _.jsx_ react component from react4xp in a controller, we've used a `component` object in the _entry_ argument of `React4xp.render`. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the _.jsx_ source file must be in the same folder as the controller, and have the same name.
 
@@ -37,7 +31,7 @@ Below the folder _src/main/resources/site/_, all source files with the extension
 
 ...etc.
 
-These strings are called *jsxPaths* in react4xp, and they can be used directly in controllers as the _entry_ argument. For example in the <<3-pages-parts-and-regions#color_part_controller, _color_ Part controller>> from before:
+These strings are called *jsxPaths* in react4xp, and they can be used directly in controllers as the _entry_ argument. For example in the <<pages-parts-and-regions#color_part_controller, _color_ Part controller>> from before:
 
 .site/parts/color/color.es6
 [source,javascript,options="nowrap"]
@@ -130,11 +124,11 @@ Okay, next example lessons!
 |====
 |<- Back
 
-3. <<3-pages-parts-and-regions#, XP Pages, Parts, Regions and Content>>|
+<<pages-parts-and-regions#, Pages, Parts, Regions and Content>>|
 
 Next ->
 
-5. <<5-custom-flow-syntax#, Custom flow syntax>>
+<<custom-flow-syntax#, Custom flow syntax>>
 |====
 
 {zwsp} +

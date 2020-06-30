@@ -17,14 +17,14 @@ Short and brutal: the jsxPath is a name string generated from the path and filen
 == From source file location to jsxPath
 During development though, these 3 rules are probably easier:
 
-1. If you use the `component` object like in <<1-hello-react#first_helloreact_jsx, the first example>>, you can ignore the jsxPath. `React4xp.render` will use the component object to look for an entry with *the same name, in the same folder*, as a part/page/layout controller.
+. If you use the `component` object like in <<hello-react#first_helloreact_jsx, the first example>>, you can ignore the jsxPath. `React4xp.render` will use the component object to look for an entry with *the same name, in the same folder*, as a part/page/layout controller.
 
 But if you need to access an entry from a different folder - from anywhere actually - here's *how to find the jsxPath of an entry*:
 
 [start=2]
-2. If an entry's source file is a JSX under _/src/main/resources/_ *_site/_*, the jsxPath is the source file's path relative to _/src/main/resources/_ - unix-style and without file extension.
+. If an entry's source file is a JSX under _/src/main/resources/_ *_site/_*, the jsxPath is the source file's path relative to _/src/main/resources/_ - unix-style and without file extension.
 * So the jsxPath will start with `site/...` etc (and the asset will be compiled into a folder below _/build/resources/main/assets/react4xp/_ *_site/_*, and so on).
-3. Or, using the setup from the starter, you can also put your entries under _src/main/resources/_ *_react4xp/entries_*. Then the jsxPath (and compiled-asset path) will be relative to _/entries/_ instead.
+. Or, using the setup from the starter, you can also put your entries under _src/main/resources/_ *_react4xp/entries_*. Then the jsxPath (and compiled-asset path) will be relative to _/entries/_ instead.
 * Actually, you can control this with the `entryDirs` property in _react4xp.properties_. The starter has added `entryDirs=entries` here, but this is a comma-separated list of folder names relative to _src/main/resources/react4xp/_. Remember, if you add more entryDirs or replace `entries`, the jsxPaths will always be relative to those new entryDirs.
 
 * *For example:* add `../myComponents` to entryDirs: `entryDirs=entries,../myComponents`. Since entryDirs and the "../" are relative to _src/main/resources/react4xp/_, the new entry source folder is _src/main/resources/myComponents/_. Now new JSX files can be put there, and get a jsxPath relative to that. So the entry _src/main/resources/myComponents/_ *_app/myEntry.jsx_* will get the jsxPath `"app/myEntry"`, and will be compiled to the entry asset _/build/resources/main/assets/react4xp/app/myEntry.js_.
