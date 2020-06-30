@@ -5,7 +5,6 @@
 
 {zwsp} +
 
-[[editorial_props]]
 image:react4xp.svg[title="React4xp logo",width=256px]
 
 == Lesson 2 overview
@@ -71,7 +70,7 @@ We start with some standard XP procedure: defining the data in the page definiti
 {zwsp} +
 
 === React component
-Next, we'll modify the react component so that it displays data from a `props` object, instead of hardcoding everything.
+Next, we'll modify <<1-hello-react#_react_component, the react component>> so that it displays data from a `props` object, instead of hardcoding everything.
 
 [[hello_react_jsx_modified]]
 .hello-react.jsx
@@ -108,13 +107,13 @@ export default (props) => {
 ====
 `props` are of course the standard react way to do this. It all is. As long as a _props => reactComponent_ function is default-exported, react4xp accepts standard valid ES6/JSX.
 
-Although, if you think that the _makeObjectDropper_ closure thing is a strange way to do something react itself could do better... I can't argue with that. Just trying to stay focused on one thing at a time.
+Although, if you think that the _makeObjectDropper_ closure thing is a strange way to do something react itself could do better... sure. Just trying to stay focused on one thing at a time.
 ====
 
 {zwsp} +
 
 === Page controller
-And lastly, we'll hook them together: modify *the controller* to fetch the data we defined in XML, then use a `props` object to inject the data into the react component:
+And lastly, we'll hook them together: modify <<1-hello-react#_page_controller, the controller>> to fetch the data we defined in XML, then use a `props` object to inject the data into the react component:
 
 [[controller_with_props]]
 .hello-react.es6:
@@ -169,7 +168,7 @@ There it is, now let's take a look!
 
 == Setup and rendering
 
-Compile the project, enter Content Studio Repeat (the first two steps in link:#first_setup_render[the previous setup]), and edit the content you created (double-click it to open a new tab).
+Compile the project, enter Content Studio (see the first two steps in <<1-hello-react#first_setup_render, the previous setup>>), and edit the content you created (double-click it to open a new tab).
 
 You should still see it in the preview panel on the right (although, since you probably created the content without any data created along with it, it might not display much of the text. We'll fix that):
 
@@ -196,7 +195,7 @@ image:gday_bruce.png[link="media/gday_bruce.png",title="Rendering: G'day Bruce. 
 
 == Output
 
-So did anything change in the rendered response, compared to link:#hello_output[the first serverside-rendered example]? Not all that much, actually. Depending on what data you inserted and the resulting `props`, your page source should look something like this:
+So did anything change in the rendered response, compared to <<1-hello-react#hello_output, the first serverside-rendered example>>? Not all that much, actually. Depending on what data you inserted and the resulting `props`, your page source should look something like this:
 
 [source,html,options="nowrap"]
 ----
@@ -213,9 +212,9 @@ So did anything change in the rendered response, compared to link:#hello_output[
     </div>
 
     <!--2-->
-    <script src="/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/react4xp/externals.489d97cdf.js"></script>
-    <script src="/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/react4xp-client/"></script>
-    <script src="/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/react4xp/site/pages/hello-react/hello-react.js"></script>
+    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>
+    <script src="(...your.app.service) /react4xp-client/"></script>
+    <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"></script>
 
     <script defer>
         React4xp.CLIENT.hydrate(
@@ -253,11 +252,11 @@ Either way, you should be ready for the last of the three basic lesson chapters.
 |====
 |<- Back
 
-1. link:1-hello-react.html#hello_react_page[Hello React: server and clientside]|
+1. <<1-hello-react#, Hello React: server and clientside>>|
 
 Next ->
 
-3. link:3-pages-parts-and-regions.html#xp_pages_parts[XP Pages, Parts, Regions and Content]
+3. <<3-pages-parts-and-regions#, XP Pages, Parts, Regions and Content>>
 |====
 
 {zwsp} +
