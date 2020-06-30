@@ -1,10 +1,8 @@
-= React4XP: API reference
+= React4XP - API reference
 :toc: right
-:toclevels: 2
 :imagesdir: media/
 
 [[api]]
-image:react4xp.svg[title="React4xp logo",width=256px]
 
 [[react4xp_render]]
 == React4xp.render
