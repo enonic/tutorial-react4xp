@@ -5,17 +5,17 @@
 
 {zwsp} +
 
-
-[[hello_react_page]]
 image:react4xp.svg[title="React4xp logo",width=256px]
 
 {zwsp} +
 
 == Lesson 1 overview
 
-React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: just displaying a working react component in content studio. We'll first do that in the serverside rendered way (this is the react4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
+React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: just displaying a working react component in content studio.
 
-We'll do this by adding a regular XP page controller we'll call _hello-react_:
+We'll first do that in the serverside rendered way (this is the react4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
+
+We'll do this by adding a *regular XP page controller* we'll call _hello-react_:
 
 .Files involved:
 [source,files]
@@ -72,9 +72,9 @@ export default (props) => <div onClick={dropBottle}>
 
 [NOTE]
 ====
-One thing is mandatory for this to work, shown in the last line: the JSX file *must default-export a function* that *_may_ take a props object* and *_must_ return a react component*. More on this link:#entries[later].
+One thing is mandatory for this to work, shown in the last line: the JSX file *must default-export a function* that *_may_ take a props object* and *_must_ return a react component*. <<4-source-file-structure#, More on this later>>.
 
-Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from node_modules in the regular way (there is a caveat or two here. We'll get back to that too later).
+Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from _node_modules/_ in the regular way (there is a caveat or two here. <<6-imports-and-dependency-chunks#, We'll get back to that later too>>).
 ====
 
 {zwsp} +
@@ -121,8 +121,8 @@ What's going on in the controller?
 
 <1> In line 2, `React4xp` is imported from the library.
 <2> In line 4, we pick up the `request` data. The render call needs it to know the rendering context.
-<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for react4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that under link:#_react4xp_render[the render call] and link:#jsxPath[jsx paths]).
-<4> In line 8, the juicy bit: *the actual render call*. The rendered response from it can be returned directly from the `get` function, since `.render` creates an object with a `body` HTML string and a `pageContributions` attribute with everything needed (more about this link:#_react4xp_render[below]).
+<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for react4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that, but for all the details: <<entries#, entries>> and <<jsxpath#, jsxPath>>).
+<4> In line 8, the juicy bit: *the actual render call*. The rendered response from it can be returned directly from the `get` function, since `.render` creates an object with a `body` HTML string and a `pageContributions` attribute with everything needed (more details: <<api#react4xp_render, the render API>>).
 <5> In line 13, the `id` attribute _"react4xpApp"_ is set in the *options* argument of `.render` (lines 12-20). This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
 <6> In lines 14-19, we're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag (such as `<!DOCTYPE html>`).
 
@@ -157,17 +157,18 @@ Clicking somewhere on the rendered text in the preview window will trigger the `
 
 {zwsp} +
 
-== Two notes on rendering
+== About the rendering
 
 Two things are worth knowing about the rendering, before we move on:
 
 {zwsp} +
 
+[[static_cs_rendering]]
 === Content studio only has static rendering
 
 If you clicked the rendering _inside XP Content Studio_ instead of a preview tab, you'd notice there was *no bottle-counting*. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the `request` argument is used in `React4xp.render` to handle this automatically: inside Content Studio, you'll only see the rendering as a regular static XP preview / placeholder instead of active react.
 
-NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. link:#custom_flow[Example 4 shows you how].
+NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. <<5-custom-flow-syntax#, Lesson 5 shows you how>>.
 
 {zwsp} +
 
@@ -221,7 +222,7 @@ We can see this whole output is actually the `body` HTML string we passed into t
 <1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component. At this point it's only static markup, but it will be activated during step 5 below.
 <2> The first asset is `externals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN. If you want to read more about why, or how to tweak the externals, see the link:https://www.npmjs.com/package/react4xp-runtime-externals[externals docs on NPM].
 <3> The second loaded asset is a client-wrapper, available in the browser's namespace as `React4xp.CLIENT`. For more, see the link:https://www.npmjs.com/package/react4xp-runtime-client[client wrapper docs on NPM].
-<4> The third asset is the compiled version of _hello-react.jsx_, with the react component and the `dropBottle` routine. During `React4xp.render`, react4xp used the `component` data to locate this asset _after_ compiling. The react component gets an identifier string, `site/pages/hello-react/hello-react`, which is called a _jsxPath_ in react4xp. We'll link:#jsxPath[cover jsxPaths in more detail later], but for now you just need to know that this identifier is also used when loading this asset into the the browser's namespace: `React4xp['site/pages/hello-react/hello-react']`.
+<4> The third asset is the compiled version of _hello-react.jsx_, with the react component and the `dropBottle` routine. During `React4xp.render`, react4xp used the `component` data to locate this asset _after_ compiling. The react component gets an identifier string, `site/pages/hello-react/hello-react`, which is called a _jsxPath_ in react4xp. We'll cover jsxPaths later (full detail reference <<jsxpath#, here>>), but for now you just need to know that this identifier is also used when loading this asset into the the browser's namespace: `React4xp['site/pages/hello-react/hello-react']`.
 <5> Finally, the trigger. The CLIENT wrapper calls link:https://www.npmjs.com/package/react4xp-runtime-client#hydrate[hydrate] to activate react in the serverside-rendered asset `React4xp['site/pages/hello-react/hello-react']` in the target container `"react4xpApp"`. Now the `dropBottle` function works! We haven't added any props yet, hence the `null` argument. The final two digits `1, 0` are internal react4xp housekeeping, flagging some possible need for client-side postprocessing.
 
 NOTE: The assets are served by lib-react4xp services. Most of them (_react4xp-client_ and the content-hashed assets) are optimized for client-side caching, to minimize repeated requests.
@@ -267,7 +268,7 @@ exports.get = function(request) {
 ----
 <1> On the server, a truthy `clientRender` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular `.render` call. Mixing up clientside and serverside rendering across different places hasn't been tested very much, but it should work fine).
 
-If you compare with link:#hello_output[the serverside-rendered example], the `clientRender` flag causes the *rendered output* to change slightly, changing the behavior in the browser.
+If you compare with <<#hello_output, the serverside-rendered example>>, the `clientRender` flag causes the *rendered output* to change slightly, changing the behavior in the browser.
 
 [source,html,options="nowrap"]
 ----
@@ -297,7 +298,7 @@ If you compare with link:#hello_output[the serverside-rendered example], the `cl
 <2> The compiled assets and their URLs are exactly the same as in the serverside version.
 <3> The trigger is changed: the `React4xp.CLIENT` wrapper calls link:https://www.npmjs.com/package/react4xp-runtime-client#render[render] and makes the browser build the DOM inside the target element from scratch (instead of calling `React4xp.CLIENT.hydrate`, which activates/replaces existing HTML). The function signatures of `React4xp.CLIENT.render` and `React4xp.CLIENT.hydrate` are identical.
 
-NOTE: As link:#static_cs_rendering[mentioned before], this only applies _outside_ of Content Studio. The `clientRender` flag does not change anything inside Content Studio: still server-side rendered static HTML.
+NOTE: <<#static_cs_rendering, As mentioned before>>, this only applies _outside_ of Content Studio. The `clientRender` flag does not change anything inside Content Studio: still server-side rendered static HTML.
 
 Apart from these differences behind the scenes, the page will look and behave the same when presented to the user.
 
@@ -320,7 +321,7 @@ Okay, ready for the next example lesson?
 |====
 ||Next ->
 
-2. link:2-editorial-data-and-props.html#editorial_props[Editorial data and props]
+2. <<2-editorial-data-and-props#, Editorial data and props>>
 |====
 
 {zwsp} +
