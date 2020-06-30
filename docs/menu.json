@@ -1,6 +1,10 @@
 {
   "menuItems": [
     {
+      "title": "Introduction",
+      "document": "index"
+    },
+    {
       "title": "1. Hello React: rendering on server and client",
       "document": "1-hello-react"
     },
@@ -30,15 +34,15 @@
     },
     {
       "title": "Entries",
-      "document": "entries-and-jsxpath"
+      "document": "entries"
     },
     {
       "title": "JsxPath",
-      "document": "entries-and-jsxpath"
+      "document": "jsxpath"
     },
     {
       "title": "Dependency chunks",
-      "document": "entries-and-jsxpath"
+      "document": "chunks"
     }
   ]
 }
