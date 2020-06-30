@@ -2,6 +2,8 @@
 :toc: right
 :imagesdir: media/
 
+This tutorial will show you step-by-step how to build XP sites and apps with React rendering, helping you kickstart a React4xp project of your own.
+
 {zwsp} +
 
 image:react4xp.svg[title="React4xp logo",width=256px]
@@ -10,15 +12,11 @@ image:react4xp.svg[title="React4xp logo",width=256px]
 
 == Introduction
 
-This tutorial will show you step-by-step how to build XP sites and apps with React rendering, helping you kickstart a React4xp project of your own.
-
 [NOTE]
 ====
 A little bare-bone knowledge of link:https://reactjs.org/tutorial/tutorial.html[React] and link:https://developer.enonic.com/start[Enonic XP] is recommended. Beyond that, the guide is super detailed!
 ====
 
-
-=== About React4XP
 
 React4XP is a library (with a companion build structure) that facilitates advanced use of React in Enonic XP, and:
 
