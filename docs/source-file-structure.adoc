@@ -118,18 +118,5 @@ If you want a deeper dive into details before moving on, here's more about <<ent
 
 Okay, next example lessons!
 
-
-== {zwsp} +
-[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
-|====
-|<- Back
-
-<<pages-parts-and-regions#, Pages, Parts, Regions and Content>>|
-
-Next ->
-
-<<custom-flow-syntax#, Custom flow syntax>>
-|====
-
 {zwsp} +
 {zwsp} +
