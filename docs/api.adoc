@@ -7,10 +7,11 @@ The react4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib
 
 
 == Install
-Instructions on how to installing the library locally or insert it into your project are at link:https://github.com/enonic/lib-react4xp#readme[the library docs] at github.
+Instructions on how to install the library locally or insert it into your project are at link:https://github.com/enonic/lib-react4xp#readme[the library docs] at github.
 
 == Import library
 
+.In an XP controller:
 [source,javascript,options="nowrap"]
 ----
 const React4xp = require('/lib/enonic/react4xp');
@@ -38,6 +39,7 @@ The signature is analogous to thymeleaf's familiar `render(view, model)`. But th
 
 {zwsp} +
 
+[[react4xp_render_parameters]]
 ==== Parameters
 
 [%header,cols="1%,1%,98%a"]
@@ -283,7 +285,7 @@ const outputBody = myComponent.renderBody(options);
 .Properties
 !===
 ! Name        ! Type   ! Default ! Description
-! `body` ! string: valid HTML ! `<div>` with matching `id` (same as `react4xpId` in the data object) ! Same as the `options.body` in <<#react4xp_render, React4xp.render>> above.
+! `body` ! string: valid HTML ! `<div>` with matching `id` (same as `react4xpId` in the data object) ! Same as the `options.body` in <<#react4xp_render_parameters, React4xp.render>> above.
 ! `clientRender` ! boolean ! false ! Switch between clientside and servierside rendering, on this particular rendering. Other renderings are not affected, _even from the same data object_ (so you usually want to make sure a different rendering from the same data object uses the same mode).
 
 If `false` / falsy or omitted, you get serverside rendering and the returned object will contain an HTML representation of the react component with the initial `props`. If `true` / truthy, the server-side rendering is skipped for this particular rendering.
