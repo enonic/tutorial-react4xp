@@ -5,7 +5,7 @@
 
 == Lesson overview
 
-In this example things get a bit more complex. We'll make another Part, and re-use the Page controller, Template and Content type we made <<pages-parts-and-regions#_template_with_react_page_controller, previously>>.
+In this example things get a bit more complex. We'll make another Part, and re-use the Page controller, Template and Content type we made <<pages-parts-and-regions#template_with_react_page_controller, previously>>.
 
 - However, we won't use the `React4xp.render` shorthand function from before. Instead, we'll look at a more *explicit react4xp syntax*:
     a. It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your <<entries#, entry>>; you can manipulate the object(s) or extract data from them _before_ rendering.
@@ -232,23 +232,6 @@ All of this amounted to a new Part, _custom-flow_. It can be added to any Region
 
 Again, if you add more than one _custom-flow_ Part to a Region, you'll see that they are independent both in behavior and output; separated by their unique ID.
 
-
-{zwsp} +
-{zwsp} +
-
-
-
-== {zwsp} +
-[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
-|====
-|<- Back
-
-<<source-file-structure#, Free source file structure>>|
-
-Next ->
-
-<<imports-and-dependency-chunks#, Imports, chunks, config, webpack>>
-|====
 
 {zwsp} +
 {zwsp} +

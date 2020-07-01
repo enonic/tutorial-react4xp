@@ -48,6 +48,7 @@ site/parts/
 
 {zwsp} +
 
+[[template_with_react_page_controller]]
 == Template with React Page Controller
 
 We'll make a generic XP content type, then make a Template in Content Studio and connect the content type to a react-based XP Page, _site/pages/default/_, which is just a bare-bone page with nothing but a Region in it.
