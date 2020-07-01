@@ -68,7 +68,7 @@ TIP: All the _entries_ in your project are listed with their _jsxPath_ after com
 {zwsp} +
 
 === 2: Below _react4xp/_
-If you just want to keep your react components out of the regular XP file structure in _site/_ and be independent of the structure of Parts, Pages etc, the folder _src/main/resources/react4xp/_ is meant for that. Here's how (assuming you're generally following link:https://github.com/enonic/lib-react4xp/blob/0.9.0/README.adoc#setup-option-2-using-react4xp-in-an-existing-project[the recommended setup pattern] used in the react4xp starter):
+If you just want to keep your react components out of the regular XP file structure in _site/_ and be independent of the structure of Parts, Pages etc, the folder _src/main/resources/react4xp/_ is meant for that. Here's how (assuming you're using link:https://market.enonic.com/vendors/enonic/react4xp-starter[the starter] or generally following link:https://github.com/enonic/lib-react4xp/blob/master/README.md#setup-option-2-using-react4xp-in-an-existing-project[the recommended react4xp setup pattern]):
 
 Open _react4xp.properties_ in the project root, and look for the property `entryDirs`. This is a (comma-separated) list of folder names *relative to the _react4xp/_ folder*. React4xp comes with a built-in suggestion here: `entryDirs = entries`. This means that all _.jsx_ (and _.js_ and _.es6_) source files below _src/main/resources/react4xp/entries_ will become entries: react components available to react4xp.
 

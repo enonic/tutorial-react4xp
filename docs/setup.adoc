@@ -20,7 +20,7 @@ Remember to create a *new XP sandbox* when completing the project wizard.
 ====
 *Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[Getting started guide] to install it.
 
-*Only want to inject react4xp into your own XP project?* The https://github.com/enonic/lib-react4xp/blob/master/README.md[lib-react4xp docs] have a section on how to do without the starter. But it's recommended to go through this introduction first.
+*Only want to inject react4xp into your own XP project?* The https://github.com/enonic/lib-react4xp/blob/master/README.md#setup-option-2-using-react4xp-in-an-existing-project[lib-react4xp docs] have a section on how to do without the starter. But it's recommended to go through this introduction first.
 ====
 
 {zwsp} +

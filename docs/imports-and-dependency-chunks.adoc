@@ -428,7 +428,7 @@ overrideComponentWebpack = webpack.config.react4xp.js
 Now we can add our own webpack rules to the react4xp asset compilation and handling:
 
 .webpack.config.react4xp.js:
-[source,javascript,linenums,options="nowrap"]
+[source,javascript,options="nowrap"]
 ----
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -479,7 +479,19 @@ module.exports = function(env, config) {                     <!--1-->
 <2> That function may *mutate (or replace!) the react4xp webpack `config` object* (on this line and later: "take any incoming `config.module.rules` and add this style-compilation-rule object"). So previously existing attributes will be overwritten by the new ones from this file.
 <3> The function *must return the changed (or replaced) config object*.
 
-And that's the last of it. We're ready to look at it running.
+{zwsp} +
+
+==== NPM dependencies
+Also, you'll probably need to add the required NPM packages for this example:
+
+[source,bash,options="nowrap"]
+----
+npm install -D css-loader@3 node-sass@4 mini-css-extract-plugin
+----
+
+{zwsp} +
+
+Now we're ready to look at it running!
 
 {zwsp} +
 

@@ -15,7 +15,7 @@ The *signature* is analogous to thymeleaf's familiar `render(view, model)`. But 
 
 [source,javascript,options="nowrap"]
 ----
-{body, pageContributions} = React4xp.render(entry, props, request, options);`
+{body, pageContributions} = React4xp.render(entry, props, request, options);
 ----
 
 {zwsp} +
@@ -42,3 +42,7 @@ Returns an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP re
 
 {zwsp} +
 {zwsp} +
+
+== See also
+
+- The react4xp library at link:https://github.com/enonic/lib-react4xp/[github] or on link:https://market.enonic.com/vendors/enonic/react4xp-lib[Enonic Market].

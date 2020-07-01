@@ -106,7 +106,7 @@ The page definition is simple. We're now leaving the `<form>` node empty, but ad
 The react component has a single focus, namely rendering the Region:
 
 .default.jsx
-[source,javascript,linenums,options="nowrap"]
+[source,javascript,options="nowrap"]
 ----
 import React from 'react';
 import Regions from 'react4xp-regions/Regions';    // <1>
@@ -129,7 +129,7 @@ export default (props) => (
 The `props` of course come from the *Page controller*. Still similar to the previous examples, we're mainly just adding props that are needed by `<Regions>` in the react component.
 
 .default.es6:
-[source,javascript,linenums,options="nowrap"]
+[source,javascript,options="nowrap"]
 ----
 
 const portal = require('/lib/xp/portal');
@@ -199,7 +199,7 @@ image:template_new.png[title="Creating a new Template content in Content Studio.
 . When editing your new Template, give it a display name, select your new content type _my-content_ in the _"Supports"_ drop-down menu on the left, and select the new Page controller _Default_ under the _"Template_" (or _"Page controller"_) drop-down menu on the right:
 
 [.thumb]
-image:template_edit.png[title="Using a Template to connect a content type to a page controller in Content Studio.", width=1024px]
+image:template_edit.png[title="Using a Template to connect a content type to a page controller in Content Studio.", width=720px]
 
 {zwsp} +
 
