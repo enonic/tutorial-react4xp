@@ -582,14 +582,3 @@ API reference:
 
 {zwsp} +
 {zwsp} +
-
-== {zwsp} +
-[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
-|====
-|<- Back
-
-<<custom-flow-syntax#, Custom flow syntax>>|
-|====
-
-{zwsp} +
-{zwsp} +
