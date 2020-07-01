@@ -110,6 +110,7 @@ More cumbersome than `React4xp.render`, but also more flexible and controllable,
 {zwsp} +
 {zwsp} +
 
+[[constructor]]
 === Constructor
 
 Create an initial object from an entry.
@@ -147,6 +148,7 @@ const myComponent = new React4xp(entry);
 {zwsp} +
 {zwsp} +
 
+[[setter_methods]]
 === Setter methods
 
 Use these to set the object's properties. All of them are optional; if not used, the object will render with empty values or placeholders where needed, along the same logic as for <<#react4xp_render, React4xp.render>> above.
@@ -247,9 +249,52 @@ myComponent.setJsxPath(jsxPath);
 
 === Rendering methods
 
+These methods perform specific rendering tasks independently, using the data object as a basis, the way it's set up with the <<#setter_methods, setters>> and with the entry from the <<#constructor, constructor>> (or the `setJsxPath` setter).
+
+NOTE: Most of these rendering methods will lock down the jsxPath and ID if the react4xp data object, the first time one of them is run. After this, the setters will prevent these from being changed so that another conflicting rendering can't be performed from the same data object.
+
+{zwsp} +
+
 ==== .renderBody
 
-Renders the HTML output for a
+Similar to <<#react4xp_render, React4xp.render>> above, but renders _only_ the static HTML output from the entry, based on the state of the data object at the time of rendering, and with fewer `option` parameters.
 
+NOTE: Does not render page contributions. Run `.renderPageContributions` from the same data object, or the rendering will not be active in the browser.
+
+===== Signature
 [source,javascript,options="nowrap"]
 ----
+const outputBody = myComponent.renderBody(options);
+----
+
+===== Parameters
+
+[%header,cols="1%,1%,98%a"]
+[frame="none"]
+[grid="none"]
+|===
+| Name   | Type   | Description
+| `options` | object, optional | Options to control the rendering, all of them optional:
+
+[%header,cols="1%,1%,4%,93%a"]
+[frame="topbot"]
+[grid="none"]
+[caption=""]
+.Properties
+!===
+! Name        ! Type   ! Default ! Description
+! `body` ! string: valid HTML ! `<div>` with matching `id` (same as `react4xpId` in the data object) ! Same as the `options.body` in <<#react4xp_render, React4xp.render>> above.
+! `clientRender` ! boolean ! false ! Switch between clientside and servierside rendering, on this particular rendering. Other renderings are not affected, _even from the same data object_ (so you usually want to make sure a different rendering from the same data object uses the same mode).
+
+If `false` / falsy or omitted, you get serverside rendering and the returned object will contain an HTML representation of the react component with the initial `props`. If `true` / truthy, the server-side rendering is skipped for this particular rendering.
+
+!===
+
+|===
+
+{zwsp} +
+{zwsp} +
+
+=== Examples
+
+The <<custom-flow-syntax#, "custom flow syntax" lesson>> focuses on using react4xp objects. Usage in a controller specifically is covered <<custom-flow-syntax#part_controller, here>>.

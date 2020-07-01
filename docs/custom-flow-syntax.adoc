@@ -111,6 +111,7 @@ The controller will render _two_ entries into this base HTML. To be clear: even 
 
 {zwsp} +
 
+[[part_controller]]
 === Part controller
 *The controller* now has more complexity than before, so here's an overview:
 
