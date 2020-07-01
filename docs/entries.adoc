@@ -11,8 +11,10 @@ It's actually a webpack term, but in react4xp we use the word entry for *a React
 
 Think of entries as *"bridge elements"*:
 
-.A mental model (image links to a cheatsheet):
-image:entries.png[link="media/entries_cheatsheet.png",title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=600px]
+.A mental model:
+image:entries.png[title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=600px]
+
+link:media/entries_cheatsheet.png[Download cheat sheet]
 
 (See also chunks, for a <<chunks#entries_and_chunks,complete picture>>)
 
