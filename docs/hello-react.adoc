@@ -24,8 +24,10 @@ These files are not included in the starter - use your copy/paste skills and rem
 
 {zwsp} +
 
+[[code]]
 == Code
 
+[[page_definition]]
 === Page definition
 First, we need a *page definition* XML file. Just XP boilerplate:
 
@@ -41,6 +43,7 @@ First, we need a *page definition* XML file. Just XP boilerplate:
 
 {zwsp} +
 
+[[react_component]]
 === React component
 Next, we'll add the *react component*. This displays a "Hello world" heading, and we'll add some simple functionality to it: every time you click the message, it will update a number in the next line and print a message in the console. This is to show that we're rendering an _active_ react component; we're not only using JSX as an XP templating language for static HTML - although sure, you could do that too if you want.
 
@@ -135,7 +138,7 @@ If you've added those 3 files, let's get this rendered! If you've used XP and Co
 You should now see something like this:
 
 [.thumb]
-image:hello_cs.png[link="media/hello_cs.png",title="Editing in Content Studio: Hello World. Click to see a high-res version", width=600px]
+image:hello_cs.png[title="Editing in Content Studio: Hello World. Click to see a high-res version", width=720px]
 
 {zwsp} +
 
@@ -143,7 +146,7 @@ image:hello_cs.png[link="media/hello_cs.png",title="Editing in Content Studio: H
 . Click _Preview_ on the top to open a new tab and view the content outside of Content Studio:
 
 [.thumb]
-image:hello_bottles.png[link="media/hello_bottles.png",title="Rendering: Hello World and some bottles on a wall somewhere. Bet you clicked this screenshot, didn't you?", width=600px]
+image:hello_bottles.png[title="Rendering: Hello World and some bottles on a wall somewhere. You didn't click this screenshot, did you?", width=720px]
 
 {zwsp} +
 
@@ -305,22 +308,9 @@ You might get _serverside runtime errors_ in the react components that you write
 Often, switching over to _clientside rendering_ for that particular react component, will give you a better/sourcemapped error message in the browser console, making your debugging life easier.
 ====
 
-== {zwsp} +
+{zwsp} +
 
 Okay, ready for the next example lesson?
-
-
-{zwsp} +
-[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
-|====
-|<- Back
-
-<<setup#, Setting up your project>>|
-
-||Next ->
-
-2. <<editorial-data-and-props#, Editorial data and props>>
-|====
 
 {zwsp} +
 {zwsp} +
