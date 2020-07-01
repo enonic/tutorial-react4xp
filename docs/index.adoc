@@ -8,6 +8,7 @@ This tutorial will show you step-by-step how to build XP sites and apps with Rea
 
 image:react4xp.svg[title="React4xp logo",width=256px]
 
+
 {zwsp} +
 
 == Introduction
@@ -37,6 +38,7 @@ After <<setup#, getting set up>>, we'll begin with *3 basic lessons* - just the 
 - <<editorial-data-and-props#, Editorial data and props>>: Insert editorial data from XP into the react component.
 - <<pages-parts-and-regions#, XP Pages, Parts, Regions and Content>>: Taking more advantage of the page-building powers in Content Studio - react rendering from any XP controller.
 
+
 {zwsp} +
 
 The next 3 lessons present a few more *advanced usages*:
@@ -47,22 +49,16 @@ The next 3 lessons present a few more *advanced usages*:
 
 {zwsp} +
 
-
 == Details
-*Need to go deeper?* Take a look at some more detailed explanations and docs:
+If you *need to go deeper* after going through the lessons, the most important concepts you'll encounter along the way are explained on pages of their own. There's also an API reference for the methods that the library exposes to the XP controllers.
 
 - <<entries#, Entries>>
-
 - <<jsxpath#, JsxPath>>
-
 - <<chunks#, Optimizing dependency chunks>>
-
 - API: <<api#react4xp_render, React4xp.render>>
 
-{zwsp} +
-{zwsp} +
 
-
+{zwsp} +
 
 == Issues?
 Questions, bug reports or suggestions are welcome!
