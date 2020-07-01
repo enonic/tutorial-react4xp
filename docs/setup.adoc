@@ -75,7 +75,7 @@ To verify that your app started successfully, you should find an entry similar t
 `2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully`
 ====
 
-== {zwsp} +
+{zwsp} +
 
 Now you're ready to get started with the first lesson chapters.
 

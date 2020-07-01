@@ -17,7 +17,7 @@ Entries and other chunks can import resources from chunks using *ordinary ES6 im
 
 [[entries_and_chunks]]
 .Entries and chunks - the full picture:
-image:entries_and_chunks.png[link="media/entries_and_chunks.png", title="Controllers, entries and chunks visualized together. Click for larger version.", width=720px]
+image:entries_and_chunks.png[title="Controllers, entries and chunks visualized together.", width=800px]
 
 {zwsp} +
 

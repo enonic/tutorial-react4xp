@@ -39,3 +39,6 @@ Returns an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP re
 
 - `body`: rendered HTML string. When server-side rendered, the whole HTML is inserted into the matching-id element inside the `body` option (if the `body` option is added. If not, a surrounding `<div>` is used). When client-side rendered, no HTML is inserted into `body` (or the generated container) - that's left to the client.
 - `pageContributions`: a regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] object. Includes everything the browser needs to activate (or client-side render) the react component: auto-compiled assets for the entry (_hello-react.js_ in this example) and whatever it may depend on (most importantly, react and react-dom in an _externals_ asset), and a client-side react4xp wrapper asset. These are all optimized and served to the client by react4xp services.
+
+{zwsp} +
+{zwsp} +
