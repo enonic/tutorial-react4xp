@@ -7,7 +7,7 @@
 
 Here we'll spice up our react component a little bit, by using `props` to insert editorial data from XP into the react component.
 
-We'll modify the same files you created <<hello-react#_code, previously>>:
+We'll modify the same files you created <<hello-react#code, previously>>:
 
 .Files involved:
 [source,files]
@@ -27,10 +27,10 @@ Let's change the files some more so we can use Content Studio to input some data
 {zwsp} +
 
 === Page definition
-We start with some standard XP procedure: defining the data in the page definition XML file. This file is the same as in <<hello-react#_page_definition, example 1>>, but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`: `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component:
+We start with some standard XP procedure: defining the data in the page definition XML file. This file is the same as in <<hello-react#page_definition, example 1>>, but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`: `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component:
 
 .hello-react.xml:
-[source,xml,linenums,options="nowrap"]
+[source,xml,options="nowrap"]
 ----
 <page>
   <display-name>Hello React</display-name>
@@ -66,7 +66,7 @@ We start with some standard XP procedure: defining the data in the page definiti
 {zwsp} +
 
 === React component
-Next, we'll modify <<hello-react#_react_component, the react component>> so that it displays data from a `props` object, instead of hardcoding everything.
+Next, we'll modify <<hello-react#react_component, the react component>> so that it displays data from a `props` object, instead of hardcoding everything.
 
 [[hello_react_jsx_modified]]
 .hello-react.jsx
@@ -109,11 +109,11 @@ Although, if you think that the _makeObjectDropper_ closure thing is a strange w
 {zwsp} +
 
 === Page controller
-And lastly, we'll hook them together: modify <<hello-react#_page_controller, the controller>> to fetch the data we defined in XML, then use a `props` object to inject the data into the react component:
+And lastly, we'll hook them together: modify <<hello-react#page_controller, the controller>> to fetch the data we defined in XML, then use a `props` object to inject the data into the react component:
 
 [[controller_with_props]]
 .hello-react.es6:
-[source,javascript,linenums,options="nowrap"]
+[source,javascript,options="nowrap"]
 ----
 const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
@@ -169,14 +169,14 @@ Compile the project, enter Content Studio (see the first two steps in <<hello-re
 You should still see it in the preview panel on the right (although, since you probably created the content without any data created along with it, it might not display much of the text. We'll fix that):
 
 [.thumb]
-image:hello_cs.png[link="media/hello_cs.png"title="Editing Hello World, same as before. Click to see a high-res version", width=600px]
+image:hello_cs.png[title="Editing Hello World, same as before.", width=720px]
 
 {zwsp} +
 
 Now, when you click the preview panel, the page-config editing panel should open on the right, with the data fields containing the default text we defined. Once you click Apply/save, the preview panel to the left should update.
 
 [.thumb]
-image:hello_editorial.png[link="media/hello_editorial.png",title="Editing Hello World in the page-config panel in Content Studio. Click to see a high-res version!", width=600px]
+image:hello_editorial.png[title="Editing Hello World in the page-config panel in Content Studio.", width=720px]
 
 {zwsp} +
 
@@ -185,7 +185,7 @@ So now, it looks the same as before, but with editorial data instead of hardcode
 *Apply/save* your new props, and the output should change again. But since we're still in Content Studio, it's justa static serverside-rendered update. To see the final rendering with your new data, all active, click _Preview_ on the top to open the page in a fresh tab:
 
 [.thumb]
-image:gday_bruce.png[link="media/gday_bruce.png",title="Rendering: G'day Bruce. This is turning into one big philosophers' joke, isn't it?", width=600px]
+image:gday_bruce.png[title="Rendering: G'day Bruce. This is turning into one big philosophers' joke, isn't it?", width=720px]
 
 {zwsp} +
 
@@ -243,17 +243,6 @@ Now might be a good time to take a closer look at <<api#react4xp_render, the API
 {zwsp} +
 
 Either way, you should be ready for the last of the three basic lesson chapters.
-
-[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
-|====
-|<- Back
-
-<<hello-react#, Hello React: server and clientside>>|
-
-Next ->
-
-<<pages-parts-and-regions#, Pages, Parts, Regions and Content>>
-|====
 
 {zwsp} +
 {zwsp} +

@@ -76,6 +76,7 @@ Apart from that, you can use ordinary ES6 and import and nest other JS, react co
 
 {zwsp} +
 
+[[page_controller]]
 === Page controller
 Finally, we'll add a bare-bone *page controller* that calls the rendering engine:
 
@@ -138,7 +139,7 @@ If you've added those 3 files, let's get this rendered! If you've used XP and Co
 You should now see something like this:
 
 [.thumb]
-image:hello_cs.png[title="Editing in Content Studio: Hello World. Click to see a high-res version", width=720px]
+image:hello_cs.png[title="Editing in Content Studio: Hello World.", width=720px]
 
 {zwsp} +
 
