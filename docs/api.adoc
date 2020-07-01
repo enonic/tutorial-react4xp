@@ -2,16 +2,33 @@
 :toc: right
 :imagesdir: media/
 
+The react4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib[Enonic Market]) exposes a couple of methods that can be run from XP controllers.
+
+For more instructions on how to installing the library locally or insert it into your project, see link:https://github.com/enonic/lib-react4xp#readme[the library docs] at github.
+
 [[api]]
+== Import in a controller
+
+[source,javascript,options="nowrap"]
+----
+const React4xp = require('/lib/enonic/react4xp');
+----
+
+{zwsp} +
 
 [[react4xp_render]]
 == React4xp.render
 
-React4xp's `.render` is a one-in-all shorthand function for a lot of use cases. Basically, take any HTML string and pass it through `.render` as a `body` option, and react4xp will insert the react component into the HTML string and add any necessary page contributions to make it all work.
+All-in-one shorthand function for a lot of use cases. Covers both client- and serverside rendering.
+
+Inserts a react component into an (optional) pre-existing HTML string and adds any necessary page contributions to make all work: links to assets, both shared and specific to the entry, and a client-side JS call (`.render` or `.hydrate` in the link:https://www.npmjs.com/package/react4xp-runtime-client[client wrapper]) that activates the react component in the browser.
 
 {zwsp} +
 
-The *signature* is analogous to thymeleaf's familiar `render(view, model)`. But there are two extra parameters, and a full XP response object is returned:
+[.lead]
+Signature
+
+The signature is analogous to thymeleaf's familiar `render(view, model)`. But there are two extra parameters, and a full XP response object is returned:
 
 [source,javascript,options="nowrap"]
 ----
@@ -20,29 +37,62 @@ The *signature* is analogous to thymeleaf's familiar `render(view, model)`. But 
 
 {zwsp} +
 
-=== Parameters
+[.lead]
+Parameters
 
-- `entry` (mandatory, string or component object): the reference to the "template"; the react component to be rendered. <<jsxpath#, jsxPath>> reference to an <<entries#, entry>> - or if the entry is a JSX file with the _same name_ in the _same folder_ as the controller, you can use a `portal.getComponent()` object here.
-- `props` (optional object, must be serializable): data model passed into the react component.
-- `request` (link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object], kind of optional, but _mandatory for react activation_): This is to keep the component rendered static and serverside-render if the rendering happens inside XP content studio. No browser react activation (or client-side rendering) happens inside content studio, you only get a HTML visualization from the initial `props` rendered on the server. Special case: if `request` is omitted/falsy, page-contributions rendering is completely skipped. Note: the .render _options_ argument is still valid: the rendered static HTML is still inserted into the HTML from the added `body`, and `pageContributions` inside _options_ are still added.
-- `options` (optional object): additional options to control the rendering:
+[%header,cols="1%,1%,98%a"]
+[frame="none"]
+[grid="none"]
+|===
+| Name   | Type   | Description
+| `entry` | string or component object, mandatory | Reference to an <<entries#, entry>>: the react component to be rendered. <<jsxpath#, JsxPath>> reference - or if the entry is a JSX file with the _same name_ in the _same folder_ as the controller, you can use a `portal.getComponent()` object here. Corresponds to the template argument in `thymeleaf.render`.
+| `props` | object, optional | Data model passed into the react component. JS object must be serializable (no functions can be passed). Corresponds to the model argument in `thymeleaf.render`.
+| `request` | link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object], optional (but _mandatory for react activation_) | Include to detect the rendering mode inside/outside Content Studio: inside Content Studio there should be only a static serverside-rendering, no browser react activation (or client-side rendering), only returning get an HTML visualization with the initial `props`. Special case: if `request` is not an object but omitted/falsy, page-contributions rendering is _completely skipped_. In this case, the _options_ argument (below) is still valid: any added `body` there will still serve as a container for the rendered output from this call, and any `pageContributions` inside _options_ are still added and returned.
 
-** `id` (string): ID of the component, matching the ID of an element in `body`. React will render into that container element, replacing whatever was already there. If missing, a random ID is generated.
-** `body` (string): HTML string, a base for the returned `body`. Can be a hardcoded string, or come from a thymeleaf/mustache/XSLT render, and so on. Just make sure the `id` option matches an HTML id here (what happens if not? React4xp creates a target element with that ID, last in the root element of `body`). If there's no `body` option, a matching-ID `<div>` target container is generated.
+| `options` | object, optional | Additional options to control the rendering. All of them are optional within this object:
 
-** `pageContributions` (object): you might already have some page contributions you want to return together with the ones generated by react4xp. Same way as with `body`, just add them here to pass them through `render`. Order: the ones you add here are output before the ones rendered.
-** `clientRender` (boolean): if `true` (truthy, actually), the server-side rendering is skipped (in live mode and previews. Inside content studio's browser or edit modes, you still only get a static server-side rendered representation).
+[%header,cols="1%,1%,1%,96%a"]
+[frame="topbot"]
+[grid="none"]
+[caption=""]
+.Properties
+!===
+! Name        ! Type   ! Default ! Description
+! `id` ! string! Unique string (random) !  ID of the component, targeting the ID of an element in `body` (below): react will render into that container element. Should be a unique ID within the entire HTML document.
 
-=== Return
+If `id` is missing, a random ID is generated.
+! `body` ! string: valid HTML ! `<div>` with matching `id` ! HTML to serve as container for the react content. Can be a hardcoded string, come from a thymeleaf/mustache/XSLT render, or any source.  When server-side rendering, the rendered output will be inserted into the matching-`id` element inside here (replacing whatever was already in that element), and everything (container `body` with rendered content in it) is returned as one HTML string. When client-side rendering, this insertion happens in the browser.
+
+If no `body` is supplied, an empty `<div>` element with an ID matching `id` is generated and used as container.
+
+If a `body` is supplied but it doesn't contain any element with a matching `id`, an extra matching-`id` `<div>` element will be generated and inserted into `body` - as a child of the root element of `body` and after any other content that's already there.
+! `pageContributions` ! object: valid link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] ! ! If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added _before_ the ones that will be rendered (within each section `headBegin`, `bodyEnd` etc).
+! `clientRender` ! boolean ! false ! Switch between clientside and servierside rendering, on this particular rendering. Other renderings are not affected, even within the same controller or using the same entry more than once.
+
+If `false` / falsy or omitted, you get serverside rendering and the returned object will contain an HTML representation of the react component with the initial `props`, and page contributions will make the client call `.hydrate`.
+
+If `true` / truthy, the server-side rendering is skipped for this particular rendering. The client will call `.render`.
+
+This *only applies in live mode and previews*: inside _edit_ or _browse_ modes in Content Studio, you still only get a static server-side rendered representation).
+!===
+
+|===
+
+{zwsp} +
+
+[.lead]
+Returns
 
 Returns an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP response object] with these main attributes:
 
-- `body`: rendered HTML string. When server-side rendered, the whole HTML is inserted into the matching-id element inside the `body` option (if the `body` option is added. If not, a surrounding `<div>` is used). When client-side rendered, no HTML is inserted into `body` (or the generated container) - that's left to the client.
-- `pageContributions`: a regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] object. Includes everything the browser needs to activate (or client-side render) the react component: auto-compiled assets for the entry (_hello-react.js_ in this example) and whatever it may depend on (most importantly, react and react-dom in an _externals_ asset), and a client-side react4xp wrapper asset. These are all optimized and served to the client by react4xp services.
+[%header,cols="1%,1%,98%a"]
+[frame="none"]
+[grid="none"]
+|===
+| Name   | Type   | Description
+| `body` | string, rendered HTML | HTML output. Surrounding HTML from any input `options.body` (or just a surrounding placeholder `<div>`), and if serverside rendering, the HTML from the rendered react component is included inside the target container in the surrounding HTML.
+| `pageContributions`| object | Regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions]. Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating client-wrapper call. Urls point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
+|===
 
 {zwsp} +
 {zwsp} +
-
-== See also
-
-- The react4xp library at link:https://github.com/enonic/lib-react4xp/[github] or on link:https://market.enonic.com/vendors/enonic/react4xp-lib[Enonic Market].
