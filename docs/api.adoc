@@ -2,12 +2,14 @@
 :toc: right
 :imagesdir: media/
 
+[[api]]
 The react4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib[Enonic Market]) exposes a couple of methods that can be run from XP controllers.
 
-For more instructions on how to installing the library locally or insert it into your project, see link:https://github.com/enonic/lib-react4xp#readme[the library docs] at github.
 
-[[api]]
-== Import in a controller
+== Install
+Instructions on how to installing the library locally or insert it into your project are at link:https://github.com/enonic/lib-react4xp#readme[the library docs] at github.
+
+== Import library
 
 [source,javascript,options="nowrap"]
 ----
@@ -19,14 +21,13 @@ const React4xp = require('/lib/enonic/react4xp');
 [[react4xp_render]]
 == React4xp.render
 
-All-in-one shorthand function for a lot of use cases. Covers both client- and serverside rendering.
+All-in-one (static) shorthand function for a lot of use cases. Covers both client- and serverside rendering.
 
 Inserts a react component into an (optional) pre-existing HTML string and adds any necessary page contributions to make all work: links to assets, both shared and specific to the entry, and a client-side JS call (`.render` or `.hydrate` in the link:https://www.npmjs.com/package/react4xp-runtime-client[client wrapper]) that activates the react component in the browser.
 
 {zwsp} +
 
-[.lead]
-Signature
+==== Signature
 
 The signature is analogous to thymeleaf's familiar `render(view, model)`. But there are two extra parameters, and a full XP response object is returned:
 
@@ -37,8 +38,7 @@ The signature is analogous to thymeleaf's familiar `render(view, model)`. But th
 
 {zwsp} +
 
-[.lead]
-Parameters
+==== Parameters
 
 [%header,cols="1%,1%,98%a"]
 [frame="none"]
@@ -58,9 +58,9 @@ Parameters
 .Properties
 !===
 ! Name        ! Type   ! Default ! Description
-! `id` ! string! Unique string (random) !  ID of the component, targeting the ID of an element in `body` (below): react will render into that container element. Should be a unique ID within the entire HTML document.
+! `id` ! string ! Unique string (random) !  ID of the component, targeting the ID of an element in `body` (below): react will render into that container element. Should be a unique ID within the entire HTML document.
 
-If `id` is missing, a random ID is generated.
+If no matching element ID is found in `body`, this sets the ID of a generated element in the HTML output. If `id` is missing, a unique ID is generated, either random or generated from the content.
 ! `body` ! string: valid HTML ! `<div>` with matching `id` ! HTML to serve as container for the react content. Can be a hardcoded string, come from a thymeleaf/mustache/XSLT render, or any source.  When server-side rendering, the rendered output will be inserted into the matching-`id` element inside here (replacing whatever was already in that element), and everything (container `body` with rendered content in it) is returned as one HTML string. When client-side rendering, this insertion happens in the browser.
 
 If no `body` is supplied, an empty `<div>` element with an ID matching `id` is generated and used as container.
@@ -80,8 +80,7 @@ This *only applies in live mode and previews*: inside _edit_ or _browse_ modes i
 
 {zwsp} +
 
-[.lead]
-Returns
+==== Returns
 
 Returns an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP response object] with these main attributes:
 
@@ -89,10 +88,168 @@ Returns an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP re
 [frame="none"]
 [grid="none"]
 |===
-| Name   | Type   | Description
+| Attribute   | Type   | Description
 | `body` | string, rendered HTML | HTML output. Surrounding HTML from any input `options.body` (or just a surrounding placeholder `<div>`), and if serverside rendering, the HTML from the rendered react component is included inside the target container in the surrounding HTML.
 | `pageContributions`| object | Regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions]. Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating client-wrapper call. Urls point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
 |===
 
 {zwsp} +
+
+==== Examples
+
+Most of the lessons in the guide use `React4xp.render` (except the "custom flow" ones). For example <<hello-react#first_helloreact_jsx, here>> or <<pages-parts-and-regions#color_part_controller, here>>.
+
 {zwsp} +
+{zwsp} +
+{zwsp} +
+
+== React4xp object
+
+More cumbersome than `React4xp.render`, but also more flexible and controllable, is creating a data-holding react4xp object with the React4xp contructor, manipulating it or extracting data from it, and then render it to an HTML body string and/or page contributions, separately (it's actually what `React4xp.render` does behind the scenes).
+
+{zwsp} +
+{zwsp} +
+
+=== Constructor
+
+Create an initial object from an entry.
+
+[source,javascript,options="nowrap"]
+----
+const myComponent = new React4xp(entry);
+----
+
+[%header,cols="1%,1%,98%a"]
+[frame="none"]
+[grid="none"]
+|===
+| Parameter   | Type   | Description
+| `entry` | string or component object, mandatory | Reference to an <<entries#, entry>>: the react component to be rendered. Direct <<jsxpath#, JsxPath>> string, or a `portal.getComponent()` object. If you use a component object like that, the entry must be a JSX file with the _same name_ in the _same folder_ as the controller, and react4xp will try to generate an ID from the content.
+|===
+
+*Constructs* a react4xp data object, which exposes the attributes and methods below:
+
+{zwsp} +
+{zwsp} +
+
+=== Object attributes
+
+[%header,cols="1%,1%,98%a"]
+[frame="none"]
+[grid="none"]
+|===
+| Name   | Type   | Description
+| `react4xpId` | string | Target `id` of the HTML element the entry will be rendered into (if it's been set yet - see `setId` and `uniqueId` below). Also identifies the object.
+| `jsxPath` | string | <<jsxpath#, jsxPath>> to the entry.
+| `props` | object | `props` for the entry's initial rendering. At the time of rendering, an attribute `react4xpId` is added to the props, allowing each entry to access its own unique ID at runtime.
+|===
+
+{zwsp} +
+{zwsp} +
+
+=== Setter methods
+
+Use these to set the object's properties. All of them are optional; if not used, the object will render with empty values or placeholders where needed, along the same logic as for <<#react4xp_render, React4xp.render>> above.
+
+Each setter method returns the object itself, so that you can use a builder pattern where...
+
+[source,javascript,options="nowrap"]
+----
+myComponent.firstSetter("a").secondSetter("b").thirdSetter("c");
+----
+
+...is equivalent to:
+
+[source,javascript,options="nowrap"]
+----
+myComponent.firstSetter("a");
+myComponent.secondSetter("b");
+myComponent.thirdSetter("c");
+----
+
+The order of the setters doesn't matter, with the exception if `setId` and `uniqueId` which affect each other.
+
+{zwsp} +
+
+==== .setProps
+
+Sets props for the entry.
+
+[source,javascript,options="nowrap"]
+----
+myComponent.setProps(props);
+----
+
+[%header,cols="1%,1%,98%a"]
+[frame="none"]
+[grid="none"]
+|===
+| Parameter   | Type   | Description
+| `props` | object, mandatory | `props` passed into the react component for initial rendering. JS object must be serializable (no functions can be passed).
+|===
+
+{zwsp} +
+
+==== .setId
+
+Sets an ID (directly and literally, so uniqueness is up to you) of both the target HTML element for rendering the entry into, and the ID of the data object itself (`react4xpId`). If `renderBody()` is run later without finding a matching element ID in `body`, this sets the ID of a generated element in the HTML output.
+
+If the data object already has an ID, `.setId(id)` will overwrite it. If `id` is omitted, `.setId()` just deletes any previous ID (which has the later effect of giving this a new, unique ID at the time of rendering).
+
+[source,javascript,options="nowrap"]
+----
+myComponent.setId(id);
+----
+
+[%header,cols="1%,1%,98%a"]
+[frame="none"]
+[grid="none"]
+|===
+| Parameter   | Type   | Description
+| `id` | string, optional |  ID of both the target HTML element and the data object itself.
+|===
+
+{zwsp} +
+
+==== .uniqueId
+
+Enforces a unique ID, either by itself or after running `.setId()`. If the object already has an ID (`react4xpId`), a random-ID string will be added to it. If not, the ID will just be a new random ID.
+
+[source,javascript,options="nowrap"]
+----
+myComponent.uniqueId();
+----
+
+No parameters.
+
+{zwsp} +
+
+==== .setJsxPath
+
+If you for some reason need to override the JsxPath that was set (or inferred from the component object) in the constructor.
+
+[source,javascript,options="nowrap"]
+----
+myComponent.setJsxPath(jsxPath);
+----
+
+[%header,cols="1%,1%,98%a"]
+[frame="none"]
+[grid="none"]
+|===
+| Parameter   | Type   | Description
+| `jsxPath` | string, mandatory |  New <<jsxpath#, jsxPath>> to a different entry.
+|===
+
+{zwsp} +
+{zwsp} +
+
+
+=== Rendering methods
+
+==== .renderBody
+
+Renders the HTML output for a
+
+[source,javascript,options="nowrap"]
+----
