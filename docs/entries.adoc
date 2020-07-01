@@ -12,14 +12,13 @@ It's actually a webpack term, but in react4xp we use the word entry for *a React
 Think of entries as *"bridge elements"*:
 
 .A mental model:
-image:entries.png[title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=600px]
+image:entries.png[title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=720px]
 
-link:media/entries_cheatsheet.png[Download cheat sheet]
-
-(See also chunks, for a <<chunks#entries_and_chunks,complete picture>>)
+(Download link:media/entries_cheatsheet.png[cheat sheet]. See also chunks, for a <<chunks#entries_and_chunks, complete picture>>)
 
 On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can *import* stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.
 
+{zwsp} +
 
 == How to make an entry
 
