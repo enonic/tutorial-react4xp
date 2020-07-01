@@ -122,6 +122,7 @@ export default (props) => (
 
 {zwsp} +
 
+[[page_controller]]
 ==== Page controller
 
 The `props` of course come from the *Page controller*. Still similar to the previous examples, we're mainly just adding props that are needed by `<Regions>` in the react component.
@@ -189,7 +190,7 @@ This lays the foundation for this example and also the later ones. When this is 
 . In the grid (Content Studio browse mode), under your Site, create a new Template content under Templates:
 
 [.thumb]
-image:template_new.png[link="media/template_new.png",title="Creating a new Template content in Content Studio.", width=500px]
+image:template_new.png[title="Creating a new Template content in Content Studio.", width=720px]
 
 {zwsp} +
 
@@ -304,10 +305,10 @@ Time to get this displayed and see it all in action! Again, just XP routine: cre
 . As before, recompile/deploy and enter Content Studio. In the same Site as the Template you just made (but not under _Templates_), create a new _my-content_ item:
 
 [.thumb]
-image:content_new.png[link="media/content_new.png",title="Creating a new content item in Content Studio (click for high-res version)", width=500px]
+image:content_new.png[title="Creating a new content item in Content Studio", width=720px]
 
 [.thumb]
-image:content_my.png[link="media/content_my.png",title="Selecting the new my-content type in Content Studio (click for high-res version)", width=500px]
+image:content_my.png[title="Selecting the new my-content type in Content Studio", width=720px]
 
 {zwsp} +
 
@@ -315,7 +316,7 @@ image:content_my.png[link="media/content_my.png",title="Selecting the new my-con
 . When you edit the new content, the preview panel with a dash-bordered *_"Drop here"_ area* should appear on the right. This is the _default_ Page controller rendering the initially empty *Region*. To the far right, there should be a config panel with the _"Insert"_ tab (if you can't see them, use the screen and cogwheel icons on the top right):
 
 [.thumb]
-image:page_with_ready_region.png[link="media/page_with_ready_region.png",title="Editing new content in Content Studio, with Region ready to receive parts etc (click for high-res version)", width=500px]
+image:page_with_ready_region.png[title="Editing new content in Content Studio, with Region ready to receive parts etc", width=720px]
 
 {zwsp} +
 
@@ -323,7 +324,7 @@ image:page_with_ready_region.png[link="media/page_with_ready_region.png",title="
 . Drag _"Part"_ from the config panel into the Region. In the dropdown menu (_"Type to search..."_) that appears in the Region (or the _"Part"_ dropdown menu now on the right), select your new _color_ Part. It should now appear correctly rendered in the preview panel (occasionally, you might need to _Save_ and refresh the page). And the config panel for editing the settings of that particular part should appear on the far right (if it doesn't, click the part itself: _"Hey, I'm pretty red"_):
 
 [.thumb]
-image:content_with_red_part.png[link="media/content_with_red_part.png",title="Editing new content in Content Studio, with Region ready to receive parts etc (click for high-res version)", width=500px]
+image:content_with_red_part.png[title="Editing new content in Content Studio, with Region ready to receive parts etc", width=720px]
 
 {zwsp} +
 
@@ -340,28 +341,16 @@ We won't go into the details about the HTML output anymore - it's structurally a
 ====
 Each time the client calls `React.CLIENT.render` or `.hydrate`, it will spawn a *separate root react app*. For this to happen a controller usually calls `React4xp.render` (*). So in this example, there will be one independent react app in the client for each of the _color_ Parts you added to the Region.
 
-(*) Remember from the code explanation of <<#_page_controller, our Page controller>> that `React4xp.render` needs the `request` argument to generate page contributions. Omitting `request` forces a pure serverside rendering without hydration - so our page controller is not starting a separate react app in the client.
+(*) Remember from the code explanation of <<#page_controller, our Page controller>> that `React4xp.render` needs the `request` argument to generate page contributions. Omitting `request` forces a pure serverside rendering without hydration - so our page controller is not starting a separate react app in the client.
 
-(Just for the record, there is an alternative renderer, `.renderPageContributions`. It also starts a new react app, but never needs `request`. More on that in a <<custom-flow-syntax#, later lesson>>)
+(And just for the record, there is an alternative renderer: `.renderPageContributions`. It also starts a new react app, but never needs `request`. More on that in a <<custom-flow-syntax#, later lesson>>)
 ====
 
-== {zwsp} +
+{zwsp} +
 
 Now we've covered the basics of how to use react4xp. It'll be enough for most simple setups and use cases.
 
 Moving on from here, we'll take a look at more advanced ways to use react4xp, giving you more control.
-
-{zwsp} +
-[cols="e,>e",width="100%",grid="none",frame="none",stripes=none]
-|====
-|<- Back
-
-<<editorial-data-and-props#, Editorial data and props>>|
-
-Next: advanced ->
-
-<<source-file-structure#, Free source file structure>>
-|====
 
 {zwsp} +
 {zwsp} +
