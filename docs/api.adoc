@@ -109,9 +109,10 @@ Most of the lessons in the guide use `React4xp.render` (except the "custom flow"
 {zwsp} +
 {zwsp} +
 
+[[react4xp_object]]
 == React4xp object
 
-More cumbersome than `React4xp.render`, but also more flexible and controllable, is creating a data-holding react4xp object with the React4xp contructor, manipulating it or extracting data from it, and then render it to an HTML body string and/or page contributions, separately (it's actually what `React4xp.render` does behind the scenes).
+Slightly more cumbersome than `React4xp.render`, but also more flexible and controllable: create a data-holding react4xp object with the React4xp contructor, manipulate it or extract data from it, and then later render it to an HTML body string and/or page contributions, separately. This is actually what `React4xp.render` does behind the scenes.
 
 The <<custom-flow-syntax#, "custom flow syntax">> lesson focuses on using react4xp data objects.
 

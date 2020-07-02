@@ -588,9 +588,11 @@ If you haven't already, it's recommended to take a look at the additional explan
 
 {zwsp} +
 
-API reference:
+<<api#, API>> reference:
 
 -> <<api#react4xp_render, React4xp.render>>
+
+-> <<api#react4xp_object, React4xp data objects>>
 
 {zwsp} +
 {zwsp} +

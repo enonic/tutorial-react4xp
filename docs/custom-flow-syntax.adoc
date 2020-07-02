@@ -9,7 +9,7 @@ In this example things get a bit more complex. We'll make another Part, and re-u
 
 - However, we won't use the `React4xp.render` shorthand function from before. Instead, we'll look at a more *explicit react4xp syntax*:
     a. It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your <<entries#, entry>>; you can manipulate the object(s) or extract data from them _before_ rendering.
-    b. Here, each entry is rendered in *two separate methods*: `renderBody` and `renderPageContributions`.
+    b. Here, each entry is rendered in *two separate methods*: `renderBody` and `renderPageContributions` (full details: <<api#react4xp_object, React4xp data object API>>)
     c. You can pretty easily render *multiple entries* from the same controller, by chaining together their rendering.
 
 - We will also use a *thymeleaf* template for one of the entries - and take advantage of the react4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.
@@ -233,5 +233,10 @@ All of this amounted to a new Part, _custom-flow_. It can be added to any Region
 
 Again, if you add more than one _custom-flow_ Part to a Region, you'll see that they are independent both in behavior and output; separated by their unique ID.
 
+== Further reading
+
+The API behind the custom flow syntax: <<api#react4xp_object, React4xp data objects>>.
+
+{zwsp} +
 {zwsp} +
 {zwsp} +
