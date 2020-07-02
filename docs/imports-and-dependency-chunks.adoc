@@ -486,7 +486,7 @@ Also, you'll probably need to add the required NPM packages for this example:
 
 [source,bash,options="nowrap"]
 ----
-npm install -D css-loader@3 node-sass@4 mini-css-extract-plugin
+npm install -D css-loader@3 node-sass@4 mini-css-extract-plugin sass-loader@8
 ----
 
 {zwsp} +
