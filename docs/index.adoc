@@ -50,12 +50,16 @@ The next 3 lessons present a few more *advanced usages*:
 {zwsp} +
 
 == Details
-If you *need to go deeper* after going through the lessons, the most important concepts you'll encounter along the way are explained on pages of their own. There's also an API reference for the methods that react4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib[_lib-react4xp_]) exposes to the XP controllers.
+If you *need to go deeper* after going through the lessons, the most important concepts you'll encounter along the way are explained on pages of their own:
 
 - <<entries#, Entries>>
 - <<jsxpath#, JsxPath>>
 - <<chunks#, Optimizing dependency chunks>>
-- API: <<api#react4xp_render, React4xp.render>>
+
+There's also an <<api#, API reference>> for the methods that the react4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib[_lib-react4xp_]) exposes to the XP controllers:
+
+- <<api#react4xp_render, React4xp.render>>
+- <<api#react4xp_object, React4xp data objects>>
 
 {zwsp} +
 
