@@ -343,7 +343,7 @@ Renders based on the state of the data object at the time of rendering, and with
 ====
 Does _not_ render any HTML. Run `.renderBody` from the same data object, or the browser may have nothing to activate / nowhere to render the entry.
 
-Also, there is *no detection of inside-vs-outside Content Studio*, and consequently the client is _not_ prevented from running client-side code in Content Studio. That is not recommended, see the examples for how to handle this.
+Also, there is *no detection of inside-vs-outside Content Studio*, and consequently the client is _not_ automatically prevented from running client-side code in Content Studio. That is not recommended, see the examples for how to handle this.
 ====
 
 *Parameters:*
