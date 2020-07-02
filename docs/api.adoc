@@ -269,6 +269,7 @@ These methods perform specific rendering tasks independently, using the data obj
 NOTE: Most of these rendering methods will lock down the jsxPath and ID if the react4xp data object, the first time one of them is run. After this, the setters will prevent these from being changed so that another conflicting rendering can't be performed from the same data object.
 
 {zwsp} +
+{zwsp} +
 
 [[render_body]]
 ==== .renderBody
@@ -323,6 +324,7 @@ The root of the returned HTML is always a *surrounding container* HTML that will
 Inside that matching-ID element, there will be a serverside rendering of the entry (with the initial props from `.setProps`) if `options.clientRender` is falsy.
 
 {zwsp} +
+{zwsp} +
 
 ==== .renderPageContributions
 
@@ -372,11 +374,37 @@ A regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP 
 
 Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a link:https://www.npmjs.com/package/react4xp-runtime-client[client-side react4xp wrapper asset] and an activating trigger call to the client wrapper. Urls point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
 
-With a serverside rendering (`options.clientRender` is falsy), the client will expect an existing target element with a pre-rendered entry in the response HTML, and call `react4xp.CLIENT.hydrate`. If `true` / truthy, an empty target element is expected in the response HTML, and the rendering is left to the client with `react4xp.CLIENT.render`.
+With a serverside rendering (`options.clientRender` is falsy), the client will expect an existing target element with a pre-rendered entry in the response `body`, and call `react4xp.CLIENT.hydrate`. If `options.clientRender` is truthy, an empty target element is expected in the response `body`, and the rendering is left to the client with `react4xp.CLIENT.render`.
 
 {zwsp} +
 {zwsp} +
+
+==== .renderEntryToHtml
+
+[source,javascript,options="nowrap"]
+----
+const entryHTML = myComponent.renderEntryToHtml(overrideProps);
+----
+
+Helper rendering tool, for utility purposes.
+
+Pure serverside rendering of the entry to a static HTML string, without any surrounding HTML, target container or anything, just the entry.
+
+[%header,cols="1%,1%,98%a"]
+[frame="none"]
+[grid="none"]
+|===
+| Parameter   | Type   | Description
+| `overrideProps` | object, optional | If omitted, the data object's own props (from `.setProps`, if it's been run) are used for the rendering. If `overrideProps` are included, however, the data object's own props are ignored, and `overrideProps` used instead.
+
+JS object must be serializable (no functions can be passed).
+|===
+
+*Returns* a static HTML representation of the entry.
 
 === Examples
+
+{zwsp} +
+{zwsp} +
 
 The <<custom-flow-syntax#, "custom flow syntax" lesson>> focuses on using react4xp objects. Usage in a controller specifically is covered <<custom-flow-syntax#part_controller, here>>.
