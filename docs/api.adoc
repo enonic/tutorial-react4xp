@@ -126,7 +126,7 @@ The <<custom-flow-syntax#, "custom flow syntax">> lesson focuses on using react4
 const myComponent = new React4xp(entry);
 ----
 
-Creates an initial object from an entry.
+Creates an initial react4xp data object from an entry.
 
 [%header,cols="1%,1%,98%a"]
 [frame="none"]
