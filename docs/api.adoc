@@ -60,7 +60,7 @@ The signature is analogous to thymeleaf's familiar `render(view, model)`. But th
 .Properties
 !===
 ! Name        ! Type   ! Default ! Description
-! `id` ! string ! Unique string (random) !  ID of the component, targeting the ID of an element in `body` (below): react will render into that container element. Should be a unique ID within the entire HTML document.
+! `id` ! string ! Generated unique string !  ID of the component, targeting the ID of an element in `body` (below): react will render into that container element. Should be a unique ID within the entire HTML document.
 
 If no matching element ID is found in `body`, this sets the ID of a generated element in the HTML output. If `id` is missing, a unique ID is generated, either random or generated from the content.
 ! `body` ! string: valid HTML ! `<div>` with matching `id` ! HTML to serve as container for the react content. Can be a hardcoded string, come from a thymeleaf/mustache/XSLT render, or any source.  When server-side rendering, the rendered output will be inserted into the matching-`id` element inside here (replacing whatever was already in that element), and everything (container `body` with rendered content in it) is returned as one HTML string. When client-side rendering, this insertion happens in the browser.
