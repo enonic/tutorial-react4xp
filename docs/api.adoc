@@ -28,7 +28,7 @@ Inserts a react component into an (optional) pre-existing HTML string and adds a
 
 {zwsp} +
 
-==== Signature
+=== Signature
 
 The signature is analogous to thymeleaf's familiar `render(view, model)`. But there are two extra parameters, and a full XP response object is returned:
 
@@ -40,7 +40,7 @@ The signature is analogous to thymeleaf's familiar `render(view, model)`. But th
 {zwsp} +
 
 [[react4xp_render_parameters]]
-==== Parameters
+=== Parameters
 
 [%header,cols="1%,1%,98%a"]
 [frame="none"]
@@ -82,7 +82,7 @@ This *only applies in live mode and previews*: inside _edit_ or _browse_ modes i
 
 {zwsp} +
 
-==== Returns
+=== Returns
 
 Returns an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP response object] with these main attributes:
 
@@ -101,7 +101,7 @@ Inside that matching-ID element, there will be a serverside rendering of the ent
 
 {zwsp} +
 
-==== Examples
+=== Examples
 
 Most of the lessons in the guide use `React4xp.render` (except the "custom flow" ones). For example <<hello-react#first_helloreact_jsx, here>> or <<pages-parts-and-regions#color_part_controller, here>>.
 
@@ -437,6 +437,6 @@ If `body` is supplied but doesn’t contain any element with an ID matching `rea
 {zwsp} +
 {zwsp} +
 
-=== Examples
+==== Examples
 
 Usage in a controller specifically is demonstrated <<custom-flow-syntax#part_controller, here>>.

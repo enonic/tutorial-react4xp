@@ -5,33 +5,33 @@
 
 == Lesson overview
 
-React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: just displaying a working react component in content studio.
+React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: displaying a working react component in content studio.
 
 We'll first do that in the serverside rendered way (this is the react4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
-
-We'll do this by adding a *regular XP page controller* we'll call _hello-react_:
-
-.Files involved:
-[source,files]
-----
-site/pages/hello-react/
-  hello-react.xml
-  hello-react.jsx
-  hello-react.es6
-----
-
-These files are not included in the starter - use your copy/paste skills and remember that `hello-react` must be identical between file names and folder name.
 
 {zwsp} +
 
 [[code]]
 == Code
 
-[[page_definition]]
-=== Page definition
-First, we need a *page definition* XML file. Just XP boilerplate:
+Lets start by setting up a *regular XP page controller* called `hello-react`.
 
-.hello-react.xml:
+
+.We'll add the following files to the project
+[source,files]
+----
+/src/resources/site/pages/hello-react/
+  hello-react.xml
+  hello-react.jsx
+  hello-react.es6
+----
+
+
+[[page_definition]]
+=== Page descriptor
+First, we need a *page * XML file. Just XP boilerplate:
+
+.pages/hello-react/hello-react.xml:
 [source,xml,options="nowrap"]
 ----
 <page>
