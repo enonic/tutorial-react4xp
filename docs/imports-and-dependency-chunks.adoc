@@ -30,8 +30,8 @@ react4xp/
         ActiveColorOval.scss
         Button.jsx
         Button.scss
-        ColorButton.jsx
-        ColorButton.scss
+        ColorButtons.jsx
+        ColorButtons.scss
         shared-styles.scss
 
 react4xp.properties
