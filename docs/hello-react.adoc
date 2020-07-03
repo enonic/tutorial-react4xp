@@ -69,9 +69,9 @@ export default (props) => <div onClick={dropBottle}>
 
 [NOTE]
 ====
-One thing is mandatory for this to work, shown in the last line: the JSX file *must default-export a function* that *_may_ take a props object* and *_must_ return a react component*. <<source-file-structure#, More on this later>>.
+One thing is mandatory for this to work, shown in the `export default` line: the JSX file *must default-export a function* that *_may_ take a props object* and *_must_ return a react component*. <<source-file-structure#, More on this later>>.
 
-Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from _node_modules/_ in the regular way (there is a caveat or two here. <<imports-and-dependency-chunks#, We'll get back to that later too>>).
+Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from _node_modules/_ in the regular way. <<imports-and-dependency-chunks#, We'll also get back to that later>>, including a caveat or two.
 ====
 
 {zwsp} +
@@ -166,7 +166,7 @@ Two things are worth knowing about the rendering, before we move on:
 
 If you clicked the rendering _inside XP Content Studio_ instead of a preview tab, you'd notice there was *no bottle-counting*. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the `request` argument is used in `React4xp.render` to handle this automatically: inside Content Studio, you'll only see the rendering as a regular static XP preview / placeholder instead of active react.
 
-NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. <<custom-flow-syntax#, Lesson 5 shows you how>>.
+NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. The <<custom-flow-syntax#, custom flow>> chapter shows you how.
 
 {zwsp} +
 

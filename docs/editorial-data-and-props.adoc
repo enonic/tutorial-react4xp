@@ -33,8 +33,8 @@ We start with some standard XP procedure: defining the data in the page definiti
 [source,xml,options="nowrap"]
 ----
 <page>
-  <display-name>Hello React</display-name>
-  <description>Editorial example</description>
+    <display-name>Hello React</display-name>
+    <description>Editorial example</description>
     <form>
         <input type="TextLine" name="greeting">
             <label>What's the greeting?</label>
@@ -48,7 +48,7 @@ We start with some standard XP procedure: defining the data in the page definiti
             <occurrences minimum="1" maximum="1"/>
         </input>
 
-        <input type="TextLine" name="counted">
+        <input type="TextLine" name="things">
             <label>What are the things on the wall?</label>
             <default>bottles of beer</default>
             <occurrences minimum="1" maximum="1"/>
@@ -61,6 +61,7 @@ We start with some standard XP procedure: defining the data in the page definiti
         </input>
     </form>
 </page>
+
 ----
 
 {zwsp} +
@@ -182,7 +183,7 @@ image:hello_editorial.png[title="Editing Hello World in the page-config panel in
 
 So now, it looks the same as before, but with editorial data instead of hardcoded text. Boring, and too similar to the previous example; just repeating "Hello World" might cause a little confusion. *Try adding your own data in the fields*, for example changing _"world"_ into _"link:https://montypython.fandom.com/wiki/Bruces_sketch[Bruce]"_ etc, to keep it clear.
 
-*Apply/save* your new props, and the output should change again. But since we're still in Content Studio, it's justa static serverside-rendered update. To see the final rendering with your new data, all active, click _Preview_ on the top to open the page in a fresh tab:
+*Apply/save* your new props, and the output should change again. But since we're still in Content Studio, it's just a static serverside-rendered update. To see the final rendering with your new data, all active, click _Preview_ on the top to open the page in a fresh tab:
 
 [.thumb]
 image:gday_bruce.png[title="Rendering: G'day Bruce. This is turning into one big philosophers' joke, isn't it?", width=720px]

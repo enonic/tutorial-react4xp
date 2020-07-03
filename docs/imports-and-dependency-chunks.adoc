@@ -401,7 +401,7 @@ entryDirs = myEntries   <!--1-->
 chunkDirs = shared    <!--2-->
 ----
 <1> `entryDirs` is a list of where react4xp will look for source files to compile and serve as entries: in this case _src/main/resource/react4xp/myEntries_. This list is *in addition* to XP's _site/_ folder - _site/_ always acts as a sort of default, special-case entryDir: under _site/_ only .JSX files are picked up as entries, while in all other entryDirs, .ES6 and .JS are picked up as well.
-<2> `chunkDirs` is a list of folders that will be turned into collection/library assets (dependency chunks): in this case _src/main/resource/react4xp/shared_. One chunk asset for each file type in each chunkDir, named after the chunkDir. If a different name is already here: this is a comma-separated file, so for example `entryDris = entries, myEntries` works fine.
+<2> `chunkDirs` is a list of folders that will be turned into collection/library assets (dependency chunks): in this case _src/main/resource/react4xp/shared_. One chunk asset for each file type in each chunkDir, named after the chunkDir. If a different name is already here: this is a comma-separated file, so for example `entryDirs = entries, myEntries` works fine.
 
 So in our example here, JSX files under _myEntries/_ are available to `React4xp.render` and friends, in XP controllers. Each entry becomes an asset file in itself.
 

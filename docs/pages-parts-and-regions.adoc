@@ -13,7 +13,7 @@ So far, we've used a "raw" XP Page and just rendered the react component directl
 
   - `React4xp.render` works the same way from any controller.
   - React4xp comes with an importable `<Regions>` react component for making XP Regions
-  - Each time the client calls `React.CLIENT.render` or `.hydrate` will create an independent react root app.
+  - Each time the rendered page contributions make the client call `React.CLIENT.render` or `.hydrate`, an independent react root app is created - so a page can easily have more than one react root app.
 ====
 
 React4xp can also render from XP _Part or Layout controllers_, creating react-rendered XP elements that can be dragged into any regular XP Region. And besides, react4xp can (serverside) render these XP Regions themselves, which can then accept any XP Parts/Layouts dropped into them (as well as Fragments, Text and Image components of course).
@@ -91,7 +91,7 @@ The page definition is simple. We're now leaving the `<form>` node empty, but ad
 ----
 <page>
     <display-name>Default page</display-name>
-    <description>React4xp-rendered Page controller</description>
+    <description>Default react-rendered Page controller</description>
     <form/>
     <regions>
         <region name="main"/>
