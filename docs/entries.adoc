@@ -24,8 +24,10 @@ On the XP/server side, you have the controllers with their backend XP flow, logi
 
 Entries are pretty much just standard JSX files, but they must follow *two requirements* (link:media/entries_howto.png[cheatsheet]):
 
-1. *default-exports a function*: `props?=>reactComponent` - a function that _may_ take a `props` argument (serializable JS object) and _must_ return a react component (pure functional component or old-school React Component), and
-2. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.properties_ (see also <<jsxpath#, jsxPath>>).
+1. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.properties_ (see also <<jsxpath#, jsxPath>>),
+2. and *default-exports a function*: `props?=>reactComponent` - a function that _may_ take a `props` argument (serializable JS object: no functions) and _must_ return a react component.
+
+NOTE: *Important:* if your entry uses react hooks or it's a react class component, read <<#classes-and-hooks, Classes and hooks in entries>> below.
 
 {zwsp} +
 
@@ -37,4 +39,76 @@ Each entry becomes a separate *root level react app*. Good to know if you displa
 For example, early in this tutorial we've seen the entries _hello-react.jsx_ and _color.jsx_, they are compiled into the assets _hello-react.js_ and _color.js_.
 
 {zwsp} +
+
+[[classes-and-hooks]]
+== Classes and hooks in entries
+If your entry is a link:https://reactjs.org/docs/react-component.html[react class component] or a functional component that uses link:https://reactjs.org/docs/hooks-intro.html[react hooks] (and possibly other specific react features?), the default-export must be correctly wrapped.
+
+=== JSX entry examples
+
+- *Straight functional component entry:* straight export is okay.
++
+.Header.jsx
+[source,javascript,options="nowrap"]
+----
+function Header(props) {
+    return <h1>{props.text}</h1>;
+};
+
+// This is fine
+export default Header;
+
+// An extra wrapped layer would work too. But it's usually not necessary
+// export default (props) => <Header {...props} />;
+----
+
+- *Class component entry:* needs a JSX-wrapped export.
++
+.Welcome.jsx
+[source,javascript,options="nowrap"]
+----
+class Welcome extends React.Component {
+  render() {
+    return <p>Hello, {this.props.name}</p>;
+  }
+}
+
+// Bad:
+// export default Welcome;
+
+// Good:
+export default props => <Welcome {...props} />;
+----
+
+
+- *Functional component that uses hooks:* needs a JSX-wrapped export.
++
+.HookButton.jsx
+[source,javascript,options="nowrap"]
+----
+function HookButton() {
+  const [count, setCount] = useState(0);
+
+  return (
+      <button onClick={() => setCount(count + 1)}>
+        You clicked {count} times
+      </button>
+  );
+}
+
+// Bad:
+// export default HookButton;
+
+// Good:
+export default props => <HookButton {...props} />;
+----
+
+=== Why?
+The reason for this has to do with how the components are compiled, and that the runtime-client trigger call in the browser _uses the default-export directly, in vanilla JS_ - so everything that's exported from an entry must be ready and compiled for vanilla-JS usage.
+
+In the examples above it would be equivalent to `Welcome(props);` and `HookButton(props);`. `Welcome` is not compiled to a function that can be called like this, and the pure `HookButtons` function is not really a _functional component_ (before it's called as a component, the way we do when it's wrapped), just a regular JS function - so the straight export link:https://reactjs.org/warnings/invalid-hook-call-warning.html[breaks the rules of hooks and you get an error].
+
+
 {zwsp} +
+{zwsp} +
+
