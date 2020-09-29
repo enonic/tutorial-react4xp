@@ -1,0 +1,253 @@
+= Going Headless, part 1: Guillotine and graphQL
+:toc: right
+:imagesdir: media/
+
+
+
+== Some background
+
+In the previous chapters we've looked at a "traditional CMS" way of using react4xp: as content directly presented (and augmented) by react components, served together by XP. This is fairly easy to set up and works fine for many use cases. But in other cases, we may not want such a tight connection between the content and the presentational components. There may be advantages of handling/serving them separately - or an approach where a content-exposing API works alongside a traditional CMS, as a supplement. These approaches are often called a link:https://enonic.com/blog/headless-or-decoupled-cms[headless] or link:https://enonic.com/blog/what-is-hybrid-cms[hybrid] CMS.
+
+In Enonic XP, project link:https://developer.enonic.com/docs/headless-cms/stable[guillotine] is a go-to solution for extending the existing CMS capabilities. It exposes a read-only link:https://graphql.org/[GraphQL] API, and provides the ability to *read pure content data* (the "body" in the analogy) from XP with great flexibility and high performance.
+
+Combining this with react as the presentational component (the "head") opens up a range of ways to use XP in headless/hybrid manners. This makes guillotine a neat and natural companion to react4xp, so the *guillotine library is included in the react4xp starter* along with two extra helper wrappers.
+
+We will now look at how to use react4xp with guillotine in different ways, for different levels of decoupling.
+
+
+
+== Lesson overview
+
+
+
+You could
+
+, greatly expanding the contexts and use cases of how and where to use content* from an XP repo. For example what we will build in this chapter and the next: content created and previewed in XP Content Studio,
+
+
+This final example is going to
+
+- Using
+- Letting
+- Importing
+- Our
+
+.Files involved:
+[source,files]
+----
+
+----
+
+{zwsp} +
+
+
+== The _multi-color_ Part
+
+{zwsp} +
+
+=== Part definition
+The Part definition enables two editorial configurations:
+
+.site/parts/multi-color/multi-color.xml:
+[source,xml,options="nowrap"]
+----
+
+----
+
+{zwsp} +
+
+=== Part controller
+
+.site/parts/multi-color/multi-color.es6:
+[source,javascript,options="nowrap"]
+----
+
+----
+
+{zwsp} +
+
+== The _MultiColor_ entry
+
+{zwsp} +
+
+=== React component
+
+.src/main/resources/react4xp/myEntries/MultiColor.jsx:
+[source,javascript,options="nowrap"]
+----
+----
+
+{zwsp} +
+
+=== Dependencies for the entry
+
+==== Styling
+
+.src/main/resources/react4xp/myEntries/MultiColor.scss:
+[source,sass,options="nowrap"]
+----
+
+----
+
+{zwsp} +
+
+.src/main/resources/react4xp/shared/shared-styles.scss:
+[source,sass,options="nowrap"]
+----
+
+----
+
+{zwsp} +
+
+==== Imported react components
+
+{zwsp} +
+
+===== Button
+
+.src/main/resources/react4xp/shared/Button.jsx:
+[source,javascript,options="nowrap"]
+----
+
+----
+
+.src/main/resources/react4xp/shared/Button.scss:
+[source,sass,options="nowrap"]
+----
+
+----
+
+{zwsp} +
+
+===== ActiveColorOval
+
+.src/main/resources/react4xp/shared/ActiveColorOval.jsx:
+[source,javascript,options="nowrap"]
+----
+
+----
+
+.src/main/resources/react4xp/shared/ActiveColorOval.scss:
+[source,sass,options="nowrap"]
+----
+
+----
+
+{zwsp} +
+
+===== ColorButtons
+
+.src/main/resources/react4xp/shared/ColorButtons.jsx:
+[source,javascript,options="nowrap"]
+----
+
+----
+
+.src/main/resources/react4xp/shared/ColorButtons.scss:
+[source,sass,options="nowrap"]
+----
+
+----
+
+
+{zwsp} +
+
+[[webpack_config]]
+== Configuring react4xp and webpack
+
+In this section we'll adjust some settings to make the code above work.
+
+TIP: Some of this is covered in more detail under <<entries#, entries>> and <<jsxpath#, jsxPaths>>.
+
+{zwsp} +
+
+=== Folders for entries and chunks
+
+.react4xp.properties:
+[source,properties,options="nowrap"]
+----
+
+----
+
+[NOTE]
+====
+
+====
+
+{zwsp} +
+
+=== Adding webpack rules
+
+.react4xp.properties:
+[source,properties,options="nowrap"]
+----
+
+----
+
+.webpack.config.react4xp.js:
+[source,javascript,options="nowrap"]
+----
+
+----
+
+{zwsp} +
+
+==== NPM dependencies
+
+
+[source,bash,options="nowrap"]
+----
+
+----
+
+{zwsp} +
+
+== Setup and rendering
+
+
+.Empty multicolor Part:
+image:multicolor-add.png[title="Empty MultiColor part in Content Studio", width=720px]
+
+{zwsp} +
+
+
+.Multicolor Part with colors filled in:
+image:multicolor-added.png[title="MultiColor part in Content Studio, with four colors added", width=720px]
+
+{zwsp} +
+
+
+.Multicolor Part, active view:
+image:multicolor-preview.png[,title="MultiColor part outside of Content Studio, active view after clicking the #5d0015 button", width=720px]
+
+{zwsp} +
+
+
+== Output
+
+.Page source from the Multicolor Part, active view (serverside rendered not selected):
+[source,html,options="nowrap"]
+----
+
+----
+
+{zwsp} +
+
+== Further reading
+
+-> <<entries#, Entries>>
+
+-> <<jsxpath#, JsxPath>>
+
+-> <<chunks#, Dependency chunks>>
+
+{zwsp} +
+
+<<api#, API>> reference:
+
+-> <<api#react4xp_render, React4xp.render>>
+
+-> <<api#react4xp_object, React4xp data objects>>
+
+{zwsp} +
+{zwsp} +
