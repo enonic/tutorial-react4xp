@@ -18,25 +18,20 @@ We will now look at how to use react4xp with guillotine in different ways, for d
 
 == Lesson overview
 
+This chapter will focus on setting up the guillotine api and the first usages:
 
-
-You could
-
-, greatly expanding the contexts and use cases of how and where to use content* from an XP repo. For example what we will build in this chapter and the next: content created and previewed in XP Content Studio,
-
-
-This final example is going to
-
-- Using
-- Letting
-- Importing
-- Our
+- making *a graphQL query* for content data in a regular XP controller,
+- using react4xp to *visualize that data*,
+- letting the rendered components make *the same query from the frontend*,
+- and use react to dynamically render a visualization of the returned data, and this way fill in more content as we scroll down the page: an *"infinite scroller"* page.
 
 .Files involved:
 [source,files]
 ----
 
 ----
+
+TIP: The _next_ chapter will build on this lesson and demonstrate more decoupled (and less XP-centric) ways to use these same react4xp components in a *standalone webapp*, to render content data from a guillotine API.
 
 {zwsp} +
 
