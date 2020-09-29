@@ -14,8 +14,6 @@ Combining this with react as the presentational component (the "head") opens up 
 
 We will now look at how to use react4xp with guillotine in different ways, for different levels of decoupling.
 
-
-
 == Lesson overview
 
 This chapter will focus on setting up the guillotine api and the first usages:
@@ -31,7 +29,7 @@ This chapter will focus on setting up the guillotine api and the first usages:
 
 ----
 
-TIP: The _next_ chapter will build on this lesson and demonstrate more decoupled (and less XP-centric) ways to use these same react4xp components in a *standalone webapp*, to render content data from a guillotine API.
+TIP: The <<webapp#, next chapter>> will build on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same react4xp components in a _standalone webapp_, to render content data from a guillotine API.
 
 {zwsp} +
 

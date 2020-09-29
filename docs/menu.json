@@ -29,6 +29,14 @@
       "document": "imports-and-dependency-chunks"
     },
     {
+      "title": "8 - Headless: guillotine",
+      "document": "guillotine"
+    },
+    {
+      "title": "9 - Headless: webapp",
+      "document": "webapp"
+    },
+    {
       "title": "Entries",
       "document": "entries"
     },
