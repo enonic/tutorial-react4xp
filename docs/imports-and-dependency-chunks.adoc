@@ -416,6 +416,7 @@ Adding paths like e.g. `foo/bar/baz` or `../../hey/ho/lets/go` is perfectly fine
 
 {zwsp} +
 
+[[webpack_rules]]
 === Adding webpack rules
 Next, we'll add some *custom webpack rules to handle the style imports*. First, we need to tell react4xp to use an extra webpack config file. Return to _react4xp.properties_ to add another property:
 

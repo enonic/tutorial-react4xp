@@ -1,0 +1,30 @@
+= Going Headless, part 2: webapp outside XP
+:toc: right
+:imagesdir: media/
+
+
+
+== Some background
+
+== Lesson overview
+
+This chapter will
+
+=== Source files
+
+.Files involved (src/main/resources/...):
+[source,files]
+----
+----
+<1> We're going to
+
+{zwsp} +
+{zwsp} +
+{zwsp} +
+
+
+== Blabla
+
+{zwsp} +
+
+=== bleh bleh
