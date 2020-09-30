@@ -373,7 +373,7 @@ After the previous chapters, not much in this controller should come as a surpri
 <3> `description` comes from an HtmlArea, so we use `processHtml` to generate a finished HTML string for whatever content that might need it. Now it can be used with `dangerouslySetInnerHTML` in the react component.
 <4> Normalizing the `actor` data to guarantee that it's an array.
 <5> `React4xp.render` needs a unique ID to target a container in the surrounding `body`.
-<6> <<jsxpath#, JsxPath>> reference to _react4xp/myEntries/Movie.jsx_.
+<6> `"Movie"` is of course the <<jsxpath#, jsxPath>> reference to the entry, _react4xp/myEntries/Movie.jsx_.
 <7> This controller is the only one triggered for rendering _movie_ items. That means that the `body` that the rendering is inserted into, has to be a *full root HTML document* including a `<head>` section (or otherwise react4xp won't know where to put the rendered page contributions, and the component won't work properly).
 <8> Workaround for a current link:https://github.com/enonic/lib-react4xp/issues/107[inconvenient bug].
 
@@ -393,6 +393,7 @@ image:edit_movie.png[title="Create a new movie item in content studio", width=10
 
 {zwsp} +
 
+[[movies_in_container_site]]
 It's important that the new movies are inside/under _one common container item_ in the content hierarchy. It's easiest for this lesson if the movie items are just directly under the site itself:
 
 [.thumb]
@@ -412,19 +413,20 @@ Now we're ready to move on to more interesting stuff, using the content and code
 
 == Static movie list
 
-Next, we'll make a page controller for a site item that displays a static list of _movie_ items below it. The controller will use a configurable guillotine query to fetch an array of movie data items.
+Next, we'll make a page controller for a site item that displays a static list of the _movie_ items below it. The controller will use a configurable guillotine query to fetch an array of movie data items.
 
 {zwsp} +
 
+[[guillotine_helpers]]
 === Guillotine helpers and usage
 
-First off, an introduction to the guillotine helpers at the core of this lesson. Two of them are included in the react4xp starter, and the third one we'll write next.
+First off, an introduction to the guillotine helpers at we'll be using. Two of them are included in the react4xp starter, and the third one we'll write next.
 
 ==== Helpers included the react4xp starter
 
 Included with the react4xp starter are *two general-purpose helpers*.
 
-The central one is *_headless/guillotineApi.es6_*. If we strip away a little boilerplate, the bare essence of it looks like this:
+The central one and the first one we'll use, is *_headless/guillotineApi.es6_*. If we strip away a little boilerplate, the bare essence of it looks like this:
 
 .headless/guillotineApi.es6:
 [source,javascript,options="nowrap"]
@@ -459,17 +461,197 @@ exports.post = req => {                             <!--3-->
 <2> `executeQuery` is exposed and directly usable from an XP controller. That's what we'll do next.
 <3> a `post` function is also included for receiving POST requests from outside, e.g. a browser. If these requests contain a query string, it's executed with `executeQuery` above, and the result is returned in a response: basically a complete guillotine API endpoint for your webapp.
 
-NOTE: This endpoint is *disabled by default* in the starter, to encourage developers to consider security aspects before using it. We'll get back to that, and activate it, later.
+NOTE: This endpoint is *disabled by default* in the starter, to encourage developers to consider security aspects before using it. We'll get back to that, and activate it, <<#expose_api, later>>.
 
 
-
-==== Domain-specific movie-listing helper
-
-Bleh
 
 {zwsp} +
 
-=== Page controller
+The second included helper, *_headless/guillotineRequest.es6_*, is a `fetch` wrapper to simplify guillotine requests at the frontend. We'll take a look at that <<#frontend_request, later>>.
+
+==== Domain-specific helper for listing movies
+
+In order to make requests for a list of movies below a container item in the content hierarchy, we'll need a specific guillotine query string, as well as functionality to adapt the resulting data into the proper props structure for the react components.
+
+And by using the same code on the frontend and backend, for this too, we gain a bit of isomorphism (the predictability of a singe source of truth, in short). So we'll make *a module with custom helper functionality* for our use case, and import from it in both places:
+
+.headless/helpers/movieListRequests.es6:
+[source,javascript,options="nowrap"]
+----
+// Used by both backend and frontend (the movie-list part controller, and react4xp/entries/MovieList.jsx)
+
+             <!--1-->
+export const buildQueryListMovies = () => `
+query(
+    $first:Int!,
+    $offset:Int!,
+    $sort:String!,
+    $parentPathQuery:String!
+) {
+  guillotine {
+    query(
+        contentTypes: ["com.enonic.app.react4xp:movie"],
+        query: $parentPathQuery,
+        first: $first,
+        offset: $offset,
+        sort: $sort
+    ) {
+      ... on com_enonic_app_react4xp_Movie {
+        _id
+        displayName
+        data {
+          year
+          description
+          actor
+          image {
+            ... on media_Image {
+              imageUrl(type: absolute, scale: "width(300)")
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
+
+             <!--2-->
+export const buildParentPathQuery = (parentPath) => `_parentPath = '/content${parentPath}'`;
+
+
+// Not using util-lib, to ensure usability on frontend
+const forceArray = maybeArray => Array.isArray(maybeArray)
+    ? maybeArray
+    : maybeArray
+        ? [maybeArray]
+        : [];
+
+             <!--3-->
+export const extractMovieArray = responseData => responseData.data.guillotine.query
+    .filter( movieItem => movieItem && typeof movieItem === 'object' && Object.keys(movieItem).indexOf('data') !== -1)
+    .map(
+        movieItem => ({
+            id: movieItem._id,
+            title: movieItem.displayName.trim(),
+            imageUrl: movieItem.data.image.imageUrl,
+            year: movieItem.data.year,
+            description: movieItem.data.description,
+            actors: forceArray(movieItem.data.actor)
+                .map( actor => (actor || '').trim())
+                .filter(actor => !!actor)
+        })
+    );
+
+export default {};
+----
+<1> The function `buildQueryListMovies` returns a string: a *guillotine query* ready to use in the API. Colloquially, you can read this query in 3 parts:
++
+- The parenthesis after the first `query` declares some parameters that are required (`!`) as values in a `variables` object together with the query.
++
+- In the parenthesis after the second `query`, those `variables` values are used: this query will list a certain number (`$first`) of movie items (`contentTypes: ["com.enonic.app.react4xp:movie"]`), starting at index number `$offset`, and sort them using the sort expression string `$sort`. It narrows down the search by nesting a second and specifying query expression `$parentPathQuery`, that tells guillotine to only look below a certain parent path in the content hierarchy - see below (2.).
++
+- The last major block, `... on com_enonic_app_react4xp_Movie {`, asks for a selection of sub-data from each found movie item: `_id`, `displayName`, `data.year`, etc. Note the second `... on media_Image` block nested inside it: instead of returning the ID value in the `data.image` field, we pass that through an `imageUrl` function that gives us a finished `data.imageUrl` field instead - directly and in one single query.
++
+NOTE: Again, remember that this query hardcodes qualified names to a content type, that contain the name of the app: `com.enonic.app.react4xp:movie` and `com_enonic_app_react4xp_Movie`. Change these if your app name is not `com.enonic.app.react4xp`.
++
+For more about the query language, see the link:https://developer.enonic.com/docs/headless-cms/2.x/api[guillotine API documentation].
+<2> The function `buildParentPathQuery` returns a *sub-query string* needed to only search below the content path of a container item: the parameter `$parentPathQuery` in the main query string (1.), inserted through the `variables` object.
++
+In <<#movies_in_container_site, the example above>>, the site _MovieSite_ is the item that contains the movies, and the content hierarchy in Content Studio shows us that _MovieSite_ has the content path `/moviesite`. So the sub-query that directs guillotine to only search for movies below that parent item, can be made like this: `buildParentPathQuery('/moviesite')`.
+<3> The function `extractMovieArray` takes the data object of a full guillotine search result and adapts it to the data structure that matches the props structure of our react components: an array of objects, where each object is a movie item.
+
+{zwsp} +
+
+=== Part controller
+
+Armed with these helpers, we can build an XP part controller that runs a guillotine query, extracts movie props from it, and renders a list of movies. We can even let the part's config control how the movies are listed:
+
+.site/parts/movie-list/movie-list.xml
+[source,xml,options="nowrap"]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<part>
+    <display-name>Movie List</display-name>
+    <description>View a list of movies</description>
+    <form>
+
+        <input name="movieCount" type="Long">
+            <label>Number of movies to display</label>
+            <occurrences minimum="1" maximum="1"/>
+            <config/>
+            <default>5</default>
+        </input>
+
+        <input name="sortBy" type="RadioButton">
+            <label>Sort movies by...</label>
+            <occurrences minimum="1" maximum="1"/>
+            <config>
+                <option value="displayName">Title</option>
+                <option value="data.year">Release year</option>
+                <option value="createdTime">Date added to this db</option>
+            </config>
+            <default>createdTime</default>
+        </input>
+
+        <input  name="descending" type="CheckBox">
+            <label>... in descending (reversed) order</label>
+        </input>
+    </form>
+</part>
+----
+
+The actual controller:
+
+.site/parts/movie-list/movie-list.es6:
+[source,javascript,options="nowrap"]
+----
+const portal = require('/lib/xp/portal');
+const React4xp = require('/lib/enonic/react4xp');
+
+const guillotine = require('/headless/guillotineApi');  <!--1-->
+const { buildQueryListMovies, buildParentPathQuery, extractMovieArray } = require('/headless/helpers/movieListRequests');
+
+
+exports.get = function(request) {
+    const content = portal.getContent();
+    const component = portal.getComponent();
+
+    const sortExpression = `${component.config.sortBy} ${     <!--2-->
+        component.config.descending ? 'DESC' : 'ASC'
+    }`;
+
+    const query = buildQueryListMovies();                     <!--3-->
+
+    const variables = {                                       <!--4-->
+        first: component.config.movieCount,
+        offset: 0,
+        sort: sortExpression,
+        parentPathQuery: buildParentPathQuery(content._path)
+    };
+
+    const guillotineResult = guillotine.executeQuery(query, variables);     <!--5-->
+
+    const movies = extractMovieArray(guillotineResult);         <!--6-->
+
+    return React4xp.render(
+        'MovieList',
+        {                                                       <!--7-->
+            movies,
+            apiUrl: `./${portal.getSite()._path}/api/headless`,
+            parentPath: content._path,
+            movieCount: component.config.movieCount,
+            sortExpression
+        },
+        request
+    );
+};
+----
+<1> Import the functionality from the helpers that were <<#guillotine_helpers, just described>>,
+<2> Use the part's config to build a sort expression for the query,
+<3> Get the query string,
+<4> Build the `variables` object with the query's parameters,
+<5> Execute the query string with the variables in the guillotine API,
+<6> Extract `movies` props (an array of objects with the same signature as the props for _Movie.jsx_) from the result of the query,
+<7> Render a _MovieList_ entry with the `movies` props (as well as some additional props that we will need later for making the same guillotine query from the frontend. Especially note the `apiUrl` prop: this is basically just the URL to the site itself, with `/api/headless` appended to it. When we later <<#expose_api, expose the guillotine API>> to the frontend, this is the URL to the API - specifically, the POST method in _guillotineApi.es6_).
 
 {zwsp} +
 
@@ -490,6 +672,7 @@ Blah
 
 {zwsp} +
 
+[[frontend_request]]
 === Frontend guillotine request
 
 
