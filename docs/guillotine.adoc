@@ -405,13 +405,6 @@ When you mark/preview the site itself, you'll see no visualization yet. But prev
 Now we're ready to move on to more interesting stuff, using the content and code we just made.
 
 
-====
-
-
-{zwsp} +
-
-==== React components
-
 {zwsp} +
 {zwsp} +
 {zwsp} +
@@ -419,16 +412,68 @@ Now we're ready to move on to more interesting stuff, using the content and code
 
 == Static movie list
 
-{zwsp} +
-{zwsp} +
-
-=== Code
-
-==== Controller: backend guillotine query
+Next, we'll make a page controller for a site item that displays a static list of _movie_ items below it. The controller will use a configurable guillotine query to fetch an array of movie data items.
 
 {zwsp} +
 
-==== React components
+=== Guillotine helpers and usage
+
+First off, an introduction to the guillotine helpers at the core of this lesson. Two of them are included in the react4xp starter, and the third one we'll write next.
+
+==== Helpers included the react4xp starter
+
+Included with the react4xp starter are *two general-purpose helpers*.
+
+The central one is *_headless/guillotineApi.es6_*. If we strip away a little boilerplate, the bare essence of it looks like this:
+
+.headless/guillotineApi.es6:
+[source,javascript,options="nowrap"]
+----
+const guillotineLib = require('/lib/guillotine');
+const graphQlLib = require('/lib/graphql');
+
+const SCHEMA = guillotineLib.createSchema();
+
+const executeQuery = (query, variables) =>         <!--1-->
+    graphQlLib.execute(SCHEMA, query, variables);
+
+
+
+// Use in XP controllers:
+exports.executeQuery = executeQuery;                <!--2-->
+
+
+// Expose and use in POST requests from frontend:
+exports.post = req => {                             <!--3-->
+    var body = JSON.parse(req.body);
+
+    return {
+        contentType: 'application/json',
+        body: executeQuery(body.query, body.variables),
+        status: 200
+    };
+};
+----
+
+<1> At the core is the function `executeQuery`. Here, a guillotine `SCHEMA` definition is combined with a graphQL `query` string and an optional `variables` object. These are used with XP's graphQL library to `execute` the query. The result, a JSON object, is returned.
+<2> `executeQuery` is exposed and directly usable from an XP controller. That's what we'll do next.
+<3> a `post` function is also included for receiving POST requests from outside, e.g. a browser. If these requests contain a query string, it's executed with `executeQuery` above, and the result is returned in a response: basically a complete guillotine API endpoint for your webapp.
+
+NOTE: This endpoint is *disabled by default* in the starter, to encourage developers to consider security aspects before using it. We'll get back to that, and activate it, later.
+
+
+
+==== Domain-specific movie-listing helper
+
+Bleh
+
+{zwsp} +
+
+=== Page controller
+
+{zwsp} +
+
+=== React components
 
 {zwsp} +
 {zwsp} +
@@ -438,19 +483,118 @@ Now we're ready to move on to more interesting stuff, using the content and code
 
 {zwsp} +
 
-=== Code
+[[expose_api]]
+=== Exposing the guillotine API
 
-==== Activating the guillotine API
-
-{zwsp} +
-
-==== Frontend guillotine API
+Blah
 
 {zwsp} +
 
-==== Scroll listener and dynamic DOM updates
+=== Frontend guillotine request
 
 
+{zwsp} +
+
+=== Scroll listener and dynamic DOM updates
+
+
+
+
+{zwsp} +
+{zwsp} +
+{zwsp} +
+
+== Other resources and tools
+
+To dive deeper into guillotine and graphQL, you can always check out the link:https://developer.enonic.com/templates/headless-cms[headless starter].
+
+But even if you don't, there is a handy tool there that we can add pretty easily here too: the *GraphQL Playground*.
+
+TIP: The GraphQL Playground is not a vital part of the rest of this lesson or the next chapter. Feel free to skip this part.
+
+The GraphQL Playground is basically a GraphQL REPL interface. It allows you to send queries and variables to the frontend API and see the results immediatly: experiment around, get to know guillotine, and build queries more effectively.
+
+To add this, first add the _graphql-playground_ library as a dependency in _build.gradle_:
+
+.<project root>/build.gradle:
+[source,groovy,options="nowrap"]
+----
+
+// (...)
+
+dependencies {
+    // (...)
+
+    // Add this under dependencies:
+    include "com.enonic.lib:lib-graphql-playground:0.0.1"
+}
+----
+
+Next, copy this code in at the end of _headless/guillotineApi.es6_:
+
+.headless/guillotineApi.es6:
+[source,javascript,options="nowrap"]
+----
+
+// ----------------------------------  Graphql playground, at the same URL as the API  -----------------
+
+var graphqlPlaygroundLib = require('/lib/graphql-playground');
+var authLib = require('/lib/xp/auth');
+
+// GraphQL playground
+exports.get = function (req) {
+    if (req.webSocket) {
+
+        return {
+            webSocket: {
+                subProtocols: ['graphql-ws']
+            }
+        };
+    }
+
+    // Simple auth control for the playground
+    if (!authLib.hasRole('system.authenticated')) {
+        return {
+            status: 401,
+            body: {
+                "errors": [ {"errorType": "401", "message": "Unauthorized"} ]
+            }
+        };
+    }
+    if (!(authLib.hasRole('system.admin') || authLib.hasRole('system.admin.login'))) {
+        return {
+            status: 403,
+            body: {
+                "errors": [ {"errorType": "403", "message": "Forbidden"} ]
+            }
+        };
+    }
+
+    var body = graphqlPlaygroundLib.render();
+    return {
+        contentType: 'text/html; charset=utf-8',
+        body: body
+    };
+};
+
+----
+
+That's it. Remember that <<#expose_api, the controller mapping exposes _guillotineApi.es6_>> on the URL `/api/headless` below sites that use this app? We just added a GET response method there, so now if you...
+
+- rebuild your project,
+- enter Content Studio again,
+- select your movielist site,
+- preview it,
+- and then add `/api/headless` after the URL in the preview tab (e.g. `http://localhost:8080/admin/site/preview/default/draft/moviesite/api/headless`),
+
+...the playground should be rendered up and running and ready for you to explore:
+
+image:graphql-playground.png[title="The GraphQL playground", width=1024px]
+
+
+
+
+=================================
 ----
 
 The Part definition enables two editorial configurations:
