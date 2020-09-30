@@ -465,8 +465,6 @@ NOTE: This endpoint is *disabled by default* in the starter, to encourage develo
 
 
 
-{zwsp} +
-
 The second included helper, *_headless/guillotineRequest.es6_*, is a `fetch` wrapper to simplify guillotine requests at the frontend. We'll take a look at that <<#frontend_request, later>>.
 
 ==== Domain-specific helper for listing movies
@@ -657,6 +655,70 @@ exports.get = function(request) {
 
 === React components
 
+We're still missing that *_MovieList_ entry* that will display the list of movie items:
+
+.react4xp/myEntries/MovieList.jsx:
+[source,javascript,options="nowrap"]
+----
+import React from 'react'
+
+import './MovieList.scss';
+
+import Movie from "../shared/Movie";
+
+const MovieList = ({movies, apiUrl, parentPath, movieCount, sortExpression}) => {
+
+    return (
+        <div className="movieList">
+            {movies
+                ? movies.map(movie =>
+                        <Movie key={movie.id} {...movie} />
+                    )
+                : null
+            }
+        </div>
+    );
+};
+
+// MUST use this export line wrapping, because of a useState hook later.
+export default (props) => <MovieList {...props} />;
+----
+The only notable things here:
+
+- A lot of the props aren't used yet, just the `movies` array. The rest of the props are a preparation for later.
+- Each item object in the array in `movies` is just mapped onto an imported _shared/Movie.jsx_ component: the same react component that's used to render the movie previews in Content Studio.
+
+Most of the styling is already handled at the single-movie level, so just a minimum of extra *list styling* is needed:
+
+.react4xp/myEntries/MovieList.scss:
+[source,sass,options="nowrap"]
+----
+.movieList {
+  margin: 0 auto; width: 1024px; max-width: 100%;
+
+  .movie {
+    border-bottom: 1px dotted #ccc;
+  }
+}
+----
+
+{zwsp} +
+
+=== Render the list
+
+We can now set up the parent site with the movies, with a _movie-list_ part. Rebuild the app, enter/refresh Content Studio, and make the _movie-list_ part handle the visualization of the _MovieSite_ item.
+
+TIP: You can either do that <<pages-parts-and-regions#adding_parts_to_new_content, with a template as before>> to render _all_ sites with this part controller. Or better, edit _MovieSite_ directly  and add the _movie-list_ part to the region there, the same way as when adding a part to the region of a template. With this last direct-edit approach, only _MovieSite_ will be rendered like this; other sites won't.
+
+Correctly set up, you can now select the list in the edit panel, and a part config panel will appear on the right. Edit the config fields to control the guillotine query: how many movies should be rendered, and in what order?
+
+[.thumb]
+image:movie-list-part-config.png[title="Edit the movie-list part configuration to control the guillotine query", width=1024px]
+
+{zwsp} +
+
+TIP: As usual, click Preview to see the rendering in a tab of its own. A preview browser tab, with the page inspector and server log open on the side, is also the best starting point to hunt down bugs in the visualization.
+
 {zwsp} +
 {zwsp} +
 {zwsp} +
@@ -675,11 +737,13 @@ Blah
 [[frontend_request]]
 === Frontend guillotine request
 
+{zwsp} +
+
+=== Dynamic DOM updates
 
 {zwsp} +
 
-=== Scroll listener and dynamic DOM updates
-
+=== Scroll listener
 
 
 
