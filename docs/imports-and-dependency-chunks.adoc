@@ -384,7 +384,7 @@ export default ({colors, selectedIndex, clickFunc}) =>
 
 In this section we'll adjust some settings to make the code above work.
 
-TIP: Some of this is covered in more detail under <<entries#, entries>> and <<jsxpath#, jsxPaths>>.
+TIP: If you need more details, some of this is covered in more depth under <<entries#, entries>> and <<jsxpath#, jsxPaths>>.
 
 {zwsp} +
 

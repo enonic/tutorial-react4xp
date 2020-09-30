@@ -16,29 +16,110 @@ We will now look at how to use react4xp with guillotine in different ways, for d
 
 == Lesson overview
 
-This chapter will focus on setting up the guillotine api and the first usages:
+This chapter will focus on setting up the guillotine API and the first usages:
 
 - making *a graphQL query* for content data in a regular XP controller,
 - using react4xp to *visualize that data*,
 - letting the rendered components make *the same query from the frontend*,
 - and use react to dynamically render a visualization of the returned data, and this way fill in more content as we scroll down the page: an *"infinite scroller"* page.
 
+NOTE: The <<webapp#, next chapter>> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same react4xp components in a _standalone webapp_, to render content data from a guillotine API.
+
+
+=== Source files
+
 .Files involved:
 [source,files]
 ----
+react4xp/
+    myEntries/                  <!--1-->
+        Movie.jsx
+        MovieList.jsx
+        MovieList.scss
+    shared/
+        Movie.jsx
+        Movie.scss
+
+site/
+    content-types
+        /movie/
+            movie.xml           <!--2-->
+    parts/
+        movie-list/
+            movie-list.es6      <!--3-->
+            movie-list.xml
+    site.xml                    <!--4-->
+
+controllers/
+    previewMovie.es6            <!--5-->
+
+headless/                       <!--6-->
+    helpers/
+        movieListRequests.es6
+    guillotineApi.es6
+    guillotineRequest.es6
 
 ----
+<1> We're going to build a site which is a list of movies, each displayed with a poster and a bit of info. The *entries* _Movie_ and _MovieList_ both import a _shared/Movie_ component. The _Movie_ entry uses it to preview a single movie item inside Content Studio, while the _MovieList_ entry displays the actual movie list site, by iterating over multiple _movie_ data items and using the _shared/Movie_ component for visualizing each item (both in a serverside-rendered and headless context).
+<2> A content type for a single _movie_,
+<3> A part with a controller that fetches child content items of the _movie_ content type, and renders them into MovieList,
+<4> In _site.xml_ we will set up controller mappings for both the guillotine API and...
+<5> ...the single-movie preview controller: displays a single movie without needing to set up a template and a part.
+<6> _guillotineApi.es6_ is the actual API to guillotine. It can run graphQL queries both from XP controllers and through received HTTP requests. And _guillotineRequest.es6_ simplifies making such a request from the browser. Both of these are general-purpose and come with the starter (since version 1.1.0). But _helpers/movieListRequests.es6_ contains helper functions specific to the lesson site we're building here: it helps with building a query for fetching movie-list data, and parsing the returned data into the `props` format that the _Movie_ component needs. These helpers are also used on both frontend and backend.
 
-TIP: The <<webapp#, next chapter>> will build on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same react4xp components in a _standalone webapp_, to render content data from a guillotine API.
 
 {zwsp} +
 
 
-== The _multi-color_ Part
+== Single movie items
+
+NOTE: This lesson builds on the <<imports-and-dependency-chunks#webpack_config, config setup from the previous lesson>>: _react4xp.properties_, _webpack.config.react4xp.js_ and the extra NPM packages should be set up like that. If you haven't completed that section already, better take a couple of minutes and do that before proceeding.
+
+We'll start by adding a _movie_ content type, then set up the react rendering of single movie items, and create a few movie items for the list.
 
 {zwsp} +
 
-=== Part definition
+=== Movie content type
+
+{zwsp} +
+
+=== Controller mapping
+
+{zwsp} +
+
+=== React components
+
+{zwsp} +
+
+== Static movie list
+
+{zwsp} +
+
+=== Controller: backend guillotine query
+
+{zwsp} +
+
+=== React components
+
+{zwsp} +
+
+== Making the list dynamic
+
+{zwsp} +
+
+=== Activating the guillotine API
+
+{zwsp} +
+
+=== Frontend guillotine API
+
+{zwsp} +
+
+=== Scroll listener and dynamic DOM updates
+
+
+----------------------------------------------------------
+
 The Part definition enables two editorial configurations:
 
 .site/parts/multi-color/multi-color.xml:
@@ -47,9 +128,6 @@ The Part definition enables two editorial configurations:
 
 ----
 
-{zwsp} +
-
-=== Part controller
 
 .site/parts/multi-color/multi-color.es6:
 [source,javascript,options="nowrap"]
@@ -57,15 +135,12 @@ The Part definition enables two editorial configurations:
 
 ----
 
-{zwsp} +
-
-== The _MultiColor_ entry
 
 {zwsp} +
 
 === React component
 
-.src/main/resources/react4xp/myEntries/MultiColor.jsx:
+.react4xp/myEntries/MultiColor.jsx:
 [source,javascript,options="nowrap"]
 ----
 ----
@@ -76,7 +151,7 @@ The Part definition enables two editorial configurations:
 
 ==== Styling
 
-.src/main/resources/react4xp/myEntries/MultiColor.scss:
+.react4xp/myEntries/MultiColor.scss:
 [source,sass,options="nowrap"]
 ----
 
@@ -84,7 +159,7 @@ The Part definition enables two editorial configurations:
 
 {zwsp} +
 
-.src/main/resources/react4xp/shared/shared-styles.scss:
+.react4xp/shared/shared-styles.scss:
 [source,sass,options="nowrap"]
 ----
 
@@ -98,13 +173,13 @@ The Part definition enables two editorial configurations:
 
 ===== Button
 
-.src/main/resources/react4xp/shared/Button.jsx:
+.react4xp/shared/Button.jsx:
 [source,javascript,options="nowrap"]
 ----
 
 ----
 
-.src/main/resources/react4xp/shared/Button.scss:
+.react4xp/shared/Button.scss:
 [source,sass,options="nowrap"]
 ----
 
@@ -114,13 +189,13 @@ The Part definition enables two editorial configurations:
 
 ===== ActiveColorOval
 
-.src/main/resources/react4xp/shared/ActiveColorOval.jsx:
+.react4xp/shared/ActiveColorOval.jsx:
 [source,javascript,options="nowrap"]
 ----
 
 ----
 
-.src/main/resources/react4xp/shared/ActiveColorOval.scss:
+.react4xp/shared/ActiveColorOval.scss:
 [source,sass,options="nowrap"]
 ----
 
@@ -130,13 +205,13 @@ The Part definition enables two editorial configurations:
 
 ===== ColorButtons
 
-.src/main/resources/react4xp/shared/ColorButtons.jsx:
+.react4xp/shared/ColorButtons.jsx:
 [source,javascript,options="nowrap"]
 ----
 
 ----
 
-.src/main/resources/react4xp/shared/ColorButtons.scss:
+.react4xp/shared/ColorButtons.scss:
 [source,sass,options="nowrap"]
 ----
 
@@ -244,3 +319,8 @@ image:multicolor-preview.png[,title="MultiColor part outside of Content Studio, 
 
 {zwsp} +
 {zwsp} +
+
+
+
+
+<a href="https://iconscout.com/icons/movie" target="_blank">Movie Icon</a> by <a href="https://iconscout.com/contributors/phoenix-group">Phoenix Dungeon</a> on <a href="https://iconscout.com">Iconscout</a>
