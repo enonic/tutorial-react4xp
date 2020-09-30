@@ -2,7 +2,11 @@
 :toc: right
 :imagesdir: media/
 
+{zwsp} +
 
+image:guillotine.jpg[title="React4xp goes headless", width=600px]
+
+{zwsp} +
 
 == Some background
 
@@ -394,7 +398,7 @@ image:edit_movie.png[title="Create a new movie item in content studio", width=10
 {zwsp} +
 
 [[movies_in_container_site]]
-It's important that the new movies are inside/under _one common container item_ in the content hierarchy. It's easiest for this lesson if the movie items are just directly under the site itself:
+It's important that *the new movies are inside/under _one common container item_ in the content hierarchy*. It's easiest for this lesson if the movie items are just directly under the site itself:
 
 [.thumb]
 image:add_movies.png[title="Create some movie items to list, under the site", width=1024px]
@@ -710,7 +714,7 @@ We can now set up the parent site with the movies, with a _movie-list_ part. Reb
 
 TIP: You can either do that <<pages-parts-and-regions#adding_parts_to_new_content, with a template as before>> to render _all_ sites with this part controller. Or better, edit _MovieSite_ directly  and add the _movie-list_ part to the region there, the same way as when adding a part to the region of a template. With this last direct-edit approach, only _MovieSite_ will be rendered like this; other sites won't.
 
-Correctly set up, you can now select the list in the edit panel, and a part config panel will appear on the right. Edit the config fields to control the guillotine query: how many movies should be rendered, and in what order?
+Correctly set up, you can now select the list in the edit panel, and a part config panel will appear on the right. *Edit the config fields to control the guillotine query*: how many movies should be rendered, and in what order?
 
 [.thumb]
 image:movie-list-part-config.png[title="Edit the movie-list part configuration to control the guillotine query", width=1024px]
@@ -745,6 +749,11 @@ Blah
 
 === Scroll listener
 
+{zwsp} +
+
+=== Ad infinitum
+
+Refresh the preview of _MovieSite_, and there you have it: the infinite scroller. Scroll down to auto-refresh with new content, until the very end of time or the end of your added movies, whichever comes first.
 
 
 {zwsp} +
@@ -753,13 +762,15 @@ Blah
 
 == Other resources and tools
 
+TIP: This section is not a vital part of the rest of this or the next chapter. Feel free to skip it and miss out.
+
 To dive deeper into guillotine and graphQL, you can always check out the link:https://developer.enonic.com/templates/headless-cms[headless starter].
 
-But even if you don't, there is a handy tool there that we can add pretty easily here too: the *GraphQL Playground*.
+=== GraphQL playground
 
-TIP: The GraphQL Playground is not a vital part of the rest of this lesson or the next chapter. Feel free to skip this part.
+There is a handy tool in the headless starter, that we might as well add here too: the GraphQL Playground.
 
-The GraphQL Playground is basically a GraphQL REPL interface. It allows you to send queries and variables to the frontend API and see the results immediatly: experiment around, get to know guillotine, and build queries more effectively.
+The GraphQL Playground is basically an in-browser *GraphQL REPL interface*. It allows you to send queries and variables to the frontend API and see the results immediatly: experiment around, get to know guillotine, and build queries more effectively.
 
 To add this, first add the _graphql-playground_ library as a dependency in _build.gradle_:
 
