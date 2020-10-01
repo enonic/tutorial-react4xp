@@ -1337,8 +1337,11 @@ That's it. Remember that <<#expose_api, the controller mapping exposes _guilloti
 
 image:graphql-playground.png[title="The GraphQL playground", width=1024px]
 
-----
 
+
+{zwsp} +
+{zwsp} +
+{zwsp} +
 {zwsp} +
 {zwsp} +
 {zwsp} +
