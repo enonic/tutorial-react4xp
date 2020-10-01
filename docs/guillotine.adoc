@@ -424,13 +424,11 @@ Next, we'll make a page controller for a site item that displays a static list o
 [[guillotine_helpers]]
 === Guillotine helpers and usage
 
-First off, an introduction to the guillotine helpers at we'll be using. Two of them are included in the react4xp starter, and the third one we'll write next.
+First off, an introduction to the guillotine helpers at we'll be using. Two of them -  _headless/guillotineApi.es6_ and  _headless/guillotineRequests.es6_ - are general-purpose helpers *included in the react4xp starter*, and the third one we'll write next.
 
-==== Helpers included the react4xp starter
+=== Included helper: guillotineApi.es6
 
-Included with the react4xp starter are *two general-purpose helpers*.
-
-The central one and the first one we'll use, is *_headless/guillotineApi.es6_*. If we strip away a little boilerplate, the bare essence of it looks like this:
+The most central of the helpers and the first one we'll use, is *_headless/guillotineApi.es6_*. If we strip away a little boilerplate, the bare essence of it looks like this:
 
 .headless/guillotineApi.es6:
 [source,javascript,options="nowrap"]
@@ -467,11 +465,13 @@ exports.post = req => {                             <!--3-->
 
 NOTE: This endpoint is *disabled by default* in the starter, to encourage developers to consider security aspects before using it. We'll get back to that, and activate it, <<#expose_api, later>>.
 
+{zwsp} +
 
+The second included helper, *_<<#guillotine_request_helper, headless/guillotineRequest.es6>>_*, is a `fetch` wrapper to simplify guillotine requests at the frontend. We'll take a look at that later.
 
-The second included helper, *_headless/guillotineRequest.es6_*, is a `fetch` wrapper to simplify guillotine requests at the frontend. We'll take a look at that <<#frontend_request, later>>.
+{zwsp} +
 
-==== Domain-specific helper for listing movies
+=== Domain-specific helper for listing movies
 
 In order to make requests for a list of movies below a container item in the content hierarchy, we'll need a specific guillotine query string, as well as functionality to adapt the resulting data into the proper props structure for the react components.
 
@@ -781,10 +781,13 @@ TIP: If you want to try it out right now, REPL-style and without needing to crea
 
 {zwsp} +
 
-[[frontend_request]]
-=== Frontend guillotine request
+[[guillotine_request_helper]]
+=== Included helper: guillotineRequest.es6
 
-Time to add some code to the existing _MovieList.jsx_ so it can fetch data from the guillotine endpoint. To easily get started with that, we'll use the other <<#guillotine_helpers, helper module>> included in the react4xp starter: _headless/guillotineRequest.es6_. This too has some convenience error handling and boilerplate like default parameter values/functions, but if we skip that, the bare essence is a `fetch` wrapper:
+Time to add some code to the existing _MovieList.jsx_ so it can fetch data from the guillotine endpoint. To easily get started with that, we'll use the second helper module *included in the react4xp starter*: _headless/guillotineRequest.es6_
+(the first of the two helpers is of course<<#guillotine_helpers, guillotineApi.es6>>).
+
+This too has some convenience error handling and boilerplate like default parameter values/functions, but if we skip that, the bare essence is a `fetch` wrapper:
 
 .headless/guillotineRequest.es6:
 [source,javascript,options="nowrap"]
@@ -821,7 +824,7 @@ export default doGuillotineRequest;
 ----
 In short, run `doGuillotineRequest(params)` where `params` is an object that has at least a `.url` and a `.query` attribute (and optional `.variables`), and it will send the query to the guillotine API and handle the returned data (or errors). How that's handled is up to callbacks in `params`.
 
-Full `params` specs are:
+*Full `params` specs are:*
 
 <1> `url` (string, mandatory): URL to the API endpoint, i.e. to the controller mapping of `headless/guillotineApi.es6`: `<site-url>/api/headless`.
 <2> `query` (string, mandatory): valid link:https://developer.enonic.com/docs/headless-cms/2.x/api[guillotine query] string.
@@ -832,6 +835,8 @@ Full `params` specs are:
 <7> `catchErrorsFunc` (function, optional): callback function that takes an error object and handles it. Default: console-error-logs the error message.
 
 {zwsp} +
+
+=== Frontend guillotine request
 
 Now we're ready to *add a guillotine call from the frontend*, specifically to _MovieList.jsx_. Here's what we'll do:
 
@@ -934,7 +939,9 @@ The changes are:
 <11> And finally, when we the data has passed through `extractMovieArray` and we get some `newMovieItems`, we do a temporary action for now: console-log the data, and increase `nextOffset` with the initial number of movies, so it's ready for the next request.
 <12> We add `onClick={makeRequest}` to the movie list DOM container element. Now, when we click the list, `makeRequest` is triggered, and the resulting data from the guillotine API is displayed in the browser log.
 
-Rebuilding this and running the moviesite in a preview window and with a console open, and the clicking somewhere on the list, say 3 times, the result might look something like this (note the console messages, how the returned movie IDs are not the same between responses, and that "starting from index..." keeps counting):
+{zwsp} +
+
+Rebuilding this and running the moviesite in a preview window and with a console open, and the clicking somewhere on the list, say 3 times, the result might look something like this (note the console messages, how the returned movie IDs are not the same between responses, and that "`starting from index...`" keeps counting):
 
 image:click-data.png[title="Console logs different data items from 3 mouse clicks", width=1024px]
 
@@ -1054,25 +1061,184 @@ Changes:
 ====
 It would be possible to use `setState` with a new object instead of a function:
 
-`setState( { movies: [...state.movies, ...newMovieItems]})`.
+`setState( { movies: [...state.movies, ...newMovieItems]})`
 
-But `setState` is an asynchronous function, and calling it with a "current state of affairs" as the argument runs the risk of introducing race conditions: we'd lose control of timing when the DOM updates, especially since we're going to combine that length-of-DOM with a scrolling trigger. A callback function argument works around this: _"update the state based on what it is at the time this function is called"_.
+But `setState` is an asynchronous function, and calling it with a "current state of affairs" as the argument runs the risk of introducing race conditions: we'd lose control of timing when the DOM updates, especially since we're going to combine that length-of-DOM with a continuously scrolling trigger. A callback function argument works around this: _"update the state based on what things are like whenever this function is called"_.
 ====
 <5> Use `state.movies` instead of just the `movies` props: now react will watch the state and automatically re-render the component as soon as the state is updated.
 
-Rebuild the app, update the moviesite preview tab and try clicking on the list. New movies should appear below the existing one, expanding the movie list as you click.
+{zwsp} +
 
-image:click-fill-dom.png[title="The request adds new movie data to the state", width=1024px]
+Rebuild the app, update the moviesite preview tab and try clicking on the list. New movies should appear below the existing one, expanding the movie list as you click:
+
+image:click-fill-dom.png[title="Each click fetches new movies and renders them", width=1024px]
 
 {zwsp} +
 
 === Scroll listener
 
+We have arrived! The final step in this chapter:
+
+We'll finish _MovieList.jsx_ by replacing the click listener with a scroll listener. The scroll listener will check if the page has been scrolled almost all the way to the bottom (i.e. the bottom of the movie-list container is just a little bit below the bottom of the screen) and triggers the same procedure if it has.
+
+With one additional change to the procedure: the trigger should disable the scroll listener temporarily, only re-enabling it when we get some data back (or after a delay). This is to avoid flooding _guillotineApi.es6_ with requests - since scroll events are fast and numerous.
+
+.react4xp/myEntries/MovieList.jsx:
+[source,javascript,options="nowrap"]
+----
+import React, { useState, useEffect } from 'react'
+
+import './MovieList.scss';
+
+import Movie from "../shared/Movie";
+
+import doGuillotineRequest from "../../headless/guillotineRequest";
+import { buildQueryListMovies, buildParentPathQuery, extractMovieArray } from "../../headless/helpers/movieListRequests";
+
+// State values that don't need re-rendering capability, but need to be synchronously read/writable across closures.
+let nextOffset = 0;             // Index for what will be the next movie to search for in a guillotine request
+
+let listenForScroll = true;                                         <!--1-->
+const TRIGGER_OFFSET_PX_FROM_BOTTOM = 200;                          <!--2-->
+
+
+const MovieList = ({movies, apiUrl, parentPath, movieCount, sortExpression}) => {
+
+    // Setup asynchronous component state that triggers re-render on change.
+    const [state, setState] = useState({ movies });
+
+    const listContainerId = `movieListContainer_${parentPath}`;     <!--3-->
+
+    // UseEffect with these arguments ( function, [] ) corresponds to componentDidMount in the old-school class-based react components.
+    useEffect(
+        ()=>{
+            console.log("Initializing...");
+
+            nextOffset = movieCount;
+                                                                    <!--4-->
+            // Browser-specific functionality, so this is prevented from running on the SSR
+            if (typeof document === 'object' && typeof document.addEventListener === 'function' && typeof window !== 'undefined') {
+                initScrollListener();
+            }
+        },
+        []
+    );
+
+    // Set up scroll listener, when the component is first mounted.
+    // Causes a trigger func function to be called when the bottom of the visible window is scrolled down to less
+    // than TRIGGER_OFFSET_PX_FROM_BOTTOM of the movie list element.
+    const initScrollListener = () => {
+        console.log("Init scroll listener");
+                                                                    <!--5-->
+        var movieListElem = document.getElementById(listContainerId);
+
+        // ACTUAL SCROLL LISTENER:
+        window.addEventListener("scroll", () => {
+            if (listenForScroll) {                                  <!--6-->
+
+                                                                    <!--7-->
+                var movieBounds = movieListElem.getBoundingClientRect();
+                if (movieBounds.bottom < window.innerHeight + TRIGGER_OFFSET_PX_FROM_BOTTOM) {
+                    console.log("!!! SCROLL TRIGGER !!!");
+
+                    listenForScroll = false;
+
+                    makeRequest();
+
+                }
+            }
+        });
+    };
+
+    // ------------------------------------------------------
+    // Set up action methods, triggered by listener:
+
+    // Makes a (guillotine) request for data with these search parameters and passes an anonymous callback function as
+    // handleDataFunc (used on the returned list of movie data).
+    const makeRequest = () => {
+        console.log("Requesting", movieCount, "movies, starting from index", nextOffset);
+        doGuillotineRequest({
+            url: apiUrl,
+
+            query: buildQueryListMovies(),
+
+            variables: {
+                first: movieCount,
+                offset: nextOffset,
+                sort: sortExpression,
+                parentPathQuery: buildParentPathQuery(parentPath)
+            },
+
+            extractDataFunc: extractMovieArray,
+
+            handleDataFunc: updateDOMWithNewMovies
+        });
+    };
+
+    // When a movie data array is returned from the guillotine data request, this method is called.
+    const updateDOMWithNewMovies = (newMovieItems) => {
+        console.log("Received data:", newMovieItems);
+        if (newMovieItems.length > 0) {
+            console.log("Adding movies to state:", newMovieItems.map(movie => movie.title));
+
+            nextOffset += movieCount;
+
+            // Use a function, not just a new direct object/array, for mutating state object/array instead of replacing it:
+            setState(oldState => ({
+                movies: [
+                    ...oldState.movies,
+                    ...newMovieItems
+                ]
+            }));
+
+            console.log("Added new movies to state / DOM.");
+
+            listenForScroll = true;                                 <!--8-->
+
+        } else {
+            setTimeout(
+                () => {  listenForScroll = true; },
+                500
+            )
+
+        }
+    };
+
+    // ------------------------------------------------------------------------------------
+    // Actual rendering:
+
+    return (
+        <div id={listContainerId} className="movieList">            <!--9-->
+            {state.movies
+                ? state.movies.map(movie =>
+                        <Movie key={movie.id} {...movie} />
+                    )
+                : null
+            }
+        </div>
+    );
+};
+
+// MUST use this export line wrapping, because of the useState hook.
+export default (props) => <MovieList {...props} />;
+----
+<1> `listenForScroll` is the scroll-listener's enabled-switch.
+<2> Threshold value: if the distance between the bottom of the screen and the bottom of the movielist DOM container is less than this number of pixels, `makeRequest` should be triggered.
+<3> We store a string to uniquely identify the movie-list container element in the DOM.
+<4> In the component-initializing function (remember `useEffect`), we want to call `initScrollListener`. It's a one-time function that sets up a scroll listener that will last for the lifespan of the component. However, we only want this scroll listener setup to run in a browser! It's the only thing that makes sense, but more importantly, remember that _MovieList.jsx_ is server-side rendered from the controller - so this very same script will run in Nashorn in XP!
++
+NOTE: *Referring to most browser-specific functionality during server-side rendering will usually throw an error and of course break the rendering*. Checking for the global variables `document` or `window` is an easy way to prevent this. The exception is any link:https://www.npmjs.com/package/react4xp-runtime-nashornpolyfills[nashorn-polyfilled] functionality.
+<5> During `initScrollListener`, we start by storing a handle to the movie-list container element in the DOM.
+<6> The scroll event listener will be prevented from doing anything as long as `listenForScroll` is false.
+<7> Here the distance between the bottom of the screen and the bottom of the movie-list container element is calculated. If that's smaller than the threshold `TRIGGER_OFFSET_PX_FROM_BOTTOM`, disable the listener and trigger `makeRequest`, which performs the same duties as before: request movie data from the guillotine API, and insert that into the state to trigger rendering...
+<8> ...with one thing added: switch the scroll listener back on when data has been received and handled, OR after 500 ms after receiving empty data.
+<9> Removing the click listener and adding the unique ID `listContainerId` to the container element.
+
 {zwsp} +
 
-=== Ad infinitum
+And there we have it: *our infinite scroller*!
 
-Refresh the preview of _MovieSite_, and there you have it: the infinite scroller. Scroll down to auto-refresh with new content, until the very end of time or the end of your added movies, whichever comes first.
+Rebuild, refresh the preview of _MovieSite_, and instead of clicking, just scroll down - the page should auto-refresh to add new content until the very end of time or the end of your added movies, whichever comes first.
 
 
 {zwsp} +
@@ -1169,213 +1335,10 @@ That's it. Remember that <<#expose_api, the controller mapping exposes _guilloti
 
 image:graphql-playground.png[title="The GraphQL playground", width=1024px]
 
-
-
-
-=================================
-----
-
-The Part definition enables two editorial configurations:
-
-.site/parts/multi-color/multi-color.xml:
-[source,xml,options="nowrap"]
-----
-
-----
-
-
-.site/parts/multi-color/multi-color.es6:
-[source,javascript,options="nowrap"]
-----
-
-----
-
-
-{zwsp} +
-
-=== React component
-
-.react4xp/myEntries/MultiColor.jsx:
-[source,javascript,options="nowrap"]
-----
 ----
 
 {zwsp} +
-
-=== Dependencies for the entry
-
-==== Styling
-
-.react4xp/myEntries/MultiColor.scss:
-[source,sass,options="nowrap"]
-----
-
-----
-
-{zwsp} +
-
-.react4xp/shared/shared-styles.scss:
-[source,sass,options="nowrap"]
-----
-
-----
-
-{zwsp} +
-
-==== Imported react components
-
-{zwsp} +
-
-===== Button
-
-.react4xp/shared/Button.jsx:
-[source,javascript,options="nowrap"]
-----
-
-----
-
-.react4xp/shared/Button.scss:
-[source,sass,options="nowrap"]
-----
-
-----
-
-{zwsp} +
-
-===== ActiveColorOval
-
-.react4xp/shared/ActiveColorOval.jsx:
-[source,javascript,options="nowrap"]
-----
-
-----
-
-.react4xp/shared/ActiveColorOval.scss:
-[source,sass,options="nowrap"]
-----
-
-----
-
-{zwsp} +
-
-===== ColorButtons
-
-.react4xp/shared/ColorButtons.jsx:
-[source,javascript,options="nowrap"]
-----
-
-----
-
-.react4xp/shared/ColorButtons.scss:
-[source,sass,options="nowrap"]
-----
-
-----
-
-
-{zwsp} +
-
-[[webpack_config]]
-== Configuring react4xp and webpack
-
-In this section we'll adjust some settings to make the code above work.
-
-TIP: Some of this is covered in more detail under <<entries#, entries>> and <<jsxpath#, jsxPaths>>.
-
-{zwsp} +
-
-=== Folders for entries and chunks
-
-.react4xp.properties:
-[source,properties,options="nowrap"]
-----
-
-----
-
-[NOTE]
-====
-
-====
-
-{zwsp} +
-
-=== Adding webpack rules
-
-.react4xp.properties:
-[source,properties,options="nowrap"]
-----
-
-----
-
-.webpack.config.react4xp.js:
-[source,javascript,options="nowrap"]
-----
-
-----
-
-{zwsp} +
-
-==== NPM dependencies
-
-
-[source,bash,options="nowrap"]
-----
-
-----
-
-{zwsp} +
-
-== Setup and rendering
-
-
-.Empty multicolor Part:
-image:multicolor-add.png[title="Empty MultiColor part in Content Studio", width=720px]
-
-{zwsp} +
-
-
-.Multicolor Part with colors filled in:
-image:multicolor-added.png[title="MultiColor part in Content Studio, with four colors added", width=720px]
-
-{zwsp} +
-
-
-.Multicolor Part, active view:
-image:multicolor-preview.png[,title="MultiColor part outside of Content Studio, active view after clicking the #5d0015 button", width=720px]
-
-{zwsp} +
-
-
-== Output
-
-.Page source from the Multicolor Part, active view (serverside rendered not selected):
-[source,html,options="nowrap"]
-----
-
-----
-
-{zwsp} +
-
-== Further reading
-
--> <<entries#, Entries>>
-
--> <<jsxpath#, JsxPath>>
-
--> <<chunks#, Dependency chunks>>
-
-{zwsp} +
-
-<<api#, API>> reference:
-
--> <<api#react4xp_render, React4xp.render>>
-
--> <<api#react4xp_object, React4xp data objects>>
-
 {zwsp} +
 {zwsp} +
-
-----
-
 
 The link:https://iconscout.com/icons/movie[movie icon] that marks the _movie_ content type in the screengrabs is by link:https://iconscout.com/contributors/phoenix-group[Phoenix Dungeon] on link:https://iconscout.com[Iconscout].
