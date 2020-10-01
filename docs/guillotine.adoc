@@ -475,7 +475,9 @@ The second included helper, <<#guillotine_request_helper, guillotineRequest.es6>
 
 In order to make requests for a list of movies below a container item in the content hierarchy, we'll need a specific guillotine query string, as well as functionality to adapt the resulting data into the proper props structure for the react components.
 
-And by using the same code on the frontend and backend, for this too, we gain a bit of isomorphism (the predictability of a singe source of truth, in short). So we'll make *a module with custom helper functionality* for our use case, and import from it in both places:
+And by using the same code on the frontend and backend, for this too, we gain a bit of isomorphism (the predictability of a singe source of truth, in short). So we'll make *a module with custom helper functionality* for our use case, and import from it in both places.
+
+Let's go ahead an write this:
 
 .headless/helpers/movieListRequests.es6:
 [source,javascript,options="nowrap"]
