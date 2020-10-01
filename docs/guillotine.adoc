@@ -467,7 +467,7 @@ NOTE: This endpoint is *disabled by default* in the starter, to encourage develo
 
 {zwsp} +
 
-The second included helper, *_<<#guillotine_request_helper, headless/guillotineRequest.es6>>_*, is a `fetch` wrapper to simplify guillotine requests at the frontend. We'll take a look at that later.
+The second included helper, <<#guillotine_request_helper, guillotineRequest.es6>>, is a `fetch` wrapper to simplify guillotine requests at the frontend. We'll take a look at that later.
 
 {zwsp} +
 
@@ -785,7 +785,7 @@ TIP: If you want to try it out right now, REPL-style and without needing to crea
 === Included helper: guillotineRequest.es6
 
 Time to add some code to the existing _MovieList.jsx_ so it can fetch data from the guillotine endpoint. To easily get started with that, we'll use the second helper module *included in the react4xp starter*: _headless/guillotineRequest.es6_
-(the first of the two helpers is of course<<#guillotine_helpers, guillotineApi.es6>>).
+(the first of the two helpers is of course <<#guillotine_helpers, guillotineApi.es6>>).
 
 This too has some convenience error handling and boilerplate like default parameter values/functions, but if we skip that, the bare essence is a `fetch` wrapper:
 
