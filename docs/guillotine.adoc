@@ -729,12 +729,53 @@ TIP: As usual, click Preview to see the rendering in a tab of its own. A preview
 
 == Making the list dynamic
 
+In this next section we'll expose the API to the frontend and let the client send a request to it. The returned data will be merged into the component state of the _MovieList_ entry, and used to render the new movies into the page DOM. Finally, we'll add a scroll listener to trigger the process.
+
 {zwsp} +
 
 [[expose_api]]
 === Exposing the guillotine API
 
-Blah
+The `post` method in the included _guillotineApi.es6_ is nearly ready to use. All it needs to be activated for API requests from outside, is a controller mapping. We'll add that next to the mapping <<#controller_mapping, we've already added>>.
+
+But first, a word of caution about doing this in other projects:
+
+[NOTE]
+====
+In the included form from the react4xp starter, _guillotineAPI.es6_ is as bare-bone as it gets, and primarily meant as a stepping stone for developers to expand from.
+
+Guillotine is a read-only interface, but still: after adding the controller mapping to an unchanged _guillotineAPI.es6_, it's opened to receiving and *executing any guillotine query* from the frontend, technically exposing any data from the content repo to being read.
+
+Before using it in production, *it's highly recommended to implement your own security measures* in/around _guillotineAPI.es6_. For example authorization/permissions-checking/filtering what data is available/keeping the actual query string on the backend and only exposing the `variables` object, etc - depending on your environment and use case.
+====
+
+For the purpose of running this lesson on your localhost, though, it should be perfectly fine. Enter _site.xml_ again to add the controller mapping:
+
+.site/site.xml:
+[source,xml,options="nowrap"]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <form/>
+    <mappings>
+        <mapping controller="/controllers/previewMovie.js" order="50">
+            <match>type:'com.enonic.app.react4xp:movie'</match>
+        </mapping>
+
+        <!-- Add this... -->
+        <mapping controller="/headless/guillotineApi.js" order="50">
+            <pattern>/api/headless</pattern>
+        </mapping>
+        <!-- ...to expose the API.  -->
+
+    </mappings>
+</site>
+----
+
+After rebuilding, the API is now up and running at `<site-url>/api/headless` (e.g. `http://localhost:8080/admin/site/preview/default/draft/moviesite/api/headless`).
+
+TIP: If you want to try it out right now, REPL-style and without needing to create the frontend code first, there's a cool tool for that: the <<#graphql_playground, GraphQL Playground>>.
+
 
 {zwsp} +
 
@@ -766,6 +807,7 @@ TIP: This section is not a vital part of the rest of this or the next chapter. F
 
 To dive deeper into guillotine and graphQL, you can always check out the link:https://developer.enonic.com/templates/headless-cms[headless starter].
 
+[[graphql_playground]]
 === GraphQL playground
 
 There is a handy tool in the headless starter, that we might as well add here too: the GraphQL Playground.
