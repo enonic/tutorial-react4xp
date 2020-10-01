@@ -601,6 +601,7 @@ Armed with these helpers, we can build an XP part controller that runs a guillot
 </part>
 ----
 
+[[movie-list-part-controller]]
 The actual controller:
 
 .site/parts/movie-list/movie-list.es6:
@@ -657,6 +658,7 @@ exports.get = function(request) {
 
 {zwsp} +
 
+[[static_movielist]]
 === React components
 
 We're still missing that *_MovieList_ entry* that will display the list of movie items:
@@ -782,9 +784,285 @@ TIP: If you want to try it out right now, REPL-style and without needing to crea
 [[frontend_request]]
 === Frontend guillotine request
 
+Time to add some code to the existing _MovieList.jsx_ so it can fetch data from the guillotine endpoint. To easily get started with that, we'll use the other <<#guillotine_helpers, helper module>> included in the react4xp starter: _headless/guillotineRequest.es6_. This too has some convenience error handling and boilerplate like default parameter values/functions, but if we skip that, the bare essence is a `fetch` wrapper:
+
+.headless/guillotineRequest.es6:
+[source,javascript,options="nowrap"]
+----
+const doGuillotineRequest = ({
+    url,                        <!--1-->
+    query,                      <!--2-->
+    variables,                  <!--3-->
+    handleResponseErrorFunc,    <!--4-->
+    extractDataFunc,            <!--5-->
+    handleDataFunc,             <!--6-->
+    catchErrorsFunc             // <!--7-->
+}) => {
+
+    fetch(
+        url,
+        {
+            method: "POST",
+            body: JSON.stringify({
+                query,
+                variables}
+            ),
+            credentials: "same-origin",
+        }
+    )
+        .then(handleResponseErrorFunc)
+        .then(response => response.json())
+        .then(extractDataFunc)
+        .then(handleDataFunc)
+        .catch(catchErrorsFunc)
+};
+
+export default doGuillotineRequest;
+----
+In short, run `doGuillotineRequest(params)` where `params` is an object that has at least a `.url` and a `.query` attribute (and optional `.variables`), and it will send the query to the guillotine API and handle the returned data (or errors). How that's handled is up to callbacks in `params`.
+
+Full `params` specs are:
+
+<1> `url` (string, mandatory): URL to the API endpoint, i.e. to the controller mapping of `headless/guillotineApi.es6`: `<site-url>/api/headless`.
+<2> `query` (string, mandatory): valid link:https://developer.enonic.com/docs/headless-cms/2.x/api[guillotine query] string.
+<3> `variables` (object, optional): object with key-value pairs where the keys correspond to parameters in the `query` string, e.g. the value of `variables.first` will be inserted into the query string as `$first`.
+<4> `handleResponseErrorFunc` (function, optional): callback function that takes a response object and returns it, usually after having checked the response for errors and handled that. Default: just checks `response.status` for HTTP codes other than OK and throws any problems as `Error`.
+<5> `extractDataFunc` (function, optional): callback function that takes a data object and returns another. After the response body has been parsed from JSON string to actual data, the data are run through this function, before being handled by `handleDataFunc`. Default: data is returned unchanged.
+<6> `handleDataFunc` (function, optional but makes little sense to omit): callback function that takes a data object (curated data from guillotine) and does something with it - *this callback is pretty much what `doGuillotineRequest` is all about*. Default: do-nothing.
+<7> `catchErrorsFunc` (function, optional): callback function that takes an error object and handles it. Default: console-error-logs the error message.
+
+{zwsp} +
+
+Now we're ready to *add a guillotine call from the frontend*, specifically to _MovieList.jsx_. Here's what we'll do:
+
+- Focus on the guillotine request and just add a click listener that asks for the _next X movie items_ in the list after the ones that are displayed
+- ...where X is the number of movies rendered to begin with. So if the _movie-list_ part is configured to do the first rendering from the controller with X=3 movies, the guillotine request in _MovieList.jsx_ will ask for data about the movies 4 through 6. Or in the language of our guillotine query: `first: 3, offset: 3`.
+- It should also keep counting so that if we click one more time, it should ask for the next X movies _after_ the ones it previously found
+- ...so that in the next query, `first:3, offset:6`, and then `first:3, offset:9`, etc.
+- It should do this by keeping the `query` string stable and updating `variables` for each request.
+
+.react4xp/myEntries/MovieList.jsx:
+[source,javascript,options="nowrap"]
+----
+import React, { useState, useEffect } from 'react';     <!--1-->
+
+import './MovieList.scss';
+
+import Movie from "../shared/Movie";
+
+                                                        <!--2-->
+import doGuillotineRequest from "../../headless/guillotineRequest";
+import { buildQueryListMovies, buildParentPathQuery, extractMovieArray } from "../../headless/helpers/movieListRequests";
+
+                                                        <!--3-->
+// State values that don't need re-rendering capability, but need to be synchronously read/writable across closures.
+let nextOffset = 0;             // Index for what will be the next movie to search for in a guillotine request
+
+
+const MovieList = ({movies, apiUrl, parentPath, movieCount, sortExpression}) => {
+
+                                                        <!--4-->
+    // UseEffect with these arguments ( function, [] ) corresponds to componentDidMount in the old-school class-based react components, and only happens after the first time the component is rendered into the DOM.
+    useEffect(
+        ()=>{
+            console.log("Initializing...");
+            nextOffset = movieCount;
+        },
+        []
+    );
+
+
+    // ------------------------------------------------------
+    // Set up action methods, triggered by listener:
+
+                                                                    <!--5-->
+    // Makes a (guillotine) request for data with these search parameters and passes an anonymous callback function as
+    // handleDataFunc (used on the returned list of movie data).
+    const makeRequest = () => {
+        console.log("Requesting", movieCount, "movies, starting from index", nextOffset);
+        doGuillotineRequest({
+            url: apiUrl,                                            <!--6-->
+
+            query: buildQueryListMovies(),                          <!--7-->
+
+            variables: {
+                first: movieCount,
+                offset: nextOffset,                                 <!--8-->
+                sort: sortExpression,
+                parentPathQuery: buildParentPathQuery(parentPath)   // <!--9-->
+            },
+
+            extractDataFunc: extractMovieArray,                     <!--10-->
+
+            handleDataFunc: (newMovieItems) => {                    <!--11-->
+                console.log("Received data:", newMovieItems);
+                nextOffset += movieCount;
+            }
+        });
+    };
+
+    // ------------------------------------------------------------------------------------
+    // Actual rendering:
+
+    return (
+        <div className="movieList" onClick={makeRequest}>           <!--12-->
+            {movies
+                ? movies.map(movie =>
+                        <Movie key={movie.id} {...movie} />
+                    )
+                : null
+            }
+        </div>
+    );
+};
+
+// MUST use this export line wrapping, because of the hooks we'll add later.
+export default (props) => <MovieList {...props} />;
+----
+The changes are:
+
+<1> Import some link:https://reactjs.org/docs/hooks-overview.html[react hooks] to help us handle some component state and lifecycle events
+<2> Import `doGuillotineRequest` described moments ago, and also the same helpers from _headless/helpers/movieListRequests.es6_ that we're already using <<#movie-list-part-controller, in the part controller>>.
+<3> `nextOffset` keeps track of how far the guillotine requests have counted, or rather: what the first movie in the next request should be (the next `variables.offset`)
+<4> We pass a callback function to `useEffect`, a react hook that (in this case, since the array after is empty) only calls the callback after the first time the component has been rendered. This way, `nextOffset` gets an initial value, only once.
+<5> `makeRequest` is the function that triggers the behavior:
+<6> `doGuillotineRequest` sends a request to the API at the prop `apiUrl`.
+<7> `buildQueryListMovies` gives ut the same query string as in the part controller,
+<8> The rest of the `props` from the controller are now used to build the `variables` object which are inserted as the parameters in the query. Except the `offset` parameter, which uses the _current value_ of the counting `nextOffset`,
+<9> Just like in the controller, `buildParentPathQuery` uses the path of the movies' parent content to build a subquery variable,
+<10> And also like in the controller, we use `extractMovieArray` to convert guillotine results to a data format that corresponds to an array of _Movie.jsx_ props - just by passing the function into `doGuillotineRequest` as the `extractDataFunc` parameter,
+<11> And finally, when we the data has passed through `extractMovieArray` and we get some `newMovieItems`, we do a temporary action for now: console-log the data, and increase `nextOffset` with the initial number of movies, so it's ready for the next request.
+<12> We add `onClick={makeRequest}` to the movie list DOM container element. Now, when we click the list, `makeRequest` is triggered, and the resulting data from the guillotine API is displayed in the browser log.
+
+Rebuilding this and running the moviesite in a preview window and with a console open, and the clicking somewhere on the list, say 3 times, the result might look something like this (note the console messages, how the returned movie IDs are not the same between responses, and that "starting from index..." keeps counting):
+
+image:click-data.png[title="Console logs different data items from 3 mouse clicks", width=1024px]
+
 {zwsp} +
 
 === Dynamic DOM updates
+
+With the request and the data flow in place, we're just a small step away from *rendering the returned movies* at the bottom of the page, effectively filling in new movies on the page for each click.
+
+React is _very_ eager to do this whenever a component state is updated, so we'll let it *render from the state* instead of directly from the `movie` prop:
+
+.react4xp/myEntries/MovieList.jsx:
+[source,javascript,options="nowrap"]
+----
+import React, { useState, useEffect } from 'react'
+
+import './MovieList.scss';
+
+import Movie from "../shared/Movie";
+
+import doGuillotineRequest from "../../headless/guillotineRequest";
+import { buildQueryListMovies, buildParentPathQuery, extractMovieArray } from "../../headless/helpers/movieListRequests";
+
+// State values that don't need re-rendering capability, but need to be synchronously read/writable across closures.
+let nextOffset = 0;             // Index for what will be the next movie to search for in a guillotine request
+
+
+const MovieList = ({movies, apiUrl, parentPath, movieCount, sortExpression}) => {
+
+                                                                    <!--1-->
+    // Setup asynchronous component state that triggers re-render on change.
+    const [state, setState] = useState({ movies });
+
+    // UseEffect with these arguments ( function, [] ) corresponds to componentDidMount in the old-school class-based react components.
+    useEffect(
+        ()=>{
+            console.log("Initializing...");
+
+            nextOffset = movieCount;
+        },
+        []
+    );
+
+
+    // ------------------------------------------------------
+    // Set up action methods, triggered by listener:
+
+    // Makes a (guillotine) request for data with these search parameters and passes an anonymous callback function as
+    // handleDataFunc (used on the returned list of movie data).
+    const makeRequest = () => {
+        console.log("Requesting", movieCount, "movies, starting from index", nextOffset);
+        doGuillotineRequest({
+            url: apiUrl,
+
+            query: buildQueryListMovies(),
+
+            variables: {
+                first: movieCount,
+                offset: nextOffset,
+                sort: sortExpression,
+                parentPathQuery: buildParentPathQuery(parentPath)
+            },
+
+            extractDataFunc: extractMovieArray,
+
+            handleDataFunc: updateDOMWithNewMovies                  <!--2-->
+        });
+    };
+
+    // When a movie data array is returned from the guillotine data request, this method is called.
+    const updateDOMWithNewMovies = (newMovieItems) => {
+        console.log("Received data:", newMovieItems);
+        if (newMovieItems.length > 0) {
+            console.log("Adding movies to state:", newMovieItems.map(movie => movie.title));
+
+            nextOffset += movieCount;                               <!--3-->
+
+            // Use a function, not just a new direct object/array, for mutating state object/array instead of replacing it:
+            setState(oldState => ({                                 <!--4-->
+                movies: [
+                    ...oldState.movies,
+                    ...newMovieItems
+                ]
+            }));
+
+            console.log("Added new movies to state / DOM.");
+        }
+    };
+
+
+    // ------------------------------------------------------------------------------------
+    // Actual rendering:
+
+    return (
+        <div className="movieList" onClick={makeRequest}>
+            {state.movies
+                ? state.movies.map(movie =>                         <!--5-->
+                        <Movie key={movie.id} {...movie} />
+                    )
+                : null
+            }
+        </div>
+    );
+};
+
+// MUST use this export line wrapping, because of the useState hook.
+export default (props) => <MovieList {...props} />;
+----
+Changes:
+
+<1> The `useState` react hook defines the component state: we pass the `movies` prop into it to set the initial state content. In return we get an array containing `state` - a handle for the _current_ state - and `setState` - a function that updates the state.
+<2> We now want `doGuillotineRequest` to trigger the new function `updateDOMWithNewMovies` when the guillotine data is returned and curated.
+<3> In `updateDOMWithNewMovies` we only keep counting the `nextOffset` if any movies were actually added.
+<4> We call `setState` to update the state, so that the incoming items from guillotine are added after the old ones.
++
+[TIP]
+====
+It would be possible to use `setState` with a new object instead of a function:
+
+`setState( { movies: [...state.movies, ...newMovieItems]})`.
+
+But `setState` is an asynchronous function, and calling it with a "current state of affairs" as the argument runs the risk of introducing race conditions: we'd lose control of timing when the DOM updates, especially since we're going to combine that length-of-DOM with a scrolling trigger. A callback function argument works around this: _"update the state based on what it is at the time this function is called"_.
+====
+<5> Use `state.movies` instead of just the `movies` props: now react will watch the state and automatically re-render the component as soon as the state is updated.
+
+Rebuild the app, update the moviesite preview tab and try clicking on the list. New movies should appear below the existing one, expanding the movie list as you click.
+
+image:click-fill-dom.png[title="The request adds new movie data to the state", width=1024px]
 
 {zwsp} +
 
