@@ -1,14 +1,58 @@
-= Going Headless, part 2: webapp outside XP
+= Going Headless, part 2: standalone webapp
 :toc: right
 :imagesdir: media/
 
+{zwsp} +
+{zwsp} +
 
+So far in all the previous examples, the XP controllers have still been at the center of the rendering.
 
-== Some background
+Even in the previous chapter, which demonstrated how to make the frontend react components <<guillotine#, render with data fetched from an API>>, *the response from the initial request to the page still came from an XP controller*.
+
+In that response there was a serverside-rendered initial HTML rendering of the entry, references to dependency and entry assets (in the right order), and a client-side wrapper (fetched from a referred XP service) that handles the react rendering/hydration trigger in the browser. All of this was automatically generated and included from the `React4xp.render` call in the XP controller.
+
+But in general, when the react4xp buildtime compiles the react component source files (etc) into assets, it's just a _regular webpack_ process that generates _regular JS_ (etc) assets that are ready to run in the browser in any way, independent of the react4xp runtime.
+
+In other words, you can *serve the react4xp-compiled assets from anywhere* and use them however you want. Now that we've seen how to set up an API that serves XP content data, and that using that data to render something with react in the browser can be as simple (?) as passing props and handling a component state, *this opens up for fully headless approaches!*
+
+In this chapter we'll take a look at how to use *react4xp-compiled components without rendering them from XP controllers*. We'll look at two variations of this:
+
+- _Somewhat_ standalone: a webapp that still uses the react4xp client wrapper and services to make an all-in-one trigger call,
+- _Completely_ standalone and vanilla: directly fetching assets and data and using them to make a `ReactDOM.render` call.
+
+{zwsp} +
+{zwsp} +
+{zwsp} +
 
 == Lesson overview
 
-This chapter will
+[NOTE]
+====
+This chapter builds on the source code from <<guillotine#, the previous chapter>>, especially the entry and dependencies, and the assets that they're compiled into.
+
+If you've completed that lesson, nice. But that code is not in focus here and we won't look at it much - what we'll build in this chapter is _around_ the compiled assets, just referring to them.
+
+What counts here are the general principles and usage patterns, and they should be pretty clear anyway.
+====
+
+{zwsp} +
+
+*Common to both variations* we're about to build, is this pattern:
+
+- An HTML string will be served to the browser. We will use XP to serve the HTML (an XP webapp controller actually. But that's _just for simplicity in the tutorial_ since we have an XP instance running already. Keep in mind that this HTML could come from anywhere and it will run the show from scratch in the browser - and the XP controller won't use any react4xp runtime stuff at all).
+- The browser will fetch react and react-dom from a CDN...
+- ...and fetch the compiled assets (again, from XP _only for simplicity_; the asset URLs could point to any static asset server). Running these assets in the browser makes the entry and components available in the browsers JS namespace,
+- and a script (asset) will be fetched and run. It will fetch data from the guillotine API from the previous chapter (although that data too could come from anywhere and in any format/protocol), turn it into props and call a rendering trigger with the entry and the props.
+
+{zwsp} +
+
+In the first variation (*"somewhat standalone"*), we'll use a client-side convenience wrapper: if the react4xp client and services are available, the script at the end can ask the react4xp client to use a one-in-all `.renderWithDependencies` call, which consults a react4xp service that auto-tracks and downloads the necessary dependencies, and internally calls `ReactDOM.render` when everything is ready.
+
+{zwsp} +
+
+In the second variation (*completely standalone*), URLs are more hardcoded, assets are manually organized and the script itself makes the `ReactDOM.render` call explicitly. In this approach, XP's role is mainly to serve content data through the guillotine API. Pretty independent, less convenient: no helpers, and getting things right is up to you.
+
+{zwsp} +
 
 === Source files
 
