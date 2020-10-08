@@ -62,7 +62,18 @@ src/
 
 == Build and Deploy
 
-To build and deploy the starter app, run this command from your shell:
+To build and deploy the starter app, *first run an NPM install* from your shell, in the project folder:
+
+[source, bash]
+----
+npm install
+----
+
+NOTE: The react4xp gradle build in the next step imports some extra configuration from _node_modules/react4xp/_ . So this NPM install step only needs to be run the first time you set up the app (or whenever you've cleaned or changed relevant parts of _node_modules_ / the NPM setup).
+
+{zwsp} +
+
+*Then, run the actual build process:*
 
 [source, bash]
 ----
