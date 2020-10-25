@@ -5,20 +5,24 @@
 {zwsp} +
 {zwsp} +
 
-So far in all the previous examples, the XP controllers have still been at the center of the rendering.
+== Intro
 
-Even in the previous chapter, which demonstrated how to make the frontend react components <<guillotine#, render with data fetched from an API>>, *the response from the initial request to the page still came from an XP controller*.
+=== The story so far
+
+Until now in all the previous examples, the XP controllers have still been at the center of the rendering.
+
+Even in the <<guillotine#, previous chapter>>, which demonstrated how to make the frontend react components render with data fetched from an API, the response from the initial request to the page still came from an XP controller.
 
 In that response there was a serverside-rendered initial HTML rendering of the entry, references to dependency and entry assets (in the right order), and a client-side wrapper (fetched from a referred XP service) that handles the react rendering/hydration trigger in the browser. All of this was automatically generated and included from the `React4xp.render` call in the XP controller.
 
-But in general, when the react4xp buildtime compiles the react component source files (etc) into assets, it's just a _regular webpack_ process that generates _regular JS_ (etc) assets that are ready to run in the browser in any way, independent of the react4xp runtime.
 
-In other words, you can *serve the react4xp-compiled assets from anywhere* and use them however you want. Now that we've seen how to set up an API that serves XP content data, and that using that data to render something with react in the browser can be as simple (?) as passing props and handling a component state, *this opens up for fully headless approaches!*
+=== Going fully headless
 
-In this chapter we'll take a look at how to use *react4xp-compiled components without rendering them from XP controllers*. We'll look at two variations of this:
+But in general, when the react4xp buildtime compiles the react component source files (etc) into assets, what happens is just a *regular webpack* process that generates *regular JS (etc) assets* that can be run in the browser in pretty much any regular way - independent of the react4xp runtime.
 
-- _Somewhat_ standalone: a webapp that still uses the react4xp client wrapper and services to make an all-in-one trigger call,
-- _Completely_ standalone and vanilla: directly fetching assets and data and using them to make a `ReactDOM.render` call.
+*In other words, you can serve the react4xp-compiled assets from anywhere and use them however you want.*
+
+Now that we've seen how to set up an API that serves XP content data, and that using that data to render something with react in the browser boils down to passing props and handling a component state, this opens up for *fully headless approaches!*
 
 {zwsp} +
 {zwsp} +
@@ -26,48 +30,127 @@ In this chapter we'll take a look at how to use *react4xp-compiled components wi
 
 == Lesson overview
 
-[NOTE]
+[TIP]
 ====
 This chapter builds on the source code from <<guillotine#, the previous chapter>>, especially the entry and dependencies, and the assets that they're compiled into.
 
 If you've completed that lesson, nice. But that code is not in focus here and we won't look at it much - what we'll build in this chapter is _around_ the compiled assets, just referring to them.
 
-What counts here are the general principles and usage patterns, and they should be pretty clear anyway.
+*What counts here are the general principles and usage patterns*. They should be pretty clear anyway.
 ====
 
 {zwsp} +
+In this chapter we'll take a look at how to use react4xp-compiled components without rendering them from XP controllers. We'll look at *two variations* of this:
 
-*Common to both variations* we're about to build, is this pattern:
-
-- An HTML string will be served to the browser. We will use XP to serve the HTML (an XP webapp controller actually. But that's _just for simplicity in the tutorial_ since we have an XP instance running already. Keep in mind that this HTML could come from anywhere and it will run the show from scratch in the browser - and the XP controller won't use any react4xp runtime stuff at all).
-- The browser will fetch react and react-dom from a CDN...
-- ...and fetch the compiled assets (again, from XP _only for simplicity_; the asset URLs could point to any static asset server). Running these assets in the browser makes the entry and components available in the browsers JS namespace,
-- and a script (asset) will be fetched and run. It will fetch data from the guillotine API from the previous chapter (although that data too could come from anywhere and in any format/protocol), turn it into props and call a rendering trigger with the entry and the props.
+- _Somewhat_ standalone: a webapp that still uses the react4xp client wrapper and services to make an all-in-one trigger call,
+- _Completely_ standalone and vanilla: directly fetching assets and data and using them to make a `ReactDOM.render` call.
 
 {zwsp} +
 
-In the first variation (*"somewhat standalone"*), we'll use a client-side convenience wrapper: if the react4xp client and services are available, the script at the end can ask the react4xp client to use a one-in-all `.renderWithDependencies` call, which consults a react4xp service that auto-tracks and downloads the necessary dependencies, and internally calls `ReactDOM.render` when everything is ready.
+=== The common pattern
+
+The common pattern in both variations is this:
+
+- *An HTML string will be served to the browser.* We will use XP to serve the HTML (an XP webapp controller actually. But that's _just for simplicity in the tutorial_ since we have an XP instance running already. Keep in mind that this HTML could come from anywhere and it will run the show from scratch in the browser - and the XP controller won't use any react4xp runtime stuff at all).
+- The browser will fetch *react and react-dom from a CDN*...
+- ...and *fetch the compiled static assets* (again using XP, but _only for simplicity_: the asset URLs could point to any static asset server). Running these assets in the browser makes the entry and components available in the browser's JS namespace,
+- and *a script* (asset) will be fetched and run. This script *fetches data* from the guillotine API, same way as in the previous chapter (although that data too could come from anywhere and in any format/protocol), and *turns the data into props and calls a rendering trigger* with the entry and the props.
 
 {zwsp} +
 
-In the second variation (*completely standalone*), URLs are more hardcoded, assets are manually organized and the script itself makes the `ReactDOM.render` call explicitly. In this approach, XP's role is mainly to serve content data through the guillotine API. Pretty independent, less convenient: no helpers, and getting things right is up to you.
+=== Unique to each variation
+
+Unique to the two variations is this:
+
+- In the first variation (_"somewhat standalone"_), we'll use a *client-side convenience wrapper*: if the react4xp client and XP services are available, the script at the end can ask the react4xp client to use a one-in-all trigger call: `.renderWithDependencies`. It consults a react4xp service that auto-tracks and downloads the necessary dependencies, and internally calls `ReactDOM.render` when everything is ready.
+- The second variation (_completely standalone_) is the most manual, "vanilla" approach: *URLs are handled in the HTML itself* - asset references and values are hardcoded and manually organized here. And the script at the end makes a *regular `ReactDOM.render` call*. In this approach, XP's role is mainly to serve content data through the guillotine API. Pretty independent, less convenient: no helpers, and getting things right is up to you.
 
 {zwsp} +
 
 === Source files
 
-.Files involved (src/main/resources/...):
+.Files involved (src/main/resources/...) - in addition to the ones from chapter 8:
 [source,files]
 ----
+webapp/
+    webapp.es6
+    webapp.html
+
+assets/webapp/
+    script.es6
 ----
-<1> We're going to
+
+These are the files used in both variations: _webapp.es6_ and _webapp.html_ generate the initial HTML that makes the browser run everything, while _script.es6_ is the final script that fetches data, turns them into props, references a react4xp entry, and makes the rendering trigger call.
 
 {zwsp} +
 {zwsp} +
 {zwsp} +
 
 
-== Blabla
+== 1: Using client wrapper and services
+
+For simplicity, we'll just use XP's Thymeleaf rendering to create the initial HTML with this *template*:
+
+.webapp.html:
+[source,html,options="nowrap"]
+----
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>All headless</title>
+
+        <!--1-->
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
+        <!--2-->
+        <script data-th-src="|${portal.serviceUrl({'_service=react4xp-client'})}|" src=""></script>
+
+        <!--3-->
+        <style>
+            body { margin:0; padding:0; }
+            h1, .faux-spinner{ padding:30px; margin:0 auto; font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif; }
+        </style>
+    </head>
+
+    <body>
+        <h1>Top 3 movies to put in a list</h1>
+        <p>#4 will blow your mind!</p>
+
+        <!--4-->
+        <div id="movieListContainer">
+            <div class="faux-spinner">Loading movies...</div>
+        </div>
+
+        <!--5-->
+        <script data-th-utext="|
+        var MOVIE_LIST_PARAMS= {
+            serviceUrlRoot: '${portal.serviceUrl({'_service='})}',
+            parentPath: '${sitePath}',
+            apiUrl: '/admin/site/preview/default/draft${sitePath}/api/headless',
+            movieType: '${movieType}',
+            movieCount: 3,
+            sortExpression: 'data.year ASC',
+        }|"></script>
+
+        <!--6-->
+        <script defer data-th-src="${portal.assetUrl({'_path=webapp/script.js'})}"></script>
+    </body>
+</html>
+----
+<1> We start by running React and ReactDOM from a CDN.
+<2> Next, like in the previous chapters, the React4xp client wrapper is fetched (in this variation only). It supplies the `.renderWithDependencies` trigger call used by the script later.
+<3> A pinch of styling.
+<4> The target container for the react app. The not-really-a-spinner (_"Loading movies..."_) will be replaced when the actual content is rendered.
+<5> Variables used by the script later (just wrapped in a `MOVIE_LIST_PARAMS` object to encapsulate them from the global namespace). Some notable variables:
++
+- hey
+- ho
+- lets
+- go
+<6> Finally, the actual script is run.
+
 
 {zwsp} +
 

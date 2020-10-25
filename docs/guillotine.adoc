@@ -1258,7 +1258,7 @@ To dive deeper into guillotine and graphQL, you can always check out the link:ht
 
 There is a handy tool in the headless starter, that we might as well add here too: the GraphQL Playground.
 
-The GraphQL Playground is basically an in-browser *GraphQL REPL interface*. It allows you to send queries and variables to the frontend API and see the results immediatly: experiment around, get to know guillotine, and build queries more effectively.
+The GraphQL Playground is basically an in-browser *GraphQL REPL interface*. It allows you to send queries and variables to the frontend API and see the results immediatly: experiment around, get to know link:https://graphql.org/learn/[GraphQL] and link:https://developer.enonic.com/docs/guillotine/2.x/api[guillotine], and build queries more effectively.
 
 To add this, first add the _graphql-playground_ library as a dependency in _build.gradle_:
 
@@ -1345,5 +1345,7 @@ image:graphql-playground.png[title="The GraphQL playground", width=1024px]
 {zwsp} +
 {zwsp} +
 {zwsp} +
+
+---
 
 The link:https://iconscout.com/icons/movie[movie icon] that marks the _movie_ content type in the screengrabs is by link:https://iconscout.com/contributors/phoenix-group[Phoenix Dungeon] on link:https://iconscout.com[Iconscout].
