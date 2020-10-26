@@ -15,6 +15,7 @@ Even in the <<guillotine#, previous chapter>>, which demonstrated how to make th
 
 In that response there was a serverside-rendered initial HTML rendering of the entry, references to dependency and entry assets (in the right order), and a client-side wrapper (fetched from a referred XP service) that handles the react rendering/hydration trigger in the browser. All of this was automatically generated and included from the `React4xp.render` call in the XP controller.
 
+{zwsp} +
 
 === Going fully headless
 
@@ -22,13 +23,18 @@ But in general, when the react4xp buildtime compiles the react component source 
 
 *In other words, you can serve the react4xp-compiled assets from anywhere and use them however you want.*
 
-Now that we've seen how to set up an API that serves XP content data, and that using that data to render something with react in the browser boils down to passing props and handling a component state, this opens up for *fully headless approaches!*
+Now that we've seen how to set up an API that serves XP content data, and that using that data to render something with react in the browser boils down to passing props and handling a component state, this opens up for *headless approaches!*
+
+[NOTE]
+====
+The headless-CMS approaches in this chapter *do NOT include server-side react rendering!* It's out of scope for react4xp, out of the box at least.
+
+But since the react4xp build processes are pretty regular webpack, using regular react, it should be perfectly possible to tweak things and engineer your own solutions.
+
+If you go down that path, using Node.js instead of Nashorn for the SSR engine might be easier - Nashorn needs more polyfilling.
+====
 
 {zwsp} +
-{zwsp} +
-{zwsp} +
-
-== Lesson overview
 
 [TIP]
 ====
@@ -40,10 +46,15 @@ If you've completed that lesson, nice. But that code is not in focus here and we
 ====
 
 {zwsp} +
-In this chapter we'll take a look at how to use react4xp-compiled components without rendering them from XP controllers. We'll look at *two variations* of this:
+{zwsp} +
+{zwsp} +
 
-- _Somewhat_ standalone: a webapp that still uses the react4xp client wrapper and services to make an all-in-one trigger call,
-- _Completely_ standalone and vanilla: directly fetching assets and data and using them to make a `ReactDOM.render` call.
+== Lesson overview
+
+In this chapter we'll take a look at how to use react4xp-compiled components without rendering them from XP controllers. *We'll look at two variations of this:*
+
+- *"Slightly standalone":* a webapp that still uses the react4xp client wrapper and services to make an all-in-one trigger call,
+- *Completely standalone*: a vanilla-js-and-react approach, directly fetching assets and data and using them to make a `ReactDOM.render` call.
 
 {zwsp} +
 
@@ -60,10 +71,10 @@ The common pattern in both variations is this:
 
 === Unique to each variation
 
-Unique to the two variations is this:
+The two variations are different in this way:
 
-- In the first variation (_"somewhat standalone"_), we'll use a *client-side convenience wrapper*: if the react4xp client and XP services are available, the script at the end can ask the react4xp client to use a one-in-all trigger call: `.renderWithDependencies`. It consults a react4xp service that auto-tracks and downloads the necessary dependencies, and internally calls `ReactDOM.render` when everything is ready.
-- The second variation (_completely standalone_) is the most manual, "vanilla" approach: *URLs are handled in the HTML itself* - asset references and values are hardcoded and manually organized here. And the script at the end makes a *regular `ReactDOM.render` call*. In this approach, XP's role is mainly to serve content data through the guillotine API. Pretty independent, less convenient: no helpers, and getting things right is up to you.
+- In the first variation (_"slightly standalone"_), we'll use a *client-side convenience wrapper*: if the react4xp client and XP services are available, the script at the end can ask the react4xp client to use a one-in-all trigger call: `.renderWithDependencies`. It consults a react4xp service that auto-tracks and downloads the necessary dependencies, and internally calls `ReactDOM.render` when everything is ready.
+- The second variation (_completely standalone_) is the most manual, "vanilla" approach. *URLs are handled in the HTML itself* - asset references and values are hardcoded and manually organized here - and the script at the end makes a *regular `ReactDOM.render` call*. In this approach, XP's role is mainly to serve content data through the guillotine API. Pretty independent, less convenient: no helpers, and getting things right is up to you.
 
 {zwsp} +
 
@@ -87,9 +98,13 @@ These are the files used in both variations: _webapp.es6_ and _webapp.html_ gene
 {zwsp} +
 
 
-== 1: Using client wrapper and services
+== Slightly standalone: using client wrapper and services
 
-For simplicity, we'll just use XP's Thymeleaf rendering to create the initial HTML with this *template*:
+=== HTML base
+
+The web app begins with some basic HTML, setting it all up in the browser.
+
+In this "slightly standalone" approach, we're using XP services and the react4xp client wrapper, so we can simply deliver the initial HTML with an link:https://developer.enonic.com/docs/xp/stable/runtime/engines/webapp-engine[XP webapp] - rendered with a regular *thymeleaf view template*:
 
 .webapp.html:
 [source,html,options="nowrap"]
@@ -109,8 +124,8 @@ For simplicity, we'll just use XP's Thymeleaf rendering to create the initial HT
 
         <!--3-->
         <style>
-            body { margin:0; padding:0; }
-            h1, .faux-spinner{ padding:30px; margin:0 auto; font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif; }
+            body { margin: 0; padding: 0; }
+            h1, p, .faux-spinner { padding: 30px; margin: 0 auto; font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif; }
         </style>
     </head>
 
@@ -143,15 +158,256 @@ For simplicity, we'll just use XP's Thymeleaf rendering to create the initial HT
 <2> Next, like in the previous chapters, the React4xp client wrapper is fetched (in this variation only). It supplies the `.renderWithDependencies` trigger call used by the script later.
 <3> A pinch of styling.
 <4> The target container for the react app. The not-really-a-spinner (_"Loading movies..."_) will be replaced when the actual content is rendered.
-<5> Variables used by the script later (just wrapped in a `MOVIE_LIST_PARAMS` object to encapsulate them from the global namespace). Some notable variables:
+<5> Variables used by our particular script later (just wrapped in a `MOVIE_LIST_PARAMS` object to encapsulate them from the global namespace). Some of these values depend on XP content, so it's easiest to get them through Thymeleaf and the XP controller:
 +
-- hey
-- ho
-- lets
-- go
-<6> Finally, the actual script is run.
-
+- `serviceUrlRoot` is a root URL string that the script will use in a call to the `.renderWithDependencies` trigger / wrapper function, to let it know where to contact XP services.
+- The rest - `parentPath`, `apiUrl`, `movieType`, `movieCount` and `sortExpression` - are the same as in in the previous chapter. The script will use these in a `props` object, which will also be passed into `.renderWithDependencies` and render the _MovieList_ entry.
+<6> Finally, the actual script.
 
 {zwsp} +
 
-=== bleh bleh
+=== Webapp controller
+
+This HTML is rendered with this minimal *XP controller*:
+
+.webapp.es6:
+[source,javascript,options="nowrap"]
+----
+import thymeleaf from '/lib/thymeleaf';
+
+const view = resolve('webapp.html');
+
+exports.get = req => {
+    const model = {
+        sitePath:  "/moviesite",            <!--1-->
+        movieType: `${app.name}:movie`      <!--2-->
+    };
+
+    return {
+        contentType: 'text/html',
+        body: thymeleaf.render(view, model)
+    };
+};
+----
+This is of course where some of the values in `MOVIE_LIST_PARAMS` comes from, in the HTML above.
+
+<1> `sitePath` points to the content path of the movie-listing site we created earlier, that  we want the client to render. This string is baked into the `apiUrl` in the HTML above and used directly to fetch the site data from the guillotine API.
++
+NOTE: The URL to the guillotine API depends on the URL of a site item like this, because of the way we set the API up with a controller mapping <<guillotine#expose_api, previously>>.
+<2> `movieType` is the full name string of the _movie_ content type in our app. This is what the script will ask guillotine to fetch.
+
+{zwsp} +
+
+=== The script asset
+
+Finally, the script that's called at the end of the HTML.
+
+If you've been through the lesson in the <<guillotine#, previous chapter>>, you might recognize that these functions are mostly the same code as was used in that chapter, just copied into one asset (if you haven't, just see that chapter for reference). The flow is similar, and the way of thinking might be familiar if you've used React before. The exception is the final step where we use a react4xp wrapper function.
+
+==== Overview: script flow
+
+The main function is `requestAndRenderMovies`. It gets some input values from the `MOVIE_LIST_PARAMS` object we defined in the global namespace in the HTML earlier. It calls the guillotine API and queries for data about 3 (`movieCount`) movies (`movieType`) under the _movielist_ site (`parentPath`). Just like in the previous chapter, the guillotine query string for fetching movies is built with a function, `buildQueryListMovies`. The returned data is parsed to a JSON object and used to extract an array of movie objects that conform to the props signature of _Movie.jsx_ (`extractToMovieArray`).
+
+Next, that movie array is passed to the `renderMovie` function, where it's used in a `props` object alongside other props that the react component / react4xp entry needs.
+
+In the final step in `renderMovies`, the all-in-one trigger `renderWithDependencies` is called (from the `React.CLIENT` object, this is why we loaded the react4xp client wrapper in step 2 in the HTML above). Here, the `MovieList` <<entries#, entry>> (which is the _src/main/resources/react4xp/entries/MovieList.jsx_ component, referred with its <<jsxPath#, jsxPath>>) is rendered into the `movieListContainer` element in the HTML, with the `props` that were just made.
+
+
+==== RenderWithDependencies
+
+Wondering what `renderWithDependencies` really does under the hood? In the next and completely standalone variation, we'll do the same thing without XP services and wrappers, so you'll see for yourself. But in short:
+
+`renderWithDependencies` uses an XP service to track the dependencies of one or more entries such as _MovieList_, fetches all assets in the right order (and only once, if overlapping), and calls `ReactDOM.render` to render each component into its target container with it's own props.
+
+==== Code
+
+Here is the entire script:
+
+.script.es6:
+[source,javascript,options="nowrap"]
+----
+const buildQueryListMovies = (movieType, parentPath) => {
+    const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);  // verifies content type names like "com.enonic.app.react4xp:movie" and matches up groups before and after the colon
+    if (!matched) {
+        throw Error(`movieType '${movieType}' is not a valid format. Expecting <appName>:<XP content type>, for example: 'com.enonic.app.react4xp:movie' etc`);
+    }
+    const appNameUnderscored = matched[1].replace(/\./g, '_');      // e.g. "com.enonic.app.react4xp" --> "com_enonic_app_react4xp
+    const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);       // e.g. "movie" --> "Movie"
+
+    return `
+query($first:Int!, $offset:Int!, $sort:String!) {
+  guillotine {
+    query(contentTypes: ["${movieType}"], query: "_parentPath = '/content${parentPath}'", first: $first, offset: $offset, sort: $sort) {
+      ... on ${appNameUnderscored}_${ctyCapitalized} {
+        _id
+        displayName
+        data {
+          year
+          description
+          actor
+          image {
+            ... on media_Image {
+              imageUrl(type: absolute, scale: "width(300)")
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
+};
+
+// Not using util-lib to ensure usability on frontend
+const forceArray = maybeArray => Array.isArray(maybeArray)
+    ? maybeArray
+    : maybeArray
+        ? [maybeArray]
+        : [];
+
+
+const extractMovieArray = responseData => responseData.data.guillotine.query
+    .filter( movieItem => movieItem && typeof movieItem === 'object' && Object.keys(movieItem).indexOf('data') !== -1)
+    .map(
+        movieItem => ({
+            id: movieItem._id,
+            title: movieItem.displayName.trim(),
+            imageUrl: movieItem.data.image.imageUrl,
+            year: movieItem.data.year,
+            description: movieItem.data.description,
+            actors: forceArray(movieItem.data.actor)
+                .map( actor => (actor || '').trim())
+                .filter(actor => !!actor)
+        })
+    );
+
+
+// ---------------------------------------------------------
+
+// Makes a (guillotine) request for data with these search parameters and passes updateDOMWithNewMovies as the callback
+// function to use on the returned list of movie data
+const requestAndRenderMovies = () => {
+    fetch(
+        MOVIE_LIST_PARAMS.apiUrl,
+        {
+            method: "POST",
+            body: JSON.stringify({
+                query: buildQueryListMovies(
+                    MOVIE_LIST_PARAMS.movieType,
+                    MOVIE_LIST_PARAMS.parentPath
+                ),
+                variables: {
+                    first: MOVIE_LIST_PARAMS.movieCount,
+                    offset: 0,
+                    sort: MOVIE_LIST_PARAMS.sortExpression
+                }}
+            ),
+        }
+    )
+        .then(response => {
+            if (!(response.status < 300)) {
+                throw Error(`Guillotine API response:\n
+                \n${response.status} - ${response.statusText}.\n
+                \nAPI url: ${response.url}\n
+                \nInspect the request and/or the server log.`);
+            }
+            return response;
+        })
+
+        .then(response => response.json())
+        .then(extractMovieArray)
+        .then(renderMovies)
+        .catch( error => {console.error(error);})
+};
+
+
+
+
+const renderMovies = (movies) => {
+    console.log("Rendering movies:", movies);
+
+    const props = {
+        movies: movies,
+        apiUrl: MOVIE_LIST_PARAMS.apiUrl,
+        parentPath: MOVIE_LIST_PARAMS.parentPath,
+        movieCount: MOVIE_LIST_PARAMS.movieCount,
+        movieType: MOVIE_LIST_PARAMS.movieType,
+        sortExpression: MOVIE_LIST_PARAMS.sortExpression
+    };
+
+    React4xp.CLIENT.renderWithDependencies(
+        {
+            'MovieList': {
+                targetId: 'movieListContainer',
+                props: props
+            }
+        },
+        null,
+        MOVIE_LIST_PARAMS.serviceUrlRoot
+    );
+};
+
+requestAndRenderMovies();
+----
+
+{zwsp} +
+
+=== Output
+
+Assuming you've been through the <<guillotine#, previous lesson>>, you can now rebuild the project. But instead of opening Content Studio, open the XP main menu in the top right corner, choose _Applications_, and in the Applications viewer, select your app:
+
+image:webapp_applications.png[title="Select your app in the Applications viewer", width=1024px]
+
+{zwsp}
+
+At the bottom of the app info panel, you'll see a URL where you can preview the webapp we just built:
+
+image:webapp_url.png[title="URL to preview the webapp.", width=1024px]
+
+{zwsp}
+
+Just like at the end of the previous chapter, the preview should now show you the working webapp - listing 3 initial movies, and filling in more as you scroll down.
+
+The resolved version of the initial HTML should look something like this (view Page Source):
+
+.Page Source:
+[source,html,options="nowrap"]
+----
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>All headless</title>
+
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
+        <script src="/webapp/com.enonic.app.react4xp/_/service/com.enonic.app.react4xp/react4xp-client"></script>
+
+        <style>
+            body { margin: 0; padding: 0; }
+            h1, p, .faux-spinner { padding: 30px; margin: 0 auto; font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif; }
+        </style>
+    </head>
+
+    <body>
+        <h1>Top 3 movies to put in a list</h1>
+        <p>#4 will blow your mind!</p>
+
+        <div id="movieListContainer">
+            <div class="faux-spinner">Loading movies...</div>
+        </div>
+
+        <script>
+                var MOVIE_LIST_PARAMS= {
+                    serviceUrlRoot: '/webapp/com.enonic.app.react4xp/_/service/com.enonic.app.react4xp',
+                    parentPath: '/moviesite',
+                    apiUrl: '/admin/site/preview/default/draft/moviesite/api/headless',
+                    movieType: 'com.enonic.app.react4xp:movie',
+                    movieCount: 3,
+                    sortExpression: 'data.year ASC',
+                }</script>
+
+        <script defer src="/webapp/com.enonic.app.react4xp/_/asset/com.enonic.app.react4xp:1603753344/webapp/script.js"></script>
+    </body>
+</html>
+----
