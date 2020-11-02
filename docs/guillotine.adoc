@@ -30,7 +30,7 @@ This chapter will focus on setting up the guillotine API and the first usages:
 
 NOTE: The <<webapp#, next chapter>> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same react4xp components in a _standalone webapp_, to render content data from a guillotine API.
 
-
+[[chapter_source_files]]
 === Source files
 
 .Files involved (src/main/resources/...):
