@@ -155,12 +155,12 @@ The webapp begins with some basic HTML, setting it all up in the browser.
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 
         <!--2-->
-        <script src="(...) /react4xp/shared.d366a6c1b.js"></script>
-        <link rel="stylesheet" type="text/css" href="(...) /react4xp/shared.5440dda80.css" />
-        <link rel="stylesheet" type="text/css" href="(...) /react4xp/MovieList.css" />
+        <script src="(...my.asset.url) /react4xp/shared.d366a6c1b.js"></script>
+        <link rel="stylesheet" type="text/css" href="(...my.asset.url) /react4xp/shared.5440dda80.css" />
+        <link rel="stylesheet" type="text/css" href="(...my.asset.url) /react4xp/MovieList.css" />
 
         <!--3-->
-        <script src="(...) /react4xp/MovieList.js"></script>
+        <script src="(...my.asset.url) /react4xp/MovieList.js"></script>
 
         <style>
             body { margin: 0; padding: 0; }
@@ -189,21 +189,21 @@ The webapp begins with some basic HTML, setting it all up in the browser.
         </script>
 
         <!--6-->
-        <script defer src="(...) /webapp/script.js"></script>
+        <script defer src="(...my.asset.url) /webapp/script.js"></script>
     </body>
 </html>
 
 ----
 <1> We start by running React and ReactDOM from a CDN.
-<2> Next, we fetch 3 dependency chunks that the _MovieList_ entry needs: _shared.&lt;hash&gt;.js_, _shared.&lt;hash&gt;.css_ and _MovieList.css_.
+<2> Next, we fetch 3 dependency chunks that the _MovieList_ entry needs: _shared.{hash}.js_, _shared.{hash}.css_ and _MovieList.css_.
 +
 [NOTE]
 ====
-As before, these are asset URLs that depend on your setup - and this applies to both the *content-dependent &lt;hash&gt;* in the filename and the *asset path* itself. On my local machine running XP, the path (the `(...)` before _/react4xp/..._) is this:
+As before, the asset path URLs depend on your setup - and this applies to both the *content-dependent {hash}* in the filename and the *asset path* itself - whatever the root path to your asset source is. For example, on my local machine running XP, the `(...my.asset.url)` part of the path looks like this:
 
-`/webapp/com.enonic.app.react4xp/_/asset/com.enonic.app.react4xp:1604314030`
+`/_/asset/com.enonic.app.react4xp:1604314030`
 
-If you've run through the previous chapter, you can for example copy the corresponding asset-URLs from the produced page source HTML in the preview.
+...and the part `:1604314030` can even be skipped (at the expense of caching). If you've run through the previous chapter, you can for example copy the corresponding asset-URLs from the produced page source HTML in the preview.
 ====
 <3> The _MovieList_ entry asset. Loading and running this will expose the entry in the global JS namescape as a function that creates a react component: `React4xp['MovieList'].default`.
 <4> The target container for the react app. The not-really-a-spinner (_"Loading movies..."_) will be replaced when the actual _MovieList_ is rendered into the container.
