@@ -573,13 +573,15 @@ Let's take a look at the rendered response from the controller and underline a f
 <2> Again, since we didn't check the "Server-side rendering" checkbox, the `clientRender` flag became true and we got a clientside rendering. So this is just the target container element, filled in by the browser on `React4xp.CLIENT.render` below. Had we checked the checkbox, this would have contained the pre-rendered MultiColor entry, of course.
 <3> Among the dependencies are still the externals, the client wrapper code and the code to the compiled MultiColor entry. And in addition, there's the `shared.<HASH>.js` dependency chunk, containing the compiled code for all the ES6/JS/JSX found under the _shared/_ folder.
 
+And that's all in this chapter!
+
+{zwsp} +
+{zwsp} +
 {zwsp} +
 
 == Further reading
-That concludes the lessons!
 
 If you haven't already, it's recommended to take a look at the additional explanations of central concepts and API, in the documentation below - especially the dependency chunks which are used for optimization, as we touched upon in this chapter:
-
 
 -> <<entries#, Entries>>
 

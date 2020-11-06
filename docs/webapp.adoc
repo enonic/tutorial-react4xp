@@ -108,28 +108,8 @@ assets/webapp/
 XP uses _webapp.es6_ and _webapp.html_ to generate an initial HTML that directly makes the browser run most of <<#nutshell, the steps above>>, fetching assets and setting up initial values, and then calling the final _script.es6_ asset, which handles the rest.
 
 {zwsp} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {zwsp} +
 {zwsp} +
-{zwsp} +
-
 
 == 1. Completely standalone
 
@@ -389,11 +369,9 @@ image:webapp_url.png[title="URL to preview the webapp.", width=1024px]
 Clicking this link should now show you the working webapp - listing 3 initial movies and filling in more as you scroll down, just like in the preview at the end of the previous chapter.
 
 
-
 {zwsp} +
 {zwsp} +
 {zwsp} +
-
 
 == 2. Webapp with XP helpers
 
@@ -623,3 +601,15 @@ NOTE: This is where the `serviceUrlRoot` value is used - .renderWithDependencies
 === Output
 
 The output when you preview it should be the same as <<#output1, the previous example>>.
+
+
+{zwsp} +
+{zwsp} +
+
+*That concludes the last of these lessons.*
+
+You are now a legit react4xp knight! If you have improvement suggestions, questions, bug reports - welcome to talk with us about it:
+
+- link:https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement[Future improvements, requested features]
+- link:https://discuss.enonic.com[The Enonic Forums]
+- link:https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Abug[Known bugs we're working on] - and a few workarounds
