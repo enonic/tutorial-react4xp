@@ -384,7 +384,7 @@ export default ({colors, selectedIndex, clickFunc}) =>
 
 In this section we'll adjust some settings to make the code above work.
 
-TIP: Some of this is covered in more detail under <<entries#, entries>> and <<jsxpath#, jsxPaths>>.
+TIP: If you need more details, some of this is covered in more depth under <<entries#, entries>> and <<jsxpath#, jsxPaths>>.
 
 {zwsp} +
 
@@ -416,6 +416,7 @@ Adding paths like e.g. `foo/bar/baz` or `../../hey/ho/lets/go` is perfectly fine
 
 {zwsp} +
 
+[[webpack_rules]]
 === Adding webpack rules
 Next, we'll add some *custom webpack rules to handle the style imports*. First, we need to tell react4xp to use an extra webpack config file. Return to _react4xp.properties_ to add another property:
 

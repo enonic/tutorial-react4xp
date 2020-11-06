@@ -70,7 +70,7 @@ Start with a completely generic content type: _site/content-types/my-content/my-
 .my-content.xml:
 [source,xml,options="nowrap"]
 ----
-<content-type xmlns="urn:enonic:xp:model:1.0">
+<content-type>
     <display-name>My Content</display-name>
     <description>Just some content</description>
     <super-type>base:structured</super-type>
