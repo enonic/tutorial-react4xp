@@ -30,7 +30,7 @@ This chapter will focus on setting up the guillotine API and the first usages:
 
 NOTE: The <<webapp#, next chapter>> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same react4xp components in a _standalone webapp_, to render content data from a guillotine API.
 
-
+[[chapter_source_files]]
 === Source files
 
 .Files involved (src/main/resources/...):
@@ -98,7 +98,7 @@ When the setup is ready, we'll start by adding a _movie_ *content type*, with an
 .site/content-types/movie/movie.xml:
 [source,xml,options="nowrap"]
 ----
-<content-type xmlns="urn:enonic:xp:model:1.0">
+<content-type>
   <display-name>Movie</display-name>
   <description>Moving images often reflecting culture</description>
   <super-type>base:structured</super-type>
@@ -150,10 +150,7 @@ export default (props) => <Movie {...props} />;
 
 This is a pure entry wrapper that just imports the next react component from _react4xp/shared_.
 
-Why import code from _shared_ instead of keeping it all in the entry? Two reasons:
-
-- It's a good rule of thumb to keep entries slim, for better optimization.
-- Also, in addition to a Content Studio preview for single movies, we're going to use the *imported components* in the actual movie list too, for each single movie in the list. This way, the preview in Content Studio will always directly reflect what's displayed on the final page, because it's the same code that's used everywhere:
+Why import code from _shared_ instead of keeping it all in the entry? Firstly, it's a good rule of thumb to keep entries slim, for better optimization. And secondly, in addition to a Content Studio preview for single movies, we're going to use the *imported components* in the actual movie list too, for each single movie in the list. This way, the preview in Content Studio will always directly reflect what's displayed on the final page, because it's the same code that's used everywhere:
 
 .react4xp/shared/Movie.jsx:
 [source,javascript,options="nowrap"]
@@ -475,7 +472,7 @@ The second included helper, <<#guillotine_request_helper, guillotineRequest.es6>
 
 In order to make requests for a list of movies below a container item in the content hierarchy, we'll need a specific guillotine query string, as well as functionality to adapt the resulting data into the proper props structure for the react components.
 
-And by using the same code on the frontend and backend, for this too, we gain a bit of isomorphism (the predictability of a singe source of truth, in short). So we'll make *a module with custom helper functionality* for our use case, and import from it in both places.
+And by using the same code on the frontend and backend, for this too, we gain a bit of isomorphism (the predictability of a single source of truth, in short). So we'll make *a module with custom helper functionality* for our use case, and import from it in both places.
 
 Let's go ahead an write this:
 
@@ -557,7 +554,7 @@ export default {};
 +
 NOTE: Again, remember that this query hardcodes qualified names to a content type, that contain the name of the app: `com.enonic.app.react4xp:movie` and `com_enonic_app_react4xp_Movie`. Change these if your app name is not `com.enonic.app.react4xp`.
 +
-For more about the query language, see the link:https://developer.enonic.com/docs/headless-cms/2.x/api[guillotine API documentation].
+For more about guillotine queries, see the link:https://developer.enonic.com/docs/headless-cms/2.x/api[guillotine API documentation].
 <2> The function `buildParentPathQuery` returns a *sub-query string* needed to only search below the content path of a container item: the parameter `$parentPathQuery` in the main query string (1.), inserted through the `variables` object.
 +
 In <<#movies_in_container_site, the example above>>, the site _MovieSite_ is the item that contains the movies, and the content hierarchy in Content Studio shows us that _MovieSite_ has the content path `/moviesite`. So the sub-query that directs guillotine to only search for movies below that parent item, can be made like this: `buildParentPathQuery('/moviesite')`.
@@ -653,7 +650,7 @@ exports.get = function(request) {
 <1> Import the functionality from the helpers that were <<#guillotine_helpers, just described>>,
 <2> Use the part's config to build a sort expression for the query,
 <3> Get the query string,
-<4> Build the `variables` object with the query's parameters,
+<4> Build the `variables` object with the query's parameters (what's up with a variable called `variables`, you ask? This is for consistencty - the guillotine lib and its docs refer to the encapsulated object of values for the various variables in the query, as an argument called `variables`. Now we have _that_ clarified),
 <5> Execute the query string with the variables in the guillotine API,
 <6> Extract `movies` props (an array of objects with the same signature as the props for _Movie.jsx_) from the result of the query,
 <7> Render a _MovieList_ entry with the `movies` props (as well as some additional props that we will need later for making the same guillotine query from the frontend. Especially note the `apiUrl` prop: this is basically just the URL to the site itself, with `/api/headless` appended to it. When we later <<#expose_api, expose the guillotine API>> to the frontend, this is the URL to the API - specifically, the POST method in _guillotineApi.es6_).
@@ -801,7 +798,7 @@ const doGuillotineRequest = ({
     handleResponseErrorFunc,    <!--4-->
     extractDataFunc,            <!--5-->
     handleDataFunc,             <!--6-->
-    catchErrorsFunc             // <!--7-->
+    catchErrorsFunc             <!--7-->
 }) => {
 
     fetch(
@@ -830,7 +827,7 @@ In short, run `doGuillotineRequest(params)` where `params` is an object that has
 
 <1> `url` (string, mandatory): URL to the API endpoint, i.e. to the controller mapping of `headless/guillotineApi.es6`: `<site-url>/api/headless`.
 <2> `query` (string, mandatory): valid link:https://developer.enonic.com/docs/headless-cms/2.x/api[guillotine query] string.
-<3> `variables` (object, optional): object with key-value pairs where the keys correspond to parameters in the `query` string, e.g. the value of `variables.first` will be inserted into the query string as `$first`.
+<3> `variables` (object, optional): corresponds to the guillotine `variables` object: key-value pairs where the keys correspond to parameters in the `query` string. E.g. the value of `variables.first` will be inserted into the query string as `$first`.
 <4> `handleResponseErrorFunc` (function, optional): callback function that takes a response object and returns it, usually after having checked the response for errors and handled that. Default: just checks `response.status` for HTTP codes other than OK and throws any problems as `Error`.
 <5> `extractDataFunc` (function, optional): callback function that takes a data object and returns another. After the response body has been parsed from JSON string to actual data, the data are run through this function, before being handled by `handleDataFunc`. Default: data is returned unchanged.
 <6> `handleDataFunc` (function, optional but makes little sense to omit): callback function that takes a data object (curated data from guillotine) and does something with it - *this callback is pretty much what `doGuillotineRequest` is all about*. Default: do-nothing.
@@ -1258,7 +1255,7 @@ To dive deeper into guillotine and graphQL, you can always check out the link:ht
 
 There is a handy tool in the headless starter, that we might as well add here too: the GraphQL Playground.
 
-The GraphQL Playground is basically an in-browser *GraphQL REPL interface*. It allows you to send queries and variables to the frontend API and see the results immediatly: experiment around, get to know guillotine, and build queries more effectively.
+The GraphQL Playground is basically an in-browser *GraphQL REPL interface*. It allows you to send queries and variables to the frontend API and see the results immediatly: experiment around, get to know link:https://graphql.org/learn/[GraphQL] and link:https://developer.enonic.com/docs/guillotine/2.x/api[guillotine], and build queries more effectively.
 
 To add this, first add the _graphql-playground_ library as a dependency in _build.gradle_:
 
@@ -1345,5 +1342,7 @@ image:graphql-playground.png[title="The GraphQL playground", width=1024px]
 {zwsp} +
 {zwsp} +
 {zwsp} +
+
+---
 
 The link:https://iconscout.com/icons/movie[movie icon] that marks the _movie_ content type in the screengrabs is by link:https://iconscout.com/contributors/phoenix-group[Phoenix Dungeon] on link:https://iconscout.com[Iconscout].

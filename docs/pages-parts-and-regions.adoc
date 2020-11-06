@@ -70,7 +70,7 @@ Start with a completely generic content type: _site/content-types/my-content/my-
 .my-content.xml:
 [source,xml,options="nowrap"]
 ----
-<content-type xmlns="urn:enonic:xp:model:1.0">
+<content-type>
     <display-name>My Content</display-name>
     <description>Just some content</description>
     <super-type>base:structured</super-type>
@@ -103,7 +103,16 @@ The page definition is simple. We're now leaving the `<form>` node empty, but ad
 
 ==== React component
 
-The react component has a single focus, namely rendering the Region:
+This react component has a single focus, namely rendering the Region.
+
+[NOTE]
+====
+We're going to make a page controller with a react-rendered XP region and insert react-rendered components into the region, just to show how to react-render XP pages, parts and regions.
+
+*But react4xp doesn't depend on this structure,* it works fine with other, "regular" XP components.
+
+As long as you follow the general patterns here, you can use parts with react4xp components inside any old XP region (e.g. from Thymeleaf), and the other way around - render XP regions with react and insert any XP components into them.
+====
 
 .default.jsx
 [source,javascript,options="nowrap"]
