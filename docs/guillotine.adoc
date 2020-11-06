@@ -109,12 +109,8 @@ When the setup is ready, we'll start by adding a _movie_ *content type*, with an
         <occurrences minimum="1" maximum="1"/>
     </input>
 
-    <input name="description" type="HtmlArea">
+    <input name="description" type="TextArea">
         <label>Description</label>
-        <config>
-            <exclude>*</exclude>
-            <include>Bold Italic Underline</include>
-        </config>
     </input>
 
     <input name="year" type="Long">
@@ -183,9 +179,7 @@ const InfoContainer = ({title, year, description, actors}) => (
         </Info>
 
         <Info heading="Description">
-            <div className="description"
-                 dangerouslySetInnerHTML={{ __html: description }}>
-            </div>
+            <div className="description">{description}</div>
         </Info>
 
         { (actors && actors.length > 0) ?
