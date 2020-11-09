@@ -16,7 +16,7 @@ If you've completed that lesson, nice. But that code is not in focus here and we
 
 {zwsp} +
 
-== Intro
+== Background
 
 === The story so far
 
