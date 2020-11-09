@@ -93,7 +93,7 @@ If you haven't completed that section already, better take a couple of minutes a
 
 === Movie content type
 
-When the setup is ready, we'll start by adding a _movie_ *content type*, with an ImageSelector for a poster `image`, a simple HtmlArea with a movie `description`, a numeral Long field for adding the release `year` and an array of `actor` names:
+When the setup is ready, we'll start by adding a _movie_ *content type*, with an ImageSelector for a poster `image`, a simple TextArea with a movie `description`, a numeral Long field for adding the release `year` and an array of `actor` names:
 
 .site/content-types/movie/movie.xml:
 [source,xml,options="nowrap"]
@@ -211,7 +211,7 @@ export default Movie;
 
 Not a lot of functionality here, just a JSX file that contains some structural units nested inside each other: the exported root level in the component, `Movie`, contains a movie poster image, and nests an `InfoContainer` component that displays the rest of the movie data. There, each movie data section is wrapped in an `Info` component (which just displays a header), and finally each actor name is mapped out in a list in the `Cast` component.
 
-Take a moment to note the *props signature* of _Movie.jsx_. `Movie` clearly expects the `imageUrl` prop to be a URL, so we'll need to handle the `image` field from the content type. Also, since the `description` prop will come from an HtmlArea in the content type it's already in working and pre-escaped HTML form, so we use the react functionality of `dangerouslySetInnerHTML` to insert it instead of just treating it as a string (which would just get escaped again). Next, `title` and `year` are expected to be simple strings (or numbers), and `actors` should be a string array. As you'll see, we'll make sure that each data readout of a movie item will be adapted to this signature, if needed.
+Take a moment to note the *props signature* of _Movie.jsx_. `Movie` clearly expects the `imageUrl` prop to be a URL, so we'll need to handle the `image` field from the content type. The props `description`, `title` and `year` are expected to be simple strings, but `actors` should be handled as a string array. As you'll see, we'll make sure that each data readout of a movie item is adapted to this signature.
 
 Moving on, _Movie.jsx_ also imports some *styling* that'll be handled by webpack the same way as in <<imports-and-dependency-chunks#webpack_rules, the previous chapter>>:
 
@@ -324,24 +324,22 @@ exports.get = function(request) {
             }) :
             undefined,
         title: content.displayName,
-        description: portal.processHtml({           <!--3-->
-            value: content.data.description
-        }),
+        description: content.data.description,
         year: content.data.year,
-        actors: util.data.forceArray( content.data.actor )   <!--4-->
+        actors: util.data.forceArray( content.data.actor )   <!--3-->
             .map( actor => (actor || '').trim())
             .filter(actor => !!actor)
     };
 
-    const id = content._id;                         <!--5-->
+    const id = content._id;                         <!--4-->
 
     const output = React4xp.render(
-        'Movie',                                    <!--6-->
+        'Movie',                                    <!--5-->
         props,
         request,
         {
             id,
-                                                    <!--7-->
+                                                    <!--6-->
             body: `
                 <html>
                     <head>
@@ -356,7 +354,7 @@ exports.get = function(request) {
         }
     );
 
-    output.body = '<!DOCTYPE html>' + output.body;  <!--8-->
+    output.body = '<!DOCTYPE html>' + output.body;  <!--7-->
 
     return output;
 };
@@ -365,12 +363,11 @@ After the previous chapters, not much in this controller should come as a surpri
 
 <1> We use `getContent` to fetch the movie item data as usual (later, we'll use guillotine in a similar fashion. This doesn't matter as long as the props are constructed according to the signature of _Movie.jsx_).
 <2> `image` comes from an ImageSelector and is just an image item ID, so we use `imageUrl` to get the URL that the prop signature expects.
-<3> `description` comes from an HtmlArea, so we use `processHtml` to generate a finished HTML string for whatever content that might need it. Now it can be used with `dangerouslySetInnerHTML` in the react component.
-<4> Normalizing the `actor` data to guarantee that it's an array.
-<5> `React4xp.render` needs a unique ID to target a container in the surrounding `body`.
-<6> `"Movie"` is of course the <<jsxpath#, jsxPath>> reference to the entry, _react4xp/myEntries/Movie.jsx_.
-<7> This controller is the only one triggered for rendering _movie_ items. That means that the `body` that the rendering is inserted into, has to be a *full root HTML document* including a `<head>` section (or otherwise react4xp won't know where to put the rendered page contributions, and the component won't work properly).
-<8> Workaround for a current link:https://github.com/enonic/lib-react4xp/issues/107[inconvenient bug].
+<3> Normalizing the `actor` data to guarantee that it's an array.
+<4> `React4xp.render` needs a unique ID to target a container in the surrounding `body`.
+<5> `"Movie"` is of course the <<jsxpath#, jsxPath>> reference to the entry, _react4xp/myEntries/Movie.jsx_.
+<6> This controller is the only one triggered for rendering _movie_ items. That means that the `body` that the rendering is inserted into, has to be a *full root HTML document* including a `<head>` section (or otherwise react4xp won't know where to put the rendered page contributions, and the component won't work properly).
+<7> Workaround for a current link:https://github.com/enonic/lib-react4xp/issues/107[inconvenient bug].
 
 
 {zwsp} +
