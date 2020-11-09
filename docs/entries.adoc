@@ -9,20 +9,22 @@ React4xp is structured around _entries_.
 
 It's actually a webpack term, but in react4xp we use the word entry for *a React component that can be accessed by react4XP* in an XP controller. They are the _only_ react files that react4xp can use directly.
 
+[[mentalmodel]]
 Think of entries as *"bridge elements"*:
 
 .A mental model:
 image:entries.png[title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=720px]
 
-(Download link:media/entries_cheatsheet.png[cheat sheet]. See also chunks, for a <<chunks#entries_and_chunks, complete picture>>)
+(Here's a <<entries_cheatsheet#, cheat sheet>>. See also chunks, for a <<chunks#entries_and_chunks, complete picture>>)
 
 On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can *import* stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.
 
 {zwsp} +
 
+[[howto]]
 == How to make an entry
 
-Entries are pretty much just standard JSX files, but they must follow *two requirements* (link:media/entries_howto.png[cheatsheet]):
+Entries are pretty much just standard JSX files, but they must follow *two requirements* (another <<entries_howto#, cheat sheet>>):
 
 1. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.properties_ (see also <<jsxpath#, jsxPath>>),
 2. and *default-exports a function*: `props?=>reactComponent` - a function that _may_ take a `props` argument (serializable JS object: no functions) and _must_ return a react component.

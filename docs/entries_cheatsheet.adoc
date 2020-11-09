@@ -1,0 +1,7 @@
+:imagesdir: media/
+
+.Downloadable cheat sheet: react4xp entries
+image:entries_cheatsheet.png[title="Downloadable cheat sheet: react4xp entries"]
+
+---
+<<entries#mentalmodel, <- Back>>
