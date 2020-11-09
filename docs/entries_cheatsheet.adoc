@@ -1,7 +1,9 @@
+= Cheat sheet: react4xp entries
 :imagesdir: media/
 
-.Downloadable cheat sheet: react4xp entries
 image:entries_cheatsheet.png[title="Downloadable cheat sheet: react4xp entries"]
 
 ---
+{zwsp} +
+
 <<entries#mentalmodel, <- Back>>

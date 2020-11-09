@@ -1,7 +1,9 @@
+= Cheat sheet: how to make a react4xp entry
 :imagesdir: media/
 
-.Downloadable cheat sheet: how to make a react4xp entry
 image:entries_howto.png[title="Downloadable cheat sheet: how to make a react4xp entry"]
 
 ---
+{zwsp} +
+
 <<entries#howto, <- Back>>
