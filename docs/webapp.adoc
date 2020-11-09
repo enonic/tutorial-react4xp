@@ -45,17 +45,17 @@ Now that we've seen how to set up an API that serves XP content data, and that u
 
 The takeaway of this chapter is this: react4xp components (entries and dependencies) can be used without any XP controller or `React4xp.render` call. To do that, the base HTML (the response of a first page request, or some script loaded by it) *must do these tasks*:
 
-<1> Load React and ReactDOM from somewhere. For example a CDN,
-<2> Load all the <<chunks#, dependency chunks>> that the entries need (before loading the entry assets!),
-<3> Load all <<entries#, entry assets>>. This will make each entry available in the browser's JS namespace as a react-component-creating function, at `React4xp[jsxPath].default`, for each entry's <<jsxPath#, jsxPath>>.
-<4> Construct a props object for each entry that uses props. This is where we'll contact the <<guillotine#expose_api, guillotine endpoint>> in this lesson, for fetching the data from XP.
-<5> Use the props with each entry's component-creating function to create a react-renderable component:
+1. Load React and ReactDOM from somewhere. For example a CDN,
+2. Load all the <<chunks#, dependency chunks>> that the entries need (before loading the entry assets!),
+3. Load all <<entries#, entry assets>>. This will make each entry available in the browser's JS namespace as a react-component-creating function, at `React4xp[jsxPath].default`, for each entry's <<jsxPath#, jsxPath>>.
+4. Construct a props object for each entry that uses props. This is where we'll contact the <<guillotine#expose_api, guillotine endpoint>> in this lesson, for fetching the data from XP.
+5. Use the props with each entry's component-creating function to create a react-renderable component:
 +
 [source,javascript,options="nowrap"]
 ----
 const component = React4xp[jsxPath].default(props);
 ----
-<6> Finally, render the component into your DOM:
+6. Finally, render the component into your DOM:
 +
 [source,javascript,options="nowrap"]
 ----
@@ -79,10 +79,10 @@ We'll take a look at *two variations* of how to use react4xp-compiled components
 
 {zwsp} +
 
-<1> *Completely standalone:* this first variation is the manual, hardcoded, vanilla-js-and-react webapp approach. The HTML and script do everything explicitly: asset URLs and initial values are *handled and organized manually in the HTML itself*, and the script at the end fetches data from guillotine, organizes them into props and makes a *regular `ReactDOM.render` call*. In this approach, XP's role is mainly to serve content data through the guillotine API. Pretty independent but there are no helpers; so getting things right is up to you.
+1. *Completely standalone:* this first variation is the manual, hardcoded, vanilla-js-and-react webapp approach. The HTML and script do everything explicitly: asset URLs and initial values are *handled and organized manually in the HTML itself*, and the script at the end fetches data from guillotine, organizes them into props and makes a *regular `ReactDOM.render` call*. In this approach, XP's role is mainly to serve content data through the guillotine API. Pretty independent but there are no helpers; so getting things right is up to you.
 +
 {zwsp} +
-<2> *Webapp with XP helpers:* this second variation is "slightly standalone": we use XP to wrap a little boilerplate for convenience: *XP and thymeleaf provides some initial values*. The script at the end is still loaded and used to fetch data and create props, but instead of having the HTML load all the entry and dependency assets and call `React4xp.render`, the react4xp client wrapper is loaded in order to use a *react4xp helper function:* `.renderWithDependencies`. This is an all-in-one rendering trigger that takes one or more <<jsxPath#, entry jsxPaths>> with props and target container ID's, and uses *XP services* for auto-tracking and loading all the assets needed (including dependency chunks) before rendering them.
+2. *Webapp with XP helpers:* this second variation is "slightly standalone": we use XP to wrap a little boilerplate for convenience: *XP and thymeleaf provides some initial values*. The script at the end is still loaded and used to fetch data and create props, but instead of having the HTML load all the entry and dependency assets and call `React4xp.render`, the react4xp client wrapper is loaded in order to use a *react4xp helper function:* `.renderWithDependencies`. This is an all-in-one rendering trigger that takes one or more <<jsxPath#, entry jsxPaths>> with props and target container ID's, and uses *XP services* for auto-tracking and loading all the assets needed (including dependency chunks) before rendering them.
 
 {zwsp} +
 
