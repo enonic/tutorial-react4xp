@@ -1,4 +1,5 @@
 = Cheat sheet: react4xp entries
+:toclevels: 0
 :imagesdir: media/
 
 image:entries_cheatsheet.png[title="Downloadable cheat sheet: react4xp entries"]
