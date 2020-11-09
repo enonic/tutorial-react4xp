@@ -135,8 +135,8 @@ The webapp begins with some basic HTML, setting it all up in the browser.
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 
         <!--2-->
-        <script src="(...my.asset.url) /react4xp/shared.d366a6c1b.js"></script>
-        <link rel="stylesheet" type="text/css" href="(...my.asset.url) /react4xp/shared.5440dda80.css" />
+        <script src="(...my.asset.url) /react4xp/shared.{hash}.js"></script>
+        <link rel="stylesheet" type="text/css" href="(...my.asset.url) /react4xp/shared.{hash}.css" />
         <link rel="stylesheet" type="text/css" href="(...my.asset.url) /react4xp/MovieList.css" />
 
         <!--3-->
@@ -175,26 +175,34 @@ The webapp begins with some basic HTML, setting it all up in the browser.
 
 ----
 <1> We start by running React and ReactDOM from a CDN.
-<2> Next, we fetch 3 dependency chunks that the _MovieList_ entry needs: _shared.{hash}.js_, _shared.{hash}.css_ and _MovieList.css_.
-+
-[NOTE]
-====
-As before, the asset path URLs depend on your setup - and this applies to both the *content-dependent {hash}* in the filename and the *asset path* itself - whatever the root path to your asset source is. For example, on my local machine running XP, the `(...my.asset.url)` part of the path looks like this:
-
-`/_/asset/com.enonic.app.react4xp:1604314030`
-
-...and the part `:1604314030` can even be skipped (at the expense of caching). If you've run through the previous chapter, you can for example copy the corresponding asset-URLs from the produced page source HTML in the preview.
-====
+<2> Next, we fetch 3 dependency chunks that the _MovieList_ entry needs: _shared.{hash}.js_, _shared.{hash}.css_ and _MovieList.css_. As before, these hashes and the asset path *URLs depend on your setup - so just copying this won't work!* See <<#assetpaths, the note below>>.
 <3> The _MovieList_ entry asset. Loading and running this will expose the entry in the global JS namescape as a function that creates a react component: `React4xp['MovieList'].default`.
 <4> The target container for the react app. The not-really-a-spinner (_"Loading movies..."_) will be replaced when the actual _MovieList_ is rendered into the container.
 <5> Variables used by our particular script later, just wrapped in a `MOVIE_LIST_PARAMS` object to encapsulate them in the global namespace. These are the same values as in in the previous chapter, and the script at the end will use these in a `props` object, to create the renderable react app from the _MovieList_ entry.
 +
 Also note that we just hardcoded the values of `parentPath`, `apiUrl` and `movieType` here - they may be different in your setup. As <<guillotine#, before>>: `parentPath` is the content path of the site item under which the movie items will be found, `apiUrl` is the full path to `/api/headless` _below that site_ (recall that the URL to the guillotine API depends on the URL of a site item like this, because of the way we set the API up with a controller mapping <<guillotine#expose_api, earlier>>), and `movietype` is the full, appname-dependent content type of the movie items to look for.
-<6> Finally, loading the compiled script from _script.es6_ <<#script, below>>.
+<6> Finally, loading the compiled script from _script.es6_, see <<#script, below>>.
 
 {zwsp} +
 
-A *webapp controller* is needed for XP to serve this HTML, and it's about as minimal as an XP controller can be:
+[[assetpaths]]
+[NOTE]
+====
+The asset paths above have one or two components that depend on details in your setup: `{hash}` and `(...my.asset.url)`.
+
+- `{hash}` stands for the content hashed part of the compiled-asset filename (where webpack is set up to do this - react4xp uses this for cache busting). These change on every recompilation of changed source code in react4xp dependency chunks - in the last chapter: everything below _src/main/resources/_ *_react4xp/shared_*.
+- `(...my.asset.url)` stands for the root path to your particular source for the compiled assets.
+
+For example, on my local machine where I'm using XP to fetch assets, the asset path `"(...my.asset.url) /react4xp/shared.{hash}.js"` looks like this:
+
+`"/_/asset/com.enonic.app.react4xp:1604314030/react4xp/shared.d366a6c1b.js"`
+
+*How to find your particular URLs for hardcoding this example?* Again, this depends on your setup, but based on the previous chapter lesson: you can use the page/preview that's produced from the Content Studio version of the movie list page, and just copy the asset paths from the produced page source HTML. Or if you know the asset root path but need the hash, you can run `gradlew clean build` and look at the file names below _build/resources/main/assets/react4xp_.
+====
+
+{zwsp} +
+
+Okay, moving on, a *webapp controller* is needed for XP to serve this HTML, and it's about as minimal as an XP controller can be:
 
 .webapp.es6:
 [source,javascript,options="nowrap"]
@@ -215,21 +223,39 @@ exports.get = () => ({
 
 Finally, the script that's called at the end of the HTML.
 
-If you've been through the lesson in the <<guillotine#, previous chapter>>, you might recognize that these functions are mostly the same code as was used in that chapter, just copied into one asset (if you haven't, just see that chapter for reference).
+TIP: If you've been through the lesson in the previous chapter, you might recognize that *the logic in is script is the same* - the functions here are just copied or slightly modified from <<guillotine#movielistrequests, _movieListRequests.es6_>> and <<guillotine#guillotine_request_helper, _guillotineRequest.es6_>> - see those for more reference.
 
-The main function is `requestAndRenderMovies`. It gets its input values from the `MOVIE_LIST_PARAMS` object we defined in the global namespace in the HTML earlier, then uses these to request data about 3 (`movieCount`) movies (`movieType`) under the _movielist_ site (`parentPath`), from the guillotine API. Just like in the previous chapter, the guillotine query string for fetching movies is built with a function, `buildQueryListMovies`. The returned data is parsed into a JSON array of movie objects (`extractToMovieArray`) and passed to the `renderMovie` function, where it's used in a `props` object alongside other values from `MOVIE_LIST_PARAMS`. Along with the `props`, the _MovieList_ entry (`React4xp['MovieList]`) is used to create a renderable react component that is rendered into the target `movieListContainer` element in the DOM with `ReactDOM.render`, now as a top-level react app.
+{zwsp} +
 
+==== Quick overview of the script:
+- The main function is `requestAndRenderMovies`.
+  * It gets its input values from the `MOVIE_LIST_PARAMS` object we defined in the global namespace in the HTML earlier.
+- It uses these values to request data about _3_ (`movieCount`) _movies_ (`movieType`) under the _movielist_ site (`parentPath`), from the guillotine API.
+  * Just like in the previous chapter, the guillotine query string for fetching movies is built with a function, `buildQueryListMovies` (but compared to the previous chapter, it now uses parameters instead of hardcoding the content type and parentPath).
+  * The returned data is parsed into a JSON array of movie objects (`extractToMovieArray`)...
+- ...and passed to the `renderMovie` function, where it's used in a `props` object alongside other values from `MOVIE_LIST_PARAMS`.
+- Along with the `props`, the _MovieList_ entry (`React4xp['MovieList]`) is used to create a renderable react component...
+- ...that is rendered into the target `movieListContainer` element in the DOM with `ReactDOM.render`, now as a top-level react app.
 
+{zwsp} +
+
+==== Script code
 .script.es6:
 [source,javascript,options="nowrap"]
 ----
 const buildQueryListMovies = (movieType, parentPath) => {
-    const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);  // verifies content type names like "com.enonic.app.react4xp:movie" and matches up groups before and after the colon
+    // verify content type names like "com.enonic.app.react4xp:movie" and match up groups before and after the colon:
+    const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);
     if (!matched) {
-        throw Error(`movieType '${movieType}' is not a valid format. Expecting <appName>:<XP content type>, for example: 'com.enonic.app.react4xp:movie' etc`);
+        throw Error(`movieType '${movieType}' is not a valid format.` +
+            "Expecting <appName>:<XP content type>, for example: 'com.enonic.app.react4xp:movie' etc");
     }
-    const appNameUnderscored = matched[1].replace(/\./g, '_');      // e.g. "com.enonic.app.react4xp" --> "com_enonic_app_react4xp
-    const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);       // e.g. "movie" --> "Movie"
+
+    // e.g. "com.enonic.app.react4xp" --> "com_enonic_app_react4xp:
+    const appNameUnderscored = matched[1].replace(/\./g, '_');
+
+    // e.g. "movie" --> "Movie"
+    const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);
 
     return `
 query($first:Int!, $offset:Int!, $sort:String!) {
@@ -254,14 +280,16 @@ query($first:Int!, $offset:Int!, $sort:String!) {
 }`;
 };
 
-// Not using util-lib to ensure usability on frontend
+// Returns arrays unchanged.
+// If the maybeArray arg is a non-array value, wraps it in a single-item array.
+// If arg is falsy, returns an empty array.
 const forceArray = maybeArray => Array.isArray(maybeArray)
     ? maybeArray
     : maybeArray
         ? [maybeArray]
         : [];
 
-
+// Adapts the output from the guillotine query to the MovieList props signature
 const extractMovieArray = responseData => responseData.data.guillotine.query
     .filter( movieItem => movieItem && typeof movieItem === 'object' && Object.keys(movieItem).indexOf('data') !== -1)
     .map(
@@ -468,12 +496,17 @@ The script asset is almost identical to before. All that's changed is in `render
 [source,javascript,options="nowrap"]
 ----
 const buildQueryListMovies = (movieType, parentPath) => {
-    const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);  // verifies content type names like "com.enonic.app.react4xp:movie" and matches up groups before and after the colon
+    // verify content type names like "com.enonic.app.react4xp:movie" and match up groups before and after the colon:
+    const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);
     if (!matched) {
         throw Error(`movieType '${movieType}' is not a valid format. Expecting <appName>:<XP content type>, for example: 'com.enonic.app.react4xp:movie' etc`);
     }
-    const appNameUnderscored = matched[1].replace(/\./g, '_');      // e.g. "com.enonic.app.react4xp" --> "com_enonic_app_react4xp
-    const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);       // e.g. "movie" --> "Movie"
+
+    // e.g. "com.enonic.app.react4xp" --> "com_enonic_app_react4xp
+    const appNameUnderscored = matched[1].replace(/\./g, '_');
+
+    // e.g. "movie" --> "Movie"
+    const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);
 
     return `
 query($first:Int!, $offset:Int!, $sort:String!) {
@@ -498,14 +531,16 @@ query($first:Int!, $offset:Int!, $sort:String!) {
 }`;
 };
 
-// Not using util-lib to ensure usability on frontend
+// Returns arrays unchanged.
+// If the maybeArray arg is a non-array value, wraps it in a single-item array.
+// If arg is falsy, returns an empty array.
 const forceArray = maybeArray => Array.isArray(maybeArray)
     ? maybeArray
     : maybeArray
         ? [maybeArray]
         : [];
 
-
+// Adapt the output from the guillotine query to the MovieList props signature
 const extractMovieArray = responseData => responseData.data.guillotine.query
     .filter( movieItem => movieItem && typeof movieItem === 'object' && Object.keys(movieItem).indexOf('data') !== -1)
     .map(
@@ -594,7 +629,7 @@ requestAndRenderMovies();
 ----
 <1> No need to create the react components explicitly. As soon as the `props` are created, everything from there is handled by the `React4xp.CLIENT.renderWithDependencies` wrapper function (see link:https://www.npmjs.com/package/react4xp-runtime-client#renderwithdependencies[the react4xp client docs] for usage and details).
 +
-NOTE: This is where the `serviceUrlRoot` value is used - .renderWithDependencies` will not work without one!
+Also, this is where the `serviceUrlRoot` value is used - .renderWithDependencies` will not work without it!
 
 {zwsp} +
 

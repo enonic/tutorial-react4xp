@@ -467,6 +467,7 @@ And by using the same code on the frontend and backend, for this too, we gain a 
 
 Let's go ahead an write this:
 
+[[movielistrequests]]
 .headless/helpers/movieListRequests.es6:
 [source,javascript,options="nowrap"]
 ----
@@ -510,7 +511,9 @@ query(
 export const buildParentPathQuery = (parentPath) => `_parentPath = '/content${parentPath}'`;
 
 
-// Not using util-lib, to ensure usability on frontend
+// Returns arrays unchanged.
+// If the maybeArray arg is a non-array value, wraps it in a single-item array.
+// If arg is falsy, returns an empty array.
 const forceArray = maybeArray => Array.isArray(maybeArray)
     ? maybeArray
     : maybeArray
@@ -518,6 +521,7 @@ const forceArray = maybeArray => Array.isArray(maybeArray)
         : [];
 
              <!--3-->
+// Adapts the output from the guillotine query to the MovieList props signature
 export const extractMovieArray = responseData => responseData.data.guillotine.query
     .filter( movieItem => movieItem && typeof movieItem === 'object' && Object.keys(movieItem).indexOf('data') !== -1)
     .map(
@@ -537,19 +541,21 @@ export default {};
 ----
 <1> The function `buildQueryListMovies` returns a string: a *guillotine query* ready to use in the API. Colloquially, you can read this query in 3 parts:
 +
-- The parenthesis after the first `query` declares some parameters that are required (`!`) as values in a `variables` object together with the query.
+- The parenthesis after the first `query` declares some parameters that are required (hence the `!`) as values in a `variables` object together with the query.
 +
 - In the parenthesis after the second `query`, those `variables` values are used: this query will list a certain number (`$first`) of movie items (`contentTypes: ["com.enonic.app.react4xp:movie"]`), starting at index number `$offset`, and sort them using the sort expression string `$sort`. It narrows down the search by nesting a second and specifying query expression `$parentPathQuery`, that tells guillotine to only look below a certain parent path in the content hierarchy - see below (2.).
 +
 - The last major block, `... on com_enonic_app_react4xp_Movie {`, asks for a selection of sub-data from each found movie item: `_id`, `displayName`, `data.year`, etc. Note the second `... on media_Image` block nested inside it: instead of returning the ID value in the `data.image` field, we pass that through an `imageUrl` function that gives us a finished `data.imageUrl` field instead - directly and in one single query.
-+
-NOTE: Again, remember that this query hardcodes qualified names to a content type, that contain the name of the app: `com.enonic.app.react4xp:movie` and `com_enonic_app_react4xp_Movie`. Change these if your app name is not `com.enonic.app.react4xp`.
 +
 For more about guillotine queries, see the link:https://developer.enonic.com/docs/headless-cms/2.x/api[guillotine API documentation].
 <2> The function `buildParentPathQuery` returns a *sub-query string* needed to only search below the content path of a container item: the parameter `$parentPathQuery` in the main query string (1.), inserted through the `variables` object.
 +
 In <<#movies_in_container_site, the example above>>, the site _MovieSite_ is the item that contains the movies, and the content hierarchy in Content Studio shows us that _MovieSite_ has the content path `/moviesite`. So the sub-query that directs guillotine to only search for movies below that parent item, can be made like this: `buildParentPathQuery('/moviesite')`.
 <3> The function `extractMovieArray` takes the data object of a full guillotine search result and adapts it to the data structure that matches the props structure of our react components: an array of objects, where each object is a movie item.
+
+{zwsp} +
+
+NOTE: Remember that this query hardcodes qualified names to a content type, that contain the name of the app: `com.enonic.app.react4xp:movie` and `com_enonic_app_react4xp_Movie`. If your app name is not `com.enonic.app.react4xp`, you'll need to change these.
 
 {zwsp} +
 
@@ -1046,16 +1052,21 @@ Changes:
 <2> We now want `doGuillotineRequest` to trigger the new function `updateDOMWithNewMovies` when the guillotine data is returned and curated.
 <3> In `updateDOMWithNewMovies` we only keep counting the `nextOffset` if any movies were actually added.
 <4> We call `setState` to update the state, so that the incoming items from guillotine are added after the old ones.
-+
+<5> Use `state.movies` instead of just the `movies` props: now react will watch the state and automatically re-render the component as soon as the state is updated.
+
+{zwsp} +
+
 [TIP]
 ====
-It would be possible to use `setState` with a new object instead of a function:
+It's possible to use `setState` with a new object instead of a function:
 
-`setState( { movies: [...state.movies, ...newMovieItems]})`
+`setState( { movies: [...state.movies, ...newMovieItems]});`
 
-But `setState` is an asynchronous function, and calling it with a "current state of affairs" as the argument runs the risk of introducing race conditions: we'd lose control of timing when the DOM updates, especially since we're going to combine that length-of-DOM with a continuously scrolling trigger. A callback function argument works around this: _"update the state based on what things are like whenever this function is called"_.
+But `setState` is an asynchronous function, and calling it with an object argument ("the current state of things" at the time setState is called, which is not when the update actually happens) runs the risk of introducing race conditions: we'd lose control of timing when the DOM updates, especially since we're going to combine that length-of-DOM with a continuously scrolling and quickly updating trigger.
+
+So in the example, we use a callback function argument to work around this. Something like
+_"Hey, React: whenever you're ready to actually do the state update, do it based on what things are like at *that* time"_.
 ====
-<5> Use `state.movies` instead of just the `movies` props: now react will watch the state and automatically re-render the component as soon as the state is updated.
 
 {zwsp} +
 
@@ -1107,7 +1118,7 @@ const MovieList = ({movies, apiUrl, parentPath, movieCount, sortExpression}) => 
             nextOffset = movieCount;
                                                                     <!--4-->
             // Browser-specific functionality, so this is prevented from running on the SSR
-            if (typeof document === 'object' && typeof document.addEventListener === 'function' && typeof window !== 'undefined') {
+            if (typeof document === 'object' && typeof document.addEventListener === 'function') {
                 initScrollListener();
             }
         },
@@ -1215,15 +1226,25 @@ export default (props) => <MovieList {...props} />;
 <1> `listenForScroll` is the scroll-listener's enabled-switch.
 <2> Threshold value: if the distance between the bottom of the screen and the bottom of the movielist DOM container is less than this number of pixels, `makeRequest` should be triggered.
 <3> We store a string to uniquely identify the movie-list container element in the DOM.
-<4> In the component-initializing function (remember `useEffect`), we want to call `initScrollListener`. It's a one-time function that sets up a scroll listener that will last for the lifespan of the component. However, we only want this scroll listener setup to run in a browser! It's the only thing that makes sense, but more importantly, remember that _MovieList.jsx_ is server-side rendered from the controller - so this very same script will run in Nashorn in XP!
-+
-NOTE: *Referring to most browser-specific functionality during server-side rendering will usually throw an error and of course break the rendering*. Checking for the global variables `document` or `window` is an easy way to prevent this. The exception is any link:https://www.npmjs.com/package/react4xp-runtime-nashornpolyfills[nashorn-polyfilled] functionality.
+<4> In the component-initializing function (remember `useEffect`), we want to call `initScrollListener`. It's a one-time function that sets up a scroll listener that will last for the lifespan of the component. However, remember that _MovieList.jsx_ is also server-side rendered from the controller, so this very same script will run in Nashorn in XP! We check for `document` here because *we only want this scroll listener setup to run in a browser context*, not during SSR. Not only because a scroll listener makes no sense during server-side rendering, but to prevent errors that break the rendering (see the <<#nashornbrowserbreakage, note below>>).
 <5> During `initScrollListener`, we start by storing a handle to the movie-list container element in the DOM.
 <6> The scroll event listener will be prevented from doing anything as long as `listenForScroll` is false.
 <7> Here the distance between the bottom of the screen and the bottom of the movie-list container element is calculated. If that's smaller than the threshold `TRIGGER_OFFSET_PX_FROM_BOTTOM`, disable the listener and trigger `makeRequest`, which performs the same duties as before: request movie data from the guillotine API, and insert that into the state to trigger rendering...
 <8> ...with one thing added: switch the scroll listener back on when data has been received and handled, OR after 500 ms after receiving empty data.
 <9> Removing the click listener and adding the unique ID `listContainerId` to the container element.
 
+{zwsp} +
+[[nashornbrowserbreakage]]
+[NOTE]
+====
+The Nashorn server-side rendering engine lacks most browser-specific JS functionality (except for the things react4xp has link:https://www.npmjs.com/package/react4xp-runtime-nashornpolyfills[specifically polyfilled]).
+
+*Referring to browser-specific functionality during server-side rendering will usually throw an error in the server log* and break the rendering.
+
+This is easily prevented by checking the global namespace for functionality that only exists in a browser, such as `document`.
+====
+
+{zwsp} +
 {zwsp} +
 
 And there we have it: *our infinite scroller*!
