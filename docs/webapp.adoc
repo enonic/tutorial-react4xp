@@ -53,14 +53,16 @@ The takeaway of this chapter is this: react4xp components (entries and dependenc
 +
 [source,javascript,options="nowrap"]
 ----
-const component = React4xp[jsxPath].default(props);
+var component = React4xp[jsxPath].default(props);
 ----
-6. Finally, render the component into your DOM:
+6. Finally, render the component into your DOM as a react app:
 +
 [source,javascript,options="nowrap"]
 ----
 ReactDOM.render(component, document.getElementById("my-target-container-id"));
 ----
+
+{zwsp} +
 
 If you've used react before, this is the same flow.
 
