@@ -8,7 +8,7 @@ buildscript {
 
     dependencies {
         classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.7'
-        classpath 'gradle.plugin.org.aim42:htmlSanityCheck:1.0.0-RC-1'
+        classpath 'gradle.plugin.org.aim42:htmlSanityCheck:1.1.3'
     }
 }
 
