@@ -62,26 +62,17 @@ src/
 
 == Build and Deploy
 
-To build and deploy the starter app, *first run an NPM install* from your shell, in the project folder:
-
-[source, bash]
-----
-npm install
-----
-
-NOTE: The react4xp gradle build in the next step imports some extra configuration from _node_modules/react4xp/_ . So this NPM install step only needs to be run the first time you set up the app (or whenever you've cleaned or changed relevant parts of _node_modules_ / the NPM setup).
-
-{zwsp} +
-
-*Then, run the actual build process:*
-
+1. *Run the build process:*
++
 [source, bash]
 ----
 enonic project deploy
 ----
-
-Accept starting the sandbox.
-
++
+NOTE: With versions _1.1 and below_ of the react4xp starter, you must run `npm install` before this; _gradle.build_ imports some extra react4xp-related gradle tasks from link:https://www.npmjs.com/package/react4xp[node_modules/react4xp/]. At version 1.2 and above, _build.gradle_ in the starter is set up to auto-check and install.
++
+2. *Start the XP sandbox* (or accept when the enonic CLI asks you to).
++
 [NOTE]
 ====
 To verify that your app started successfully, you should find an entry similar to this in the sandbox log:
