@@ -39,7 +39,7 @@ htmlSanityCheck {
     sourceDir = new File( "$buildDir/docs/html5" )
 
     // files to check - in Set-notation
-    sourceDocuments = [ "index.html"]
+    sourceDocuments = files("index.html")
 
     // where to put results of sanityChecks...
     checkingResultsDir = new File( "$buildDir/report/htmlchecks" )
