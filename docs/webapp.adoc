@@ -283,11 +283,12 @@ query($first:Int!, $offset:Int!, $sort:String!) {
 // Returns arrays unchanged.
 // If the maybeArray arg is a non-array value, wraps it in a single-item array.
 // If arg is falsy, returns an empty array.
-const forceArray = maybeArray => Array.isArray(maybeArray)
-    ? maybeArray
-    : maybeArray
-        ? [maybeArray]
-        : [];
+const forceArray = maybeArray => {
+    if (Array.isArray(maybeArray)) {
+        return maybeArray;
+    }
+    return (maybeArray) ? [maybeArray] : [];
+};
 
 // Adapts the output from the guillotine query to the MovieList props signature
 const extractMovieArray = responseData => responseData.data.guillotine.query
@@ -534,11 +535,12 @@ query($first:Int!, $offset:Int!, $sort:String!) {
 // Returns arrays unchanged.
 // If the maybeArray arg is a non-array value, wraps it in a single-item array.
 // If arg is falsy, returns an empty array.
-const forceArray = maybeArray => Array.isArray(maybeArray)
-    ? maybeArray
-    : maybeArray
-        ? [maybeArray]
-        : [];
+const forceArray = maybeArray => {
+    if (Array.isArray(maybeArray)) {
+        return maybeArray;
+    }
+    return (maybeArray) ? [maybeArray] : [];
+};
 
 // Adapt the output from the guillotine query to the MovieList props signature
 const extractMovieArray = responseData => responseData.data.guillotine.query

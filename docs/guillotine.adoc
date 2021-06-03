@@ -309,9 +309,15 @@ Now, with that mapping set up, we can add the _previewMovie_ controller:
 .controllers/previewMovie.es6:
 [source,javascript,options="nowrap"]
 ----
-const util = require('/lib/util');
 const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
+
+const forceArray = maybeArray => {
+    if (Array.isArray(maybeArray)) {
+        return maybeArray;
+    }
+    return (maybeArray) ? [maybeArray] : [];
+};
 
 exports.get = function(request) {
     const content = portal.getContent();            <!--1-->
@@ -326,7 +332,7 @@ exports.get = function(request) {
         title: content.displayName,
         description: content.data.description,
         year: content.data.year,
-        actors: util.data.forceArray( content.data.actor )   <!--3-->
+        actors: forceArray( content.data.actor )   <!--3-->
             .map( actor => (actor || '').trim())
             .filter(actor => !!actor)
     };
@@ -514,11 +520,12 @@ export const buildParentPathQuery = (parentPath) => `_parentPath = '/content${pa
 // Returns arrays unchanged.
 // If the maybeArray arg is a non-array value, wraps it in a single-item array.
 // If arg is falsy, returns an empty array.
-const forceArray = maybeArray => Array.isArray(maybeArray)
-    ? maybeArray
-    : maybeArray
-        ? [maybeArray]
-        : [];
+const forceArray = maybeArray => {
+    if (Array.isArray(maybeArray)) {
+        return maybeArray;
+    }
+    return (maybeArray) ? [maybeArray] : [];
+};
 
              <!--3-->
 // Adapts the output from the guillotine query to the MovieList props signature
