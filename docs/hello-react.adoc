@@ -61,17 +61,28 @@ function dropBottle() {
     document.getElementById('counter').innerText = bottleCount;
 };
 
-export default (props) => <div onClick={dropBottle}>
+export default (props) => <div onClick={dropBottle}>                <!--1-->
     <h1>Hello world!</h1>
     <p>Click me: <span id="counter">{bottleCount}</span> bottles of beer on the wall.</p>
 </div>;
 ----
 
+<1> One thing is mandatory for this to work, shown in the `export default` line: the JSX file *must default-export a function* that *_may_ take a props object* and *_must_ return a react component*. <<source-file-structure#, More on this later>>.
++
+Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from _node_modules/_ in the regular way. <<imports-and-dependency-chunks#, We'll also get back to that later>>, including a caveat or two.
+
 [NOTE]
 ====
-One thing is mandatory for this to work, shown in the `export default` line: the JSX file *must default-export a function* that *_may_ take a props object* and *_must_ return a react component*. <<source-file-structure#, More on this later>>.
+A quick note on using `document` and `window` etc, during serverside vs clientside rendering: `document` only works in the browser (although react4xp has polyfilled it as an _empty object_ in nashorn), so code like this should be prevented from running during serverside rendering. In this case, `dropBottle` is the response to a click listener which won't happen on the server, so we don't need any explicit safeguard.
 
-Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from _node_modules/_ in the regular way. <<imports-and-dependency-chunks#, We'll also get back to that later>>, including a caveat or two.
+But if you do, it's easy enough to **keep code running only in the browser**. For example:
+[source,javascript,options="nowrap"]
+----
+if (typeof window.navigator !== 'undefined') {
+    // ...This won't run during SSR...
+}
+----
+
 ====
 
 {zwsp} +

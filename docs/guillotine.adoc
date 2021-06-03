@@ -1125,7 +1125,7 @@ const MovieList = ({movies, apiUrl, parentPath, movieCount, sortExpression}) => 
             nextOffset = movieCount;
                                                                     <!--4-->
             // Browser-specific functionality, so this is prevented from running on the SSR
-            if (typeof document === 'object' && typeof document.addEventListener === 'function') {
+            if (typeof window.navigator !== 'undefined') {
                 initScrollListener();
             }
         },
@@ -1233,7 +1233,7 @@ export default (props) => <MovieList {...props} />;
 <1> `listenForScroll` is the scroll-listener's enabled-switch.
 <2> Threshold value: if the distance between the bottom of the screen and the bottom of the movielist DOM container is less than this number of pixels, `makeRequest` should be triggered.
 <3> We store a string to uniquely identify the movie-list container element in the DOM.
-<4> In the component-initializing function (remember `useEffect`), we want to call `initScrollListener`. It's a one-time function that sets up a scroll listener that will last for the lifespan of the component. However, remember that _MovieList.jsx_ is also server-side rendered from the controller, so this very same script will run in Nashorn in XP! We check for `document` here because *we only want this scroll listener setup to run in a browser context*, not during SSR. Not only because a scroll listener makes no sense during server-side rendering, but to prevent errors that break the rendering (see the <<#nashornbrowserbreakage, note below>>).
+<4> In the component-initializing function (remember `useEffect`), we want to call `initScrollListener`. It's a one-time function that sets up a scroll listener that will last for the lifespan of the component. However, remember that _MovieList.jsx_ is also server-side rendered from the controller, so this very same script will run in Nashorn in XP! We check for `window.navigator` here because *we only want this scroll listener setup to run in a browser context*, not during SSR. Not only because a scroll listener makes no sense during server-side rendering, but to prevent errors that break the rendering (see the <<#nashornbrowserbreakage, note below>>).
 <5> During `initScrollListener`, we start by storing a handle to the movie-list container element in the DOM.
 <6> The scroll event listener will be prevented from doing anything as long as `listenForScroll` is false.
 <7> Here the distance between the bottom of the screen and the bottom of the movie-list container element is calculated. If that's smaller than the threshold `TRIGGER_OFFSET_PX_FROM_BOTTOM`, disable the listener and trigger `makeRequest`, which performs the same duties as before: request movie data from the guillotine API, and insert that into the state to trigger rendering...
@@ -1248,7 +1248,7 @@ The Nashorn server-side rendering engine lacks most browser-specific JS function
 
 *Referring to browser-specific functionality during server-side rendering will usually throw an error in the server log* and break the rendering.
 
-This is easily prevented by checking the global namespace for functionality that only exists in a browser, such as `document`.
+This is easily prevented by checking the global namespace for functionality that only exists in a browser, such as `window.navigator`.
 ====
 
 {zwsp} +
