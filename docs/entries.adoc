@@ -63,10 +63,11 @@ function Header(props) {
     return <h1>{props.text}</h1>;
 };
 
-// This is fine
+// This is fine:
 export default Header;
 
-// An extra wrapped layer would work too. But it's usually not necessary
+// An extra wrapped layer would work too. But it's usually not necessary:
+//
 // export default (props) => <Header {...props} />;
 ----
 

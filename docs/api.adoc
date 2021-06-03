@@ -186,7 +186,7 @@ myComponent.secondSetter("b");
 myComponent.thirdSetter("c");
 ----
 
-The order between the setters doesn't matter, with the exception if `setId` and `uniqueId` which affect each other.
+The order between the setters doesn't matter - except for `setId` and `uniqueId`, which affect each other.
 
 {zwsp} +
 
@@ -238,7 +238,7 @@ If the data object already has an ID, `.setId(id)` will overwrite it. If `id` is
 myComponent.uniqueId();
 ----
 
-Enforces a unique ID, either by itself or after running `.setId()`. If the object already has an ID (`react4xpId`), a random-ID string will be added to it. If not, the ID will just be a new random ID.
+Enforces a unique ID, either by itself or after running `.setId()`. If the object already has an ID (`react4xpId`), a random string will be added to it. If not, the ID will just be the random string.
 
 No parameters.
 

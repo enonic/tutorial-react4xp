@@ -35,7 +35,7 @@ React4XP is a library (with a companion build structure) that facilitates advanc
 After <<setup#, getting set up>>, we'll begin with *3 basic lessons* - just the minimum of what you need to get started:
 
 - <<hello-react#, Hello React: server and clientside>>: Meet the React4xp library and display a react component from content studio - first serverside rendered, then clientside.
-- <<editorial-data-and-props#, Editorial data and props>>: Insert editorial data from XP into the react component.
+- <<editorial-data-and-props#, Editorial data and props>>: Use props to pass data - for example editorial data from XP - into the react component.
 - <<pages-parts-and-regions#, XP Pages, Parts, Regions and Content>>: Taking more advantage of the page-building powers in Content Studio - react rendering from any XP controller.
 
 
