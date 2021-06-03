@@ -266,6 +266,7 @@ exports.get = function(request) {
 ----
 <1> On the server, a truthy `clientRender` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular `.render` call. Mixing up clientside and serverside rendering across different places hasn't been tested very much, but it should work fine).
 
+[[clientrendered_output]]
 If you compare with <<#hello_output, the serverside-rendered example>>, the `clientRender` flag causes the *rendered output* to change slightly, changing the behavior in the browser.
 
 [source,html,options="nowrap"]
