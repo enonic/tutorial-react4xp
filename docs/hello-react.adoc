@@ -71,11 +71,15 @@ export default (props) => <div onClick={dropBottle}>                <!--1-->
 +
 Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from _node_modules/_ in the regular way. <<imports-and-dependency-chunks#, We'll also get back to that later>>, including a caveat or two.
 
+[[browser-specific]]
 [NOTE]
 ====
-A quick note on using `document` and `window` etc, during serverside vs clientside rendering: `document` only works in the browser (although react4xp has polyfilled it as an _empty object_ in nashorn), so code like this should be prevented from running during serverside rendering. In this case, `dropBottle` is the response to a click listener which won't happen on the server, so we don't need any explicit safeguard.
+By the way, a quick gotcha on using `document` and `window` etc, during serverside vs clientside rendering:
 
-But if you do, it's easy enough to **keep code running only in the browser**. For example:
+Naturally, a lot of **browser-specific functionality won't work well during server-side rendering**. React4xp has polyfilled both `document` and `window` as _empty objects_ in Nashorn. To prevent weird behavior or errors, browser-specific code should only run in the browser.
+
+In this example, `dropBottle` is the response to a click listener which won't be triggered to actually _run_ on the server (although the asset is compiled and read the asset into nashorn, but that is safe in itself), so we don't need any more safeguards here. But if you do, it's easy enough - for example:
+
 [source,javascript,options="nowrap"]
 ----
 if (typeof window.navigator !== 'undefined') {
@@ -83,6 +87,7 @@ if (typeof window.navigator !== 'undefined') {
 }
 ----
 
+Of course, this also applies to imported packages / nested components and so on. Importing them is usually safe, but consider wrapping the areas where they're called/used, like this.
 ====
 
 {zwsp} +
