@@ -512,7 +512,7 @@ const pageContributions = myComponent.renderPageContributions({ /* clientRender,
 
 Contrary to when working with `.render`, omitting `request` from the custom flow does _not_ enforce a max-safety rendering. Quite the opposite, removing `request` will remove all the "safety wheels", so this rendering mode **needs a bit of attention to guarantee that everything works everywhere**:
 
-- `.renderBody` will take `clientRender` into account in all contexts.
+- `.renderBody` will take `clientRender` into account in all contexts. What you set it to _will_ take effect.
 +
 NOTE: This risks a missing/empty visualization inside Content Studio, since `clientRender: true` makes sure no SSR will render a static placeholder.
 

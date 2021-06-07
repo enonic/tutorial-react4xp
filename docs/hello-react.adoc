@@ -178,7 +178,7 @@ Two things are worth knowing about the rendering, before we move on:
 {zwsp} +
 
 [[static_cs_rendering]]
-=== Content studio only has static rendering
+=== Content studio should only have static rendering
 
 If you clicked the rendering _inside XP Content Studio_ instead of a preview tab, you'd notice there was *no bottle-counting*. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the `request` argument is used in `React4xp.render` to handle this automatically: inside Content Studio, you'll only see the rendering as a regular static XP preview / placeholder instead of active react.
 
