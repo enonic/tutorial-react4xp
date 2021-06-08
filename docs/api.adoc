@@ -5,11 +5,20 @@
 [[api]]
 The react4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib[Enonic Market]) exposes a couple of methods that can be run from XP controllers.
 
+This chapter also covers the <<#ssr, SSR enigne>>, compiling for it, and configuration of that.
 
-== Install
+A basic knowledge of link:https://webpack.js.org/[webpack] is fortunate (link:https://www.smashingmagazine.com/2021/06/getting-started-webpack/[suggested introduction]).
+
+{zwsp} +
+{zwsp} +
+{zwsp} +
+
+== Getting started
+
+=== Install
 Instructions on how to install the library locally or insert it into your project are at link:https://github.com/enonic/lib-react4xp#readme[the library docs] at github.
 
-== Import library
+=== Import library
 
 .In an XP controller:
 [source,javascript,options="nowrap"]
@@ -17,6 +26,8 @@ Instructions on how to install the library locally or insert it into your projec
 const React4xp = require('/lib/enonic/react4xp');
 ----
 
+{zwsp} +
+{zwsp} +
 {zwsp} +
 
 [[react4xp_render]]
@@ -151,7 +162,7 @@ Most of the lessons in the guide use `React4xp.render` (except the "custom flow"
 
 {zwsp} +
 {zwsp} +
-{zwsp} +
+{zwsp}
 
 [[react4xp_object]]
 == React4xp object: custom flow
@@ -526,3 +537,60 @@ NOTE: Best case scenario: this might make a clientRender'ed entry visible in Con
 === Custom flow examples
 
 Custom flow usage in is demonstrated <<custom-flow-syntax#, here>>.
+
+
+
+{zwsp} +
+{zwsp} +
+{zwsp} +
+
+[[ssr]]
+== Serverside rendering engine
+
+The default running mode of react4xp is link:https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/[serverside rendering (SSR)] (although `clientRender` can override this). In a nutshell, source files like JSX are compiled into JS assets that lib-react4xp's SSR engine runs to render HTML. This output is then delivered to the browser along with dependency code (usually references to necessary assets like CSS, JS etc) - these dependencies are also rendered, as page contributions. Rendering the HTML body and the page contributions happens to two different steps, using either <<#react4xp_render, `render`>> (which wraps both steps for convenience) or the <<#react4xp_object, "custom flow">>.
+
+The aim of react4xp is link:https://medium.com/capital-one-tech/why-everyone-is-talking-about-isomorphic-universal-javascript-and-why-it-matters-38c07c87905[isomorphic rendering]: after the react component(s) are serverside rendered, they are activated (hydrated) in the browser, turning them into running, active react apps. It's _the same react code_ that runs at the server as in the browser: no need to write the same component twice - one for SSR and one for the browser (although occasionally, tweaks are needed to prevent browserspecific code from running on the server).
+
+{zwsp} +
+
+[[nashorn]]
+=== Nashorn
+
+Currently, react4xp needs link:https://docs.oracle.com/javase/10/nashorn/introduction.htm[nashorn] to do the actual SSR (albeit we're looking at upgrading to GraalJS at some point). Since most of the world of react SSR is oriented towards link:https://nodejs.org/en/[node.js], and nashorn does not have full support for the features in node (nor all features expected by a lot of NPM packages that can be imported by react components), react4xp does some polyfilling of the SSR engine at startup.
+
+{zwsp} +
+
+[[renderers]]
+==== Renderers
+
+Starting from version 1.5.0, react4xp handles multithreaded rendering. This is done by setting up a number of renderers where each one is ready to answer to rendering requests in parallel, independently.
+
+The number of renderer workers is determined in java, with `Runtime.getRuntime().availableProcessors()`, but <<#react4xp_properties, can be overriden>>, for instance for limiting the memory toll.
+
+When a renderer runs into an error during SSR, that renderer is torn down and a new one is initialized (see warmup time). This happens as far as possible during idle time.
+
+{zwsp} +
+
+[[warmup]]
+==== Warmup time
+After your react4xp app is (re)started, the first time react4xp is triggered to render something, the engine will initialize. This means the renderers will load the _compiled assets_ necessary for the rendering, into nashorn in memory:
+
+- nashorn polyfills,
+- react and reactDOM (`externals.*.js`),
+- packages from _node_modules_ (`vendors.*.js`),
+- dependency assets imported by the react components (aka. <<chunks#, chunks>>),
+- and finally, the <<entries#, entry assets>> themselves.
+
+*This causes some warmup time* when starting your app: a noticable delay before the first rendering shows up. This may be just a couple of seconds in total, but it may also take longer. It depends on the size and complexity of the _compiled_ assets involved. This will happen on every restart of the app (and every <<#renderers, renderer>> must be initialized, but they do this in parallel).
+
+But as long as the code runs in nashorn without errors, initialization happens only once (i.e. each asset is loaded once at most, on each renderer). After the warmup, the react apps are ready-to-run from nashorn memory, so repeated renderings after that (even with different props) are fast.
+
+===== Improving warmup time for development
+
+Since development can involve repeated app/server restarts, here are a couple of ways to improve initial loading time when developing large projects:
+
+- Set `ssrLazyload = true` (see <<#react4xp_properties, below>>). This makes the engine start up and only load the bare minimum of dependency assets instead of preparing all of them at once. Each rendering will also only load/cache the dependencies it needs. The upside of this is that the first rendering (of a component that uses only a subset of the assets) is much faster since there is less to load. The downside is that there will still be assets that haven't been loaded into the engine yet, which will cause a delay at some other time when _they_ are first rendered.
+- Don't build the react components and dependencies with `buildEnv = development`, but use `production` (which is the default - see <<#react4xp_properties, below>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference to nashorn (at the compile-to-bytecode stage).
+
+
+(We're also currently looking into other optimizations and approaches that are expected to improve the warmup time more).
