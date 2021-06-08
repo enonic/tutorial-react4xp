@@ -77,7 +77,7 @@ But most importantly, they are *automatically optimized for performance*:
 
 {zwsp} +
 
-*Recommended usage:* chunks are made to be *fire-and-forget*. Define the chunkDir, some webpack rules if necessary, and import it from your entry (or your secondary components inside chunks) - react4xp will handle the rest. Dependencies are tracked, so `React4xp.render` (and `.renderPageContributions`) automatically adds extra client-side links to necessary chunks.
+*Recommended usage:* chunks are made to be *fire-and-forget*. Define the chunkDir, some webpack rules if necessary, and import it from your entry (or your secondary components inside chunks) - the react4xp build setup and runtime will handle the rest. Dependencies are tracked, so `React4xp.render` (and `.renderPageContributions`) automatically adds extra client-side links to necessary chunks.
 
 Since chunks are most optimized for repeated usage, it's best to put your heavy components and resources in chunks, and *let the entries stay slim and lightweight*.
 

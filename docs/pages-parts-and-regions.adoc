@@ -2,21 +2,34 @@
 :toc: right
 :imagesdir: media/
 
+So far, we've used a "raw" XP Page and just rendered the react component directly from the controller there. It's fine in itself, but not really making good use of XP's excellent CMS powers. So let's move into that territory!
+
+
+== TL;DR
+
+Naturally, this example will focus quite a bit on XP Content Studio and how to use Parts, Pages, Regions and Templates. If this is familiar to you, you can pretty much just skim through it.
+
+**The key takeaways are:**
+
+**1.** `React4xp.render` works the same way **from any controller, and independently**:
+    - A Region in a react4xp-rendered Page can contain any kind of Component (react4xp-rendered or not).
+    - And a react4xp-rendered Component can be placed inside the Region of any kind of Page (react4xp-rendered or not).
+
+**2.** React4xp comes with an **importable `<Regions>` react component** for making XP Regions inside rendered output,
+    - One caveat: Regions work best when server-side rendered. Specifically: using `clientRender` when react4xp-rendering a Region can cause the components inside the Region to drop their page contributions. This can break rendering and/or functionality of the Components inside - both react4xp-type and other kinds.
+
+**3.** Each time the rendered page contributions make the browser call <<hello-react#hello_output, `React.CLIENT.hydrate`>> or <<hello-react#clientrendered_output, `.render`>>, an **independent top-level react root app** is created in the browser - so a page can easily have more than one react root app.
+
+[NOTE]
+====
+This last point means: if you use react4xp to render an XP Region in a Page/Layout, and insert a react4xp-rendered Part into that Region, this is NOT the same as the regular react way of importing and nesting one react component inside another, within the same app. The Page/Layout controller will create one react app, and the Part will be another one.
+
+So be sure to **structure your react app(s) to be self-contained**, with an <<entries#, entry>> at the top level of each. This is especially important for functionality that's shared inside one app, across react components - for example link:https://reactjs.org/docs/context.html[react context providers]).
+====
 
 == Lesson overview
 
-So far, we've used a "raw" XP Page and just rendered the react component directly from the controller there. It's fine in itself, but not really making good use of XP's excellent CMS powers. So let's move into that territory!
-
-[TIP]
-====
-*TL;DR*: Naturally, this example will focus quite a bit on XP Content Studio and how to use Parts, Pages, Regions and Templates. If this is familiar to you, you can pretty much just skim through it - the key takeaways are:
-
-  - `React4xp.render` works the same way from any controller.
-  - React4xp comes with an importable `<Regions>` react component for making XP Regions
-  - Each time the rendered page contributions make the client call `React.CLIENT.render` or `.hydrate`, an independent react root app is created - so a page can easily have more than one react root app.
-====
-
-React4xp can also render from XP _Part or Layout controllers_, creating react-rendered XP elements that can be dragged into any regular XP Region. And besides, react4xp can (serverside) render these XP Regions themselves, which can then accept any XP Parts/Layouts dropped into them (as well as Fragments, Text and Image components of course).
+React4xp don't need to render from a Page controller, but can also render from XP _Part or Layout controllers_, creating react-rendered XP elements that can be dragged into any regular XP Region. And besides, react4xp can (serverside) render these XP Regions themselves, which can then accept any XP Parts/Layouts dropped into them (as well as Fragments, Text and Image components of course).
 
 In this example, we'll do both:
 

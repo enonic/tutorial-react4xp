@@ -61,17 +61,33 @@ function dropBottle() {
     document.getElementById('counter').innerText = bottleCount;
 };
 
-export default (props) => <div onClick={dropBottle}>
+export default (props) => <div onClick={dropBottle}>                <!--1-->
     <h1>Hello world!</h1>
     <p>Click me: <span id="counter">{bottleCount}</span> bottles of beer on the wall.</p>
 </div>;
 ----
 
+<1> One thing is mandatory for this to work, shown in the `export default` line: the JSX file *must default-export a function* that *_may_ take a props object* and *_must_ return a react component*. <<source-file-structure#, More on this later>>.
++
+Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from _node_modules/_ in the regular way. <<imports-and-dependency-chunks#, We'll also get back to that later>>, including a caveat or two.
+
+[[browser-specific]]
 [NOTE]
 ====
-One thing is mandatory for this to work, shown in the `export default` line: the JSX file *must default-export a function* that *_may_ take a props object* and *_must_ return a react component*. <<source-file-structure#, More on this later>>.
+By the way, a quick gotcha on using `document` and `window` etc, during serverside vs clientside rendering:
 
-Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from _node_modules/_ in the regular way. <<imports-and-dependency-chunks#, We'll also get back to that later>>, including a caveat or two.
+Naturally, a lot of **browser-specific functionality won't work well during server-side rendering**. React4xp has polyfilled both `document` and `window` as _empty objects_ in Nashorn. To prevent weird behavior or errors, browser-specific code should only run in the browser.
+
+In this example, `dropBottle` is the response to a click listener which won't be triggered to actually _run_ on the server (although the asset is compiled and read the asset into nashorn, but that is safe in itself), so we don't need any more safeguards here. But if you do, it's easy enough - for example:
+
+[source,javascript,options="nowrap"]
+----
+if (typeof window.navigator !== 'undefined') {
+    // ...This won't run during SSR...
+}
+----
+
+Of course, this also applies to imported packages / nested components and so on. Importing them is usually safe, but consider wrapping the areas where they're called/used, like this.
 ====
 
 {zwsp} +
@@ -119,7 +135,7 @@ What's going on in the controller?
 
 <1> In line 2, `React4xp` is imported from the library.
 <2> In line 4, we pick up the `request` data. The render call needs it to know the rendering context.
-<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for react4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that, but for all the details: <<entries#, entries>> and <<jsxpath#, jsxPath>>).
+<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for react4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that, but for all the juicy details: <<entries#, entries>> and <<jsxpath#, jsxPath>>).
 <4> In line 8, the juicy bit: *the actual render call*. The rendered response from it can be returned directly from the `get` function, since `.render` creates an object with a `body` HTML string and a `pageContributions` attribute with everything needed (more details: <<api#react4xp_render, the render API>>).
 <5> In line 13, the `id` attribute _"react4xpApp"_ is set in the *options* argument of `.render` (lines 12-20). This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
 <6> In lines 14-19, we're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag (such as `<!DOCTYPE html>`).
@@ -162,7 +178,7 @@ Two things are worth knowing about the rendering, before we move on:
 {zwsp} +
 
 [[static_cs_rendering]]
-=== Content studio only has static rendering
+=== Content studio should only have static rendering
 
 If you clicked the rendering _inside XP Content Studio_ instead of a preview tab, you'd notice there was *no bottle-counting*. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the `request` argument is used in `React4xp.render` to handle this automatically: inside Content Studio, you'll only see the rendering as a regular static XP preview / placeholder instead of active react.
 
@@ -266,6 +282,7 @@ exports.get = function(request) {
 ----
 <1> On the server, a truthy `clientRender` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular `.render` call. Mixing up clientside and serverside rendering across different places hasn't been tested very much, but it should work fine).
 
+[[clientrendered_output]]
 If you compare with <<#hello_output, the serverside-rendered example>>, the `clientRender` flag causes the *rendered output* to change slightly, changing the behavior in the browser.
 
 [source,html,options="nowrap"]

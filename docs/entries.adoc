@@ -39,12 +39,13 @@ Entries are pretty much just standard JSX files, but they must follow *two requi
 
 {zwsp} +
 
-== Asset and react app
+[[assets_and_apps]]
+== Entries, assets and react apps
 React4xp handles them in build-time and runtime: locates entries, compiles each entry into its own *entry asset* (under _/build/resources/main/assets/react4xp_). React4xp's render methods also generate page contributions that make sure these assets are served to the client.
 
-Each entry becomes a separate *root level react app*. Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
-
 For example, early in this tutorial we've seen the entries _hello-react.jsx_ and _color.jsx_, they are compiled into the assets _hello-react.js_ and _color.js_.
+
+When rendered (whether it's by using `.render` or a pair of `renderBody`/`renderPageContributions` in the <<custom-flow-syntax#, custom flow syntax>>), each entry will become not only assets of their own, but *independent root level react apps* in the browser memory! Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
 
 {zwsp} +
 
@@ -63,10 +64,11 @@ function Header(props) {
     return <h1>{props.text}</h1>;
 };
 
-// This is fine
+// This is fine:
 export default Header;
 
-// An extra wrapped layer would work too. But it's usually not necessary
+// An extra wrapped layer would work too. But it's usually not necessary:
+//
 // export default (props) => <Header {...props} />;
 ----
 
