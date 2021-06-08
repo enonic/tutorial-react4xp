@@ -5,9 +5,7 @@
 [[api]]
 The react4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib[Enonic Market]) exposes a couple of methods that can be run from XP controllers.
 
-This chapter also covers the <<#ssr, SSR enigne>>, compiling for it, and configuration of that.
-
-A basic knowledge of link:https://webpack.js.org/[webpack] is fortunate (link:https://www.smashingmagazine.com/2021/06/getting-started-webpack/[suggested introduction]).
+This chapter also covers the <<#ssr, SSR engine>>, compilation, and <<#react4xp_properties, configuration>> of those.
 
 {zwsp} +
 {zwsp} +
@@ -545,9 +543,11 @@ Custom flow usage in is demonstrated <<custom-flow-syntax#, here>>.
 {zwsp} +
 
 [[ssr]]
-== Serverside rendering engine
+== The serverside-rendering engine
 
-The default running mode of react4xp is link:https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/[serverside rendering (SSR)] (although `clientRender` can override this). In a nutshell, source files like JSX are compiled into JS assets that lib-react4xp's SSR engine runs to render HTML. This output is then delivered to the browser along with dependency code (usually references to necessary assets like CSS, JS etc) - these dependencies are also rendered, as page contributions. Rendering the HTML body and the page contributions happens to two different steps, using either <<#react4xp_render, `render`>> (which wraps both steps for convenience) or the <<#react4xp_object, "custom flow">>.
+The default running mode of react4xp is link:https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/[serverside rendering (SSR)] (although `clientRender` can override this).
+
+In a nutshell, source files like JSX are compiled into JS assets that lib-react4xp's SSR engine runs to render HTML. This output is then delivered to the browser along with dependency code (usually references to necessary assets like CSS, JS etc) - these dependencies are also rendered, as page contributions. Rendering the HTML body and the page contributions happens to two different steps, using either <<#react4xp_render, `render`>> (which wraps both steps for convenience) or the <<#react4xp_object, "custom flow">>.
 
 The aim of react4xp is link:https://medium.com/capital-one-tech/why-everyone-is-talking-about-isomorphic-universal-javascript-and-why-it-matters-38c07c87905[isomorphic rendering]: after the react component(s) are serverside rendered, they are activated (hydrated) in the browser, turning them into running, active react apps. It's _the same react code_ that runs at the server as in the browser: no need to write the same component twice - one for SSR and one for the browser (although occasionally, tweaks are needed to prevent browserspecific code from running on the server).
 
@@ -565,9 +565,9 @@ Currently, react4xp needs link:https://docs.oracle.com/javase/10/nashorn/introdu
 
 Starting from version 1.5.0, react4xp handles multithreaded rendering. This is done by setting up a number of renderers where each one is ready to answer to rendering requests in parallel, independently.
 
-The number of renderer workers is determined in java, with `Runtime.getRuntime().availableProcessors()`, but <<#react4xp_properties, can be overriden>>, for instance for limiting the memory toll.
+The number of renderer workers is <<#ssrMaxThreads, determined in java but can be overriden>>.
 
-When a renderer runs into an error during SSR, that renderer is torn down and a new one is initialized (see warmup time). This happens as far as possible during idle time.
+When a renderer runs into an error during SSR, that renderer is torn down and a new one is initialized (see warmup time below). This happens as far as possible during idle time.
 
 {zwsp} +
 
@@ -589,8 +589,279 @@ But as long as the code runs in nashorn without errors, initialization happens o
 
 Since development can involve repeated app/server restarts, here are a couple of ways to improve initial loading time when developing large projects:
 
-- Set `ssrLazyload = true` (see <<#react4xp_properties, below>>). This makes the engine start up and only load the bare minimum of dependency assets instead of preparing all of them at once. Each rendering will also only load/cache the dependencies it needs. The upside of this is that the first rendering (of a component that uses only a subset of the assets) is much faster since there is less to load. The downside is that there will still be assets that haven't been loaded into the engine yet, which will cause a delay at some other time when _they_ are first rendered.
-- Don't build the react components and dependencies with `buildEnv = development`, but use `production` (which is the default - see <<#react4xp_properties, below>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference to nashorn (at the compile-to-bytecode stage).
+- Set `ssrLazyload = true` (see <<#ssrLazyload, below>>). This makes the engine start up and only load the bare minimum of dependency assets instead of preparing all of them at once. Each rendering will also only load/cache the dependencies it needs. The upside of this is that the first rendering (of a component that uses only a subset of the assets) is much faster since there is less to load. The downside is that there will still be assets that haven't been loaded into the engine yet, which will cause a delay at some other time when _they_ are first rendered.
+- Don't build the react components and dependencies with `buildEnv = development`, but use `production` (which is the default - see <<#buildEnv, below>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference to nashorn (at the compile-to-bytecode stage).
 
 
-(We're also currently looking into other optimizations and approaches that are expected to improve the warmup time more).
+(Other optimizations and approaches are under consideration, to shorten the warmup time even more).
+
+{zwsp} +
+{zwsp} +
+{zwsp} +
+
+[[react4xp_properties]]
+== Config: react4xp.properties
+
+Some aspects of react4xp can be adjusted with a file _react4xp.properties_. Several of these settings are relevant to the SSR engine.
+
+If you're using the <<setup#create_project, starter>> or your project is based on it, this is already set up and you can <<#buildEnv, skip>> the following section:
+
+{zwsp} +
+
+=== Including react4xp.properties in your project
+
+Put _react4xp.properties_ at the root of your XP project. A template can be copied from link:https://github.com/enonic/react4xp-npm/blob/master/packages/react4xp/src/react4xp.properties[here], or from _node_modules/react4xp/react4xp.properties_ after installing the react4xp NPM package.
+
+*In order to take effect, it must be handled by gradle during the build:*
+
+- Add this to your _build.gradle_:
++
+[source,groovy,options="nowrap"]
+----
+apply from: "node_modules/react4xp/react4xp.gradle"
+----
++
+This will not only make sure _react4xp.properties_ is handled, but also give a full react4xp build setup.
+
+- Of course, this requires that the link:https://www.npmjs.com/package/react4xp[react4xp NPM package] is installed at the time gradle (or the enonic CLI) is run.
++
+If you want to automate that, you can always add this to your _gradle.build_:
++
+[source,groovy,options="nowrap"]
+----
+def react4xpGradleFile = new File('node_modules/react4xp/react4xp.gradle')
+if (!react4xpGradleFile.exists()) {
+    def proc = "npm install".execute()
+    proc.in.eachLine { line -> println line }
+    proc.out.close()
+    proc.waitFor()
+}
+
+apply from: 'node_modules/react4xp/react4xp.gradle'
+----
+
+- Or, reverse-engineer the whole thing from link:https://github.com/enonic/react4xp-npm/blob/master/packages/react4xp/src/react4xp.gradle[react4xp.gradle] and make your own gradle adaptation.
+
+{zwsp} +
+
+[[ssrLazyload]]
+=== ssrLazyload
+
+.react4xp.properties:
+[source,properties,options="nowrap"]
+----
+ssrLazyload = true
+----
+
+As described <<#warmup, above>>, `ssrLazyload` defines the initialization behavior of the renderer workers:
+
+- If switched on (`true`), only the required assets are loaded into the nashorn engine, speeding up the first load time, but subsequent loading times for other un-initialized assets will be longer.
+- If switched off (`false`), the engine will load _all_ assets once and for all, before performing the first rendering. This makes the first warmup time predictably slower (and that may be a substantial difference in a large project), but all subsequent rendering will be spring-loaded and fast.
+
+Default value depends on `buildEnv` (or `-Pdev`):
+
+- `true` in `development`
+- `false` in `production`
+
+{zwsp} +
+
+[[ssrMaxThreads]]
+=== ssrMaxThreads
+
+.react4xp.properties:
+[source,properties,options="nowrap"]
+----
+ssrMaxThreads = 5
+----
+
+If this override value is not set, the number of threads (<<#renderers, renderers>>) used for simultaneous SSR requests is determined by java, by...
+
+[source,java,options="nowrap"]
+----
+Runtime.getRuntime().availableProcessors()
+----
+
+...but `ssrMaxThreads` sets this number manually instead.
+
+
+{zwsp} +
+
+[[ssrSettings]]
+=== ssrSettings
+
+This value can be a number, _or_ a comma-separated string of link:https://github.com/openjdk/nashorn/blob/main/src/org.openjdk.nashorn/share/classes/org/openjdk/nashorn/internal/runtime/resources/Options.properties[nashorn options]:
+
+.react4xp.properties:
+[source,properties,options="nowrap"]
+----
+# Explicit string of settings:
+ssrSettings = --persistent-code-cache, --class-cache-size=42, --lazy-compilation
+
+# Corresponds to --persistent-code-cache, --class-cache-size=1000:
+ssrSettings = 1000
+
+# Default value, turns persistent code cache off:
+ssrSettings = 0
+----
+
+Persistent code cache is switched off by choice, since it occasionally proved error-prone and didn't improve performance all that much. Your mileage may vary, use with care.
+
+{zwsp} +
+{zwsp} +
+{zwsp} +
+
+[[buildEnv]]
+=== buildEnv
+
+Moving on to some _react4xp.properties_ settings that don't focus on SSR, but instead control the compilation of assets from source code and imports.
+
+[NOTE]
+====
+*Common pattern:* the following settings are picked up by gradle, which injects them into _webpack.config.*.js_ files that are bundled with the link:https://www.npmjs.com/package/react4xp[react4xp NPM package]. These in turn perform the actual compilation of your source code and its imports. See also <<entries#, entries>> and <<chunks#, chunks>>.
+
+Obviously, having a basic knowledge of link:https://webpack.js.org/[webpack] is fortunate (link:https://www.smashingmagazine.com/2021/06/getting-started-webpack/[intro suggestion]).
+====
+
+`buildEnv` switches between react4xp *build* modes (not to be confused with XP's link:https://developer.enonic.com/docs/enonic-cli/master/dev#start[run modes]).
+
+.react4xp.properties:
+[source,properties,options="nowrap"]
+----
+buildEnv = production
+----
+
+
+- `production`: assets are compiled more compact (and faster), with no source maps, and the entire SSR engine is initialized at once.
+- `development`: assets are compiled for more human-readability, with source maps, making errors easier to track down. If `ssrLazyload` hasn't been set, `development` will activate lazy-loading.
+
+Default value is `production`.
+
+`development` mode can also be set _ad hoc for one build_ without changing _react4xp.properties_, by adding the gradle CLI parameter `-Pdev`. For example:
+
+[source,bash,options="nowrap"]
+----
+enonic project gradle build deploy -Pdev
+----
+
+
+{zwsp} +
+
+[[entryDirs]]
+=== entryDirs
+
+.react4xp.properties:
+[source,properties,options="nowrap"]
+----
+entryDirs = myComponents, ../otherComponents
+----
+
+By default, react4xp will look for (ie. sets up webpack to look for) .JSX files to turn into <<entries#, entries>> below _src/main/resources/site/_.
+
+Adding comma separated values under `entryDirs` adds _more_ folder names/paths (relative to _src/main/resources/react4xp/_) where JSX files will also become entries.
+
+
+
+{zwsp} +
+
+[[chunkDirs]]
+=== chunkDirs
+
+
+By default, react4xp will look for (ie. sets up webpack to look for) resources _imported by_ the entries. These are link:https://webpack.js.org/concepts/[bundled] into separate assets that react4xp automatically loads at both server- and clientside rendering: <<chunks#, chunks>>, by this pattern:
+
+- If they are react and reactDOM, they are bundled separately into `externals.*.js` (where the * is a content-dependent hash).
+- _node_modules/react4xp-regions/_ is bundled into `templates.*.js`
+- Other packages under _node_modules_ are bundled into `vendors.*.js`
+- And everything else that's _not under a `chunkDir` marked here_ is bundled into `react4xp.*.js`
+
+(Of course, non-JS bundles split out by webpack will have different extensions, such as .css)
+
+The idea is to use `chunkDirs` to add a comma-separated list of names/paths of directories (relative to _src/main/resources/react4xp/_) that will be bundled into chunks of their own. The chunk name will be the name of the last directory in the path:
+
+.react4xp.properties:
+[source,properties,options="nowrap"]
+----
+chunkDirs = chunk1, bundle2, other/stuff
+----
+
+This example adds these folders as chunkDirs, and anything the entries import from below them is bundled separately into:
+
+- _src/main/resources/react4xp/chunk1/_ ➔ `chunk1.*.js`
+- _src/main/resources/react4xp/bundle2/_ ➔ `bundle2.*.js`
+- _src/main/resources/react4xp/other/stuff/_ ➔ `stuff.*.js`
+
+
+{zwsp} +
+
+[[overrideComponentWebpack]]
+=== overrideComponentWebpack
+
+
+React4xp comes with a minimal set of webpack rules built-in, for compiling react components in JSX files into vanilla JS. But if you need to change/expand this setup, write a custom webpack config file and add the name of it here:
+
+.react4xp.properties:
+[source,properties,options="nowrap"]
+----
+overrideComponentWebpack = webpack.config.react4xp.js
+----
+
+There can be several reasons to this:
+
+- Most commonly, the built-in webpack setup is pretty minimal, only adding link:https://webpack.js.org/loaders/[loaders] for compiling react from JSX. It's likely you will need to add loaders of your own, maybe use additional plugins etc
+- You may want to adjust other aspects of the compilation rules, or even replace the built-in rules entirely
+- The assets that are built during the compilation are the same ones that are run in nashorn and in the browser. It's possible you may need adjustments here to account for corner cases - but if the problem is missing feature support in nashorn, it's better to add extra polyfills using <<#nashornPolyfillsSource, nashornPolyfillsSource>> instead.
+
+[NOTE]
+====
+*Config file shape: syntax variation!*
+
+Usually, _webpack.config.js_ files tend to have a certain shape, something like:
+
+[source,javascript,options="nowrap"]
+----
+module.exports = function(env) {
+    var config = {
+        entry: (...)
+        output: (...)
+        resolve: (...)
+        module: {
+            rules: (...)
+        }
+    };
+
+    return config;
+};
+// ...etc, etc
+----
+
+The file referred to by `overrideComponentWebpack` can follow the same shape, but the exported function can also take *a second `config` argument:*
+
+[source,javascript,options="nowrap"]
+----
+module.exports = function(env, config) {
+    // ...
+};
+----
+
+The extra incoming `config` object contains the built-in rules from react4xp. This enables you to both manipulate those rules and/or add your own, or entirely replace them by returning a different object.
+====
+
+{zwsp} +
+
+[[nashornPolyfillsSource]]
+=== nashornPolyfillsSource
+
+React4xp doesn't have any ambition to completely polyfill the nashorn engine so that the full feature set of node.js (or modern browsers) is supported.
+
+In the event that your code (or imported packages) rely on functionality that isn't supported in nashorn, you can add as-vanilla-as-possible JS in a .js file and add the path/name to it here:
+
+
+[source,javascript,options="nowrap"]
+----
+nashornPolyfillsSource = extraNashornPolyfills.js
+----
+
+This will be run as part of the <<#ssr, SSR engine>> <<#warmup, initialization>>, adding functionality before packages or other compiled code is loaded.
+
+For example, until recently `Object.assign` wasn't polyfilled, causing problems for certain packages. That could be added by adding link:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#polyfill[this code chunk] to the file referred with `nashornPolyfillsSource`.
+
