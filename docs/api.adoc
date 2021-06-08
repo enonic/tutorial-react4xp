@@ -604,7 +604,7 @@ Since development can involve repeated app/server restarts, here are a couple of
 
 Some aspects of react4xp can be adjusted with a file _react4xp.properties_. Several of these settings are relevant to the SSR engine.
 
-If you're using the <<setup#create_project, starter>> or your project is based on it, this is already set up and you can <<#buildEnv, skip>> the following section:
+If you're using the <<setup#create_project, starter>> or your project is based on it, this is already set up and you can skip the following section:
 
 {zwsp} +
 
