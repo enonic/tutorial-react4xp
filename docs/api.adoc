@@ -697,7 +697,7 @@ This value can be a number, _or_ a comma-separated string of link:https://github
 # Explicit string of settings:
 ssrSettings = --persistent-code-cache, --class-cache-size=42, --lazy-compilation
 
-# Corresponds to --persistent-code-cache, --class-cache-size=1000:
+# Numbers are a shorthand for cache size, so this is equivalent to: --persistent-code-cache, --class-cache-size=1000:
 ssrSettings = 1000
 
 # Default value, turns persistent code cache off:
