@@ -543,7 +543,7 @@ Custom flow usage in is demonstrated <<custom-flow-syntax#, here>>.
 {zwsp} +
 
 [[ssr]]
-== The serverside-rendering engine
+== SSR engine
 
 The default running mode of react4xp is link:https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/[serverside rendering (SSR)] (although `clientRender` can override this).
 
@@ -600,9 +600,9 @@ Since development can involve repeated app/server restarts, here are a couple of
 {zwsp} +
 
 [[react4xp_properties]]
-== Config: react4xp.properties
+== react4xp.properties
 
-Some aspects of react4xp can be adjusted with a file _react4xp.properties_. Several of these settings are relevant to the SSR engine.
+Several aspects of react4xp can be configured with a file _react4xp.properties_. Some of these settings are relevant to the SSR engine.
 
 If you're using the <<setup#create_project, starter>> or your project is based on it, this is already set up and you can skip the following section:
 
