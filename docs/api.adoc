@@ -596,6 +596,59 @@ Since development can involve repeated app/server restarts, here are a couple of
 (Other optimizations and approaches are under consideration, to shorten the warmup time even more).
 
 {zwsp} +
+
+[[performance]]
+==== SSR performance
+
+Apart from when assets are initialized during the engine <<#warmup, warmup>>, each SSR should be fast. However, in cases where you need to improve SSR performance further, it can be done by wrapping the rendering in a link:https://developer.enonic.com/docs/cache-library/master[cache] in the controller.
+
+Be sure to use any value that can change the rendering output - usually from `props` (and `options`?) or a subset of them - as a *key* in the cache.
+
+For example:
+
+[source,javascript,options="nowrap"]
+----
+const cacheLib = require('/lib/cache');
+
+// Set the cache up with a size that's reasonable
+// for the most used props combinations
+// and the size of the rendered output HTML string:
+const cache = cacheLib.newCache({
+    size:   100,
+    expire: 3600
+});
+
+
+const makeKey = props => {
+    // ...return a string that's reliably determined by the relevant values from props
+};
+
+
+exports.get = request => {
+    const props = {
+        // ... build props from whatever sources are needed
+    };
+
+    const key = makeKey(props);
+
+    // Now render is only called when the key is new.
+    // If the key is cached before, just returns the output for that key.
+    return cache.get(
+        key,
+        () => React4xp.render(
+            myEntry,
+            props,
+            request,
+            options
+        )
+    );
+
+};
+----
+
+
+
+{zwsp} +
 {zwsp} +
 {zwsp} +
 
