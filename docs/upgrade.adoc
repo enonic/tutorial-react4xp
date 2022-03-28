@@ -1,0 +1,73 @@
+= React4XP - Upgrade
+:toc: right
+
+We have tried to simplify the build system and limit the number of configurable combinations to less than the number of atoms in the universe :)
+
+== What
+
+=== Npm packages
+
+There used to be 7 npm packages, now there are only two:
+
+* @enonic/react4xp - The build system.
+* @enonic/react-components - Optional pure react components.
+
+
+== react4xp.properties
+
+Used to have loads of options, now it only has these:
+
+* buildEnv
+* chunkDirs
+* entryDirs
+* entryExtensions
+* overrideComponentWebpack
+* nashornPolyfillsSource
+* verbose
+
+=== react4xp.config.json
+
+If you want to add extra externals this is the place to do so. Example:
+
+```json
+{
+  "externals": {
+    "lodash": "_"
+  }
+}
+```
+
+=== Runtime settings/Application config file
+
+You can now set some runtime options in $XP_HOME/config/app.name.cfg
+There is an example file in the @enonic/react4xp package called app.cfg
+
+Example:
+
+```cfg
+react4xp.ssr.lazyLoad = false
+react4xp.ssr.maxThreads = 0
+react4xp.ssr.settings = 1000
+```
+
+== How
+
+* Uninstall the react4xp npm package
+* Install the @enonic/react4xp npm package
+* Upgrade to lib-react4xp-3.0.0 in build.gradle
+
+If you are using react components from the react4xp-regions package
+* Uninstall the react4xp-regions npm package (might already be gone, was dependency of the react4xp npm package)
+* Install the @enonic/react-components npm package
+
+Edit your jsx files and change import path from:
+
+```js
+import Regions from 'react4xp-regions/Regions';
+```
+
+to:
+
+```js
+import Regions from '@enonic/react-components/Regions';
+```
