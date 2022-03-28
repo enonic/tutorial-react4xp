@@ -553,8 +553,8 @@ Let's take a look at the rendered response from the controller and underline a f
         <!--3-->
         <script src="(...your.app.service) /react4xp/shared.27a8a0669.js"></script>
         <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>
-        <script src="(...your.app.service) /react4xp-client/"></script>
-        <script src="(...your.app.service) /react4xp/MultiColor.js"></script>
+        <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>
+        <script src="(...your.app.service) /react4xp/MultiColor.12345678.js"></script>
 
         <script defer>
             React4xp.CLIENT.render(

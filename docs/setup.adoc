@@ -39,24 +39,26 @@ gradle.properties
 settings.gradle
 package.json
 
-react4xp.properties             <!--2-->
+react4xp.config.json            <!--2-->
+react4xp.properties             <!--3-->
 
 src/
   main/
     resources/
-      react4xp/                 <!--3-->
+      react4xp/                 <!--4-->
         entries/
         shared/
       headless/
-        guillotineApi.es6       <!--4-->
+        guillotineApi.es6       <!--5-->
         guillotineRequest.es6
 
 ----
 
 <1> A set of gradle config files and _package.json_. These define the build process and project structure, and in particular, make sure that the *lib-react4xp library* and *react4xp npm package* are installed right.
-<2> _react4xp.properties_: tune the most common properties of the react4xp project.
-<3> The _react4xp/_ folder is opt-in: can be ignored for now, and doesn't need to contain anything. But when fine-tuning the build later in the tutorial, we'll get back to why you might find it handy to have a separate place for some of your react components (in ultra-short: the _entries/_ folder is for react components that can be used directly by react4xp, the _shared\_ folder is for common components imported by, and shared between, the entries).
-<4> Under _headless/_, the starter includes two wrappers that make it easier to use the optional guillotine api for using react4xp in a <<guillotine#, headless context>>.
+<2> _react4xp.config.json_: Place to add extra externals
+<3> _react4xp.properties_: tune the most common properties of the react4xp project.
+<4> The _react4xp/_ folder is opt-in: can be ignored for now, and doesn't need to contain anything. But when fine-tuning the build later in the tutorial, we'll get back to why you might find it handy to have a separate place for some of your react components (in ultra-short: the _entries/_ folder is for react components that can be used directly by react4xp, the _shared\_ folder is for common components imported by, and shared between, the entries).
+<5> Under _headless/_, the starter includes two wrappers that make it easier to use the optional guillotine api for using react4xp in a <<guillotine#, headless context>>.
 
 {zwsp} +
 
