@@ -427,7 +427,7 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 
         <!--1-->
-        <script data-th-src="${portal.serviceUrl({'_service=react4xp-client'})}" src=""></script>
+        <script data-th-src="${portal.serviceUrl({'_service=react4xp'})}/client.5678abcd.js" src=""></script>
 
         <style>
             body { margin: 0; padding: 0; }

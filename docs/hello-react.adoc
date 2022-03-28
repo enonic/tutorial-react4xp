@@ -210,17 +210,17 @@ Okay, back to the rendering of the page. Open the *page source* code in the brow
 <body class="xp-page">
 
     <div id="react4xpApp">
-        <div data-reactroot="">                     <!--1-->
+        <div data-reactroot="">                                                                             <!--1-->
             <h1>Hello world!</h1>
             <p>Click me: <span id="counter">99</span> bottles of beer on the wall. </p>
         </div>
     </div>
 
-    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>      <!--2-->
-    <script src="(...your.app.service) /react4xp-client/"></script>                     <!--3-->
-    <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"></script>  <!--4-->
+    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>                          <!--2-->
+    <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>                              <!--3-->
+    <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"></script>  <!--4-->
     <script defer>
-        React4xp.CLIENT.hydrate(                                                        <!--5-->
+        React4xp.CLIENT.hydrate(                                                                            <!--5-->
             React4xp['site/pages/hello-react/hello-react'],
             "react4xpApp",
             null,
@@ -295,8 +295,8 @@ If you compare with <<#hello_output, the serverside-rendered example>>, the `cli
 
     <!--2-->
     <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>
-    <script src="(...your.app.service) /react4xp-client/"></script>
-    <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"></script>
+    <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>
+    <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"></script>
 
     <script defer>
         <!--3-->
