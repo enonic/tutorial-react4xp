@@ -54,7 +54,7 @@ react4xp.ssr.settings = 1000
 
 * Uninstall the react4xp npm package
 * Install the @enonic/react4xp npm package
-* Upgrade to lib-react4xp-3.0.0 in build.gradle
+* Upgrade lib-react4xp to 3.x.x in build.gradle
 
 If you are using react components from the react4xp-regions package
 * Uninstall the react4xp-regions npm package (might already be gone, was dependency of the react4xp npm package)
