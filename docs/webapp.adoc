@@ -459,7 +459,7 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
     </body>
 </html>
 ----
-<1> This is where we <<#html1, previously>> put hardcoded URLs to each specific dependency chunk and entry asset we want to use. Here, we only load the react4xp client-wrapper, and make it available in the browser’s namespace as `React4xp.CLIENT` (for more details, see link:https://www.npmjs.com/package/react4xp-runtime-client[the client wrapper docs on NPM]).
+<1> This is where we <<#html1, previously>> put hardcoded URLs to each specific dependency chunk and entry asset we want to use. Here, we only load the react4xp client-wrapper, and make it available in the browser’s namespace as `React4xp.CLIENT`.
 <2> As before, we set a few initial values for the final script to use. Two things are different here, though: first, we let the XP controller (right below) supply the appname-dependent content type and the content path to the site with the movies below it. And second: `serviceUrlRoot`. This value is the URL root of the XP services, and lets the script know where to look for the service that tracks the entries' assets and dependencies.
 <3> The final script asset (<<#script2, below>>), also loaded by using the `portal.assetUrl` function with thymeleaf instead of hardcoded.
 

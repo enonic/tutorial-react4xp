@@ -213,27 +213,15 @@ So did anything change in the rendered response, compared to <<hello-react#hello
     <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>
     <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"></script>
 
-    <script defer>
-        React4xp.CLIENT.hydrate(
-            React4xp['site/pages/hello-react/hello-react'],
-            "react4xpApp",
-            {                           <!--3-->
-                "message": "G'day",
-                "messageTarget": "Bruce",
-                "droppableThing": "tubes",
-                "initialCount": 42,
-                "react4xpId": "react4xpApp"
-            },
-            1, 0
-        );
-    </script>
+    <script src="(...your.app.service) /react4xp/dynamic.87654321.js"></script>                            <!--3-->
+
 </body>
 </html>
 
 ----
 <1> Since we removed the `clientRender` flag again, the target container `react4xpApp` comes filled from the server. But now with a rendering with _your_ texts from `props` already inserted.
 <2> There's still no change in the asset URLs, but since we changed _hello-react.jsx_, the content of _hello-react.js_ has of course been recompiled.
-<3> The `props` are used in the clientside `.hydrate` call. For convenience, the `id` is automatically added as the `react4xpId` prop. Handy for use cases where a react component needs to uniquely identify itself.
+<3> The script that actually runs `hydrate` with the `props` on the clientside.
 
 {zwsp} +
 

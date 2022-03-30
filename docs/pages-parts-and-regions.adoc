@@ -18,7 +18,7 @@ Naturally, this example will focus quite a bit on XP Content Studio and how to u
 **2.** React4xp comes with an **importable `<Regions>` react component** for making XP Regions inside rendered output,
     - One caveat: Regions work best when server-side rendered. Specifically: using `clientRender` when react4xp-rendering a Region can cause the components inside the Region to drop their page contributions. This can break rendering and/or functionality of the Components inside - both react4xp-type and other kinds.
 
-**3.** Each time the rendered page contributions make the browser call <<hello-react#hello_output, `React.CLIENT.hydrate`>> or <<hello-react#clientrendered_output, `.render`>>, an **independent top-level react root app** is created in the browser - so a page can easily have more than one react root app.
+**3.** Each time the rendered page contributions make the browser call <<hello-react#hello_output, `hydrate`>> or <<hello-react#clientrendered_output, `render`>>, an **independent top-level react root app** is created in the browser - so a page can easily have more than one react root app.
 
 [NOTE]
 ====
@@ -358,11 +358,11 @@ image:content_with_red_part.png[title="Editing new content in Content Studio, wi
 {zwsp} +
 
 == Output
-We won't go into the details about the HTML output anymore - it's structurally and conceptually *the same as in the previous examples*. Looking at the _Page Source_, it should all make sense to you by now: the Page controller and Part are *compiled to separate assets and downloaded exactly once* in the client before calling `React4xp.CLIENT.render` and `.hydrate` as needed (using a react4xp Part more than once does not make the client download the assets more than once - they're recycled for performance).
+We won't go into the details about the HTML output anymore - it's structurally and conceptually *the same as in the previous examples*. Looking at the _Page Source_, it should all make sense to you by now: the Page controller and Part are *compiled to separate assets and downloaded exactly once* in the client before calling `render` and `hydrate` as needed (using a react4xp Part more than once does not make the client download the assets more than once - they're recycled for performance).
 
 [NOTE]
 ====
-Each time the client calls `React.CLIENT.render` or `.hydrate`, it will spawn a *separate root react app*. For this to happen a controller usually calls `React4xp.render` (*). So in this example, there will be one independent react app in the client for each of the _color_ Parts you added to the Region.
+Each time the client calls `render` or `hydrate`, it will spawn a *separate root react app*. For this to happen a controller usually calls `React4xp.render` (*). So in this example, there will be one independent react app in the client for each of the _color_ Parts you added to the Region.
 
 (*) Remember from the code explanation of <<#page_controller, our Page controller>> that `React4xp.render` needs the `request` argument to generate page contributions. Omitting `request` forces a pure serverside rendering without hydration - so our page controller is not starting a separate react app in the client.
 
