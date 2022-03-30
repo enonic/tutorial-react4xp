@@ -629,7 +629,7 @@ const renderMovies = (movies) => {
 // Finally, calling the entry function and running it all:
 requestAndRenderMovies();
 ----
-<1> No need to create the react components explicitly. As soon as the `props` are created, everything from there is handled by the `React4xp.CLIENT.renderWithDependencies` wrapper function (see link:https://www.npmjs.com/package/react4xp-runtime-client#renderwithdependencies[the react4xp client docs] for usage and details).
+<1> No need to create the react components explicitly. As soon as the `props` are created, everything from there is handled by the `React4xp.CLIENT.renderWithDependencies` wrapper function.
 +
 Also, this is where the `serviceUrlRoot` value is used - .renderWithDependencies` will not work without it!
 

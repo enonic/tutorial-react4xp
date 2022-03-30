@@ -1244,7 +1244,7 @@ export default (props) => <MovieList {...props} />;
 [[nashornbrowserbreakage]]
 [NOTE]
 ====
-The Nashorn server-side rendering engine lacks most browser-specific JS functionality (except for the things react4xp has link:https://www.npmjs.com/package/react4xp-runtime-nashornpolyfills[specifically polyfilled]).
+The Nashorn server-side rendering engine lacks most browser-specific JS functionality (except for the things react4xp has specifically polyfilled).
 
 *Referring to browser-specific functionality during server-side rendering will usually throw an error in the server log* and break the rendering.
 
