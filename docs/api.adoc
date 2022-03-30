@@ -33,7 +33,7 @@ const React4xp = require('/lib/enonic/react4xp');
 
 All-in-one shorthand function for a lot of use cases. Covers both client- and serverside rendering.
 
-Inserts a react component into an (optional) pre-existing HTML string and adds any necessary page contributions to make all work: links to assets, both shared and specific to the entry, and a client-side JS call (`.render` or `.hydrate` in the link:https://www.npmjs.com/package/react4xp-runtime-client[client wrapper]) that activates the react component in the browser.
+Inserts a react component into an (optional) pre-existing HTML string and adds any necessary page contributions to make all work: links to assets, both shared and specific to the entry, and a client-side JS call (`render` or `hydrate` in the client wrapper) that activates the react component in the browser.
 
 {zwsp} +
 
@@ -469,7 +469,7 @@ Other renderings are not affected, _even from the same data object_ (so you usua
 
 A regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] object, ready to be used as the `pageContributions` attribute in an link:https://developer.enonic.com/docs/xp/stable/framework/http#http-response[XP response object] from the controller.
 
-Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a link:https://www.npmjs.com/package/react4xp-runtime-client[client-side react4xp wrapper asset] and an activating trigger call to the client wrapper. Urls point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
+Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating trigger call to the client wrapper. Urls point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
 
 With a serverside rendering (`options.clientRender` is falsy), the client will expect an existing target element with a pre-rendered entry in the response `body`, and call `hydrate`. If `options.clientRender` is truthy, an empty target element is expected in the response `body`, and the rendering is left to the client with `render`.
 
@@ -663,7 +663,7 @@ If you're using the <<setup#create_project, starter>> or your project is based o
 
 === Including react4xp.properties in your project
 
-Put _react4xp.properties_ at the root of your XP project. A template can be copied from link:https://github.com/enonic/react4xp-npm/blob/master/packages/react4xp/src/react4xp.properties[here], or from _node_modules/react4xp/react4xp.properties_ after installing the react4xp NPM package.
+Put _react4xp.properties_ at the root of your XP project. A template can be copied from link:https://github.com/enonic/enonic-react4xp/blob/master/react4xp.properties[here], or from _node_modules/react4xp/react4xp.properties_ after installing the react4xp NPM package.
 
 *In order to take effect, it must be handled by gradle during the build:*
 
@@ -693,7 +693,7 @@ if (!react4xpGradleFile.exists()) {
 apply from: 'node_modules/react4xp/react4xp.gradle'
 ----
 
-- Or, reverse-engineer the whole thing from link:https://github.com/enonic/react4xp-npm/blob/master/packages/react4xp/src/react4xp.gradle[react4xp.gradle] and make your own gradle adaptation.
+- Or, reverse-engineer the whole thing from link:https://github.com/enonic/enonic-react4xp/blob/master/react4xp.gradle[react4xp.gradle] and make your own gradle adaptation.
 
 {zwsp} +
 

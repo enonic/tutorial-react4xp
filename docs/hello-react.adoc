@@ -228,7 +228,7 @@ We can see this whole output is actually the `body` HTML string we passed into t
 (The asset URLs are shortened for readability, and because some details may vary. At my computer for example, the `(...your.app.service)` part actually looks like: `/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/`)
 
 <1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component. At this point it's only static markup, but it will be activated during step 5 below.
-<2> The first asset is `externals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN. If you want to read more about why, or how to tweak the externals, see the link:https://www.npmjs.com/package/react4xp-runtime-externals[externals docs on NPM].
+<2> The first asset is `externals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN.
 <3> The second loaded asset is a client-wrapper.
 <4> The third asset is the compiled version of _hello-react.jsx_, with the react component and the `dropBottle` routine. During `React4xp.render`, react4xp used the `component` data to locate this asset _after_ compiling. The react component gets an identifier string, `site/pages/hello-react/hello-react`, which is called a _jsxPath_ in react4xp. We'll cover jsxPaths later (full detail reference <<jsxpath#, here>>), but for now you just need to know that this identifier is also used when loading this asset into the the browser's namespace: `React4xp['site/pages/hello-react/hello-react']`.
 <5> The script that actually runs `hydrate` with the `props` on the clientside.

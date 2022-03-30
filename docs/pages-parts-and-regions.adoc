@@ -140,7 +140,7 @@ export default (props) => (
 );
 ----
 
-<1> Importing a Region template from an NPM package that comes with react4xp (link:https://www.npmjs.com/package/react4xp-regions[react4xp-regions]).
+<1> Importing a Region template from an NPM package that comes with react4xp (link:https://www.npmjs.com/package/@enonic/react-components[@enonic/react-components]).
 <2> Nesting the Region in our component. To be precise: it uses `props.regionsData` and selects the Region name(s) in `props.names`, so it will render _all_ Regions given by `props` if more than one is defined and selected.
 
 {zwsp} +
