@@ -48,6 +48,7 @@ Example:
 react4xp.ssr.lazyLoad = false
 react4xp.ssr.maxThreads = 0
 react4xp.ssr.settings = 1000
+react4xp.serveExternals = true
 ```
 
 == How

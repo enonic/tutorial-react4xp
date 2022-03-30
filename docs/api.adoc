@@ -471,7 +471,7 @@ A regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP 
 
 Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a link:https://www.npmjs.com/package/react4xp-runtime-client[client-side react4xp wrapper asset] and an activating trigger call to the client wrapper. Urls point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
 
-With a serverside rendering (`options.clientRender` is falsy), the client will expect an existing target element with a pre-rendered entry in the response `body`, and call `react4xp.CLIENT.hydrate`. If `options.clientRender` is truthy, an empty target element is expected in the response `body`, and the rendering is left to the client with `react4xp.CLIENT.render`.
+With a serverside rendering (`options.clientRender` is falsy), the client will expect an existing target element with a pre-rendered entry in the response `body`, and call `hydrate`. If `options.clientRender` is truthy, an empty target element is expected in the response `body`, and the rendering is left to the client with `render`.
 
 
 
@@ -917,4 +917,3 @@ nashornPolyfillsSource = extraNashornPolyfills.js
 This will be run as part of the <<#ssr, SSR engine>> <<#warmup, initialization>>, adding functionality before packages or other compiled code is loaded.
 
 For example, until recently `Object.assign` wasn't polyfilled, causing problems for certain packages. That could be added by adding link:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#polyfill[this code chunk] to the file referred with `nashornPolyfillsSource`.
-
