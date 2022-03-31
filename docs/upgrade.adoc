@@ -83,7 +83,7 @@ react4xp.ssr.settings = 1000
 * Install the @enonic/react4xp npm package
 * Upgrade lib-react4xp to 3.x.x in build.gradle
 
-== If you have extra externals, chunkDirs, entryDirs or entryExtensions
+=== If you have extra externals, chunkDirs, entryDirs or entryExtensions
 
 * Copy node_modules/@enonic/react4xp/examples/react4xp.config.js into you project.
 * Move externals, chunkDirs, entryDirs or entryExtensions from react4xp.properties into react4xp.config.js
