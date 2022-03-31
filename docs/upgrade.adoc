@@ -1,7 +1,7 @@
 = React4XP - Upgrade
 :toc: right
 
-We have tried to simplify the build system and limit the number of configurable combinations to less than the number of atoms in the universe :)
+We have tried to simplify the build system and limit the number of options.
 
 == What
 
@@ -12,35 +12,62 @@ There used to be 7 npm packages, now there are only two:
 * @enonic/react4xp - The build system.
 * @enonic/react-components - Optional pure react components.
 
+=== Development Mode
 
-== react4xp.properties
+In order to make a development build you can add -Pdev or -Pdevelopment to the gradle commandline.
 
-Used to have loads of options, now it only has these:
+This will also set Node environment variable BUILD_ENV='development'
 
-* buildEnv
-* chunkDirs
-* entryDirs
-* entryExtensions
-* overrideComponentWebpack
-* nashornPolyfillsSource
-* verbose
+=== Verbosity
 
-=== react4xp.config.json
+In order to increase verbosity you can add -i or --info to the gradle commandline.
 
-If you want to add extra externals this is the place to do so. Example:
+This will also set Node environment variable VERBOSE='true'
 
-```json
-{
-  "externals": {
-    "lodash": "_"
+=== react4xp.properties
+
+This file has been dropped in favour of react4xp.config.js
+
+=== react4xp.config.js
+
+This is where you can add extra externals, or override some defaults.
+There should be an updated example file in the @enonic/react4xp package under examples/react4xp.config.js
+
+See <<https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js>>
+
+Example:
+
+```js
+module.exports = {
+  chunkDirs: ['aChunkDir', 'anotherChunkDir'],
+  entryDirs: ['anEntryDir', 'anotherEntryDir'],
+  entryExtensions: ['jsx', 'tsx', 'ts', 'es6', 'es', 'js'],
+  externals: {
+    lodash: '_'
   }
-}
+};
 ```
 
-=== Runtime settings/Application config file
+=== NashornPolyfills
+
+The path for the entry file for extra nashorn polyfills is now hardcoded to
+
+<projectDir>/src/main/resources/react4xpNashornPolyfills.es6
+
+
+=== Webpack overrides (only used when building components)
+
+The path for the webpack overrides file is now hardcoded to
+<projectDir>/webpack.config.react4xp.js
+
+There should be an updated example file in the @enonic/react4xp package under examples/webpack.config.react4xp.js
+
+=== Application configuration file (runtime settings)
 
 You can now set some runtime options in $XP_HOME/config/app.name.cfg
-There is an example file in the @enonic/react4xp package called app.cfg
+There should be an updated example file in the @enonic/react4xp package under examples/app.cfg
+
+See <<https://github.com/enonic/enonic-react4xp/blob/master/examples/app.cfg>>
 
 Example:
 
@@ -48,7 +75,6 @@ Example:
 react4xp.ssr.lazyLoad = false
 react4xp.ssr.maxThreads = 0
 react4xp.ssr.settings = 1000
-react4xp.serveExternals = true
 ```
 
 == How
@@ -57,7 +83,23 @@ react4xp.serveExternals = true
 * Install the @enonic/react4xp npm package
 * Upgrade lib-react4xp to 3.x.x in build.gradle
 
-If you are using react components from the react4xp-regions package
+== If you have extra externals, chunkDirs, entryDirs or entryExtensions
+
+* Copy node_modules/@enonic/react4xp/examples/react4xp.config.js into you project.
+* Move externals, chunkDirs, entryDirs or entryExtensions from react4xp.properties into react4xp.config.js
+
+=== If you have extra nashorn polyfills
+
+* Make sure they are placed in <projectDir>/src/main/resources/react4xpNashornPolyfills.es6
+
+=== If you have webpack overrides
+
+* Make sure they are placed in <projectDir>/webpack.config.react4xp.js
+
+There should be an updated example file in the @enonic/react4xp package under examples/webpack.config.react4xp.js
+
+=== If you are using react components from the react4xp-regions package
+
 * Uninstall the react4xp-regions npm package (might already be gone, was dependency of the react4xp npm package)
 * Install the @enonic/react-components npm package
 
