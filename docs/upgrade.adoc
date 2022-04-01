@@ -79,9 +79,31 @@ react4xp.ssr.settings = 1000
 
 == How
 
-* Uninstall the react4xp npm package
-* Install the @enonic/react4xp npm package
-* Upgrade lib-react4xp to 3.x.x in build.gradle
+=== package.json
+
+==== Uninstall the react4xp npm package
+
+`+npm uninstall react4xp+`
+
+==== Install the @enonic/react4xp npm package
+
+`+npm install --save-dev @enonic/react4xp+`
+
+=== build.gradle
+
+==== Upgrade lib-react4xp to 3.x.x in build.gradle
+
+```build.gradle
+rootProject.ext.LIB_REACT4XP_VERSION = "3.0.0"
+```
+
+==== Update paths to gradle files imported from node_modules/@enonic/react4xp
+
+```build.gradle
+def react4xpGradlePath = 'node_modules/@enonic/react4xp/react4xp.gradle'
+apply from: 'node_modules/@enonic/react4xp/npmInstall.gradle'
+apply from: 'node_modules/@enonic/react4xp/updaters.gradle'
+```
 
 === If you have extra externals, chunkDirs, entryDirs or entryExtensions
 
@@ -101,7 +123,12 @@ There should be an updated example file in the @enonic/react4xp package under ex
 === If you are using react components from the react4xp-regions package
 
 * Uninstall the react4xp-regions npm package (might already be gone, was dependency of the react4xp npm package)
-* Install the @enonic/react-components npm package
+
+==== Install the @enonic/react-components npm package
+
+`+npm install --save-dev @enonic/react-components+`
+
+==== Jsx/Tsx files
 
 Edit your jsx files and change import path from:
 
