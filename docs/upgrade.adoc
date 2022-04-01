@@ -107,7 +107,10 @@ apply from: 'node_modules/@enonic/react4xp/updaters.gradle'
 
 === If you have extra externals, chunkDirs, entryDirs or entryExtensions
 
-* Copy node_modules/@enonic/react4xp/examples/react4xp.config.js into you project.
+==== Copy node_modules/@enonic/react4xp/examples/react4xp.config.js into you project.
+
+`+cp node_modules/@enonic/react4xp/examples/react4xp.config.js .+`
+
 * Move externals, chunkDirs, entryDirs or entryExtensions from react4xp.properties into react4xp.config.js
 
 === If you have extra nashorn polyfills
