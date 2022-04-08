@@ -137,12 +137,7 @@ The webapp begins with some basic HTML, setting it all up in the browser.
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 
         <!--2-->
-        <script src="(...my.asset.url) /react4xp/shared.{hash}.js"></script>
-        <link rel="stylesheet" type="text/css" href="(...my.asset.url) /react4xp/shared.{hash}.css" />
-        <link rel="stylesheet" type="text/css" href="(...my.asset.url) /react4xp/MovieList.css" />
-
-        <!--3-->
-        <script src="(...my.asset.url) /react4xp/MovieList.js"></script>
+        [(${bodyEnd})]
 
         <style>
             body { margin: 0; padding: 0; }
@@ -154,34 +149,33 @@ The webapp begins with some basic HTML, setting it all up in the browser.
         <h1>Top 3 movies to put in a list</h1>
         <p>#4 will blow your mind!</p>
 
-        <!--4-->
+        <!--3-->
         <div id="movieListContainer">
             <div class="faux-spinner">Loading movies...</div>
         </div>
 
-        <!--5-->
+        <!--4-->
         <script>
-            var MOVIE_LIST_PARAMS= {
-                parentPath: '/moviesite',
-                apiUrl: '/admin/site/preview/default/draft/moviesite/api/headless',
-                movieType: 'com.enonic.app.react4xp:movie',
-                movieCount: 3,
-                sortExpression: 'data.year ASC',
-            };
+          var MOVIE_LIST_PARAMS = {
+              parentPath: '/[[${SITE_NAME}]]',
+              apiUrl: '[[${apiUrl}]]',
+              movieType: '[[${APP_NAME}]]:movie',
+              movieCount: 3,
+              sortExpression: 'data.year ASC',
+          };
         </script>
 
-        <!--6-->
-        <script defer src="(...my.asset.url) /webapp/script.js"></script>
+        <!--5-->
+        <script defer th:src="${assetRoot + '/webapp/script.js'}"></script>
     </body>
 </html>
 
 ----
 <1> We start by running React and ReactDOM from a CDN.
-<2> Next, we fetch 3 dependency chunks that the _MovieList_ entry needs: _shared.{hash}.js_, _shared.{hash}.css_ and _MovieList.css_. As before, these hashes and the asset path *URLs depend on your setup - so just copying this won't work!* See <<#assetpaths, the note below>>.
-<3> The _MovieList_ entry asset. Loading and running this will expose the entry in the global JS namescape as a function that creates a react component: `React4xp['MovieList'].default`.
-<4> The target container for the react app. The not-really-a-spinner (_"Loading movies..."_) will be replaced when the actual _MovieList_ is rendered into the container.
-<5> Variables used by our particular script later, just wrapped in a `MOVIE_LIST_PARAMS` object to encapsulate them in the global namespace. These are the same values as in in the previous chapter, and the script at the end will use these in a `props` object, to create the renderable react app from the _MovieList_ entry. Also note that we just hardcoded the values of `parentPath`, `apiUrl` and `movieType` here - they may be different in your setup. As <<guillotine#, before>>: `parentPath` is the content path of the site item under which the movie items will be found, `apiUrl` is the full path to `/api/headless` _below that site_ (recall that the URL to the guillotine API depends on the URL of a site item like this, because of the way we set the API up with a controller mapping <<guillotine#expose_api, earlier>>), and `movietype` is the full, appname-dependent content type of the movie items to look for.
-<6> Finally, loading the compiled script from _script.es6_, see <<#script, below>>.
+<2> All the required css and js assets are linked. See controller below.
+<3> The target container for the react app. The not-really-a-spinner (_"Loading movies..."_) will be replaced when the actual _MovieList_ is rendered into the container.
+<4> Variables used by our particular script later, just wrapped in a `MOVIE_LIST_PARAMS` object to encapsulate them in the global namespace. These are the same values as in in the previous chapter, and the script at the end will use these in a `props` object, to create the renderable react app from the _MovieList_ entry. Also note that we just hardcoded the values of `parentPath`, `apiUrl` and `movieType` here - they may be different in your setup. As <<guillotine#, before>>: `parentPath` is the content path of the site item under which the movie items will be found, `apiUrl` is the full path to `/api/headless` _below that site_ (recall that the URL to the guillotine API depends on the URL of a site item like this, because of the way we set the API up with a controller mapping <<guillotine#expose_api, earlier>>), and `movietype` is the full, appname-dependent content type of the movie items to look for.
+<5> Finally, loading the compiled script from _script.es6_, see <<#script, below>>.
 
 {zwsp} +
 
@@ -207,13 +201,47 @@ Okay, moving on, a *webapp controller* is needed for XP to serve this HTML, and 
 .webapp.es6:
 [source,javascript,options="nowrap"]
 ----
+import {getAssetUrls} from '/lib/enonic/react4xp';
 import thymeleaf from '/lib/thymeleaf';
-const view = resolve('webapp.html');
+import {
+  assetUrl as getAssetUrl,
+  serviceUrl as getServiceUrl
+} from '/lib/xp/portal';
 
-exports.get = () => ({
-        contentType: 'text/html',
-        body: thymeleaf.render(view, {})
-});
+
+const VIEW = resolve('webapp.html');
+const PROJECT = 'default';
+const BRANCH = 'master';
+const SITE_NAME = 'webapp';
+const SITE_ROOT = `/site/${PROJECT}/${BRANCH}/${SITE_NAME}`;
+
+
+export function get() {
+  const assetUrls = getAssetUrls('MovieList');
+
+  const bodyEndArray = [];
+  for (let i = 0; i < assetUrls.length; i++) {
+    const assetUrl = assetUrls[i];
+    const ext = assetUrl.split('.').pop();
+    if (ext === 'css') {
+      bodyEndArray.push(`<link rel="stylesheet" type="text/css" href="${assetUrl}" />`);
+    } else if (ext === 'js') {
+      bodyEndArray.push(`<script src="${assetUrl}"></script>`);
+    }
+  }
+
+  return {
+    contentType: 'text/html',
+    body: thymeleaf.render(VIEW, {
+      apiUrl: `${SITE_ROOT}/api/headless`,
+      APP_NAME: app.name,
+      assetRoot: getAssetUrl({path: ''}),
+      bodyEnd: bodyEndArray.join('\n'),
+      serviceRoot: getServiceUrl({service: ''}),
+      SITE_NAME
+    })
+  };
+}
 ----
 
 {zwsp} +
@@ -427,7 +455,7 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 
         <!--1-->
-        <script data-th-src="${portal.serviceUrl({'_service=react4xp'})}/client.5678abcd.js" src=""></script>
+        [(${bodyEnd})]
 
         <style>
             body { margin: 0; padding: 0; }
@@ -447,8 +475,8 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
         <script data-th-utext="|
         var MOVIE_LIST_PARAMS= {
             serviceUrlRoot: '${portal.serviceUrl({'_service='})}',
-            parentPath: '${sitePath}',
-            apiUrl: '/admin/site/preview/default/draft${sitePath}/api/headless',
+            parentPath: '/${SITE_NAME}',
+            apiUrl: '/site/${PROJECT}/${BRANCH}/${SITE_NAME}/api/headless',
             movieType: '${movieType}',
             movieCount: 3,
             sortExpression: 'data.year ASC',
@@ -470,20 +498,32 @@ The *webapp controller* needs to provide that extra little info to the values in
 .webapp.es6:
 [source,javascript,options="nowrap"]
 ----
+import {getClientUrl} from '/lib/enonic/react4xp';
 import thymeleaf from '/lib/thymeleaf';
-const view = resolve('webapp.html');
 
-exports.get = req => {
-    const model = {
-        sitePath:  "/moviesite",
-        movieType: `${app.name}:movie`
-    };
 
-    return {
-        contentType: 'text/html',
-        body: thymeleaf.render(view, model)
-    };
-};
+const VIEW = resolve('webapp.html');
+const PROJECT = 'default';
+const BRANCH = 'master';
+const SITE_NAME = 'webapp';
+
+
+export function get(req) {
+  const clientUrl = getClientUrl();
+
+  const model = {
+    bodyEnd: `<script src="${clientUrl}"></script>`,
+    BRANCH,
+    movieType: `${app.name}:movie`,
+    PROJECT,
+    SITE_NAME
+  };
+
+  return {
+    contentType: 'text/html',
+    body: thymeleaf.render(VIEW, model)
+  };
+}
 ----
 
 {zwsp} +
