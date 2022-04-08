@@ -70,7 +70,7 @@ TIP: All the _entries_ in your project are listed with their _jsxPath_ after com
 === 2: Below _react4xp/_
 If you just want to keep your react components out of the regular XP file structure in _site/_ and be independent of the structure of Parts, Pages etc, the folder _src/main/resources/react4xp/_ is meant for that. Here's how (assuming you're using link:https://market.enonic.com/vendors/enonic/react4xp-starter[the starter] or generally following link:https://github.com/enonic/lib-react4xp/blob/master/README.md#setup-option-2-using-react4xp-in-an-existing-project[the recommended react4xp setup pattern]):
 
-Open _react4xp.properties_ in the project root, and look for the property `entryDirs`. This is a (comma-separated) list of folder names *relative to the _react4xp/_ folder*. React4xp comes with a built-in suggestion here: `entryDirs = entries`. This means that all _.jsx_ (and _.js_ and _.es6_) source files below _src/main/resources/react4xp/entries_ will become entries: react components available to react4xp.
+Open _react4xp.config.js_ in the project root, and look for the property `entryDirs`. This is a (comma-separated) list of folder names *relative to the _react4xp/_ folder*. React4xp comes with a built-in suggestion here: `entryDirs: ['entries']`. This means that all _.jsx_ (and _.js_ and _.es6_) source files below _src/main/resources/react4xp/entries_ will become entries: react components available to react4xp.
 
 They will get a *_jsxPath_ relative to the closest _entryDirs_ folder*.
 
@@ -99,10 +99,10 @@ The _entryDirs_ are paths relative to _src/main/resources/react4xp/_, so just us
 
 For example, say you've added an NPM package _externalComponents_ with react components in a _comps_ subfolder, and you want to use them as entries. Simply add it to _entryDirs_:
 
-.react4xp.properties
-[source,options="nowrap"]
+.react4xp.config.js
+[source,js,options="nowrap"]
 ----
-entryDirs=entries,../../../../../node_modules/externalComponents/comps
+entryDirs:['entries','../../../../../node_modules/externalComponents/comps']
 ----
 
 (Or replace _entries_ if you're not using it, of course)

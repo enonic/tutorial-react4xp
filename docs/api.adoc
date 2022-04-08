@@ -590,7 +590,7 @@ But as long as the code runs in nashorn without errors, initialization happens o
 Since development can involve repeated app/server restarts, here are a couple of ways to improve initial loading time when developing large projects:
 
 - Set `ssrLazyload = true` (see <<#ssrLazyload, below>>). This makes the engine start up and only load the bare minimum of dependency assets instead of preparing all of them at once. Each rendering will also only load/cache the dependencies it needs. The upside of this is that the first rendering (of a component that uses only a subset of the assets) is much faster since there is less to load. The downside is that there will still be assets that haven't been loaded into the engine yet, which will cause a delay at some other time when _they_ are first rendered.
-- Don't build the react components and dependencies with `buildEnv = development`, but use `production` (which is the default - see <<#buildEnv, below>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference to nashorn (at the compile-to-bytecode stage).
+- Don't build the react components and dependencies with `BUILD_ENV = development`, but use `production` (which is the default - see <<#BUILD_ENV, below>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference to nashorn (at the compile-to-bytecode stage).
 
 
 (Other optimizations and approaches are under consideration, to shorten the warmup time even more).
@@ -652,18 +652,18 @@ exports.get = request => {
 {zwsp} +
 {zwsp} +
 
-[[react4xp_properties]]
-== react4xp.properties
+[[react4xp.config.js]]
+== react4xp.config.js
 
-Several aspects of react4xp can be configured with a file _react4xp.properties_. Some of these settings are relevant to the SSR engine.
+Several aspects of react4xp can be configured with a file _react4xp.config.js_.
 
 If you're using the <<setup#create_project, starter>> or your project is based on it, this is already set up and you can skip the following section:
 
 {zwsp} +
 
-=== Including react4xp.properties in your project
+=== Including react4xp.config.js in your project
 
-Put _react4xp.properties_ at the root of your XP project. A template can be copied from link:https://github.com/enonic/enonic-react4xp/blob/master/react4xp.properties[here], or from _node_modules/react4xp/react4xp.properties_ after installing the react4xp NPM package.
+Put _react4xp.config.js_ at the root of your XP project. A template can be copied from link:https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js[here], or from _node_modules/@enonic/react4xp/examples/react4xp.config.js_ after installing the react4xp NPM package.
 
 *In order to take effect, it must be handled by gradle during the build:*
 
@@ -671,18 +671,18 @@ Put _react4xp.properties_ at the root of your XP project. A template can be copi
 +
 [source,groovy,options="nowrap"]
 ----
-apply from: "node_modules/react4xp/react4xp.gradle"
+apply from: "node_modules/@enonic/react4xp/react4xp.gradle"
 ----
 +
-This will not only make sure _react4xp.properties_ is handled, but also give a full react4xp build setup.
+This will not only make sure _react4xp.config.js_ is handled, but also give a full react4xp build setup.
 
-- Of course, this requires that the link:https://www.npmjs.com/package/react4xp[react4xp NPM package] is installed at the time gradle (or the enonic CLI) is run.
+- Of course, this requires that the link:https://www.npmjs.com/package/@enonic/react4xp[react4xp NPM package] is installed at the time gradle (or the enonic CLI) is run.
 +
 If you want to automate that, you can always add this to your _gradle.build_:
 +
 [source,groovy,options="nowrap"]
 ----
-def react4xpGradleFile = new File('node_modules/react4xp/react4xp.gradle')
+def react4xpGradleFile = new File('node_modules/@enonic/react4xp/react4xp.gradle')
 if (!react4xpGradleFile.exists()) {
     def proc = "npm install".execute()
     proc.in.eachLine { line -> println line }
@@ -690,122 +690,20 @@ if (!react4xpGradleFile.exists()) {
     proc.waitFor()
 }
 
-apply from: 'node_modules/react4xp/react4xp.gradle'
+apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'
 ----
 
 - Or, reverse-engineer the whole thing from link:https://github.com/enonic/enonic-react4xp/blob/master/react4xp.gradle[react4xp.gradle] and make your own gradle adaptation.
 
 {zwsp} +
 
-[[ssrLazyload]]
-=== ssrLazyload
-
-.react4xp.properties:
-[source,properties,options="nowrap"]
-----
-ssrLazyload = true
-----
-
-As described <<#warmup, above>>, `ssrLazyload` defines the initialization behavior of the renderer workers:
-
-- If switched on (`true`), only the required assets are loaded into the nashorn engine, speeding up the first load time, but subsequent loading times for other un-initialized assets will be longer.
-- If switched off (`false`), the engine will load _all_ assets once and for all, before performing the first rendering. This makes the first warmup time predictably slower (and that may be a substantial difference in a large project), but all subsequent rendering will be spring-loaded and fast.
-
-Default value depends on `buildEnv` (or `-Pdev`):
-
-- `true` in `development`
-- `false` in `production`
-
-{zwsp} +
-
-[[ssrMaxThreads]]
-=== ssrMaxThreads
-
-.react4xp.properties:
-[source,properties,options="nowrap"]
-----
-ssrMaxThreads = 5
-----
-
-If this override value is not set, the number of threads (<<#renderers, renderers>>) used for simultaneous SSR requests is determined by java, by...
-
-[source,java,options="nowrap"]
-----
-Runtime.getRuntime().availableProcessors()
-----
-
-...but `ssrMaxThreads` sets this number manually instead.
-
-
-{zwsp} +
-
-[[ssrSettings]]
-=== ssrSettings
-
-This value can be a number, _or_ a comma-separated string of link:https://github.com/openjdk/nashorn/blob/main/src/org.openjdk.nashorn/share/classes/org/openjdk/nashorn/internal/runtime/resources/Options.properties[nashorn options]:
-
-.react4xp.properties:
-[source,properties,options="nowrap"]
-----
-# Explicit string of settings:
-ssrSettings = --persistent-code-cache, --class-cache-size=42, --lazy-compilation
-
-# Numbers are a shorthand for cache size, so this is equivalent to: --persistent-code-cache, --class-cache-size=1000:
-ssrSettings = 1000
-
-# Default value, turns persistent code cache off:
-ssrSettings = 0
-----
-
-Persistent code cache is switched off by default, since it was occasionally error-prone and didn't appear to improve performance all that much. Your mileage may vary, but use with care.
-
-{zwsp} +
-{zwsp} +
-{zwsp} +
-
-[[buildEnv]]
-=== buildEnv
-
-Moving on to some _react4xp.properties_ settings that don't focus on SSR, but instead control the compilation of assets from source code and imports.
-
-[NOTE]
-====
-*Common pattern:* the following settings are picked up by gradle, which injects them into _webpack.config.*.js_ files that are bundled with the link:https://www.npmjs.com/package/react4xp[react4xp NPM package]. These in turn perform the actual compilation of your source code and its imports. See also <<entries#, entries>> and <<chunks#, chunks>>.
-
-Obviously, having a basic knowledge of link:https://webpack.js.org/[webpack] is fortunate (link:https://www.smashingmagazine.com/2021/06/getting-started-webpack/[intro suggestion]).
-====
-
-`buildEnv` switches between react4xp *build* modes (not to be confused with XP's link:https://developer.enonic.com/docs/enonic-cli/master/dev#start[run modes]).
-
-.react4xp.properties:
-[source,properties,options="nowrap"]
-----
-buildEnv = production
-----
-
-
-- `production`: assets are compiled more compact (and faster), with no source maps, and the entire SSR engine is initialized at once.
-- `development`: assets are compiled for more human-readability, with source maps, making errors easier to track down. If `ssrLazyload` hasn't been set, `development` will activate lazy-loading.
-
-Default value is `production`.
-
-`development` mode can also be set _ad hoc for one build_ without changing _react4xp.properties_, by adding the gradle CLI parameter `-Pdev`. For example:
-
-[source,bash,options="nowrap"]
-----
-enonic project gradle build deploy -Pdev
-----
-
-
-{zwsp} +
-
 [[entryDirs]]
 === entryDirs
 
-.react4xp.properties:
-[source,properties,options="nowrap"]
+.react4xp.config.js:
+[source,js,options="nowrap"]
 ----
-entryDirs = myComponents, ../otherComponents
+entryDirs: ['myComponents', '../otherComponents']
 ----
 
 By default, react4xp will look for (ie. sets up webpack to look for) .JSX files to turn into <<entries#, entries>> below _src/main/resources/site/_.
@@ -823,7 +721,7 @@ Adding comma separated values under `entryDirs` adds _more_ folder names/paths (
 By default, react4xp will look for (ie. sets up webpack to look for) resources _imported by_ the entries. These are link:https://webpack.js.org/concepts/[bundled] into separate assets that react4xp automatically loads at both server- and clientside rendering: <<chunks#, chunks>>, by this pattern:
 
 - If they are react and reactDOM, they are bundled separately into `externals.*.js` (where the * is a content-dependent hash).
-- _node_modules/react4xp-regions/_ is bundled into `templates.*.js`
+- _node_modules/@enonic/react-components/_ is bundled into `templates.*.js`
 - Other packages under _node_modules_ are bundled into `vendors.*.js`
 - And everything else that's _not under a `chunkDir` marked here_ is bundled into `react4xp.*.js`
 
@@ -831,10 +729,10 @@ By default, react4xp will look for (ie. sets up webpack to look for) resources _
 
 The idea is to use `chunkDirs` to add a comma-separated list of names/paths of directories (relative to _src/main/resources/react4xp/_) that will be bundled into chunks of their own. The chunk name will be the name of the last directory in the path:
 
-.react4xp.properties:
-[source,properties,options="nowrap"]
+.react4xp.config.js:
+[source,js,options="nowrap"]
 ----
-chunkDirs = chunk1, bundle2, other/stuff
+chunkDirs: ['chunk1', 'bundle2', 'other/stuff']
 ----
 
 This example adds these folders as chunkDirs, and anything the entries import from below them is bundled separately into:
@@ -846,17 +744,12 @@ This example adds these folders as chunkDirs, and anything the entries import fr
 
 {zwsp} +
 
-[[overrideComponentWebpack]]
-=== overrideComponentWebpack
+[[webpack.config.react4xp.js]]
+== webpack.config.react4xp.js
 
+React4xp comes with a minimal set of webpack rules built-in, for compiling react components in JSX files into vanilla JS.
 
-React4xp comes with a minimal set of webpack rules built-in, for compiling react components in JSX files into vanilla JS. But if you need to change/expand this setup, write a custom webpack config file and add the name of it here:
-
-.react4xp.properties:
-[source,properties,options="nowrap"]
-----
-overrideComponentWebpack = webpack.config.react4xp.js
-----
+If you need to change/expand this setup, write a custom webpack config file <Project.Dir>/webpack.config.react4xp.js
 
 There can be several reasons to this:
 
@@ -887,7 +780,7 @@ module.exports = function(env) {
 // ...etc, etc
 ----
 
-The file referred to by `overrideComponentWebpack` can follow the same shape, but the exported function can also take *a second `config` argument:*
+`webpack.config.react4xp.js` can follow the same shape, but the exported function can also take *a second `config` argument:*
 
 [source,javascript,options="nowrap"]
 ----
@@ -901,19 +794,114 @@ The extra incoming `config` object contains the built-in rules from react4xp. Th
 
 {zwsp} +
 
-[[nashornPolyfillsSource]]
-=== nashornPolyfillsSource
+[[nashornPolyfills]]
+=== NashornPolyfills (<Project.Dir>/src/main/resources/react4xpNashornPolyfills.es6)
 
 React4xp doesn't have any ambition to completely polyfill the nashorn engine so that the full feature set of node.js (or modern browsers) is supported.
 
-In the event that your code (or imported packages) rely on functionality that isn't supported in nashorn, you can add as-vanilla-as-possible JS in a .js file and add the path/name to it here:
-
-
-[source,javascript,options="nowrap"]
-----
-nashornPolyfillsSource = extraNashornPolyfills.js
-----
+In the event that your code (or imported packages) rely on functionality that isn't supported in nashorn, you can add as-vanilla-as-possible JS in `<Project.Dir>/src/main/resources/react4xpNashornPolyfills.es6`
 
 This will be run as part of the <<#ssr, SSR engine>> <<#warmup, initialization>>, adding functionality before packages or other compiled code is loaded.
 
 For example, until recently `Object.assign` wasn't polyfilled, causing problems for certain packages. That could be added by adding link:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#polyfill[this code chunk] to the file referred with `nashornPolyfillsSource`.
+
+{zwsp} +
+{zwsp} +
+{zwsp} +
+
+
+== Command line arguments
+
+[[BUILD_ENV]]
+=== Build environment
+
+Use the gradle commandline flag `-Pdev` or `-Pdevelopment` to enable building in development mode.
+
+[source,bash,options="nowrap"]
+----
+enonic project gradle build deploy -Pdev
+----
+
+This switches between react4xp *build* modes (not to be confused with XP's link:https://developer.enonic.com/docs/enonic-cli/master/dev#start[run modes]).
+
+- `production`: assets are compiled more compact (and faster), with no source maps, and the entire SSR engine is initialized at once.
+- `development`: assets are compiled for more human-readability, with source maps, making errors easier to track down. If `ssrLazyload` hasn't been set, `development` will activate lazy-loading.
+
+Default value is `production`.
+
+{zwsp} +
+
+[[VERBOSE]]
+=== Verbosity
+
+Use the gradle commandline flag -i or --info to enable a more verbose output when compiling react4xp components, externals and nashornPolyfills.
+
+{zwsp} +
+
+== Application configuration file
+
+$XP_HOME/config/<app.name>.cfg
+
+{zwsp} +
+
+[[ssrLazyload]]
+=== ssrLazyload
+
+.$XP_HOME/config/<app.name>.cfg:
+[source,cfg,options="nowrap"]
+----
+react4xp.ssr.lazyLoad = true
+----
+
+As described <<#warmup, above>>, `ssrLazyload` defines the initialization behavior of the renderer workers:
+
+- If switched on (`true`), only the required assets are loaded into the nashorn engine, speeding up the first load time, but subsequent loading times for other un-initialized assets will be longer.
+- If switched off (`false`), the engine will load _all_ assets once and for all, before performing the first rendering. This makes the first warmup time predictably slower (and that may be a substantial difference in a large project), but all subsequent rendering will be spring-loaded and fast.
+
+Default value depends on `BUILD_ENV` (or `-Pdev`):
+
+- `true` in `development`
+- `false` in `production`
+
+{zwsp} +
+
+[[ssrMaxThreads]]
+=== ssrMaxThreads
+
+.$XP_HOME/config/<app.name>.cfg:
+[source,cfg,options="nowrap"]
+----
+react4xp.ssr.maxThreads = 5
+----
+
+If this override value is not set, the number of threads (<<#renderers, renderers>>) used for simultaneous SSR requests is determined by java, by...
+
+[source,java,options="nowrap"]
+----
+Runtime.getRuntime().availableProcessors()
+----
+
+...but `ssrMaxThreads` sets this number manually instead.
+
+
+{zwsp} +
+
+[[ssrSettings]]
+=== ssrSettings
+
+This value can be a number, _or_ a comma-separated string of link:https://github.com/openjdk/nashorn/blob/main/src/org.openjdk.nashorn/share/classes/org/openjdk/nashorn/internal/runtime/resources/Options.properties[nashorn options]:
+
+.$XP_HOME/config/<app.name>.cfg:
+[source,cfg,options="nowrap"]
+----
+# Explicit string of settings:
+react4xp.ssr.settings = --persistent-code-cache, --class-cache-size=42, --lazy-compilation
+
+# Numbers are a shorthand for cache size, so this is equivalent to: --persistent-code-cache, --class-cache-size=1000:
+react4xp.ssr.settings = 1000
+
+# Default value, turns persistent code cache off:
+react4xp.ssr.settings = 0
+----
+
+Persistent code cache is switched off by default, since it was occasionally error-prone and didn't appear to improve performance all that much. Your mileage may vary, but use with care.

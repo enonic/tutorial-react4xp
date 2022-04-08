@@ -34,7 +34,7 @@ react4xp/
         ColorButtons.scss
         shared-styles.scss
 
-react4xp.properties
+react4xp.config.js
 webpack.config.react4xp.js
 ----
 
@@ -114,7 +114,7 @@ exports.get = function(request) {
 ----
 <1> Taking the serverside-rendering checkbox from the Part's config, and turning it into a `clientRender` flag that's sent into the _options_ argument <<hello-react#_client_side_rendering, just like before>>.
 <2> Creating a `colors` array of the color names from the Part's config, trimming them and removing empty ones. This is passed into the _props_ argument <<editorial-data-and-props#, like before>>.
-<3> This argument is slightly different compared to previously. `"MultiColor"` is a <<jsxpath#, jsxPath>> to an entry, as you'd expect. But why does it look so... naked? Where does it point to? As we'll see <<#webpack_config, in a moment>>, we'll set up react4xp to look for entries below an `entryDir` in react4xp.properties: _src/main/resources/react4xp/myEntries/_. Since a jsxPath is relative to the closest parent `entryDir` and we'll put an entry _MultiColor.jsx_ at the root of _entries/_, the jsxPath becomes just the clean file name.
+<3> This argument is slightly different compared to previously. `"MultiColor"` is a <<jsxpath#, jsxPath>> to an entry, as you'd expect. But why does it look so... naked? Where does it point to? As we'll see <<#webpack_config, in a moment>>, we'll set up react4xp to look for entries below an `entryDir` in react4xp.config.js: _src/main/resources/react4xp/myEntries/_. Since a jsxPath is relative to the closest parent `entryDir` and we'll put an entry _MultiColor.jsx_ at the root of _entries/_, the jsxPath becomes just the clean file name.
 
 
 
@@ -390,18 +390,18 @@ TIP: If you need more details, some of this is covered in more depth under <<ent
 
 === Folders for entries and chunks
 
-First, open _react4xp.properties_ in your project root and add/look up the attributes `entryDirs` and `chunkDirs`. Make sure `myEntries` are added as an `entryDir` and `shared` is added as a `chunkDir`.
+First, open _react4xp.config.js_ in your project root and add/look up the attributes `entryDirs` and `chunkDirs`. Make sure `myEntries` are added as an `entryDir` and `shared` is added as a `chunkDir`.
 
 
-.react4xp.properties:
-[source,properties,options="nowrap"]
+.react4xp.config.js:
+[source,js,options="nowrap"]
 ----
-entryDirs = myEntries   <!--1-->
+entryDirs: 'myEntries'   <!--1-->
 
-chunkDirs = shared    <!--2-->
+chunkDirs: 'shared'    <!--2-->
 ----
 <1> `entryDirs` is a list of where react4xp will look for source files to compile and serve as entries: in this case _src/main/resource/react4xp/myEntries_. This list is *in addition* to XP's _site/_ folder - _site/_ always acts as a sort of default, special-case entryDir: under _site/_ only .JSX files are picked up as entries, while in all other entryDirs, .ES6 and .JS are picked up as well.
-<2> `chunkDirs` is a list of folders that will be turned into collection/library assets (dependency chunks): in this case _src/main/resource/react4xp/shared_. One chunk asset for each file type in each chunkDir, named after the chunkDir. If a different name is already here: this is a comma-separated file, so for example `entryDirs = entries, myEntries` works fine.
+<2> `chunkDirs` is a list of folders that will be turned into collection/library assets (dependency chunks): in this case _src/main/resource/react4xp/shared_. One chunk asset for each file type in each chunkDir, named after the chunkDir. If a different name is already here: `entryDirs: ['entries', 'myEntries']` works fine.
 
 So in our example here, JSX files under _myEntries/_ are available to `React4xp.render` and friends, in XP controllers. Each entry becomes an asset file in itself.
 
@@ -409,7 +409,7 @@ And everything they import from under _shared/_ and that is compiled into JS (bo
 
 [NOTE]
 ====
-Both `entrydirs` and `chunkDirs` are comma-separated *lists of relative paths*. They are relative to _src/main/resource/react4xp/_.
+Both `entrydirs` and `chunkDirs` are *lists of relative paths*. They are relative to _src/main/resource/react4xp/_.
 
 Adding paths like e.g. `foo/bar/baz` or `../../hey/ho/lets/go` is perfectly fine (_src/main/resource/react4xp/foo/bar/baz_ and _src/main/hey/ho/lets/go_, respectively).
 ====
@@ -418,15 +418,7 @@ Adding paths like e.g. `foo/bar/baz` or `../../hey/ho/lets/go` is perfectly fine
 
 [[webpack_rules]]
 === Adding webpack rules
-Next, we'll add some *custom webpack rules to handle the style imports*. First, we need to tell react4xp to use an extra webpack config file. Return to _react4xp.properties_ to add another property:
-
-.react4xp.properties:
-[source,properties,options="nowrap"]
-----
-overrideComponentWebpack = webpack.config.react4xp.js
-----
-
-Now we can add our own webpack rules to the react4xp asset compilation and handling:
+Next, we'll add some *custom webpack rules to handle the style imports*.
 
 .webpack.config.react4xp.js:
 [source,javascript,options="nowrap"]
