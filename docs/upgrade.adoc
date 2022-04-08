@@ -52,19 +52,19 @@ module.exports = {
 
 The path for the entry file for extra nashorn polyfills is now hardcoded to
 
-<projectDir>/src/main/resources/react4xpNashornPolyfills.es6
+<Project.Dir>/src/main/resources/react4xpNashornPolyfills.es6
 
 
 === Webpack overrides (only used when building components)
 
 The path for the webpack overrides file is now hardcoded to
-<projectDir>/webpack.config.react4xp.js
+<Project.Dir>/webpack.config.react4xp.js
 
 There should be an updated example file in the @enonic/react4xp package under examples/webpack.config.react4xp.js
 
 === Application configuration file (runtime settings)
 
-You can now set some runtime options in $XP_HOME/config/app.name.cfg
+You can now set some runtime options in $XP_HOME/config/<app.name>.cfg
 There should be an updated example file in the @enonic/react4xp package under examples/app.cfg
 
 See <<https://github.com/enonic/enonic-react4xp/blob/master/examples/app.cfg>>
@@ -115,11 +115,11 @@ apply from: 'node_modules/@enonic/react4xp/updaters.gradle'
 
 === If you have extra nashorn polyfills
 
-* Make sure they are placed in <projectDir>/src/main/resources/react4xpNashornPolyfills.es6
+* Make sure they are placed in <Project.Dir>/src/main/resources/react4xpNashornPolyfills.es6
 
 === If you have webpack overrides
 
-* Make sure they are placed in <projectDir>/webpack.config.react4xp.js
+* Make sure they are placed in <Project.Dir>/webpack.config.react4xp.js
 
 There should be an updated example file in the @enonic/react4xp package under examples/webpack.config.react4xp.js
 
