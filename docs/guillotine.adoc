@@ -84,7 +84,7 @@ This first stage should be easy enough, almost entirely repeating steps you've b
 
 [NOTE]
 ====
-This entire chapter builds on the <<imports-and-dependency-chunks#webpack_config, config setup from the previous lesson>>: _react4xp.properties_, _webpack.config.react4xp.js_ and the extra NPM packages should be set up like that.
+This entire chapter builds on the <<imports-and-dependency-chunks#webpack_config, config setup from the previous lesson>>: _react4xp.config.js_, _webpack.config.react4xp.js_ and the extra NPM packages should be set up like that.
 
 If you haven't completed that section already, better take a couple of minutes and do that before proceeding.
 ====
