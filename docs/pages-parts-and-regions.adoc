@@ -131,7 +131,7 @@ As long as you follow the general patterns here, you can use parts with react4xp
 [source,javascript,options="nowrap"]
 ----
 import React from 'react';
-import Regions from 'react4xp-regions/Regions';    // <1>
+import Regions from '@enonic/react-components/Regions';    // <1>
 
 export default (props) => (
     <div className="default-page">
