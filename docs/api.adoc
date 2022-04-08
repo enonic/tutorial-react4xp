@@ -755,7 +755,7 @@ There can be several reasons to this:
 
 - Most commonly, the built-in webpack setup is pretty minimal, only adding link:https://webpack.js.org/loaders/[loaders] for compiling react from JSX. It's likely you will need to add loaders of your own, maybe use additional plugins etc
 - You may want to adjust other aspects of the compilation rules, or even replace the built-in rules entirely
-- The assets that are built during the compilation are the same ones that are run in nashorn and in the browser. It's possible you may need adjustments here to account for corner cases - but if the problem is missing feature support in nashorn, it's better to add extra polyfills using <<#nashornPolyfillsSource, nashornPolyfillsSource>> instead.
+- The assets that are built during the compilation are the same ones that are run in nashorn and in the browser. It's possible you may need adjustments here to account for corner cases - but if the problem is missing feature support in nashorn, it's better to add extra polyfills using <<#nashornPolyfills, nashornPolyfills>> instead.
 
 [NOTE]
 ====
