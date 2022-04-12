@@ -137,7 +137,7 @@ The webapp begins with some basic HTML, setting it all up in the browser.
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 
         <!--2-->
-        [(${bodyEnd})]
+        [(${assetsHtml})]
 
         <style>
             body { margin: 0; padding: 0; }
@@ -219,14 +219,14 @@ const SITE_ROOT = `/site/${PROJECT}/${BRANCH}/${SITE_NAME}`;
 export function get() {
   const assetUrls = getAssetUrls('MovieList');
 
-  const bodyEndArray = [];
+  const assetsArray = [];
   for (let i = 0; i < assetUrls.length; i++) {
     const assetUrl = assetUrls[i];
     const ext = assetUrl.split('.').pop();
     if (ext === 'css') {
-      bodyEndArray.push(`<link rel="stylesheet" type="text/css" href="${assetUrl}" />`);
+      assetsArray.push(`<link rel="stylesheet" type="text/css" href="${assetUrl}" />`);
     } else if (ext === 'js') {
-      bodyEndArray.push(`<script src="${assetUrl}"></script>`);
+      assetsArray.push(`<script src="${assetUrl}"></script>`);
     }
   }
 
@@ -236,7 +236,7 @@ export function get() {
       apiUrl: `${SITE_ROOT}/api/headless`,
       APP_NAME: app.name,
       assetRoot: getAssetUrl({path: ''}),
-      bodyEnd: bodyEndArray.join('\n'),
+      assetsHtml: assetsArray.join('\n'),
       serviceRoot: getServiceUrl({service: ''}),
       SITE_NAME
     })
@@ -455,7 +455,7 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 
         <!--1-->
-        [(${bodyEnd})]
+        [(${clientAssetHtml})]
 
         <style>
             body { margin: 0; padding: 0; }
@@ -487,7 +487,7 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
     </body>
 </html>
 ----
-<1> This is where we <<#html1, previously>> put hardcoded URLs to each specific dependency chunk and entry asset we want to use. Here, we only load the react4xp client-wrapper, and make it available in the browser’s namespace as `React4xp.CLIENT`.
+<1> This is where we <<#html1, previously>> put URLs to each specific dependency chunk and entry asset we want to use. Here, we only load the react4xp client-wrapper, and make it available in the browser’s namespace as `React4xp.CLIENT`.
 <2> As before, we set a few initial values for the final script to use. Two things are different here, though: first, we let the XP controller (right below) supply the appname-dependent content type and the content path to the site with the movies below it. And second: `serviceUrlRoot`. This value is the URL root of the XP services, and lets the script know where to look for the service that tracks the entries' assets and dependencies.
 <3> The final script asset (<<#script2, below>>), also loaded by using the `portal.assetUrl` function with thymeleaf instead of hardcoded.
 
@@ -512,7 +512,7 @@ export function get(req) {
   const clientUrl = getClientUrl();
 
   const model = {
-    bodyEnd: `<script src="${clientUrl}"></script>`,
+    clientAssetHtml: `<script src="${clientUrl}"></script>`,
     BRANCH,
     movieType: `${app.name}:movie`,
     PROJECT,

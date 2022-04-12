@@ -652,8 +652,14 @@ exports.get = request => {
 {zwsp} +
 {zwsp} +
 
+[[react4xp.properties]]
+== react4xp.properties
+
+The `react4xp.properties` file has been removed and it's settings moved to other files, see the <<upgrade#,upgrade guide>>.
+
 [[react4xp.config.js]]
 == react4xp.config.js
+
 
 Several aspects of react4xp can be configured with a file _react4xp.config.js_.
 
