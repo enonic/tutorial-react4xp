@@ -911,3 +911,20 @@ react4xp.ssr.settings = 0
 ----
 
 Persistent code cache is switched off by default, since it was occasionally error-prone and didn't appear to improve performance all that much. Your mileage may vary, but use with care.
+
+{zwsp} +
+
+[[ssrSettings]]
+=== engineName
+
+Allows to override JavaScript engine name.
+
+.$XP_HOME/config/<app.name>.cfg:
+[source,cfg,options="nowrap"]
+----
+# Explicit string of engine name:
+react4xp.ssr.engineName = Nashorn
+
+----
+
+By defauilt Graal.js engine is selected, but only if it is available. Otherwise first available JavaScript engine is selected (for XP on OpenJDK 11 it is usually Nashorn. 
