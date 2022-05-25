@@ -94,7 +94,7 @@ react4xp.ssr.settings = 1000
 ==== Upgrade lib-react4xp to 3.x.x in build.gradle
 
 ```build.gradle
-rootProject.ext.LIB_REACT4XP_VERSION = "3.0.0"
+rootProject.ext.LIB_REACT4XP_VERSION = "3.1.0"
 ```
 
 ==== Update paths to gradle files imported from node_modules/@enonic/react4xp
