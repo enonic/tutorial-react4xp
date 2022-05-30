@@ -67,6 +67,8 @@ There should be an updated example file in the @enonic/react4xp package under ex
 You can now set some runtime options in $XP_HOME/config/<app.name>.cfg
 There should be an updated example file in the @enonic/react4xp package under examples/app.cfg
 
+Starting from 3.2.0 `react4xp.ssr.settings` can only be a string. Number value is no longer supported and will cause an error.
+
 See <<https://github.com/enonic/enonic-react4xp/blob/master/examples/app.cfg>>
 
 Example:
@@ -74,7 +76,7 @@ Example:
 ```cfg
 react4xp.ssr.lazyLoad = false
 react4xp.ssr.maxThreads = 0
-react4xp.ssr.settings = 1000
+react4xp.ssr.settings = --optimistic-types=false
 ```
 
 == How
@@ -94,7 +96,7 @@ react4xp.ssr.settings = 1000
 ==== Upgrade lib-react4xp to 3.x.x in build.gradle
 
 ```build.gradle
-rootProject.ext.LIB_REACT4XP_VERSION = "3.1.0"
+rootProject.ext.LIB_REACT4XP_VERSION = "3.2.0"
 ```
 
 ==== Update paths to gradle files imported from node_modules/@enonic/react4xp
