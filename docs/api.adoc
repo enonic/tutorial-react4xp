@@ -553,10 +553,17 @@ The aim of react4xp is link:https://medium.com/capital-one-tech/why-everyone-is-
 
 {zwsp} +
 
+[[graaljs]]
+=== Graal.JS
+
+Graal.JS is a default SSR engine, if available in JVM (XP version > 7.10 includes it). 
+
+{zwsp} +
+
 [[nashorn]]
 === Nashorn
 
-Currently, react4xp needs link:https://docs.oracle.com/javase/10/nashorn/introduction.htm[nashorn] to do the actual SSR (albeit we're looking at upgrading to GraalJS at some point). Since most of the world of react SSR is oriented towards link:https://nodejs.org/en/[node.js], and nashorn does not have full support for the features in node (nor all features expected by a lot of NPM packages that can be imported by react components), react4xp does some polyfilling of the SSR engine at startup.
+React4xp can use link:https://docs.oracle.com/javase/10/nashorn/introduction.htm[nashorn] as SSR engine. Since most of the world of react SSR is oriented towards link:https://nodejs.org/en/[node.js], and nashorn does not have full support for the features in node (nor all features expected by a lot of NPM packages that can be imported by react components), react4xp does some polyfilling of the SSR engine at startup.
 
 {zwsp} +
 
