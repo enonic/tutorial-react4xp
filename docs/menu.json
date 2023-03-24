@@ -54,7 +54,16 @@
     },
     {
       "title": "Upgrade",
-      "document": "upgrade"
+      "menuItems": [
+        {
+          "title": "4.x.x",
+          "document": "upgrade/4.x.x"
+        },
+        {
+          "title": "3.x.x",
+          "document": "upgrade/3.x.x"
+        }
+      ]
     }
   ]
 }

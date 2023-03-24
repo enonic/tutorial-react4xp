@@ -1,0 +1,210 @@
+= React4XP - Upgrade - 4.x.x
+:toc: right
+
+== What
+
+=== TypeScript
+
+React4xp version 4 introduces support for TypeScript
+
+* https://www.npmjs.com/package/@enonic/react4xp/v/4.0.0-B1
+* https://repo.enonic.com/service/rest/repository/browse/public/com/enonic/lib/lib-react4xp/4.0.0-B1
+* https://www.npmjs.com/package/@enonic/react-components/v/3.1.2
+* https://www.npmjs.com/package/@enonic-types/lib-react4xp/v/4.0.0-B2
+
+=== Named exports
+
+The default export from '/lib/enonic/react4xp' used to be a class.
+Now we are using named exports.
+You can still import the class exported under the name React4xp.
+
+=== Application configuration clientRender
+
+We have added a application configuration to enable client-side rendering for all parts.
+
+```cfg
+react4xp.clientRender = true
+```
+
+The default is false.
+
+You can still override the application configuration in the part controller.
+
+```partController.ts
+    render(compnent, props, request, {
+        // Default is to use application configuration
+        // SSR without hydration will always be enforced when request.mode === 'edit'
+        // clientRender: false // "Always" SSR
+        // clientRender: true // "Always" client-side rendering
+    })
+```
+
+=== Multiple React4xp apps
+
+You can now use components from multiple React4xp apps on the same webpage.
+If the apps are importing any of the same assets, it could be a good idea to
+load those assets from CDN so they aren't part of the vendor bundles.
+
+==== Client & Executor
+
+To achieve this the client and executor had to be moved from lib-react4xp to @enonic/react4xp
+
+
+== How
+
+=== build.gradle
+
+```build.gradle
+dependencies {
+    include "com.enonic.lib:lib-react4xp:4.x.x"
+}
+```
+
+=== react4xp.gradle
+
+```react4xp.gradle
+task react4xpClient(type: NpmTask) {
+  group 'React4xp'
+  description 'Compile the client'
+  args = [
+    'explore', '@enonic/react4xp', '--',
+    'npm', 'run', 'tsup:client', '--',
+    '--env.DIR_PATH_ABSOLUTE_PROJECT=' + project.projectDir,
+    '--env.BUILD_ENV=' + project.ext.react4xp.BUILD_ENV
+  ]
+  //inputs.files fileTree(dir: './src', include: 'client.js')
+  outputs.dir 'build/resources/main/assets/react4xp'
+}
+jar.dependsOn += 'react4xpClient'
+
+task react4xpExecutor(type: NpmTask) {
+  group 'React4xp'
+  description 'Compile the executor'
+  args = [
+    'explore', '@enonic/react4xp', '--',
+    'npm', 'run', 'tsup:executor', '--',
+    '--env.DIR_PATH_ABSOLUTE_PROJECT=' + project.projectDir,
+    '--env.BUILD_ENV=' + project.ext.react4xp.BUILD_ENV
+  ]
+  //inputs.files fileTree(dir: './src', include: 'executor.js')
+  outputs.dir 'build/resources/main/assets/react4xp'
+}
+jar.dependsOn += 'react4xpExecutor'
+```
+
+=== package.json
+
+`+npm install --save-dev @enonic/react4xp .+`
+`+npm upgrade @enonic/react4xp .+`
+
+or
+
+`+yarn add --dev @enonic/react4xp.+`
+`+yarn upgrade @enonic/react4xp --latest .+`
+
+=== import/require in controllers
+
+```examplePart.ts
+import {render} from '/lib/enonic/react4xp';
+
+export function get(request) {
+    return render(component, props, request);
+}
+```
+
+```examplePart.ts
+import {React4xp} from '/lib/enonic/react4xp';
+```
+
+```examplePart.js
+const libReact4xp = require('/lib/enonic/react4xp');
+
+exports.get = function (request) {
+    return libReact4xp.render(component, props, request);
+}
+```
+
+```examplePart.js
+const libReact4xp = require('/lib/enonic/react4xp');
+
+exports.get = function (request) {
+    const r4x = new libs.react4xp.React4xp(jsxPath);
+    r4x.setId(id);
+    r4x.setProps(props);
+    return {
+      body: r4x.renderBody({
+        body: body,
+        clientRender: clientRender,
+        request: request
+      }),
+      pageContributions: r4x.renderPageContributions({
+        clientRender: clientRender,
+        pageContributions: pageContributions,
+        request: request
+      })
+    };
+}
+```
+
+=== tsconfig*.json
+
+==== TypeChecking for your code editor
+
+```tsconfig.json
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "lib": [
+            "DOM", // Nashorn doesn't supports DOM, beeing permissive
+            "ES2015", // Nashorn only supports ES5, beeing permissive
+        ],
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "target": "ES2015", // Nashorn only supports ES5, beeing permissive
+    },
+    "include": [
+        "./src/main/resources/**/*.ts",
+        "./src/main/resources/**/*.tsx"
+    ],
+}
+```
+
+===== package.json
+
+`+yarn add --dev @types/react.+`
+
+==== TypeChecking for React4xp code
+
+```tsconfig.react4xp.json
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "lib": [
+            "DOM",
+            "ES2015",
+        ],
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "target": "ES2015",
+    },
+    "include": [
+        "./src/main/resources/**/*.tsx"
+    ],
+}
+```
+
+===== package.json
+
+`+yarn add --dev typescript.+`
+
+```package.json
+  "scripts": {
+    "verify:types:react4xp": "npx tsc --noEmit -p tsconfig.react4xp.json"
+  }
+```
+
+=== React4xp components
+
+git mv Component.jsx Component.tsx
+
+Start adding types for
