@@ -173,7 +173,7 @@ exports.get = function (request) {
 
 ===== package.json
 
-`+yarn add --dev @types/react.+`
+`+yarn add --dev @types/react+`
 
 ==== TypeChecking for React4xp code
 
@@ -197,7 +197,7 @@ exports.get = function (request) {
 
 ===== package.json
 
-`+yarn add --dev typescript.+`
+`+yarn add --dev typescript+`
 
 ```package.json
   "scripts": {
