@@ -209,4 +209,8 @@ exports.get = function (request) {
 
 `+git mv Component.jsx Component.tsx+`
 
+On mac this should rename all jsx files under src/main/resources
+
+`+for filePath in $(find src/main/resources -iname "*.jsx"); do git mv $filePath "$(echo $filePath | rev | cut -d '.' -f 2- | rev).tsx"; done+`
+
 Start adding types for parameters, etc.
