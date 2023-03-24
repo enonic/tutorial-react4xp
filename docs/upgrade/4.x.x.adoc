@@ -207,6 +207,6 @@ exports.get = function (request) {
 
 === React4xp components
 
-git mv Component.jsx Component.tsx
+`+git mv Component.jsx Component.tsx+`
 
-Start adding types for
+Start adding types for parameters, etc.
