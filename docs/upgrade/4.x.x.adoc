@@ -94,13 +94,15 @@ jar.dependsOn += 'react4xpExecutor'
 
 === package.json
 
-`+npm install --save-dev @enonic/react4xp .+`
-`+npm upgrade @enonic/react4xp .+`
+`+npm install --save-dev @enonic/react4xp+`
+
+`+npm upgrade @enonic/react4xp+`
 
 or
 
-`+yarn add --dev @enonic/react4xp.+`
-`+yarn upgrade @enonic/react4xp --latest .+`
+`+yarn add --dev @enonic/react4xp+`
+
+`+yarn upgrade @enonic/react4xp --latest+`
 
 === import/require in controllers
 
