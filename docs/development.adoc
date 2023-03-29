@@ -9,8 +9,8 @@
 a|
 Pros:
 
-* comes with every starter
-* you test what runs in production
+* default setup (should [green]#just work# after enonic project create)
+* you test what runs in production (especially with [yellow]#clean# in the cmdline)
 
 Cons:
 
@@ -37,6 +37,7 @@ Cons:
 
 * incremental/watch [yellow]#MUST# be done by Gradle since a fresh jar file is needed
 * browserSync [yellow]#MUST#  watch build/resources/main
+* build system "code" is probably more [red]#complex#
 
 Notes:
 
@@ -53,9 +54,13 @@ Pros:
 * incremental/watch [green]#can# be done by Node since a the old jar file can be used
 * browserSync [green]#can# watch src/main/resources
 
+Cons:
+
+* build system "code" is probably more [red]#complex#
+* [red]#if# code is changed in src/main/java a fresh jar file is [red]#still needed#
+
 Notes:
 
-* if code is changed in src/main/java a fresh jar file is still needed
 * it should not waste time minimizing assets nor generate map files
 
 |===
