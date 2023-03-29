@@ -56,5 +56,6 @@ Pros:
 Notes:
 
 * if code is changed in src/main/java a fresh jar file is still needed
+* it should not waste time minimizing assets nor generate map files
 
 |===
