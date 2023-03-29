@@ -1,0 +1,60 @@
+= Development
+:toc: right
+
+[cols="1,1,3"]
+|===
+|Build Mode |Enonic XP Run mode |Comment
+|production
+|production
+a|
+Pros:
+
+* comes with every starter
+* you test what runs in production
+
+Cons:
+
+* takes a [red]#long# time to build
+* debugging could be [red]#hard#
+
+Notes:
+
+* it should minimize assets and generate map files
+|production
+|development
+| Basically the same as the previous one
+
+|dev
+|production
+a|
+
+Pros:
+
+* should build [yellow]#somewhat quickly#
+* useful when [green]#debugging#
+
+Cons:
+
+* incremental/watch [yellow]#MUST# be done by Gradle since a fresh jar file is needed
+* browserSync [yellow]#MUST#  watch build/resources/main
+
+Notes:
+
+* it should not waste time minimizing assets nor generate map files
+
+|dev
+|dev
+a|
+
+Pros:
+
+* should build [green]#VERY quickly#
+* useful when [green]#debugging#
+* incremental/watch [green]#can# be done by Node since a the old jar file can be used
+* browserSync [green]#can# watch src/main/resources
+
+Notes:
+
+* if code is changed in src/main/java a fresh jar file is still needed
+
+|===
