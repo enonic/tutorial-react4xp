@@ -166,7 +166,7 @@ In order to build without gradle we had to move npm explore command from build.g
 
 ```package.json
 {
-  scripts: {
+  "scripts": {
     "build:react4xp": "npm explore @enonic/react4xp -- npm run build:react4xp",
   }
 }
