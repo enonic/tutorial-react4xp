@@ -3,6 +3,12 @@
 
 == What
 
+=== Graal-JS
+
+We have dropped support for Nashorn in favour of Graal-JS.
+
+This means we had to upgrade the Enonic XP version requirement to 7.12 
+
 === TypeScript
 
 React4xp version 4 introduces support for TypeScript
@@ -12,21 +18,53 @@ React4xp version 4 introduces support for TypeScript
 * https://www.npmjs.com/package/@enonic/react-components/v/3.1.2
 * https://www.npmjs.com/package/@enonic-types/lib-react4xp/v/4.0.0-B2
 
+=== React 18
+
+React4xp will now use the new React 18 functions like createRoot() and hydrateRoot() if they are available.
+
+If they are not, it will use the React 17 functions like render() and hydrate().
+
 === Named exports
 
 The default export from '/lib/enonic/react4xp' used to be a class.
 Now we are using named exports.
 You can still import the class exported under the name React4xp.
 
-=== Application configuration clientRender
+=== Application configuration
 
-We have added a application configuration to enable client-side rendering for all parts.
+We have added two application configurations.
+
+==== react4xp.hydrate
+
+Add this to $XP_HOME/config/app.cfg:
 
 ```cfg
-react4xp.clientRender = true
+react4xp.hydrate = false
 ```
 
-The default is false.
+To disable client-side hydration for all react4xp components (page, layout, parts, etc)
+
+You can still override the application configuration in the controller.
+
+```someController.ts
+    render(compnent, props, request, {
+        // Default is to use application configuration
+        // SSR without hydration will always be enforced when request.mode === 'edit'
+        // hydrate: true // Hydration when ssr = true
+        // hydrate: false // No hydration even when ssr = true
+    })
+```
+
+
+==== react4xp.ssr
+
+Add this to $XP_HOME/config/app.cfg:
+
+```cfg
+react4xp.ssr = false
+```
+
+To disable server-side rendering for all parts (doesn't affect page and layouts)
 
 You can still override the application configuration in the part controller.
 
@@ -34,8 +72,8 @@ You can still override the application configuration in the part controller.
     render(compnent, props, request, {
         // Default is to use application configuration
         // SSR without hydration will always be enforced when request.mode === 'edit'
-        // clientRender: false // "Always" SSR
-        // clientRender: true // "Always" client-side rendering
+        // ssr: true // "Always" SSR
+        // ssr: false // "Always" client-side rendering
     })
 ```
 
@@ -49,6 +87,28 @@ load those assets from CDN so they aren't part of the vendor bundles.
 
 To achieve this the client and executor had to be moved from lib-react4xp to @enonic/react4xp
 
+=== Enonic XP dev mode
+
+When running Enonic XP in dev mode, it may be faster to build without using gradle at all.
+
+See the required changes to the build.gradle and package.json files in the How section below.
+
+=== System environment variables
+
+When building with gradle, it will automatically set some system environment variables for you.
+
+However if you want to build without using gradle you have to set them up on your own.
+
+These two are required:
+
+* R4X_APP_NAME (find the appName in gradle.properties)
+* R4X_DIR_PATH_ABSOLUTE_PROJECT (cwd/pwd)
+
+These two are optional:
+
+* R4X_BUILD_LOG_LEVEL (use INFO to get some extra logging when building)
+* NODE_ENV (the default is production, set it to development for no hashing, nor minification, etc...)
+
 
 == How
 
@@ -60,39 +120,58 @@ dependencies {
 }
 ```
 
-=== react4xp.gradle
+=== build.gradle
 
-```react4xp.gradle
-task react4xpClient(type: NpmTask) {
-  group 'React4xp'
-  description 'Compile the client'
-  args = [
-    'explore', '@enonic/react4xp', '--',
-    'npm', 'run', 'tsup:client', '--',
-    '--env.DIR_PATH_ABSOLUTE_PROJECT=' + project.projectDir,
-    '--env.BUILD_ENV=' + project.ext.react4xp.BUILD_ENV
-  ]
-  //inputs.files fileTree(dir: './src', include: 'client.js')
-  outputs.dir 'build/resources/main/assets/react4xp'
-}
-jar.dependsOn += 'react4xpClient'
+Remove all the old react4xp* tasks from your build.gradle file.
 
-task react4xpExecutor(type: NpmTask) {
-  group 'React4xp'
-  description 'Compile the executor'
-  args = [
-    'explore', '@enonic/react4xp', '--',
-    'npm', 'run', 'tsup:executor', '--',
-    '--env.DIR_PATH_ABSOLUTE_PROJECT=' + project.projectDir,
-    '--env.BUILD_ENV=' + project.ext.react4xp.BUILD_ENV
-  ]
-  //inputs.files fileTree(dir: './src', include: 'executor.js')
-  outputs.dir 'build/resources/main/assets/react4xp'
+If your project is based on an earlier version of the starter-react4xp also remove the reac4xp plugin
+
+```build.gradle 
+plugins {
+  id 'react4xp' // Delete this line
 }
-jar.dependsOn += 'react4xpExecutor'
+```
+
+You can probably also delete the entire buildSrc folder from your project.
+
+Add this instead:
+
+```build.gradle
+task react4xp(type: NpmTask, dependsOn: npmInstall) {
+  args = [
+    'run',
+    'build:react4xp' // This script must exist in the package.json file
+  ]
+  description 'Compile react4xp resources'
+  environment = [
+    'R4X_APP_NAME': "${appName}",
+    'R4X_BUILD_LOG_LEVEL': gradle.startParameter.logLevel.toString(),
+    'R4X_DIR_PATH_ABSOLUTE_PROJECT': project.projectDir.toString(),
+    'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
+  ]
+  group 'react4xp'
+  // It also watches package.json and package-lock.json :)
+  inputs.dir 'node_modules/@enonic/react4xp'
+  inputs.dir 'src/main/resources'
+  outputs.dir 'build/resources/main'
+}
+jar.dependsOn 'react4xp'
 ```
 
 === package.json
+
+When runnning Enonic XP in dev mode, it's possible to build without using gradle.
+
+In order to build without gradle we had to move npm explore command from build.gradle to the package.json file:
+
+```package.json
+{
+  scripts: {
+    "build:react4xp": "npm explore @enonic/react4xp -- npm run build:react4xp",
+  }
+}
+```
+
 
 `+npm install --save-dev @enonic/react4xp+`
 
@@ -136,13 +215,14 @@ exports.get = function (request) {
     return {
       body: r4x.renderBody({
         body: body,
-        clientRender: clientRender,
-        request: request
+        request: request,
+        ssr: ssr,
       }),
       pageContributions: r4x.renderPageContributions({
-        clientRender: clientRender,
+        hydrate: hydrate,
         pageContributions: pageContributions,
-        request: request
+        request: request,
+        ssr: ssr,
       })
     };
 }
