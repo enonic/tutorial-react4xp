@@ -30,6 +30,12 @@ The default export from '/lib/enonic/react4xp' used to be a class.
 Now we are using named exports.
 You can still import the class exported under the name React4xp.
 
+=== clientRender (hydrate & ssr)
+
+The clientRender option/parameter has been removed in favour of hydrate and ssr.
+
+Read more under <<Application configuration>> and <<React4xp components>>
+
 === Application configuration
 
 We have added two application configurations.
@@ -54,7 +60,6 @@ You can still override the application configuration in the controller.
         // hydrate: false // No hydration even when ssr = true
     })
 ```
-
 
 ==== react4xp.ssr
 
@@ -172,7 +177,6 @@ In order to build without gradle we had to move npm explore command from build.g
 }
 ```
 
-
 `+npm install --save-dev @enonic/react4xp+`
 
 `+npm upgrade @enonic/react4xp+`
@@ -189,7 +193,11 @@ or
 import {render} from '/lib/enonic/react4xp';
 
 export function get(request) {
-    return render(component, props, request);
+    return render(component, props, request, {
+      // Optional
+      // hydrate: false,
+      // ssr: false
+    });
 }
 ```
 
@@ -201,7 +209,11 @@ import {React4xp} from '/lib/enonic/react4xp';
 const libReact4xp = require('/lib/enonic/react4xp');
 
 exports.get = function (request) {
-    return libReact4xp.render(component, props, request);
+    return libReact4xp.render(component, props, request, {
+      // Optional
+      // hydrate: false,
+      // ssr: false
+    });
 }
 ```
 
@@ -216,13 +228,13 @@ exports.get = function (request) {
       body: r4x.renderBody({
         body: body,
         request: request,
-        ssr: ssr,
+        // ssr: ssr, // Optional
       }),
       pageContributions: r4x.renderPageContributions({
-        hydrate: hydrate,
+        // hydrate: hydrate, // Optional
         pageContributions: pageContributions,
         request: request,
-        ssr: ssr,
+        // ssr: ssr, // Optional
       })
     };
 }
