@@ -100,6 +100,21 @@ Now it will only enforce it in `edit` mode.
 
 `inline` mode will use normal react4xp rendering, just as `preview` and `live` mode.
 
+=== Gradle
+
+We have simplified the gradle setup a lot.
+
+All old refernces to react4xp in the build.gradle file, must be removed.
+
+
+These files no longer exist:
+
+* node_modules/@enonic/react4xp/react4xp.gradle
+* node_modules/@enonic/react4xp/npmInstall.gradle
+* node_modules/@enonic/react4xp/updaters.gradle
+
+See more under the <<_build_gradle, build.gradle>> section below.
+
 === Enonic XP dev mode
 
 When running Enonic XP in dev mode, it may be faster to build without using gradle at all.
@@ -132,8 +147,6 @@ dependencies {
     include "com.enonic.lib:lib-react4xp:4.x.x"
 }
 ```
-
-=== build.gradle
 
 Remove all the old react4xp* tasks from your build.gradle file.
 

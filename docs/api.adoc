@@ -661,10 +661,6 @@ exports.get = request => {
 {zwsp} +
 {zwsp} +
 
-[[react4xp.properties]]
-== react4xp.properties
-
-The `react4xp.properties` file has been removed and it's settings moved to other files, see the <<upgrade#,upgrade guide>>.
 
 [[react4xp.config.js]]
 == react4xp.config.js
@@ -686,29 +682,39 @@ Put _react4xp.config.js_ at the root of your XP project. A template can be copie
 +
 [source,groovy,options="nowrap"]
 ----
-apply from: "node_modules/@enonic/react4xp/react4xp.gradle"
+task react4xp(type: NpmTask, dependsOn: npmInstall) {
+  args = [
+    'run',
+    'build:react4xp' // This script must exist in the package.json file
+  ]
+  description 'Compile react4xp resources'
+  environment = [
+    'R4X_APP_NAME': "${appName}",
+    'R4X_BUILD_LOG_LEVEL': gradle.startParameter.logLevel.toString(),
+    'R4X_DIR_PATH_ABSOLUTE_PROJECT': project.projectDir.toString(),
+    'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
+  ]
+  group 'react4xp'
+  // It also watches package.json and package-lock.json :)
+  inputs.dir 'node_modules/@enonic/react4xp'
+  inputs.dir 'src/main/resources'
+  outputs.dir 'build/resources/main'
+}
+jar.dependsOn 'react4xp'
 ----
 +
 This will not only make sure _react4xp.config.js_ is handled, but also give a full react4xp build setup.
 
-- Of course, this requires that the link:https://www.npmjs.com/package/@enonic/react4xp[react4xp NPM package] is installed at the time gradle (or the enonic CLI) is run.
+- Add this to your _package.json_:
 +
-If you want to automate that, you can always add this to your _gradle.build_:
-+
-[source,groovy,options="nowrap"]
+[source,json,options="nowrap"]
 ----
-def react4xpGradleFile = new File('node_modules/@enonic/react4xp/react4xp.gradle')
-if (!react4xpGradleFile.exists()) {
-    def proc = "npm install".execute()
-    proc.in.eachLine { line -> println line }
-    proc.out.close()
-    proc.waitFor()
+{
+  "scripts": {
+    "build:react4xp": "npm explore @enonic/react4xp -- npm run build:react4xp",
+  }
 }
-
-apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'
 ----
-
-- Or, reverse-engineer the whole thing from link:https://github.com/enonic/enonic-react4xp/blob/master/react4xp.gradle[react4xp.gradle] and make your own gradle adaptation.
 
 {zwsp} +
 
