@@ -92,6 +92,14 @@ load those assets from CDN so they aren't part of the vendor bundles.
 
 To achieve this the client and executor had to be moved from lib-react4xp to @enonic/react4xp
 
+=== Content Studio
+
+SSR without hydration used to be enforced for both `edit` and `inline` mode in Content Studio.
+
+Now it will only enforce it in `edit` mode. 
+
+`inline` mode will use normal react4xp rendering, just as `preview` and `live` mode.
+
 === Enonic XP dev mode
 
 When running Enonic XP in dev mode, it may be faster to build without using gradle at all.

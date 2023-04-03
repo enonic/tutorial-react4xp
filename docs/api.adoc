@@ -78,7 +78,8 @@ If no `body` is supplied, an empty `<div>` element with an ID matching `id` is g
 
 If a `body` is supplied but it doesn't contain any element with a matching `id`, an extra matching-`id` `<div>` element will be generated and inserted into `body` - as a child of the root element of `body` and after any other content that's already there.
 ! `pageContributions` ! object: valid link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] ! ! If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added _before_ the ones that will be rendered (within each section `headBegin`, `bodyEnd` etc).
-! `clientRender` ! boolean ! false ! Switch between clientside and servierside rendering, on this particular rendering. Other renderings are not affected, even within the same controller or using the same entry more than once.
+! `hydrate` ! boolean ! app.config['react4xp.hydrate'] or true ! When SSR is true, choose whether you want hydration or not.
+! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and servierside rendering, on this particular rendering. Other renderings are not affected, even within the same controller or using the same entry more than once.
 
 If `false` / falsy or omitted, you get serverside rendering and the returned object will contain an HTML representation of the react component with the initial `props`, and page contributions will make the client call `.hydrate`.
 
@@ -104,7 +105,7 @@ Returns an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP re
 
 The root of this HTML is always a *surrounding container* HTML that will have a matching-ID *target element* in it somewhere (an element matching the ID of the clientside call to `.render` or `.hydrate`: that ID is `options.id` if that was set, or a generated unique one if not). This surrounding structure is `options.body`, unchanged if that already contained a matching-ID element, or with a new target element generated and inserted at the end if it didn’t have one. If there is no `options.body`, the surrounding container is just a generated target `<div>` element.
 
-Inside that matching-ID element, there will be a serverside rendering of the entry (with the initial props from `options.props`) if `options.clientRender` is falsy.
+Inside that matching-ID element, there will be a serverside rendering of the entry (with the initial props from `options.props`) if `options.ssr` is not false.
 | `pageContributions`| object | Regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions]. Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating client-wrapper call. Urls point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
 |===
 
@@ -126,11 +127,11 @@ React4xp.render(entry, props, request);
 React4xp.render(entry, props, request, options); // ...etc etc
 ----
 
-If `request` is supplied, viewing context is detected from `request.mode`: is rendering happening inside or outside of Content Studio?
+If `request` is supplied, viewing context is detected from `request.mode`: is rendering happening inside or outside of Content Studio edit mode?
 
-- *Inside Content Studio*, `.render` will always select serverside rendering (no matter what `clientRender` is) and skip JS dependency assets and the clientside `render`/`hydrate` trigger (but still still supply other dependencies, such as CSS). This ensures that a static HTML placeholder rendering is visible inside Content Studio's browse and edit modes, but keeps react from being activated. This is by design: preventing the possibility that react code might intervene with the UX of Content Studio itself. **In order to see working react and interact with your app, preview the page** or navigate to a published version:
+- *Inside Content Studio edit mode*, `.render` will always select serverside rendering (no matter what `ssr` is) and skip JS dependency assets and the clientside `render`/`hydrate` trigger (but still still supply other dependencies, such as CSS). This ensures that a static HTML placeholder rendering is visible inside Content Studio's edit mode, but keeps react from being activated. This is by design: preventing the possibility that react code might intervene with the UX of Content Studio itself.
 
-- *Outside Content Studio*, the rendering will be activated as a react app (i.e. all pageContributions are rendered). Also, `clientRender` is used, so if this is `true`, serverside rendering is skipped and `render` is called in the client instead of `hydrate`.
+- *Outside Content Studio edit mode*, the rendering will be activated as a react app (i.e. all pageContributions are rendered). Also, `ssr` is used, so if this is `false`, serverside rendering is skipped. The ``and `render` is called in the client instead of `hydrate`.
 
 Also, when `request` is used, `.render` will output **error messages from SSR** in error containers and browser consoles (except in live view mode, where error containers and browser log are more generic: shown without the specific messages).
 
@@ -147,7 +148,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc
 
 *Omitting `request` from `render` has the effect of always rendering as if it's inside Content Studio* (see above). Again, this is by design - trying to make sure that a viewable and safe rendering is always returned, even when viewing context can't be determined.
 
-However, it also means that `clientRender` has no effect (you always get SSR), and there is no call to activate the react app in the browser. Basically, it's as if JSX is used as a pure, static HTML templating language (same as XP's Thymeleaf renderer - which shares the same basic signature).
+However, it also means that `hydrate` and `ssr` options are ignored (you always get SSR without Hydration), and there is no call to activate the react app in the browser. Basically, it's as if JSX is used as a pure, static HTML templating language (same as XP's Thymeleaf renderer - which shares the same basic signature).
 
 
 When `request` is omitted, `.render` will ** never output error messages from SSR** in error containers or browser console.
@@ -167,7 +168,7 @@ Most of the lessons in the guide use `React4xp.render` (except the "custom flow"
 
 More flexible and controllable than `React4xp.render`: create a data-holding react4xp object with the React4xp contructor, manipulate it or extract data from it, combine with other objects, and then later render it to an HTML body string and/or page contributions, separately. This is actually what `React4xp.render` does behind the scenes.
 
-Call the two rendering methods from the same react4xp object. Remember, if using `clientRender` and/or `request` options, they should usually be the same value across the two corresponding calls. A typical (compact) usage example:
+Call the two rendering methods from the same react4xp object. Remember, if using `hydrate`, `ssr` and/or `request` options, they should usually be the same value across the two corresponding calls. A typical (compact) usage example:
 
 [source,javascript,options="nowrap"]
 ----
@@ -178,16 +179,16 @@ exports.get = function(request) => {
 
     // ...read myComponent attributes and/or use its setter methods...
 
-    // const clientRender = ...true or false...
+    // const ssr = ...true or false...
 
     // Call the rendering methods:
     return {
         body: myComponent.renderBody({
-            // clientRender, etc
+            // ssr, etc
             request
         }),
         pageContributions: myComponent.renderPageContributions({
-            // clientRender, etc
+            // hydrate, ssr, etc
             request
         })
     }; // ...etc, etc
@@ -375,7 +376,7 @@ Does _not_ render page contributions. Combine with a corresponding <<#render_pgc
 
 `renderBody` renders based on the state of the data object reached at the time of rendering.
 
-Just like `render` does, `renderBody` ensures that the output HTML will always contain a matching-ID target element for react-rendering/hydrating the entry into (in the browser). And if serverside rendering is switched on (that is, `clientRender` is falsy, or safe context-dependent rendering is enforced by adding `request` - <<#react4xp_object_request, see the summary>>), the target element will contain the static HTML rendering.
+Just like `render` does, `renderBody` ensures that the output HTML will always contain a matching-ID target element for react-rendering/hydrating the entry into (in the browser). And if serverside rendering is switched on (that is, `ssr` is not false, or safe context-dependent rendering is enforced by adding `request` - <<#react4xp_object_request, see the summary>>), the target element will contain the static HTML rendering.
 
 {zwsp} +
 
@@ -396,8 +397,8 @@ Just like `render` does, `renderBody` ensures that the output HTML will always c
 !===
 ! Name        ! Type   ! Default ! Description
 ! `body` ! string: valid HTML ! `<div>` with matching `id` (same as `react4xpId` in the data object) ! Same as the `options.body` in <<#react4xp_render_parameters, React4xp.render>> above.
-! `clientRender` ! boolean ! false ! Switch between clientside and serverside rendering, on this particular rendering.
-! `request` ! link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object] ! undefined ! Including this here (_and_ in the corresponding <<#render_pgcontr, `renderPageContributions`>> call) is the easiest way to handle <<#react4xp_object_request, view-context dependent behavior>>. Without this, `clientRender` may be active in Content Studio preview rendering, leading to possibly undesired results.
+! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and servierside rendering, on this particular rendering.
+! `request` ! link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object] ! undefined ! Including this here (_and_ in the corresponding <<#render_pgcontr, `renderPageContributions`>> call) is the easiest way to handle <<#react4xp_object_request, view-context dependent behavior>>.
 !===
 
 Other renderings are not affected, _even from the same data object_ (so you usually want to make sure a different rendering from the same data object uses the same mode).
@@ -412,7 +413,7 @@ Returns an HTML string ready to return as the `body` attribute in an link:https:
 
 The root of the returned HTML is always a *surrounding container* HTML that will have a matching-ID *target element* in it somewhere (an element matching the data object's ID (`react4xpId`), either from the <<#set_id, ID setter methods>>, or a generated ID if they haven't been run). This surrounding structure is `options.body`, unchanged if that already contained a matching-ID element, or with a new target element generated and inserted at the end if it didn't have one. If there is no `options.body`, the surrounding container is just a generated target element.
 
-Inside that matching-ID element, there will be a serverside rendering of the entry (with the initial props from `.setProps`) if `options.clientRender` is falsy.
+Inside that matching-ID element, there will be a serverside rendering of the entry (with the initial props from `.setProps`) if `options.ssr` is not false.
 
 {zwsp} +
 {zwsp} +
@@ -429,7 +430,7 @@ Similar to <<#react4xp_render, React4xp.render>> above, but _only_ renders the l
 
 - references to the entry's own asset,
 - dependency assets,
-- and the react-activating trigger call in the browser (`.render` or `.hydrate`, depending on the `clientRender` and `request` options).
+- and the react-activating trigger call in the browser (`.render` or `.hydrate`, depending on the `hydrate`, `ssr` and `request` options).
 
 Renders based on the state of the data object at the time of rendering.
 
@@ -457,8 +458,9 @@ Also, unless you add the `request` option, there is *no detection of inside-vs-o
 !===
 ! Name        ! Type   ! Default ! Description
 ! `pageContributions` ! object: valid link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions]  ! empty object ! If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added _before_ the ones that will be rendered (within each section `headBegin`, `bodyEnd` etc).
-! `clientRender` ! boolean ! false ! Switch between clientside and servierside rendering, on this particular rendering.
-! `request` ! link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object] ! undefined ! Including this here (_and_ in the corresponding <<#render_body, `renderPageContributions`>> call) is the easiest way to handle <<#react4xp_object_request, view-context dependent behavior>>. Without this, `clientRender` may be active in Content Studio preview rendering, leading to possibly undesired results.
+! `hydrate` ! boolean ! app.config['react4xp.hydrate'] or true ! When SSR is true, choose whether you want hydration or not.
+! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and servierside rendering, on this particular rendering.
+! `request` ! link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object] ! undefined ! Including this here (_and_ in the corresponding <<#render_body, `renderPageContributions`>> call) is the easiest way to handle <<#react4xp_object_request, view-context dependent behavior>>. 
 
 Other renderings are not affected, _even from the same data object_ (so you usually want to make sure a different rendering from the same data object uses the same mode).
 !===
@@ -471,7 +473,7 @@ A regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP 
 
 Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating trigger call to the client wrapper. Urls point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
 
-With a serverside rendering (`options.clientRender` is falsy), the client will expect an existing target element with a pre-rendered entry in the response `body`, and call `hydrate`. If `options.clientRender` is truthy, an empty target element is expected in the response `body`, and the rendering is left to the client with `render`.
+With a serverside rendering (`options.ssr` is not false), the client will expect an existing target element with a pre-rendered entry in the response `body`, and call `hydrate`. If `options.ssr` is false, an empty target element is expected in the response `body`, and the rendering is left to the client with `render`.
 
 
 
@@ -494,17 +496,17 @@ Omitting `request` will still work the same way as before, leaving more to devel
 [source,javascript,options="nowrap"]
 ----
 const body = myComponent.renderBody({
-    // clientRender, etc
+    // ssr, etc
     request
 });
 const pageContributions = myComponent.renderPageContributions({
-    // clientRender, etc
+    // hydrate, ssr, etc
     request
 });
 // ...etc, etc
 ----
 
-This will act <<#render_request, the same way as `render` used with a request>>: viewing context is detected, so inside Content Studio, `clientRender` is ignored and you always get SSR, and JS assets and the `.hydrate` call is held back so the react component isn't activated inside Content Studio. And outside Content Studio, you get a fully active render (with optional `clientRender`).
+This will act <<#render_request, the same way as `render` used with a request>>: viewing context is detected, so inside Content Studio edit mode, `hydrate` and `ssr` are ignored and you always get SSR, and JS assets and the `.hydrate` call is held back so the react component isn't activated inside Content Studio edit mode. And outside Content Studio edit mode, you get a fully active render.
 
 As with `render`, error message details are held back in live view mode.
 
@@ -514,20 +516,20 @@ As with `render`, error message details are held back in live view mode.
 
 [source,javascript,options="nowrap"]
 ----
-const body = myComponent.renderBody({ /* clientRender, etc */ });
-const pageContributions = myComponent.renderPageContributions({ /* clientRender, etc */ });
+const body = myComponent.renderBody({ /* ssr, etc */ });
+const pageContributions = myComponent.renderPageContributions({ /* hydrate, ssr, etc */ });
 // ...etc, etc
 ----
 
 Contrary to when working with `.render`, omitting `request` from the custom flow does _not_ enforce a max-safety rendering. Quite the opposite, removing `request` will remove all the "safety wheels", so this rendering mode **needs a bit of attention to guarantee that everything works everywhere**:
 
-- `.renderBody` will take `clientRender` into account in all contexts. What you set it to _will_ take effect.
+- `.renderBody` will take `ssr` into account in all contexts. What you set it to _will_ take effect.
 +
-NOTE: This risks a missing/empty visualization inside Content Studio, since `clientRender: true` makes sure no SSR will render a static placeholder.
+NOTE: This risks a missing/empty visualization inside Content Studio, since `ssr: false` makes sure no SSR will render a static placeholder.
 
 - And `.renderPageContributions` will render _all_ page contributions in all contexts, including JS dependency assets and the `hydrate`/`render` browser-side calls.
 +
-NOTE: Best case scenario: this might make a clientRender'ed entry visible in Content Studio too. Worst case, it risks intervening with Content Studio's UX, or even break its functionality, depending on the code used/imported by the entry.
+NOTE: Best case scenario: this might make a client-side rendered entry visible in Content Studio too. Worst case, it risks intervening with Content Studio's UX, or even break its functionality, depending on the code used/imported by the entry.
 
 {zwsp} +
 {zwsp} +
@@ -545,7 +547,7 @@ Custom flow usage in is demonstrated <<custom-flow-syntax#, here>>.
 [[ssr]]
 == SSR engine
 
-The default running mode of react4xp is link:https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/[serverside rendering (SSR)] (although `clientRender` can override this).
+The default running mode of react4xp is link:https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/[serverside rendering (SSR)] (although `hydrate` and `ssr` can override this).
 
 In a nutshell, source files like JSX are compiled into JS assets that lib-react4xp's SSR engine runs to render HTML. This output is then delivered to the browser along with dependency code (usually references to necessary assets like CSS, JS etc) - these dependencies are also rendered, as page contributions. Rendering the HTML body and the page contributions happens to two different steps, using either <<#react4xp_render, `render`>> (which wraps both steps for convenience) or the <<#react4xp_object, "custom flow">>.
 

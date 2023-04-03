@@ -157,7 +157,7 @@ exports.get = function(request) {
 <2> The `props` object is just any standard JS object. So the data can of course come from anywhere you want and take any shape - with one exception: `props` needs to be *serializable*, so functions can't be passed here!
 <3> Connecting the field names in `pageConfig` from _hello-react.xml_ to the prop names that _hello-react.jsx_ needs.
 <4> See how this makes the first two arguments of `React4xp.render` analogous to XP's `thymeleaf.render` template engine? The first argument, `entry`, is just a reference to what should be rendered (_react component_ ~ _template_), and the second one is a collection of data injected into it (_props_ ~ _model_).
-<5> To keep things simpler and clearer, just remove the `clientRender` flag from the previous example.
+<5> To keep things simpler and clearer, just remove the `ssr = false` flag from the previous example.
 
 There it is, now let's take a look!
 
@@ -219,7 +219,7 @@ So did anything change in the rendered response, compared to <<hello-react#hello
 </html>
 
 ----
-<1> Since we removed the `clientRender` flag again, the target container `react4xpApp` comes filled from the server. But now with a rendering with _your_ texts from `props` already inserted.
+<1> Since we removed the `ssr = false` flag again, the target container `react4xpApp` comes filled from the server. But now with a rendering with _your_ texts from `props` already inserted.
 <2> There's still no change in the asset URLs, but since we changed _hello-react.jsx_, the content of _hello-react.js_ has of course been recompiled.
 <3> The script that actually runs `hydrate` with the `props` on the clientside.
 

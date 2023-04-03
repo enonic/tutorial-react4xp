@@ -269,15 +269,15 @@ exports.get = function(request) {
                         </body>
                     </html>
                 `,
-            clientRender: true                          // <1>
+            ssr: false                                   // <1>
         }
     )
 };
 ----
-<1> On the server, a truthy `clientRender` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular `.render` call. Mixing up clientside and serverside rendering across different places hasn't been tested very much, but it should work fine).
+<1> On the server, a false `ssr` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular `.render` call. Mixing up clientside and serverside rendering across different places hasn't been tested very much, but it should work fine).
 
 [[clientrendered_output]]
-If you compare with <<#hello_output, the serverside-rendered example>>, the `clientRender` flag causes the *rendered output* to change slightly, changing the behavior in the browser.
+If you compare with <<#hello_output, the serverside-rendered example>>, the `ssr` flag causes the *rendered output* to change slightly, changing the behavior in the browser.
 
 [source,html,options="nowrap"]
 ----
@@ -300,7 +300,7 @@ If you compare with <<#hello_output, the serverside-rendered example>>, the `cli
 <2> The compiled assets and their URLs are exactly the same as in the serverside version.
 <3> The script that actually runs `render` with the `props` on the clientside.
 
-NOTE: <<#static_cs_rendering, As mentioned before>>, this only applies _outside_ of Content Studio. The `clientRender` flag does not change anything inside Content Studio: still server-side rendered static HTML.
+NOTE: <<#static_cs_rendering, As mentioned before>>, this only applies _outside_ of Content Studio edit mode. The `ssr` flag does not change anything inside Content Studio edit mode: still server-side rendered static HTML.
 
 Apart from these differences behind the scenes, the page will look and behave the same when presented to the user.
 

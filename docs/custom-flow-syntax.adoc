@@ -191,15 +191,16 @@ exports.get = function(request) {
     // using client-side rendering only outside of Content Studio:
     const finalBody = helloObj.renderBody({
         body: colorBody,                                                     <!--10-->
-        clientRender: true,                                                  <!--11-->
+        ssr: false,                                                          <!--11-->
         request
     });
 
     // Adding helloObj's page contributions to the previously rendered page contributions,
-    // duplicating clientRender between renderPageContributions and renderBody (pair-wise for each entry).
+    // duplicating ssr between renderPageContributions and renderBody (pair-wise for each entry).
     const finalPageContributions = helloObj.renderPageContributions({
         pageContributions: colorPageContributions,                           <!--12-->
-        clientRender: true,
+        // hydrate: false, // Turn off hydration?
+        ssr: false,
         request
     });
 
@@ -232,7 +233,7 @@ The ID ends up as `myColorThing-<someRandomNumber>`. This gives us something rec
 <6> Now there's a random component in the ID string of the react4xp object, and we want that ID to match a specific element in the HTML. So we read the ID out from `colorObj.react4xpId` and inject it into the thymeleaf template as `targetId`.
 <7> We render `colorObj` into an HTML string, based on the HTML output of the thymeleaf rendering...
 <8> ...and render the page contributions for activating it in the client. We'll even add a small extra script just to demonstrate that extra pageContributions can be added in `renderPageContributions` as well, by passing them through as before. Now we have both the HTML body and page contributions from the first entry, _color.jsx_.
-<9> A best practice is to add `request` to options in _both_ `renderBody` and `renderPageContributions`. This is the easiest way to automatically <<api#react4xp_object_request, take care of a couple of corner cases>>. Using it to control clientside rendering is not all that relevant for _color.jsx_ since we're never flagging `clientRender` here, but `request` also makes the output clearer in cases of errors.
+<9> A best practice is to add `request` to options in _both_ `renderBody` and `renderPageContributions`. This is the easiest way to automatically <<api#react4xp_object_request, take care of a couple of corner cases>>. Using it makes the output clearer in cases of errors.
 <10> We're going to add a second react entry to this Part's controller. This demonstrates how to *chain the HTML rendering*: we're including `colorBody` as the `body` option. If added to `renderBody`, the HTML in `body` (which is the output from the previous entry, _color.jsx_) will receive the output from the rendering of the this entry (_hello-react.jsx_).
 +
 Where in `colorBody` is that HTML added? ID and target element is handled the same way as in `React4xp.render`: we created `helloObj` without running `.setId`, so no ID is set, and therefore `helloObj` will get a random ID. Since that ID doesn't match any ID in the base HTML (`colorBody`), the rendering will just create a target container element (with a matching ID) inside the root element of `colorBody`, after all other content. Now that there's a matching-ID element, the new HTML is rendered into that.
@@ -242,10 +243,10 @@ In sum: _"Render hello-react.jsx into the HTML from color.jsx, right at the end.
 +
 [NOTE]
 ====
-What if we didn't want to add `request` here, or we wanted to take explicit control? `clientRender` should still be disabled in Content Studio, but that's easy:
+What if we didn't want to add `request` here, or we wanted to take explicit control? `ssr` should still be enabled in Content Studio edit mode, but that's easy:
 
 ----
-clientRender: request.mode !== 'edit' && request.mode !== 'preview'
+ssr: request.mode == 'edit' || request.mode == 'preview'
 ----
 ====
 <12> *Chaining the page contributions:* the activating page contributions for `helloObj` are rendered, and by adding to the previous `colorPageContributions` as a `pageContributions` option, thay're passed through the rendering and added.
@@ -254,7 +255,7 @@ clientRender: request.mode !== 'edit' && request.mode !== 'preview'
 ====
 *The rendering mode (client- or serverside) must match* between `renderBody` and `.renderPageContributions` for an entry!
 
-This is on an entry-by-entry basis: there's no problem mixing multiple entries in the same controller like in this example, where one entry is serverside and the other is clientside rendered - as long as each entry's `renderBody` and `renderPageContributions` have a matching `clientRender`.
+This is on an entry-by-entry basis: there's no problem mixing multiple entries in the same controller like in this example, where one entry is serverside and the other is clientside rendered - as long as each entry's `renderBody` and `renderPageContributions` have a matching `ssr`.
 
 (The same goes for `request`)
 ====
