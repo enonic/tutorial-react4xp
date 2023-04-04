@@ -1,0 +1,34 @@
+= Webpack
+:toc: right
+
+=== Overrides file
+
+The path for the webpack overrides file is hardcoded to
+<Project.Dir>/webpack.config.react4xp.js
+
+NOTE: It is only used when building components.
+
+There should be an updated example file in the @enonic/react4xp package under examples/webpack.config.react4xp.js
+
+=== Cache
+
+To improve the speed of incremental builds, you may use webpack caching.
+
+Read more here: https://webpack.js.org/configuration/cache/
+
+Example:
+
+.<Project.Dir>/webpack.config.react4xp.js
+[source,javascript,options="nowrap"]
+----
+module.exports = function(env, config) {
+
+	if (process.env.NODE_ENV === 'development') {
+		config.cache = {
+			type: 'filesystem'
+		}
+	}
+
+	return config;
+};
+----
