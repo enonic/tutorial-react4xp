@@ -53,6 +53,19 @@
       "document": "api"
     },
     {
+      "title": "Configuration",
+      "menuItems": [
+        {
+          "title": "Build time",
+          "document": "config/build-time"
+        },
+        {
+          "title": "Run time",
+          "document": "config/run-time"
+        }
+      ]
+    },
+    {
       "title": "Webpack",
       "document": "webpack"
     },

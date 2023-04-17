@@ -36,6 +36,25 @@ The clientRender option/parameter has been removed in favour of hydrate and ssr.
 
 Read more under <<Application configuration>> and <<React4xp components>>
 
+=== Globals vs Externals
+
+We have added a new configuration option to PROJECT_DIR/react4xp.config.js
+called `globals`. Whatever you had in `externals` should probably be moved to
+`globals`.
+
+React4xp builds a globals bundle, which MUST contain all assets NEEDED to render
+server-side. By default it contains react and react-dom, but more assets can be
+added.
+
+By default the globals bundle is also used on the client-side, but you can
+disable the serving of the globals bundle to the client-side in the Application
+configuration and provide the REQUIRED assets on your own, for example via CDN.
+
+It is possible to have pure client-side rendered components in React4xp.
+If these components use assets which are NOT needed to render server-side you
+should add them to `externals` and not `globals`. This way those assets will not
+be bundled and must be provided by other means, for example via CDN.
+
 === Application configuration
 
 We have added two application configurations.
@@ -207,6 +226,46 @@ or
 `+yarn add --dev @enonic/react4xp+`
 
 `+yarn upgrade @enonic/react4xp --latest+`
+
+
+=== react4xp.config.js
+
+```react4xp.config.js
+	// Used in ssr component(s)
+	globals: {
+		lodash: '_'
+	},
+	// Used in pure clientSide component(s).
+	// Must be provided by other means, for example CDN.
+	externals: {
+		jquery: 'jQuery'
+	},
+```
+
+=== app.cfg
+
+Hydration is enabled by default, to change the default to disabled add the line
+below to ${XP_HOME}/config/${app}.cfg. One can still enable hydration in
+specific components.
+
+```${XP_HOME}/config/${app}.cfg
+	react4xp.hydrate = false
+```
+
+SSR is enabled by default, to change the default to disabled add the line below
+to ${XP_HOME}/config/${app}.cfg. One can still enable ssr in specific
+components.
+
+```${XP_HOME}/config/${app}.cfg
+	react4xp.ssr = false
+```
+
+To disable serving the globals bundle to the client-side add the line below to
+${XP_HOME}/config/${app}.cfg.
+
+```${XP_HOME}/config/${app}.cfg
+	react4xp.serveGlobals = false
+```
 
 === import/require in controllers
 

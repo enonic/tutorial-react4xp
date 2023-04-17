@@ -1,0 +1,102 @@
+= React4XP - Configuration - Run time
+:toc: right
+
+== Application configuration file
+
+$XP_HOME/config/<app.name>.cfg
+
+{zwsp} +
+
+[[ssrLazyload]]
+=== ssrLazyload
+
+.$XP_HOME/config/<app.name>.cfg:
+[source,cfg,options="nowrap"]
+----
+react4xp.ssr.lazyLoad = true
+----
+
+As described <<#warmup, above>>, `ssrLazyload` defines the initialization behavior of the renderer workers:
+
+- If switched on (`true`), only the required assets are loaded into the nashorn engine, speeding up the first load time, but subsequent loading times for other un-initialized assets will be longer.
+- If switched off (`false`), the engine will load _all_ assets once and for all, before performing the first rendering. This makes the first warmup time predictably slower (and that may be a substantial difference in a large project), but all subsequent rendering will be spring-loaded and fast.
+
+Default value depends on `BUILD_ENV` (or `-Pdev`):
+
+- `true` in `development`
+- `false` in `production`
+
+{zwsp} +
+
+[[ssrMaxThreads]]
+=== ssrMaxThreads
+
+.$XP_HOME/config/<app.name>.cfg:
+[source,cfg,options="nowrap"]
+----
+react4xp.ssr.maxThreads = 5
+----
+
+If this override value is not set, the number of threads (<<#renderers, renderers>>) used for simultaneous SSR requests is determined by java, by...
+
+[source,java,options="nowrap"]
+----
+Runtime.getRuntime().availableProcessors()
+----
+
+...but `ssrMaxThreads` sets this number manually instead.
+
+
+{zwsp} +
+
+[[ssrSettings]]
+=== ssrSettings
+
+This value is a comma-separated string of link:https://github.com/openjdk/nashorn/blob/main/src/org.openjdk.nashorn/share/classes/org/openjdk/nashorn/internal/runtime/resources/Options.properties[nashorn options]:
+
+.$XP_HOME/config/<app.name>.cfg:
+[source,cfg,options="nowrap"]
+----
+# Explicit string of settings:
+react4xp.ssr.settings = --persistent-code-cache, --class-cache-size=42, --lazy-compilation, --optimistic-types=false
+
+# Default value, turns persistent code cache off:
+react4xp.ssr.settings = --optimistic-types=false
+----
+
+NOTE: `react4xp.ssr.settings` only effective for Nashorn Engine.
+
+{zwsp} +
+
+[[engineName]]
+=== engineName
+
+Allows to override JavaScript engine name.
+
+.$XP_HOME/config/<app.name>.cfg:
+[source,cfg,options="nowrap"]
+----
+# Explicit string of engine name:
+react4xp.ssr.engineName = Nashorn
+
+----
+
+By default, JavaScript engine name is selected in the following order: `Graal.js`, `Nashorn`, `JavaScript`.
+
+=== serveGlobals
+
+React4xp builds a globals bundle, which MUST contain all assets NEEDED to render
+server-side. By default it contains react and react-dom, but more assets can be
+added.
+
+By default the globals bundle is also provided to the client-side, but you can
+disable the serving of the globals bundle to the client-side by adding the
+following to ${XP_HOME}/config/${app}.cfg.
+
+```${XP_HOME}/config/${app}.cfg
+	react4xp.serveGlobals = false
+```
+
+Note: Keep in mind the assets in the globals bundle are still REQUIRED for
+clientSide rendering to work, so you have to provide those assets by other
+means, for example via CDN.

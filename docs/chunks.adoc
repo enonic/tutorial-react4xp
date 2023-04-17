@@ -27,9 +27,9 @@ See also: <<entries#, entries>> and <<jsxpath#, jsxPath>>.
 
 == Standard chunks
 
-In the standard react4xp setup, two chunks are likely to appear without any further setup: *externals and vendors*. That is, their names are hashed and will appear as `externals.<hash>.js` and `vendors.<hash>.js`.
+In the standard react4xp setup, two chunks are likely to appear without any further setup: *globals and vendors*. That is, their names are hashed and will appear as `globals.<hash>.js` and `vendors.<hash>.js`.
 
-- Externals usually contains react and react-dom, ensuring that the same react version is used when rendering on the client and server.
+- Globals usually contains react and react-dom, ensuring that the same react version is used when rendering on the client and server.
 - Vendors is the chunk for anything else imported from _node_modules_.
 
 {zwsp} +
