@@ -186,6 +186,13 @@ These two are optional:
 * R4X_BUILD_LOG_LEVEL (use INFO to get some extra logging when building)
 * NODE_ENV (the default is production, set it to development for no hashing, nor minification, etc...)
 
+=== Component props (react4xpId)
+
+React4xp used to add an extra prop called react4xpId, which was used during
+clientSide hydration and rendering. This prop is no longer needed as it is
+provided by other means (`script[data-react4xp-ref]`).
+
+So now: component props are just normal component props :)
 
 == How
 
