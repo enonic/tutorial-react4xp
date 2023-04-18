@@ -15,7 +15,7 @@ It doesn't have to be that way. In this example, we'll take a look at which reac
 
 == Entries and locations
 
-For react components to be available to React4xp the way we've seen so far, their *JSX source files must be located in certain folders* where React4xp is looking for them and auto-compiles them.
+For react components to be available to React4xp the way we've seen so far, their *TSX/JSX source files must be located in certain folders* where React4xp is looking for them and auto-compiles them.
 
 When they are located where they should (and export a `props=>component` function), those react components are called *entries* (<<entries#, full reference>>).
 

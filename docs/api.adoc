@@ -56,7 +56,7 @@ The signature is analogous to thymeleaf's familiar `render(view, model)`. But th
 [grid="none"]
 |===
 | Name   | Type   | Description
-| `entry` | string or component object, mandatory | Reference to an <<entries#, entry>>: the react component to be rendered. <<jsxpath#, JsxPath>> reference - or if the entry is a JSX file with the _same name_ in the _same folder_ as the controller, you can use a `portal.getComponent()` object here. Corresponds to the template argument in `thymeleaf.render`.
+| `entry` | string or component object, mandatory | Reference to an <<entries#, entry>>: the react component to be rendered. <<jsxpath#, JsxPath>> reference - or if the entry is a TSX/JSX file with the _same name_ in the _same folder_ as the controller, you can use a `portal.getComponent()` object here. Corresponds to the template argument in `thymeleaf.render`.
 | `props` | object, optional | Data model passed into the react component. JS object must be serializable (no functions can be passed). Corresponds to the model argument in `thymeleaf.render`.
 | `request` | link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object], optional (but _mandatory for react activation_) | Include to detect the rendering mode inside/outside Content Studio: inside Content Studio there should be only a static serverside-rendering, no browser react activation (or client-side rendering), only returning get an HTML visualization with the initial `props`. Special case: if `request` is not an object but omitted/falsy, page-contributions rendering is _completely skipped_. In this case, the _options_ argument (below) is still valid: any added `body` there will still serve as a container for the rendered output from this call, and any `pageContributions` inside _options_ are still added and returned.
 
@@ -148,7 +148,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc
 
 *Omitting `request` from `render` has the effect of always rendering as if it's inside Content Studio* (see above). Again, this is by design - trying to make sure that a viewable and safe rendering is always returned, even when viewing context can't be determined.
 
-However, it also means that `hydrate` and `ssr` options are ignored (you always get SSR without Hydration), and there is no call to activate the react app in the browser. Basically, it's as if JSX is used as a pure, static HTML templating language (same as XP's Thymeleaf renderer - which shares the same basic signature).
+However, it also means that `hydrate` and `ssr` options are ignored (you always get SSR without Hydration), and there is no call to activate the react app in the browser. Basically, it's as if TSX/JSX is used as a pure, static HTML templating language (same as XP's Thymeleaf renderer - which shares the same basic signature).
 
 
 When `request` is omitted, `.render` will ** never output error messages from SSR** in error containers or browser console.
@@ -215,7 +215,7 @@ Creates an initial react4xp data object from an entry.
 [grid="none"]
 |===
 | Parameter   | Type   | Description
-| `entry` | string or component object, mandatory | Reference to an <<entries#, entry>>: the react component to be rendered. Direct <<jsxpath#, JsxPath>> string, or a `portal.getComponent()` object. If you use a component object like that, the entry must be a JSX file with the _same name_ in the _same folder_ as the controller, and react4xp will try to generate an ID from the content.
+| `entry` | string or component object, mandatory | Reference to an <<entries#, entry>>: the react component to be rendered. Direct <<jsxpath#, JsxPath>> string, or a `portal.getComponent()` object. If you use a component object like that, the entry must be a TSX/JSX file with the _same name_ in the _same folder_ as the controller, and react4xp will try to generate an ID from the content.
 |===
 
 *Constructs* a react4xp data object, which exposes the attributes and methods below:

@@ -30,7 +30,7 @@ Remember to create a *new XP sandbox* when completing the project wizard.
 If you're used to working with a typical XP project using https://developer.enonic.com/templates/webpack[webpack], the structure in your project root folder will now look familiar -
 the biggest news are _react4xp.config.js_ and the folders _src/main/resources/react4xp/_ and _src/main/resources/headless_.
 
-TIP: This is just an overview, no need to know it by heart to get started - we'll get back to all of these in more detail. For the most impatient, the takeaway is: *put your JSX source files somewhere below _react4xp/entries/_ or _site/_*.
+TIP: This is just an overview, no need to know it by heart to get started - we'll get back to all of these in more detail. For the most impatient, the takeaway is: *put your TSX/JSX source files somewhere below _react4xp/entries/_ or _site/_*.
 
 [source,files]
 ----

@@ -45,7 +45,8 @@ First, we need a *page * XML file. Just XP boilerplate:
 
 [[react_component]]
 === React component
-Next, we'll add the *react component*. This displays a "Hello world" heading, and we'll add some simple functionality to it: every time you click the message, it will update a number in the next line and print a message in the console. This is to show that we're rendering an _active_ react component; we're not only using JSX as an XP templating language for static HTML - although sure, you could do that too if you want.
+
+Next, we'll add the *react component*. This displays a "Hello world" heading, and we'll add some simple functionality to it: every time you click the message, it will update a number in the next line and print a message in the console. This is to show that we're rendering an _active_ react component; we're not only using TSX/JSX as an XP templating language for static HTML - although sure, you could do that too if you want.
 
 Obviously, the actual updating step is done with vanilla JS instead of actual react, just to keep everything as simple as possible. We'll look at stateful/dynamic components later.
 

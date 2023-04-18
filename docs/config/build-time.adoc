@@ -65,9 +65,9 @@ This will not only make sure _react4xp.config.js_ is handled, but also give a fu
 entryDirs: ['myComponents', '../otherComponents']
 ----
 
-By default, React4xp will look for (ie. sets up webpack to look for) .JSX files to turn into <<entries#, entries>> below _src/main/resources/site/_.
+By default, React4xp will look for (ie. sets up webpack to look for) .TSX/.JSX files to turn into <<entries#, entries>> below _src/main/resources/site/_.
 
-Adding comma separated values under `entryDirs` adds _more_ folder names/paths (relative to _src/main/resources/react4xp/_) where JSX files will also become entries.
+Adding comma separated values under `entryDirs` adds _more_ folder names/paths (relative to _src/main/resources/react4xp/_) where TSX/JSX files will also become entries.
 
 
 

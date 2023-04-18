@@ -133,7 +133,7 @@ There should be an updated example file in the @enonic/react4xp package under ex
 
 `+npm install --save-dev @enonic/react-components+`
 
-==== Jsx/Tsx files
+==== Jsx files
 
 Edit your jsx files and change import path from:
 
