@@ -5,9 +5,9 @@
 
 == Lesson overview
 
-So far, every time we've referenced a _.jsx_ react component from react4xp in a controller, we've used a `component` object in the _entry_ argument of `React4xp.render`. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the _.jsx_ source file must be in the same folder as the controller, and have the same name.
+So far, every time we've referenced a _.jsx_ react component from React4xp in a controller, we've used a `component` object in the _entry_ argument of `React4xp.render`. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the _.jsx_ source file must be in the same folder as the controller, and have the same name.
 
-It doesn't have to be that way. In this example, we'll take a look at which react components are available to `React4xp.render` - called *entries* in react4xp - and how to reference them, whatever they're called and wherever they're located.
+It doesn't have to be that way. In this example, we'll take a look at which react components are available to `React4xp.render` - called *entries* in React4xp - and how to reference them, whatever they're called and wherever they're located.
 
 
 
@@ -15,7 +15,7 @@ It doesn't have to be that way. In this example, we'll take a look at which reac
 
 == Entries and locations
 
-For react components to be available to React4xp the way we've seen so far, their *JSX source files must be located in certain folders* where react4xp is looking for them and auto-compiles them.
+For react components to be available to React4xp the way we've seen so far, their *JSX source files must be located in certain folders* where React4xp is looking for them and auto-compiles them.
 
 When they are located where they should (and export a `props=>component` function), those react components are called *entries* (<<entries#, full reference>>).
 
@@ -23,7 +23,7 @@ When they are located where they should (and export a `props=>component` functio
 
 === 1: Below _site/_
 
-Below the folder _src/main/resources/site/_, all source files with the extension _.jsx_ are detected at compile-time and available as entries to react4xp. If you take the *path relative to _resources/_* and the file name without the extension, you get a string that can be used to point react4xp to that react component:
+Below the folder _src/main/resources/site/_, all source files with the extension _.jsx_ are detected at compile-time and available as entries to React4xp. If you take the *path relative to _resources/_* and the file name without the extension, you get a string that can be used to point React4xp to that react component:
 
 - `"site/parts/hello-react/hello-react"` -> _src/main/resources/site/parts/hello-react/hello-react.jsx_
 - `"site/parts/color/color"` -> _src/main/resources/site/parts/color/color.jsx_
@@ -31,7 +31,7 @@ Below the folder _src/main/resources/site/_, all source files with the extension
 
 ...etc.
 
-These strings are called *jsxPaths* in react4xp, and they can be used directly in controllers as the _entry_ argument. For example in the <<pages-parts-and-regions#color_part_controller, _color_ Part controller>> from before:
+These strings are called *jsxPaths* in React4xp, and they can be used directly in controllers as the _entry_ argument. For example in the <<pages-parts-and-regions#color_part_controller, _color_ Part controller>> from before:
 
 .site/parts/color/color.es6
 [source,javascript,options="nowrap"]
@@ -70,7 +70,7 @@ TIP: All the _entries_ in your project are listed with their _jsxPath_ after com
 === 2: Below _react4xp/_
 If you just want to keep your react components out of the regular XP file structure in _site/_ and be independent of the structure of Parts, Pages etc, the folder _src/main/resources/react4xp/_ is meant for that. Here's how (assuming you're using link:https://market.enonic.com/vendors/enonic/react4xp-starter[the starter] or generally following link:https://github.com/enonic/lib-react4xp/blob/master/README.md#setup-option-2-using-react4xp-in-an-existing-project[the recommended react4xp setup pattern]):
 
-Open _react4xp.config.js_ in the project root, and look for the property `entryDirs`. This is a (comma-separated) list of folder names *relative to the _react4xp/_ folder*. React4xp comes with a built-in suggestion here: `entryDirs: ['entries']`. This means that all _.jsx_ (and _.js_ and _.es6_) source files below _src/main/resources/react4xp/entries_ will become entries: react components available to react4xp.
+Open _react4xp.config.js_ in the project root, and look for the property `entryDirs`. This is a (comma-separated) list of folder names *relative to the _react4xp/_ folder*. React4xp comes with a built-in suggestion here: `entryDirs: ['entries']`. This means that all _.jsx_ (and _.js_ and _.es6_) source files below _src/main/resources/react4xp/entries_ will become entries: react components available to React4xp.
 
 They will get a *_jsxPath_ relative to the closest _entryDirs_ folder*.
 
@@ -112,7 +112,7 @@ entryDirs:['entries','../../../../../node_modules/externalComponents/comps']
 
 == Further reading
 
-If you want a deeper dive into details before moving on, here's more about <<entries#, entries>> and the <<jsxpath#, jsxPaths>> that point react4xp to them.
+If you want a deeper dive into details before moving on, here's more about <<entries#, entries>> and the <<jsxpath#, jsxPaths>> that point React4xp to them.
 
 {zwsp} +
 

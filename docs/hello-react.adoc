@@ -7,7 +7,7 @@
 
 React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: displaying a working react component in content studio.
 
-We'll first do that in the serverside rendered way (this is the react4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
+We'll first do that in the serverside rendered way (this is the React4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
 
 {zwsp} +
 
@@ -129,13 +129,13 @@ exports.get = function(request) {                       // <2>
 
 That's it.
 
-If you've used XP before, you'll probably note that there's no HTML view file, no `thymeleaf.render`, and so on - in this example, react4xp completely handles the page view. The essential thing here is that at the end of the `get` function, *react4xp in a single _.render_ call creates a _full_ XP response object that makes react work.*
+If you've used XP before, you'll probably note that there's no HTML view file, no `thymeleaf.render`, and so on - in this example, React4xp completely handles the page view. The essential thing here is that at the end of the `get` function, *React4xp in a single _.render_ call creates a _full_ XP response object that makes react work.*
 
 What's going on in the controller?
 
 <1> In line 2, `React4xp` is imported from the library.
 <2> In line 4, we pick up the `request` data. The render call needs it to know the rendering context.
-<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for react4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that, but for all the juicy details: <<entries#, entries>> and <<jsxpath#, jsxPath>>).
+<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for React4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that, but for all the juicy details: <<entries#, entries>> and <<jsxpath#, jsxPath>>).
 <4> In line 8, the juicy bit: *the actual render call*. The rendered response from it can be returned directly from the `get` function, since `.render` creates an object with a `body` HTML string and a `pageContributions` attribute with everything needed (more details: <<api#react4xp_render, the render API>>).
 <5> In line 13, the `id` attribute _"react4xpApp"_ is set in the *options* argument of `.render` (lines 12-20). This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
 <6> In lines 14-19, we're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag (such as `<!DOCTYPE html>`).
@@ -149,7 +149,7 @@ If you've added those 3 files, let's get this rendered! If you've used XP and Co
 
 . Compile the project (`enonic project deploy` in a terminal from root) and start the sandbox (`enonic sandbox start`),
 . Navigate your browser to `localhost:8080/admin`. Log in to XP and open Content Studio (if you haven't already, you'll need to link:https://market.enonic.com/vendors/enonic/content-studio[install Content Studio] in XP).
-. Create a new Site content and Edit it in a new tab. Add your react4xp app (_"starter-react4xp"_?) on the upper left.
+. Create a new Site content and Edit it in a new tab. Add your React4xp app (_"starter-react4xp"_?) on the upper left.
 . Select the new _Hello-react_ page controller in the preview panel on the right. Store that change (and refresh the page if needed).
 
 You should now see something like this:
@@ -190,7 +190,7 @@ NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.re
 
 You may also have noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the *Nashorn server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
 
-We're looking into mitigating this delay in the future, but for now, this is nice to know: *This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app. Setting up a continuous build with XP devmode instead, helps. For the react4xp starter, here's how:
+We're looking into mitigating this delay in the future, but for now, this is nice to know: *This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app. Setting up a continuous build with XP devmode instead, helps. For the React4xp starter, here's how:
 
   1. `enonic sandbox start <yourSandBoxName> --dev` in one terminal (from anywhere), and
 
@@ -230,7 +230,7 @@ We can see this whole output is actually the `body` HTML string we passed into t
 <1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component. At this point it's only static markup, but it will be activated during step 5 below.
 <2> The first asset is `globals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN.
 <3> The second loaded asset is a client-wrapper.
-<4> The third asset is the compiled version of _hello-react.jsx_, with the react component and the `dropBottle` routine. During `React4xp.render`, react4xp used the `component` data to locate this asset _after_ compiling. The react component gets an identifier string, `site/pages/hello-react/hello-react`, which is called a _jsxPath_ in react4xp. We'll cover jsxPaths later (full detail reference <<jsxpath#, here>>), but for now you just need to know that this identifier is also used when loading this asset into the the browser's namespace: `React4xp['site/pages/hello-react/hello-react']`.
+<4> The third asset is the compiled version of _hello-react.jsx_, with the react component and the `dropBottle` routine. During `React4xp.render`, React4xp used the `component` data to locate this asset _after_ compiling. The react component gets an identifier string, `site/pages/hello-react/hello-react`, which is called a _jsxPath_ in React4xp. We'll cover jsxPaths later (full detail reference <<jsxpath#, here>>), but for now you just need to know that this identifier is also used when loading this asset into the the browser's namespace: `React4xp['site/pages/hello-react/hello-react']`.
 <5> The script that actually runs `hydrate` with the `props` on the clientside.
 
 NOTE: The assets are served by lib-react4xp services. Most of them (_react4xp-client_ and the content-hashed assets) are optimized for client-side caching, to minimize repeated requests.

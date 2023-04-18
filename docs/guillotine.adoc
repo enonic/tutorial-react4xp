@@ -10,13 +10,13 @@ image:guillotine.jpg[title="React4xp goes headless", width=600px]
 
 == Some background
 
-In the previous chapters we've looked at a "traditional CMS" way of using react4xp: as content directly presented (and augmented) by react components, served together by XP. This is fairly easy to set up and works fine for many use cases. But in other cases, we may not want such a tight connection between the content and the presentational components. There may be advantages of handling/serving them separately - or an approach where a content-exposing API works alongside a traditional CMS, as a supplement. These approaches are often called a link:https://enonic.com/blog/headless-or-decoupled-cms[headless] or link:https://enonic.com/blog/what-is-hybrid-cms[hybrid] CMS.
+In the previous chapters we've looked at a "traditional CMS" way of using React4xp: as content directly presented (and augmented) by react components, served together by XP. This is fairly easy to set up and works fine for many use cases. But in other cases, we may not want such a tight connection between the content and the presentational components. There may be advantages of handling/serving them separately - or an approach where a content-exposing API works alongside a traditional CMS, as a supplement. These approaches are often called a link:https://enonic.com/blog/headless-or-decoupled-cms[headless] or link:https://enonic.com/blog/what-is-hybrid-cms[hybrid] CMS.
 
 In Enonic XP, project link:https://developer.enonic.com/docs/headless-cms/stable[guillotine] is a go-to solution for extending the existing CMS capabilities. It exposes a read-only link:https://graphql.org/[GraphQL] API, and provides the ability to *read pure content data* (the "body" in the analogy) from XP with great flexibility and high performance.
 
-Combining this with react as the presentational component (the "head") opens up a range of ways to use XP in headless/hybrid manners. This makes guillotine a neat and natural companion to react4xp, so the *guillotine library is included in the react4xp starter* along with two extra helper wrappers.
+Combining this with react as the presentational component (the "head") opens up a range of ways to use XP in headless/hybrid manners. This makes guillotine a neat and natural companion to React4xp, so the *guillotine library is included in the React4xp starter* along with two extra helper wrappers.
 
-We will now look at how to use react4xp with guillotine in different ways, for different levels of decoupling.
+We will now look at how to use React4xp with guillotine in different ways, for different levels of decoupling.
 
 == Lesson overview
 
@@ -24,11 +24,11 @@ This chapter will focus on setting up the guillotine API and the first usages:
 
 - set up a content type and react visualization for single movie items,
 - making *a graphQL query* for content data in a regular XP controller,
-- using react4xp to *visualize that data*,
+- using React4xp to *visualize that data*,
 - letting the rendered components make *the same query from the frontend*,
 - and use react to dynamically render a visualization of the returned data, and this way fill in more content as we scroll down the page: an *"infinite scroller"* page.
 
-NOTE: The <<webapp#, next chapter>> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same react4xp components in a _standalone webapp_, to render content data from a guillotine API.
+NOTE: The <<webapp#, next chapter>> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same React4xp components in a _standalone webapp_, to render content data from a guillotine API.
 
 [[chapter_source_files]]
 === Source files
@@ -80,7 +80,7 @@ headless/                       <!--6-->
 
 == Groundwork: movie items
 
-This first stage should be easy enough, almost entirely repeating steps you've been through in previous chapters. We'll make a _movie_ content type, set up react4xp to preview-render it with react components (but with <<#controller_mapping, a little twist>>), and add some movie items that will be listed when the site is done.
+This first stage should be easy enough, almost entirely repeating steps you've been through in previous chapters. We'll make a _movie_ content type, set up React4xp to preview-render it with react components (but with <<#controller_mapping, a little twist>>), and add some movie items that will be listed when the site is done.
 
 [NOTE]
 ====
@@ -372,7 +372,7 @@ After the previous chapters, not much in this controller should come as a surpri
 <3> Normalizing the `actor` data to guarantee that it's an array.
 <4> `React4xp.render` needs a unique ID to target a container in the surrounding `body`.
 <5> `"Movie"` is of course the <<jsxpath#, jsxPath>> reference to the entry, _react4xp/myEntries/Movie.jsx_.
-<6> This controller is the only one triggered for rendering _movie_ items. That means that the `body` that the rendering is inserted into, has to be a *full root HTML document* including a `<head>` section (or otherwise react4xp won't know where to put the rendered page contributions, and the component won't work properly).
+<6> This controller is the only one triggered for rendering _movie_ items. That means that the `body` that the rendering is inserted into, has to be a *full root HTML document* including a `<head>` section (or otherwise React4xp won't know where to put the rendered page contributions, and the component won't work properly).
 <7> Workaround for a current link:https://github.com/enonic/lib-react4xp/issues/107[inconvenient bug].
 
 
@@ -418,7 +418,7 @@ Next, we'll make a page controller for a site item that displays a static list o
 [[guillotine_helpers]]
 === Guillotine helpers and usage
 
-First off, an introduction to the guillotine helpers at we'll be using. Two of them -  _headless/guillotineApi.es6_ and  _headless/guillotineRequests.es6_ - are general-purpose helpers *included in the react4xp starter*, and the third one we'll write next.
+First off, an introduction to the guillotine helpers at we'll be using. Two of them -  _headless/guillotineApi.es6_ and  _headless/guillotineRequests.es6_ - are general-purpose helpers *included in the React4xp starter*, and the third one we'll write next.
 
 === Included helper: guillotineApi.es6
 
@@ -747,7 +747,7 @@ But first, a word of caution about doing this in other projects:
 
 [NOTE]
 ====
-In the included form from the react4xp starter, _guillotineAPI.es6_ is as bare-bone as it gets, and primarily meant as a stepping stone for developers to expand from.
+In the included form from the React4xp starter, _guillotineAPI.es6_ is as bare-bone as it gets, and primarily meant as a stepping stone for developers to expand from.
 
 Guillotine is a read-only interface, but still: after adding the controller mapping to an unchanged _guillotineAPI.es6_, it's opened to receiving and *executing any guillotine query* from the frontend, technically exposing any data from the content repo to being read.
 
@@ -1244,7 +1244,7 @@ export default (props) => <MovieList {...props} />;
 [[nashornbrowserbreakage]]
 [NOTE]
 ====
-The Nashorn server-side rendering engine lacks most browser-specific JS functionality (except for the things react4xp has specifically polyfilled).
+The Nashorn server-side rendering engine lacks most browser-specific JS functionality (except for the things React4xp has specifically polyfilled).
 
 *Referring to browser-specific functionality during server-side rendering will usually throw an error in the server log* and break the rendering.
 

@@ -4,7 +4,7 @@
 [[react4xp.config.js]]
 == react4xp.config.js
 
-Several aspects of react4xp can be configured with a file _react4xp.config.js_.
+Several aspects of React4xp can be configured with a file _react4xp.config.js_.
 
 If you're using the <<setup#create_project, starter>> or your project is based on it, this is already set up and you can skip the following section:
 
@@ -12,7 +12,7 @@ If you're using the <<setup#create_project, starter>> or your project is based o
 
 === Including react4xp.config.js in your project
 
-Put _react4xp.config.js_ at the root of your XP project. A template can be copied from link:https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js[here], or from _node_modules/@enonic/react4xp/examples/react4xp.config.js_ after installing the react4xp NPM package.
+Put _react4xp.config.js_ at the root of your XP project. A template can be copied from link:https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js[here], or from _node_modules/@enonic/react4xp/examples/react4xp.config.js_ after installing the React4xp NPM package.
 
 *In order to take effect, it must be handled by gradle during the build:*
 
@@ -65,7 +65,7 @@ This will not only make sure _react4xp.config.js_ is handled, but also give a fu
 entryDirs: ['myComponents', '../otherComponents']
 ----
 
-By default, react4xp will look for (ie. sets up webpack to look for) .JSX files to turn into <<entries#, entries>> below _src/main/resources/site/_.
+By default, React4xp will look for (ie. sets up webpack to look for) .JSX files to turn into <<entries#, entries>> below _src/main/resources/site/_.
 
 Adding comma separated values under `entryDirs` adds _more_ folder names/paths (relative to _src/main/resources/react4xp/_) where JSX files will also become entries.
 
@@ -77,7 +77,7 @@ Adding comma separated values under `entryDirs` adds _more_ folder names/paths (
 === chunkDirs
 
 
-By default, react4xp will look for (ie. sets up webpack to look for) resources _imported by_ the entries. These are link:https://webpack.js.org/concepts/[bundled] into separate assets that react4xp automatically loads at both server- and clientside rendering: <<chunks#, chunks>>, by this pattern:
+By default, React4xp will look for (ie. sets up webpack to look for) resources _imported by_ the entries. These are link:https://webpack.js.org/concepts/[bundled] into separate assets that React4xp automatically loads at both server- and clientside rendering: <<chunks#, chunks>>, by this pattern:
 
 - If they are react and reactDOM, they are bundled separately into `globals.*.js` (where the * is a content-dependent hash).
 - _node_modules/@enonic/react-components/_ is bundled into `templates.*.js`
@@ -169,7 +169,7 @@ module.exports = function(env, config) {
 };
 ----
 
-The extra incoming `config` object contains the built-in rules from react4xp. This enables you to both manipulate those rules and/or add your own, or entirely replace them by returning a different object.
+The extra incoming `config` object contains the built-in rules from React4xp. This enables you to both manipulate those rules and/or add your own, or entirely replace them by returning a different object.
 ====
 
 {zwsp} +
@@ -202,7 +202,7 @@ Use the gradle commandline flag `-Pdev` or `-Pdevelopment` to enable building in
 enonic project gradle build deploy -Pdev
 ----
 
-This switches between react4xp *build* modes (not to be confused with XP's link:https://developer.enonic.com/docs/enonic-cli/master/dev#start[run modes]).
+This switches between React4xp *build* modes (not to be confused with XP's link:https://developer.enonic.com/docs/enonic-cli/master/dev#start[run modes]).
 
 - `production`: assets are compiled more compact (and faster), with no source maps, and the entire SSR engine is initialized at once.
 - `development`: assets are compiled for more human-readability, with source maps, making errors easier to track down. If `ssrLazyload` hasn't been set, `development` will activate lazy-loading.
@@ -214,5 +214,5 @@ Default value is `production`.
 [[VERBOSE]]
 === Verbosity
 
-Use the gradle commandline flag -i or --info to enable a more verbose output when compiling react4xp components, globals and nashornPolyfills.
+Use the gradle commandline flag -i or --info to enable a more verbose output when compiling React4xp components, globals and nashornPolyfills.
 

@@ -102,7 +102,7 @@ export default (props) => {
 
 [TIP]
 ====
-`props` are of course the standard react way to do this. It all is. As long as a _props => reactComponent_ function is default-exported, react4xp accepts standard valid ES6/JSX.
+`props` are of course the standard react way to do this. It all is. As long as a _props => reactComponent_ function is default-exported, React4xp accepts standard valid ES6/JSX.
 
 Although, if you think that the _makeObjectDropper_ closure thing is a strange way to do something react itself could do better... sure. Just trying to stay focused on one thing at a time.
 ====

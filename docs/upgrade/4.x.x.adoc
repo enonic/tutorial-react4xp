@@ -27,11 +27,11 @@ If they are not, it will use the React 17 functions like render() and hydrate().
 === Target folder (browser cache)
 
 We have changed target folder from `build/resources/main/assets/react4xp` to
-`build/resources/main/r4xAssets`. The react4xp assets are currently provided by 
+`build/resources/main/r4xAssets`. The React4xp assets are currently provided by 
 a service on top of lib-static and should not be available via assetUrl. When
 building in production mode: the asset filenames contain contenthashes, so they
 can be served as static assets with "infinite" browser caching. When building in
-development mode, react4xp uses ETag.
+development mode, React4xp uses ETag.
 
 We have not changed the source folder `src/main/resources/react4xp`, so you
 don't have to move any files.
@@ -79,7 +79,7 @@ Add this to $XP_HOME/config/app.cfg:
 react4xp.hydrate = false
 ```
 
-To disable client-side hydration for all react4xp components (page, layout, parts, etc)
+To disable client-side hydration for all React4xp components (page, layout, parts, etc)
 
 You can still override the application configuration in the controller.
 
@@ -129,13 +129,13 @@ SSR without hydration used to be enforced for both `edit` and `inline` mode in C
 
 Now it will only enforce it in `edit` mode. 
 
-`inline` mode will use normal react4xp rendering, just as `preview` and `live` mode.
+`inline` mode will use normal React4xp rendering, just as `preview` and `live` mode.
 
 === Gradle
 
 We have simplified the gradle setup a lot.
 
-All old refernces to react4xp in the build.gradle file, must be removed.
+All old refernces to React4xp in the build.gradle file, must be removed.
 
 
 These files no longer exist:
@@ -199,7 +199,7 @@ task react4xp(type: NpmTask, dependsOn: npmInstall) {
     'run',
     'build:react4xp' // This script must exist in the package.json file
   ]
-  description 'Compile react4xp resources'
+  description 'Compile React4xp resources'
   environment = [
     'R4X_APP_NAME': "${appName}",
     'R4X_BUILD_LOG_LEVEL': gradle.startParameter.logLevel.toString(),

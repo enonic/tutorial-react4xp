@@ -8,12 +8,12 @@ A dependency chunk is *a compiled asset that can contain multiple components* th
 
 Think of it as a *library* of secondary resources that can be used by <<entries#, entries>> (or by other chunks).
 
-Dependency chunks are served by react4xp to the client and used there. They may contain JS, or other types of code.
+Dependency chunks are served by React4xp to the client and used there. They may contain JS, or other types of code.
 
 {zwsp} +
 
 == Importing
-Entries and other chunks can import resources from chunks using *ordinary ES6 imports*, as long as the necessary webpack rules are added. Compilation rules for regular ES6 and JSX are included with react4xp. Other rules (loaders etc) you must add yourself - see <<imports-and-dependency-chunks#_adding_webpack_rules, lesson 6>>.
+Entries and other chunks can import resources from chunks using *ordinary ES6 imports*, as long as the necessary webpack rules are added. Compilation rules for regular ES6 and JSX are included with React4xp. Other rules (loaders etc) you must add yourself - see <<imports-and-dependency-chunks#_adding_webpack_rules, lesson 6>>.
 
 [[entries_and_chunks]]
 .Entries and chunks - the full picture:
@@ -27,7 +27,7 @@ See also: <<entries#, entries>> and <<jsxpath#, jsxPath>>.
 
 == Standard chunks
 
-In the standard react4xp setup, two chunks are likely to appear without any further setup: *globals and vendors*. That is, their names are hashed and will appear as `globals.<hash>.js` and `vendors.<hash>.js`.
+In the standard React4xp setup, two chunks are likely to appear without any further setup: *globals and vendors*. That is, their names are hashed and will appear as `globals.<hash>.js` and `vendors.<hash>.js`.
 
 - Globals usually contains react and react-dom, ensuring that the same react version is used when rendering on the client and server.
 - Vendors is the chunk for anything else imported from _node_modules_.
@@ -59,7 +59,7 @@ Dependency chunks never contain <<entries#, entries>>; each entry is an asset fi
 
 This is why entries are used as a separate word from react components: all entries are react components, but all react components are not necessarily entries: react components can also be secondary imports from chunks / chunkDirs.
 
-Only entries are runtime-available to react4xp.
+Only entries are runtime-available to React4xp.
 
 {zwsp} +
 
@@ -77,7 +77,7 @@ But most importantly, they are *automatically optimized for performance*:
 
 {zwsp} +
 
-*Recommended usage:* chunks are made to be *fire-and-forget*. Define the chunkDir, some webpack rules if necessary, and import it from your entry (or your secondary components inside chunks) - the react4xp build setup and runtime will handle the rest. Dependencies are tracked, so `React4xp.render` (and `.renderPageContributions`) automatically adds extra client-side links to necessary chunks.
+*Recommended usage:* chunks are made to be *fire-and-forget*. Define the chunkDir, some webpack rules if necessary, and import it from your entry (or your secondary components inside chunks) - the React4xp build setup and runtime will handle the rest. Dependencies are tracked, so `React4xp.render` (and `.renderPageContributions`) automatically adds extra client-side links to necessary chunks.
 
 Since chunks are most optimized for repeated usage, it's best to put your heavy components and resources in chunks, and *let the entries stay slim and lightweight*.
 

@@ -10,8 +10,8 @@ This final example is going to be more real-life-like. We'll focus on these feat
 
 - Using an entry from a *myEntries* folder outside of the _site/_ structure
 - Letting the entry itself *import and nest its own react components*. Imports like this are just regular frontend ES6, and happen at compile time, done by webpack.
-- Importing those secondary assets from a shared non-entry folder, and marking that folder so everything in it is turned into a separate bundle - a *dependency chunk*. These chunks are repeatedly-used, effectively-cached and rarely-downloaded "library assets" of shared secondary components. They're meant to take care of bigger stuff while keeping the footprint of the entry small (while still automatically compiled and tracked by react4xp).
-- Our react components will need some compilation that react4xp doesn't handle: styling our react components (but it could be anything on the webpack step: asset handling, loaders etc). So we'll see how to *add custom webpack config* to the react4xp setup.
+- Importing those secondary assets from a shared non-entry folder, and marking that folder so everything in it is turned into a separate bundle - a *dependency chunk*. These chunks are repeatedly-used, effectively-cached and rarely-downloaded "library assets" of shared secondary components. They're meant to take care of bigger stuff while keeping the footprint of the entry small (while still automatically compiled and tracked by React4xp).
+- Our react components will need some compilation that React4xp doesn't handle: styling our react components (but it could be anything on the webpack step: asset handling, loaders etc). So we'll see how to *add custom webpack config* to the React4xp setup.
 
 .Files involved:
 [source,files]
@@ -42,9 +42,9 @@ webpack.config.react4xp.js
 
 As you can see, there are more moving parts than before to coordinate here, so we'll divide the code into *three sections*:
 
-- an XP part at the core of things, fetching editorial data from XP and inserting it into a react4xp entry - as before,
+- an XP part at the core of things, fetching editorial data from XP and inserting it into a React4xp entry - as before,
 - the entries and imported assets under _react4xp/_,
-- and adaptations to the react4xp config, which will enable webpack handling of styles and enable the Part controller to find and use the entry and its imports the way we want.
+- and adaptations to the React4xp config, which will enable webpack handling of styles and enable the Part controller to find and use the entry and its imports the way we want.
 
 
 {zwsp} +
@@ -114,14 +114,15 @@ exports.get = function(request) {
 ----
 <1> Taking the serverside-rendering checkbox from the Part's config, and turning it into a `ssr` flag that's sent into the _options_ argument <<hello-react#_client_side_rendering, just like before>>.
 <2> Creating a `colors` array of the color names from the Part's config, trimming them and removing empty ones. This is passed into the _props_ argument <<editorial-data-and-props#, like before>>.
-<3> This argument is slightly different compared to previously. `"MultiColor"` is a <<jsxpath#, jsxPath>> to an entry, as you'd expect. But why does it look so... naked? Where does it point to? As we'll see <<#webpack_config, in a moment>>, we'll set up react4xp to look for entries below an `entryDir` in react4xp.config.js: _src/main/resources/react4xp/myEntries/_. Since a jsxPath is relative to the closest parent `entryDir` and we'll put an entry _MultiColor.jsx_ at the root of _entries/_, the jsxPath becomes just the clean file name.
+<3> This argument is slightly different compared to previously. `"MultiColor"` is a <<jsxpath#, jsxPath>> to an entry, as you'd expect. But why does it look so... naked? Where does it point to? As we'll see <<#webpack_config, in a moment>>, we'll set up React4xp to look for entries below an `entryDir` in React4xp.config.js: _src/main/resources/react4xp/myEntries/_. Since a jsxPath is relative to the closest parent `entryDir` and we'll put an entry _MultiColor.jsx_ at the root of _entries/_, the jsxPath becomes just the clean file name.
 
 
 
 {zwsp} +
 
 == The _MultiColor_ entry
-Before we do the react4xp / webpack configuration, we'll make *the _MultiColor.jsx_ entry* and its dependencies.
+
+Before we do the React4xp / webpack configuration, we'll make *the _MultiColor.jsx_ entry* and its dependencies.
 
 This is a more complex entry than before (and the most complex part of this example) - it's composed of main react code that *imports secondary dependencies*.
 
@@ -129,7 +130,7 @@ This is a more complex entry than before (and the most complex part of this exam
 
 === React component
 
-This is a *stateful* react component that not only *imports and nests secondary react components*, but also imports *styling* - both its own specific and shared general styling - and relies on webpack and react4xp to handle all the compilation and assets behind the scenes.
+This is a *stateful* react component that not only *imports and nests secondary react components*, but also imports *styling* - both its own specific and shared general styling - and relies on webpack and React4xp to handle all the compilation and assets behind the scenes.
 
 .src/main/resources/react4xp/myEntries/MultiColor.jsx:
 [source,javascript,options="nowrap"]
@@ -196,7 +197,7 @@ class MultiColor extends React.Component {              <!--4-->
                                                         <!--13-->
 export default (props) => <MultiColor {...props} />;
 ----
-<1> The entry imports some secondary react components for nesting later. These imports have nothing to do with react4xp's <<jsxPath#, jsxPaths>>, this is *regular ES6 module importing* and will be handled by webpack at compile time and served to the client at runtime. Basically any react component can be imported from anywhere here, including other entries. In this case we're referring to components below a different folder, _shared/_, which we will <<#webpack_config, later>> mark as a *chunk directory* instead of an entry directory. _Shared/_ is not below _entries/_ (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with `React4xp.render`. As you will see, this *folder separation* is also important for the compiled outcome: the entry, _MultiColor.jsx_, will be compiled into _r4xAssets/MultiColor.js_, but *imported components* like this will be collected inside a common *dependency chunk*: _r4xAssets/shared.<HASH>.js_. React4xp and webpack track the dependency connections between an entry and all its required chunks - so `React4xp.render` automatically generates asset-loading page contributions from the controller. The outcome: when the webpack rules are set up correctly later, *imports like this in entries rendered by react4xp are all that's needed to connect the entries to the additional assets they might need*: no manual url handling in the controller or thymeleaf views etc. Dependency chunks are also  optimized for repeated use (more details on <<chunks#, dependency chunks>>).
+<1> The entry imports some secondary react components for nesting later. These imports have nothing to do with React4xp's <<jsxPath#, jsxPaths>>, this is *regular ES6 module importing* and will be handled by webpack at compile time and served to the client at runtime. Basically any react component can be imported from anywhere here, including other entries. In this case we're referring to components below a different folder, _shared/_, which we will <<#webpack_config, later>> mark as a *chunk directory* instead of an entry directory. _Shared/_ is not below _entries/_ (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with `React4xp.render`. As you will see, this *folder separation* is also important for the compiled outcome: the entry, _MultiColor.jsx_, will be compiled into _r4xAssets/MultiColor.js_, but *imported components* like this will be collected inside a common *dependency chunk*: _r4xAssets/shared.<HASH>.js_. React4xp and webpack track the dependency connections between an entry and all its required chunks - so `React4xp.render` automatically generates asset-loading page contributions from the controller. The outcome: when the webpack rules are set up correctly later, *imports like this in entries rendered by React4xp are all that's needed to connect the entries to the additional assets they might need*: no manual url handling in the controller or thymeleaf views etc. Dependency chunks are also  optimized for repeated use (more details on <<chunks#, dependency chunks>>).
 <2> This applies to styling too. Here, the entry imports some specific styling of its own, from a SASS file in the _entries/_ folder. This import is webpack-centric syntax too: the SASS in _MultiColor.scss_ is compiled to the asset _r4xAssets/Multicolor.css_, and automatically added when using this entry (of course, there's more than one way to handle styling in webpack, this is just one working example).
 <3> Another SASS styling import, this time not from the same folder but from the _shared/_ folder. Just like with compiled JS chunks, all imported styling below _shared/_ will be compiled into the dependency chunk _r4xAssets/shared.<HASH>.css_ - again automatically handled.
 <4> Unlike previous examples, this is an old-school stateful react Component with class syntax. See also (13).
@@ -380,7 +381,7 @@ export default ({colors, selectedIndex, clickFunc}) =>
 {zwsp} +
 
 [[webpack_config]]
-== Configuring react4xp and webpack
+== Configuring React4xp and webpack
 
 In this section we'll adjust some settings to make the code above work.
 
@@ -400,7 +401,7 @@ entryDirs: 'myEntries'   <!--1-->
 
 chunkDirs: 'shared'    <!--2-->
 ----
-<1> `entryDirs` is a list of where react4xp will look for source files to compile and serve as entries: in this case _src/main/resource/react4xp/myEntries_. This list is *in addition* to XP's _site/_ folder - _site/_ always acts as a sort of default, special-case entryDir: under _site/_ only .JSX files are picked up as entries, while in all other entryDirs, .ES6 and .JS are picked up as well.
+<1> `entryDirs` is a list of where React4xp will look for source files to compile and serve as entries: in this case _src/main/resource/react4xp/myEntries_. This list is *in addition* to XP's _site/_ folder - _site/_ always acts as a sort of default, special-case entryDir: under _site/_ only .JSX files are picked up as entries, while in all other entryDirs, .ES6 and .JS are picked up as well.
 <2> `chunkDirs` is a list of folders that will be turned into collection/library assets (dependency chunks): in this case _src/main/resource/react4xp/shared_. One chunk asset for each file type in each chunkDir, named after the chunkDir. If a different name is already here: `entryDirs: ['entries', 'myEntries']` works fine.
 
 So in our example here, JSX files under _myEntries/_ are available to `React4xp.render` and friends, in XP controllers. Each entry becomes an asset file in itself.
@@ -468,8 +469,8 @@ module.exports = function(env, config) {                     <!--1-->
     return config;                                           <!--3-->
 };
 ----
-<1> Currently, the whole file *must export a function* where the arguments are a standard webpack `env` object, and `config` which is the existing webpack config object from react4xp.
-<2> That function may *mutate (or replace!) the react4xp webpack `config` object* (on this line and later: "take any incoming `config.module.rules` and add this style-compilation-rule object"). So previously existing attributes will be overwritten by the new ones from this file.
+<1> Currently, the whole file *must export a function* where the arguments are a standard webpack `env` object, and `config` which is the existing webpack config object from React4xp.
+<2> That function may *mutate (or replace!) the React4xp webpack `config` object* (on this line and later: "take any incoming `config.module.rules` and add this style-compilation-rule object"). So previously existing attributes will be overwritten by the new ones from this file.
 <3> The function *must return the changed (or replaced) config object*.
 
 {zwsp} +

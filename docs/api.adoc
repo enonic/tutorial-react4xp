@@ -3,7 +3,7 @@
 :imagesdir: media/
 
 [[api]]
-The react4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib[Enonic Market]) exposes a couple of methods that can be run from XP controllers.
+The React4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib[Enonic Market]) exposes a couple of methods that can be run from XP controllers.
 
 This chapter also covers the <<#ssr, SSR engine>>, compilation, and <<#react4xp_properties, configuration>> of those.
 
@@ -106,7 +106,7 @@ Returns an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP re
 The root of this HTML is always a *surrounding container* HTML that will have a matching-ID *target element* in it somewhere (an element matching the ID of the clientside call to `.render` or `.hydrate`: that ID is `options.id` if that was set, or a generated unique one if not). This surrounding structure is `options.body`, unchanged if that already contained a matching-ID element, or with a new target element generated and inserted at the end if it didn’t have one. If there is no `options.body`, the surrounding container is just a generated target `<div>` element.
 
 Inside that matching-ID element, there will be a serverside rendering of the entry (with the initial props from `options.props`) if `options.ssr` is not false.
-| `pageContributions`| object | Regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions]. Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating client-wrapper call. Urls point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
+| `pageContributions`| object | Regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions]. Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating client-wrapper call. Urls point to React4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
 |===
 
 {zwsp} +

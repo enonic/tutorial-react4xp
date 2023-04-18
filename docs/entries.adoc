@@ -7,7 +7,7 @@
 == What is an entry?
 React4xp is structured around _entries_.
 
-It's actually a webpack term, but in react4xp we use the word entry for *a React component that can be accessed by react4XP* in an XP controller. They are the _only_ react files that react4xp can use directly.
+It's actually a webpack term, but in React4xp we use the word entry for *a React component that can be accessed by React4xp* in an XP controller. They are the _only_ react files that React4xp can use directly.
 
 [[mentalmodel]]
 Think of entries as *"bridge elements"*:
