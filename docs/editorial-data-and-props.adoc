@@ -81,7 +81,9 @@ function makeThingDropper(droppableProp, initialCountProp) {
     return () => {
         currentCount--;
         console.log(currentCount.toString(), droppableProp, 'on the wall.');
-        document.getElementById('counter').innerText = currentCount;
+        if (document) { // <1>
+            document.getElementById('counter').innerText = currentCount;
+        }
     };
 }
 
@@ -99,6 +101,8 @@ export default (props) => {
     );
 }
 ----
+
+<1> React4xp no longer polyfill's document, so an if block is needed to avoid SSR errors.
 
 [TIP]
 ====

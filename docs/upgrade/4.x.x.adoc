@@ -194,6 +194,20 @@ provided by other means (`script[data-react4xp-ref]`).
 
 So now: component props are just normal component props :)
 
+=== document polyfill
+
+Several frameworks and node modules uses `document` to determine whether it's code
+is running on the server, or in the browser. By polyfilling `document` that
+logic is broken. So React4xp is no longer polyfilling `document`.
+
+TIP: If your code is using `document`, and is not a pure client-side component:
+you should wrap the code with an if block to avoid that code being run on the
+server.
+
+WARNING: If you are importing some "broken" module that uses `document` without
+checking for client or server, you may polyfill `document` on your own, but it
+might break other modules which now thinks the server is the client...
+
 == How
 
 === build.gradle

@@ -76,7 +76,7 @@ Apart from that, you can use ordinary ES6 and import and nest other JS, react co
 ====
 By the way, a quick gotcha on using `document` and `window` etc, during serverside vs clientside rendering:
 
-Naturally, a lot of **browser-specific functionality won't work well during server-side rendering**. React4xp has polyfilled `window` as _empty objects_. To prevent weird behavior or errors, browser-specific code should only run in the browser.
+Naturally, a lot of **browser-specific functionality won't work well during server-side rendering**. React4xp has polyfilled `window` as _empty object_. To prevent weird behavior or errors, browser-specific code should only run in the browser.
 
 In this example, `dropBottle` is the response to a click listener which won't be triggered to actually _run_ on the server (although the asset is compiled and read the asset into memory, but that is safe in itself), so we don't need any more safeguards here. But if you do, it's easy enough - for example:
 
