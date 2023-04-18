@@ -76,9 +76,9 @@ Apart from that, you can use ordinary ES6 and import and nest other JS, react co
 ====
 By the way, a quick gotcha on using `document` and `window` etc, during serverside vs clientside rendering:
 
-Naturally, a lot of **browser-specific functionality won't work well during server-side rendering**. React4xp has polyfilled both `document` and `window` as _empty objects_ in Nashorn. To prevent weird behavior or errors, browser-specific code should only run in the browser.
+Naturally, a lot of **browser-specific functionality won't work well during server-side rendering**. React4xp has polyfilled `window` as _empty objects_. To prevent weird behavior or errors, browser-specific code should only run in the browser.
 
-In this example, `dropBottle` is the response to a click listener which won't be triggered to actually _run_ on the server (although the asset is compiled and read the asset into nashorn, but that is safe in itself), so we don't need any more safeguards here. But if you do, it's easy enough - for example:
+In this example, `dropBottle` is the response to a click listener which won't be triggered to actually _run_ on the server (although the asset is compiled and read the asset into memory, but that is safe in itself), so we don't need any more safeguards here. But if you do, it's easy enough - for example:
 
 [source,javascript,options="nowrap"]
 ----
@@ -188,7 +188,7 @@ NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.re
 
 === First serverside render can be slow
 
-You may also have noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the *Nashorn server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
+You may also have noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the *server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
 
 We're looking into mitigating this delay in the future, but for now, this is nice to know: *This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app. Setting up a continuous build with XP devmode instead, helps. For the React4xp starter, here's how:
 
@@ -308,7 +308,7 @@ Finally, it's worth mentioning a special case where you might want to _temporari
 
 [TIP]
 ====
-You might get _serverside runtime errors_ in the react components that you write. The Nashorn rendering engine will dump an error message and some suspected code in the server log - but it's not always easy to make sense of those.
+You might get _serverside runtime errors_ in the react components that you write. The React4xp rendering engine will dump an error message and some suspected code in the server log - but it's not always easy to make sense of those.
 
 Often, switching over to _clientside rendering_ for that particular react component, will give you a better/sourcemapped error message in the browser console, making your debugging life easier.
 ====

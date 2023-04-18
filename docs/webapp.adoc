@@ -68,7 +68,7 @@ If you've used react before, this is the same flow.
 
 {zwsp} +
 
-NOTE: *This approach does NOT include server-side react rendering!* At least not out of the box. But since the React4xp build processes are pretty regular webpack, using regular react, it should be perfectly possible to tweak things and engineer your own solutions. If you go down that path, using Node.js instead of Nashorn for the SSR engine might be easier - Nashorn needs more polyfilling.
+NOTE: *This approach does NOT include server-side react rendering!* At least not out of the box. But since the React4xp build processes are pretty regular webpack, using regular react, it should be perfectly possible to tweak things and engineer your own solutions.
 
 
 {zwsp} +

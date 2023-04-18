@@ -127,15 +127,15 @@ NOTE: React4xp doesn't fully support clientSide rendering of components in regio
 [[webpack.config.react4xp.js]]
 == webpack.config.react4xp.js
 
-React4xp comes with a minimal set of webpack rules built-in, for compiling react components in JSX files into vanilla JS.
+React4xp comes with a minimal set of webpack rules built-in, for compiling react components in TSX/JSX files into vanilla JS.
 
 If you need to change/expand this setup, write a custom webpack config file <Project.Dir>/webpack.config.react4xp.js
 
 There can be several reasons to this:
 
-- Most commonly, the built-in webpack setup is pretty minimal, only adding link:https://webpack.js.org/loaders/[loaders] for compiling react from JSX. It's likely you will need to add loaders of your own, maybe use additional plugins etc
+- Most commonly, the built-in webpack setup is pretty minimal, only adding link:https://webpack.js.org/loaders/[loaders] for compiling react from TSX/JSX. It's likely you will need to add loaders of your own, maybe use additional plugins etc
 - You may want to adjust other aspects of the compilation rules, or even replace the built-in rules entirely
-- The assets that are built during the compilation are the same ones that are run in nashorn and in the browser. It's possible you may need adjustments here to account for corner cases - but if the problem is missing feature support in nashorn, it's better to add extra polyfills using <<#nashornPolyfills, nashornPolyfills>> instead.
+- The assets that are built during the compilation are the same ones that are run on the server and in the browser. It's possible you may need adjustments here to account for corner cases - if the problem is missing feature support in the server, perhaps you can polyfill them.
 
 [NOTE]
 ====
@@ -173,19 +173,6 @@ The extra incoming `config` object contains the built-in rules from React4xp. Th
 ====
 
 {zwsp} +
-
-[[nashornPolyfills]]
-=== NashornPolyfills (<Project.Dir>/src/main/resources/react4xpNashornPolyfills.es6)
-
-React4xp doesn't have any ambition to completely polyfill the nashorn engine so that the full feature set of node.js (or modern browsers) is supported.
-
-In the event that your code (or imported packages) rely on functionality that isn't supported in nashorn, you can add as-vanilla-as-possible JS in `<Project.Dir>/src/main/resources/react4xpNashornPolyfills.es6`
-
-This will be run as part of the <<#ssr, SSR engine>> <<#warmup, initialization>>, adding functionality before packages or other compiled code is loaded.
-
-For example, until recently `Object.assign` wasn't polyfilled, causing problems for certain packages. That could be added by adding link:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#polyfill[this code chunk] to the file referred with `nashornPolyfillsSource`.
-
-{zwsp} +
 {zwsp} +
 {zwsp} +
 
@@ -204,8 +191,8 @@ enonic project gradle build deploy -Pdev
 
 This switches between React4xp *build* modes (not to be confused with XP's link:https://developer.enonic.com/docs/enonic-cli/master/dev#start[run modes]).
 
-- `production`: assets are compiled more compact (and faster), with no source maps, and the entire SSR engine is initialized at once.
-- `development`: assets are compiled for more human-readability, with source maps, making errors easier to track down. If `ssrLazyload` hasn't been set, `development` will activate lazy-loading.
+- `production`: assets are compiled more compact (and faster), with source maps
+- `development`: assets are compiled for more human-readability, without minification, making errors easier to track down.
 
 Default value is `production`.
 
@@ -214,5 +201,5 @@ Default value is `production`.
 [[VERBOSE]]
 === Verbosity
 
-Use the gradle commandline flag -i or --info to enable a more verbose output when compiling React4xp components, globals and nashornPolyfills.
+Use the gradle commandline flag -i or --info to enable a more verbose output when compiling React4xp components and globals.
 

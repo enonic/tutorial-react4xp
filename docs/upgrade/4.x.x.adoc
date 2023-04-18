@@ -67,6 +67,18 @@ If these components use assets which are NOT needed to render server-side you
 should add them to `externals` and not `globals`. This way those assets will not
 be bundled and must be provided by other means, for example via CDN.
 
+=== Lazy loading (eager removed)
+
+React4xp now supports pure clientSide rendered components. Such components may
+include code that doesn't run on the server. Since eager loading would load all
+components, it would cause errors on the server (sometimes severe). Lazy loading
+only loads the components needed for the current serverSide rendering, not
+wasting cpu cycles on loading code it may never run.
+
+Since lazy loading is now the default, and there is no eager loading anymore we
+have also removed the `react4xp.ssrLazyload` setting from the application
+configuration file (app.cfg)
+
 === Application configuration
 
 We have added two application configurations.
@@ -112,6 +124,12 @@ You can still override the application configuration in the part controller.
         // ssr: false // "Always" client-side rendering
     })
 ```
+
+==== react4xp.ssrLazyload
+
+Lazyloading is now always enabled.
+
+Therefore this setting has been removed. 
 
 === Multiple React4xp apps
 

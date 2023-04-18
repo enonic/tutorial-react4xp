@@ -547,25 +547,11 @@ Custom flow usage in is demonstrated <<custom-flow-syntax#, here>>.
 [[ssr]]
 == SSR engine
 
-The default running mode of react4xp is link:https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/[serverside rendering (SSR)] (although `hydrate` and `ssr` can override this).
+The default running mode of React4xp is link:https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/[serverside rendering (SSR)] (although `ssr` can override this).
 
-In a nutshell, source files like JSX are compiled into JS assets that lib-react4xp's SSR engine runs to render HTML. This output is then delivered to the browser along with dependency code (usually references to necessary assets like CSS, JS etc) - these dependencies are also rendered, as page contributions. Rendering the HTML body and the page contributions happens to two different steps, using either <<#react4xp_render, `render`>> (which wraps both steps for convenience) or the <<#react4xp_object, "custom flow">>.
+In a nutshell, source files like TSX and JSX are compiled into JS assets that lib-react4xp's SSR engine runs to render HTML. This output is then delivered to the browser along with dependency code (usually references to necessary assets like CSS, JS etc) - these dependencies are also rendered, as page contributions. Rendering the HTML body and the page contributions happens to two different steps, using either <<#react4xp_render, `render`>> (which wraps both steps for convenience) or the <<#react4xp_object, "custom flow">>.
 
 The aim of react4xp is link:https://medium.com/capital-one-tech/why-everyone-is-talking-about-isomorphic-universal-javascript-and-why-it-matters-38c07c87905[isomorphic rendering]: after the react component(s) are serverside rendered, they are activated (hydrated) in the browser, turning them into running, active react apps. It's _the same react code_ that runs at the server as in the browser: no need to write the same component twice - one for SSR and one for the browser (although occasionally, tweaks are needed to prevent browserspecific code from running on the server).
-
-{zwsp} +
-
-[[graaljs]]
-=== Graal.JS
-
-Graal.JS is a default SSR engine, if available in JVM (XP version > 7.10 includes it). 
-
-{zwsp} +
-
-[[nashorn]]
-=== Nashorn
-
-React4xp can use link:https://docs.oracle.com/javase/10/nashorn/introduction.htm[nashorn] as SSR engine. Since most of the world of react SSR is oriented towards link:https://nodejs.org/en/[node.js], and nashorn does not have full support for the features in node (nor all features expected by a lot of NPM packages that can be imported by react components), react4xp does some polyfilling of the SSR engine at startup.
 
 {zwsp} +
 
@@ -582,9 +568,9 @@ When a renderer runs into an error during SSR, that renderer is torn down and a 
 
 [[warmup]]
 ==== Warmup time
-After your react4xp app is (re)started, the first time react4xp is triggered to render something, the engine will initialize. This means the renderers will load the _compiled assets_ necessary for the rendering, into nashorn in memory:
 
-- nashorn polyfills,
+After your React4xp app is (re)started, the first time React4xp is triggered to render something, the engine will initialize. This means the renderers will load the _compiled assets_ necessary for the rendering, into the engine memory:
+
 - react and reactDOM (`globals.*.js`),
 - packages from _node_modules_ (`vendors.*.js`),
 - dependency assets imported by the react components (aka. <<chunks#, chunks>>),
@@ -592,14 +578,13 @@ After your react4xp app is (re)started, the first time react4xp is triggered to 
 
 *This causes some warmup time* when starting your app: a noticable delay before the first rendering shows up. This may be just a couple of seconds in total, but it may also take longer. It depends on the size and complexity of the _compiled_ assets involved. This will happen on every restart of the app (and every <<#renderers, renderer>> must be initialized, but they do this in parallel).
 
-But as long as the code runs in nashorn without errors, initialization happens only once (i.e. each asset is loaded once at most, on each renderer). After the warmup, the react apps are ready-to-run from nashorn memory, so repeated renderings after that (even with different props) are fast.
+But as long as the code runs without errors, initialization happens only once (i.e. each asset is loaded once at most, on each renderer). After the warmup, the react apps are ready-to-run from memory, so repeated renderings after that (even with different props) are fast.
 
 ===== Improving warmup time for development
 
-Since development can involve repeated app/server restarts, here are a couple of ways to improve initial loading time when developing large projects:
+Since development can involve repeated app/server restarts, here is one way to improve initial loading time when developing large projects:
 
-- Set `ssrLazyload = true` (see <<#ssrLazyload, below>>). This makes the engine start up and only load the bare minimum of dependency assets instead of preparing all of them at once. Each rendering will also only load/cache the dependencies it needs. The upside of this is that the first rendering (of a component that uses only a subset of the assets) is much faster since there is less to load. The downside is that there will still be assets that haven't been loaded into the engine yet, which will cause a delay at some other time when _they_ are first rendered.
-- Don't build the react components and dependencies with `BUILD_ENV = development`, but use `production` (which is the default - see <<#BUILD_ENV, below>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference to nashorn (at the compile-to-bytecode stage).
+- Don't build the react components and dependencies with `BUILD_ENV = development`, but use `production` (which is the default - see <<#BUILD_ENV, below>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference.
 
 
 (Other optimizations and approaches are under consideration, to shorten the warmup time even more).
