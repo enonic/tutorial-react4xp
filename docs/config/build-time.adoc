@@ -172,6 +172,29 @@ module.exports = function(env, config) {
 The extra incoming `config` object contains the built-in rules from React4xp. This enables you to both manipulate those rules and/or add your own, or entirely replace them by returning a different object.
 ====
 
+==== Webpack caching
+
+It is possible to decrease build time by using Webpack filesystem caching. The
+first build after clean, may be slower, but the subsequent (incremental) builds
+(without clean) should be faster.
+
+
+
+[source,javascript,options="nowrap"]
+.webpack.config.react4xp.js
+----
+module.exports = function(env, config) {
+		if (process.env.NODE_ENV === 'development') {
+		config.cache = {
+			type: 'filesystem'
+		}
+	}
+  return config;
+}
+----
+
+Read more https://webpack.js.org/configuration/cache/
+
 {zwsp} +
 {zwsp} +
 {zwsp} +
