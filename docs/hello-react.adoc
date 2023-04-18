@@ -181,7 +181,7 @@ Two things are worth knowing about the rendering, before we move on:
 [[static_cs_rendering]]
 === Content studio should only have static rendering
 
-If you clicked the rendering _inside XP Content Studio_ instead of a preview tab, you'd notice there was *no bottle-counting*. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the `request` argument is used in `React4xp.render` to handle this automatically: inside Content Studio, you'll only see the rendering as a regular static XP preview / placeholder instead of active react.
+If you edit some content in _inside XP Content Studio_, you'd notice there was *no bottle-counting*. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the `request` argument is used in `React4xp.render` to handle this automatically: inside Content Studio edit mode, you'll only see the rendering as a regular static XP preview / placeholder instead of active react.
 
 NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. The <<custom-flow-syntax#, custom flow>> chapter shows you how.
 
@@ -189,13 +189,9 @@ NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.re
 
 === First serverside render can be slow
 
-You may also have noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the *server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
+You may also have noticed that it took a little time for the first server-side rendering to be displayed. That's the *server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
 
-We're looking into mitigating this delay in the future, but for now, this is nice to know: *This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app. Setting up a continuous build with XP devmode instead, helps. For the React4xp starter, here's how:
-
-  1. `enonic sandbox start <yourSandBoxName> --dev` in one terminal (from anywhere), and
-
-  2. `enonic project deploy && gradlew react4xp_components compileXP -t` from project root in another terminal. Reply _No_ if it asks you to start the sandbox here.
+*This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app.
 
 {zwsp} +
 
