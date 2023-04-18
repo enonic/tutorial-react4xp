@@ -41,7 +41,7 @@ Entries are pretty much just standard JSX files, but they must follow *two requi
 
 [[assets_and_apps]]
 == Entries, assets and react apps
-React4xp handles them in build-time and runtime: locates entries, compiles each entry into its own *entry asset* (under _/build/resources/main/assets/react4xp_). React4xp's render methods also generate page contributions that make sure these assets are served to the client.
+React4xp handles them in build-time and runtime: locates entries, compiles each entry into its own *entry asset* (under _/build/resources/main/r4xAssets_). React4xp's render methods also generate page contributions that make sure these assets are served to the client.
 
 For example, early in this tutorial we've seen the entries _hello-react.jsx_ and _color.jsx_, they are compiled into the assets _hello-react.js_ and _color.js_.
 

@@ -24,6 +24,18 @@ React4xp will now use the new React 18 functions like createRoot() and hydrateRo
 
 If they are not, it will use the React 17 functions like render() and hydrate().
 
+=== Target folder (browser cache)
+
+We have changed target folder from `build/resources/main/assets/react4xp` to
+`build/resources/main/r4xAssets`. The react4xp assets are currently provided by 
+a service on top of lib-static and should not be available via assetUrl. When
+building in production mode: the asset filenames contain contenthashes, so they
+can be served as static assets with "infinite" browser caching. When building in
+development mode, react4xp uses ETag.
+
+We have not changed the source folder `src/main/resources/react4xp`, so you
+don't have to move any files.
+
 === Named exports
 
 The default export from '/lib/enonic/react4xp' used to be a class.

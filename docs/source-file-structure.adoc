@@ -62,7 +62,7 @@ NOTE: _jsxPaths_ are name strings, not relative paths! You can't refer to _color
 
 TIP: If you look at the rendered HTML output in page source, you can see React4xp using the jsxPaths to refer to the compiled assets from the client - even if you used the `component` object in the _entry_ argument.
 
-TIP: All the _entries_ in your project are listed with their _jsxPath_ after compilation, in _build/resources/main/assets/react4xp/entries.json_.
+TIP: All the _entries_ in your project are listed with their _jsxPath_ after compilation, in _build/resources/main/r4xAssets/entries.json_.
 
 
 {zwsp} +

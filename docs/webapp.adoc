@@ -191,7 +191,7 @@ For example, on my local machine where I'm using XP to fetch assets, the asset p
 
 `"/_/asset/com.enonic.app.react4xp:1604314030/react4xp/shared.d366a6c1b.js"`
 
-*How to find your particular URLs for hardcoding this example?* Again, this depends on your setup, but based on the previous chapter lesson: you can use the page/preview that's produced from the Content Studio version of the movie list page, and just copy the asset paths from the produced page source HTML. Or if you know the asset root path but need the hash, you can run `gradlew clean build` and look at the file names below _build/resources/main/assets/react4xp_.
+*How to find your particular URLs for hardcoding this example?* Again, this depends on your setup, but based on the previous chapter lesson: you can use the page/preview that's produced from the Content Studio version of the movie list page, and just copy the asset paths from the produced page source HTML. Or if you know the asset root path but need the hash, you can run `gradlew clean build` and look at the file names below _build/resources/main/r4xAssets_.
 ====
 
 {zwsp} +
