@@ -3,11 +3,15 @@
 
 == What
 
-=== Graal-JS
+=== Graal.JS
 
-We have dropped support for Nashorn in favour of Graal-JS.
+We have dropped support for Nashorn in favour of Graal.JS.
 
-This means we had to upgrade the Enonic XP version requirement to 7.12 
+This means we had to upgrade the Enonic XP version requirement to 7.12
+
+Since the Application Configuration setting `react4xp.ssr.settings` was only relevant for Nashorn, it has been removed.
+
+And since React4xp now only supports Graal.JS: the Application Configuration setting `react4xp.ssr.engineName` is no longer relevant.
 
 === TypeScript
 
@@ -81,7 +85,9 @@ configuration file (app.cfg)
 
 === Application configuration
 
-We have added two application configurations.
+We have added three new application configurations (hydrate, serveGlobals and
+ssr), and removed a few ones too (ssr.engineName, ssr.lazyLoad and
+ssr.settings).
 
 ==== react4xp.hydrate
 
@@ -93,7 +99,7 @@ react4xp.hydrate = false
 
 To disable client-side hydration for all React4xp components (page, layout, parts, etc)
 
-You can still override the application configuration in the controller.
+You can still override the application configuration in specific controllers.
 
 ```someController.ts
     render(compnent, props, request, {
@@ -102,6 +108,15 @@ You can still override the application configuration in the controller.
         // hydrate: true // Hydration when ssr = true
         // hydrate: false // No hydration even when ssr = true
     })
+```
+
+==== react4xp.serveGlobals
+
+To disable serving the globals bundle to the client-side add the line below to
+${XP_HOME}/config/${app}.cfg.
+
+```${XP_HOME}/config/${app}.cfg
+	react4xp.serveGlobals = false
 ```
 
 ==== react4xp.ssr
@@ -114,7 +129,7 @@ react4xp.ssr = false
 
 To disable server-side rendering for all parts (doesn't affect page and layouts)
 
-You can still override the application configuration in the part controller.
+You can still override the application configuration in specific part controllers.
 
 ```partController.ts
     render(compnent, props, request, {
@@ -125,7 +140,7 @@ You can still override the application configuration in the part controller.
     })
 ```
 
-==== react4xp.ssrLazyload
+==== react4xp.ssr.lazyLoad
 
 Lazyloading is now always enabled.
 
@@ -137,15 +152,23 @@ You can now use components from multiple React4xp apps on the same webpage.
 If the apps are importing any of the same assets, it could be a good idea to
 load those assets from CDN so they aren't part of the vendor bundles.
 
+It's also a good idea to set Application Configuration
+`react4xp.serveGlobals = false` for both apps, and provide all globals
+(including react and react-dom) on your own, rather than loading two copies of
+the globals into the browser.
+
 ==== Client & Executor
 
-To achieve this the client and executor had to be moved from lib-react4xp to @enonic/react4xp
+To enable multiple React4xp applications on the same page global variables has
+been prefixed with the application name. Obviously the application name is not
+available when bulding lib-react4xp, so the building of the client and executor
+has been moved from lib-react4xp to @enonic/react4xp.
 
 === Content Studio
 
 SSR without hydration used to be enforced for both `edit` and `inline` mode in Content Studio.
 
-Now it will only enforce it in `edit` mode. 
+Now React4xp will only enforce SSR without hydration in Content Studio `edit` mode. 
 
 `inline` mode will use normal React4xp rendering, just as `preview` and `live` mode.
 
@@ -153,7 +176,7 @@ Now it will only enforce it in `edit` mode.
 
 We have simplified the gradle setup a lot.
 
-All old refernces to React4xp in the build.gradle file, must be removed.
+All old references to React4xp in the build.gradle file, must be removed.
 
 
 These files no longer exist:
@@ -192,7 +215,7 @@ React4xp used to add an extra prop called react4xpId, which was used during
 clientSide hydration and rendering. This prop is no longer needed as it is
 provided by other means (`script[data-react4xp-ref]`).
 
-So now: component props are just normal component props :)
+So now: React component props are just normal React component props :)
 
 === document polyfill
 
@@ -268,6 +291,8 @@ In order to build without gradle we had to move npm explore command from build.g
 }
 ```
 
+Install or upgrade the React4xp build system:
+
 `+npm install --save-dev @enonic/react4xp+`
 
 `+npm upgrade @enonic/react4xp+`
@@ -320,6 +345,9 @@ ${XP_HOME}/config/${app}.cfg.
 
 === import/require in controllers
 
+
+==== TypeScript named function
+
 ```examplePart.ts
 import {render} from '/lib/enonic/react4xp';
 
@@ -332,9 +360,13 @@ export function get(request) {
 }
 ```
 
+==== TypeScript class
+
 ```examplePart.ts
 import {React4xp} from '/lib/enonic/react4xp';
 ```
+
+==== Common.JS "named" function
 
 ```examplePart.js
 const libReact4xp = require('/lib/enonic/react4xp');
@@ -347,6 +379,8 @@ exports.get = function (request) {
     });
 }
 ```
+
+==== Common.JS class
 
 ```examplePart.js
 const libReact4xp = require('/lib/enonic/react4xp');
@@ -373,19 +407,19 @@ exports.get = function (request) {
 
 === tsconfig*.json
 
-==== TypeChecking for your code editor
+==== TypeChecking for your code editor (tsconfig.json)
 
 ```tsconfig.json
 {
     "compilerOptions": {
         "jsx": "react",
         "lib": [
-            "DOM", // Nashorn doesn't supports DOM, beeing permissive
-            "ES2015", // Nashorn only supports ES5, beeing permissive
+            "DOM", // The server doesn't supports DOM, beeing permissive
+            "ES2015",
         ],
         "moduleResolution": "node",
         "skipLibCheck": true,
-        "target": "ES2015", // Nashorn only supports ES5, beeing permissive
+        "target": "ES2015",
     },
     "include": [
         "./src/main/resources/**/*.ts",
@@ -398,7 +432,7 @@ exports.get = function (request) {
 
 `+yarn add --dev @types/react+`
 
-==== TypeChecking for React4xp code
+==== TypeChecking for React4xp code (tsconfig.react4xp.json)
 
 ```tsconfig.react4xp.json
 {
@@ -429,6 +463,8 @@ exports.get = function (request) {
 ```
 
 === React4xp components
+
+You may want to convert your React components from EcmaScript to TypeScript.
 
 `+git mv Component.jsx Component.tsx+`
 
