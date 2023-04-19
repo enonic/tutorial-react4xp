@@ -13,7 +13,7 @@ image:react4xp.svg[title="React4xp logo",width=256px]
 
 == Upgrade
 
-If you are upgrading to lib-react4xp 3.x.x please ready this <<upgrade#,upgrade guide>>.
+If you are upgrading to lib-react4xp 4.x.x, please read this <<upgrade/v4#,upgrade guide>>.
 
 == Introduction
 
