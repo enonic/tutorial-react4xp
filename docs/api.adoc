@@ -460,7 +460,7 @@ Also, unless you add the `request` option, there is *no detection of inside-vs-o
 ! `pageContributions` ! object: valid link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions]  ! empty object ! If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added _before_ the ones that will be rendered (within each section `headBegin`, `bodyEnd` etc).
 ! `hydrate` ! boolean ! app.config['react4xp.hydrate'] or true ! When SSR is true, choose whether you want hydration or not.
 ! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and servierside rendering, on this particular rendering.
-! `request` ! link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object] ! undefined ! Including this here (_and_ in the corresponding <<#render_body, `renderPageContributions`>> call) is the easiest way to handle <<#react4xp_object_request, view-context dependent behavior>>. 
+! `request` ! link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object] ! undefined ! Including this here (_and_ in the corresponding <<#render_body, `renderPageContributions`>> call) is the easiest way to handle <<#react4xp_object_request, view-context dependent behavior>>.
 
 Other renderings are not affected, _even from the same data object_ (so you usually want to make sure a different rendering from the same data object uses the same mode).
 !===
@@ -556,7 +556,7 @@ The aim of react4xp is link:https://medium.com/capital-one-tech/why-everyone-is-
 {zwsp} +
 
 [[renderers]]
-==== Renderers
+=== Renderers
 
 Starting from version 1.5.0, react4xp handles multithreaded rendering. This is done by setting up a number of renderers where each one is ready to answer to rendering requests in parallel, independently.
 
@@ -567,7 +567,7 @@ When a renderer runs into an error during SSR, that renderer is torn down and a 
 {zwsp} +
 
 [[warmup]]
-==== Warmup time
+=== Warmup time
 
 After your React4xp app is (re)started, the first time React4xp is triggered to render something, the engine will initialize. This means the renderers will load the _compiled assets_ necessary for the rendering, into the engine memory:
 
@@ -580,7 +580,7 @@ After your React4xp app is (re)started, the first time React4xp is triggered to 
 
 But as long as the code runs without errors, initialization happens only once (i.e. each asset is loaded once at most, on each renderer). After the warmup, the react apps are ready-to-run from memory, so repeated renderings after that (even with different props) are fast.
 
-===== Improving warmup time for development
+==== Improving warmup time for development
 
 Since development can involve repeated app/server restarts, here is one way to improve initial loading time when developing large projects:
 
@@ -592,7 +592,7 @@ Since development can involve repeated app/server restarts, here is one way to i
 {zwsp} +
 
 [[performance]]
-==== SSR performance
+=== SSR performance
 
 Apart from when assets are initialized during the engine <<#warmup, warmup>>, each SSR should be fast. However, in cases where you need to improve SSR performance further, it can be done by wrapping the rendering in a link:https://developer.enonic.com/docs/cache-library/master[cache] in the controller.
 
