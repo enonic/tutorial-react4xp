@@ -560,7 +560,7 @@ The aim of react4xp is link:https://medium.com/capital-one-tech/why-everyone-is-
 
 Starting from version 1.5.0, react4xp handles multithreaded rendering. This is done by setting up a number of renderers where each one is ready to answer to rendering requests in parallel, independently.
 
-The number of renderer workers is <<#ssrMaxThreads, determined in java but can be overriden>>.
+The number of renderer workers is <<run_time#ssrMaxThreads, determined in java but can be overriden>>.
 
 When a renderer runs into an error during SSR, that renderer is torn down and a new one is initialized (see warmup time below). This happens as far as possible during idle time.
 

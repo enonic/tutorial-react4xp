@@ -16,7 +16,7 @@ $XP_HOME/config/<app.name>.cfg
 react4xp.ssr.maxThreads = 5
 ----
 
-If this override value is not set, the number of threads (<<#renderers, renderers>>) used for simultaneous SSR requests is determined by java, by...
+If this override value is not set, the number of threads (<<api#renderers, renderers>>) used for simultaneous SSR requests is determined by java, by...
 
 [source,java,options="nowrap"]
 ----
