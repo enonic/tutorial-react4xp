@@ -1,0 +1,13 @@
+{
+  "versions": [
+    {
+      "label": "next",
+      "checkout": "master"
+    },
+    {
+      "label": "stable",
+      "checkout": "4d6e719",
+      "latest": true
+    }
+  ]
+}
