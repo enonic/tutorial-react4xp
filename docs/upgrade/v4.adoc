@@ -7,7 +7,7 @@
 
 We have dropped support for Nashorn in favour of Graal.JS.
 
-This means we had to upgrade the Enonic XP version requirement to 7.12 (<<_gradle_properties>>)
+This means we had to upgrade the Enonic XP version requirement to 7.12 (<<gradle_properties>>)
 
 Since the Application Configuration setting `react4xp.ssr.settings` was only relevant for Nashorn, it has been removed.
 
@@ -345,15 +345,6 @@ npm install --save-dev @enonic/react4xp
 [source,console]
 npm upgrade @enonic/react4xp
 
-or
-
-[source,console]
-yarn add --dev @enonic/react4xp
-
-[source,console]
-yarn upgrade @enonic/react4xp --latest
-
-
 === react4xp.config.js
 
 .react4xp.config.js
@@ -474,20 +465,10 @@ Install some types:
 [source,console]
 npm install --save-dev @enonic-types/lib-react4xp @types/react
 
-or
-
-[source,console]
-yarn add --dev @enonic-types/lib-react4xp @types/react
-
 You probably also want some of these:
 
 [source,console]
 npm install --save-dev @enonic-types/lib-admin @enonic-types/lib-app @enonic-types/lib-auditlog @enonic-types/lib-auth @enonic-types/lib-cluster @enonic-types/lib-common @enonic-types/lib-content @enonic-types/lib-context @enonic-types/lib-event @enonic-types/lib-export @enonic-types/lib-grid @enonic-types/lib-i18n @enonic-types/lib-io @enonic-types/lib-mail @enonic-types/lib-node @enonic-types/lib-portal @enonic-types/lib-project @enonic-types/lib-repo @enonic-types/lib-scheduler @enonic-types/lib-schema @enonic-types/lib-task @enonic-types/lib-value @enonic-types/lib-vhost @enonic-types/lib-websocket
-
-or
-
-[source,console]
-yarn add --dev @enonic-types/lib-admin @enonic-types/lib-app @enonic-types/lib-auditlog @enonic-types/lib-auth @enonic-types/lib-cluster @enonic-types/lib-common @enonic-types/lib-content @enonic-types/lib-context @enonic-types/lib-event @enonic-types/lib-export @enonic-types/lib-grid @enonic-types/lib-i18n @enonic-types/lib-io @enonic-types/lib-mail @enonic-types/lib-node @enonic-types/lib-portal @enonic-types/lib-project @enonic-types/lib-repo @enonic-types/lib-scheduler @enonic-types/lib-schema @enonic-types/lib-task @enonic-types/lib-value @enonic-types/lib-vhost @enonic-types/lib-websocket
 
 Then create or edit a tsconfig.json file:
 
@@ -530,11 +511,6 @@ First install the typescript compiler, needed to run typecheking:
 
 [source,console]
 npm install --save-dev typescript
-
-or
-
-[source,console]
-yarn add --dev typescript
 
 Then created a tsconfig.react4xp.json file:
 
@@ -580,11 +556,6 @@ You can now check the types of your React4xp files with this command:
 
 [source,console]
 npm run verify:types:react4xp
-
-or
-
-[source,console]
-yarn verify:types:react4xp
 
 === React4xp components
 
