@@ -1,4 +1,4 @@
-= React4XP - Upgrade to v3
+= React4XP - Upgrade to v4
 :toc: right
 
 == What
