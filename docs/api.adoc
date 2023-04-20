@@ -5,7 +5,7 @@
 [[api]]
 The React4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib[Enonic Market]) exposes a couple of methods that can be run from XP controllers.
 
-This chapter also covers the <<#ssr, SSR engine>>, compilation, and <<#react4xp_properties, configuration>> of those.
+This chapter also covers the <<#ssr, SSR engine>>, compilation, and <<config/build-time#, configuration>> of those.
 
 {zwsp} +
 {zwsp} +
