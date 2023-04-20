@@ -1,4 +1,4 @@
-= React4XP - Upgrade - 3.x.x
+= React4XP - Upgrade to v3
 :toc: right
 
 We have tried to simplify the build system and limit the number of options.
