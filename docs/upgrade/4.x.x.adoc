@@ -7,7 +7,7 @@
 
 We have dropped support for Nashorn in favour of Graal.JS.
 
-This means we had to upgrade the Enonic XP version requirement to 7.12
+This means we had to upgrade the Enonic XP version requirement to 7.12 (<<_gradle_properties>>)
 
 Since the Application Configuration setting `react4xp.ssr.settings` was only relevant for Nashorn, it has been removed.
 
@@ -243,6 +243,16 @@ checking for client or server, you may polyfill `document` on your own, but it
 might break other modules which now thinks the server is the client...
 
 == How
+
+=== gradle.properties
+
+Set xpVersion to 7.12.0 or higher:
+
+.gradle.properties
+[source,properties]
+----
+xpVersion = 7.12.0
+----
 
 === build.gradle
 
