@@ -1,4 +1,4 @@
-= React4XP - Upgrade to v4
+= Upgrade to v4
 :toc: right
 
 == What
@@ -7,7 +7,7 @@
 
 We have dropped support for Nashorn in favour of Graal.JS.
 
-This means we had to upgrade the Enonic XP version requirement to 7.12
+This means we had to upgrade the Enonic XP version requirement to 7.12 (<<_gradle_properties>>)
 
 Since the Application Configuration setting `react4xp.ssr.settings` was only relevant for Nashorn, it has been removed.
 
@@ -17,11 +17,11 @@ And since React4xp now only supports Graal.JS: the Application Configuration set
 
 React4xp version 4 introduces support for TypeScript
 
-The types for lib-react4xp are available via npm:
+The types for lib-explorer are available via npm:
 
 * https://www.npmjs.com/package/@enonic-types/lib-react4xp
 
-See the <<tsconfig_json>> section below on how to set it up.
+See the <<_tsconfig_json>> section below on how to set it up.
 
 === React 18
 
@@ -32,7 +32,7 @@ If they are not, it will use the React 17 functions like render() and hydrate().
 === Target folder (browser cache)
 
 We have changed target folder from `build/resources/main/assets/react4xp` to
-`build/resources/main/r4xAssets`. The React4xp assets are currently provided by 
+`build/resources/main/r4xAssets`. The React4xp assets are currently provided by
 a service on top of lib-static and should not be available via assetUrl. When
 building in production mode: the asset filenames contain contenthashes, so they
 can be served as static assets with "infinite" browser caching. When building in
@@ -71,6 +71,23 @@ It is possible to have pure client-side rendered components in React4xp.
 If these components use assets which are NOT needed to render server-side you
 should add them to `externals` and not `globals`. This way those assets will not
 be bundled and must be provided by other means, for example via CDN.
+
+[cols="1,2,2"]
+|===
+| | Globals | Externals
+
+|What is it?
+|A javascript bundle of commonly required imports.
+|A list of imports to be excluded.
+
+|Where is it used?
+|Always server-side, and sometimes client-side.
+|Build-time to exclude files.
+
+|How it works?
+|Instead of bundling a copy of the global imports into every target file, they are put in a separate bundle, and the target files will only contain a require statement to the globals bundle. During runtime the globals bundle is loaded first so the imports can be accessed directly on the global namespace.
+|Your code will assume these imports are available in the global namespace, but unless you also load the imports first, your code will throw errors.
+|===
 
 === Lazy loading (eager removed)
 
@@ -155,7 +172,7 @@ You can still override the application configuration in specific part controller
 
 Lazyloading is now always enabled.
 
-Therefore this setting has been removed. 
+Therefore this setting has been removed.
 
 === Multiple React4xp apps
 
@@ -179,7 +196,7 @@ has been moved from lib-react4xp to @enonic/react4xp.
 
 SSR without hydration used to be enforced for both `edit` and `inline` mode in Content Studio.
 
-Now React4xp will only enforce SSR without hydration in Content Studio `edit` mode. 
+Now React4xp will only enforce SSR without hydration in Content Studio `edit` mode.
 
 `inline` mode will use normal React4xp rendering, just as `preview` and `live` mode.
 
@@ -244,6 +261,16 @@ might break other modules which now thinks the server is the client...
 
 == How
 
+=== gradle.properties
+
+Set xpVersion to 7.12.0 or higher:
+
+.gradle.properties
+[source,properties]
+----
+xpVersion = 7.12.0
+----
+
 === build.gradle
 
 .build.gradle
@@ -256,19 +283,7 @@ dependencies {
 
 Remove all the old react4xp* tasks from your build.gradle file.
 
-If your project is based on an earlier version of the starter-react4xp also remove the reac4xp plugin
-
-.build.gradle
-[source,gradle]
-----
-plugins {
-  id 'react4xp' // Delete this line
-}
-----
-
-You can probably also delete the entire buildSrc folder from your project.
-
-Add this instead:
+Add this one task instead:
 
 .build.gradle
 [source,gradle]
@@ -293,6 +308,18 @@ task react4xp(type: NpmTask, dependsOn: npmInstall) {
 }
 jar.dependsOn 'react4xp'
 ----
+
+If your project is based on an earlier version of the starter-react4xp also remove the `react4xp` plugin:
+
+.build.gradle
+[source,gradle]
+----
+plugins {
+  id 'react4xp' // Delete this line
+}
+----
+
+You can probably also delete the entire buildSrc folder from your project.
 
 === package.json
 
