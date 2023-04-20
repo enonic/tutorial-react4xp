@@ -584,7 +584,7 @@ But as long as the code runs without errors, initialization happens only once (i
 
 Since development can involve repeated app/server restarts, here is one way to improve initial loading time when developing large projects:
 
-- Don't build the react components and dependencies with `BUILD_ENV = development`, but use `production` (which is the default - see <<#BUILD_ENV, below>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference.
+- Don't build React4xp components with `NODE_ENV = development`, but use `production` (which is the default - see <<config/build-time#NODE_ENV,Build environment>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference.
 
 
 (Other optimizations and approaches are under consideration, to shorten the warmup time even more).

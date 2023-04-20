@@ -202,7 +202,7 @@ Read more https://webpack.js.org/configuration/cache/
 
 == Command line arguments
 
-[[BUILD_ENV]]
+[[NODE_ENV]]
 === Build environment
 
 Use the gradle commandline flag `-Pdev` or `-Pdevelopment` to enable building in development mode.
