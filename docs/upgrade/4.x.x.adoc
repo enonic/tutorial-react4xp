@@ -72,6 +72,23 @@ If these components use assets which are NOT needed to render server-side you
 should add them to `externals` and not `globals`. This way those assets will not
 be bundled and must be provided by other means, for example via CDN.
 
+[cols="1,2,2"]
+|===
+| | Globals | Externals
+
+|What is it?
+|A javascript bundle of commonly required imports.
+|A list of imports to be excluded.
+
+|Where is it used?
+|Always server-side, and sometimes client-side.
+|Build-time to exclude files.
+
+|How it works?
+|Instead of bundling a copy of the global imports into every target file, they are put in a separate bundle, and the target files will only contain a require statement to the globals bundle. During runtime the globals bundle is loaded first so the imports can be accessed directly on the global namespace.
+|Your code will assume these imports are available in the global namespace, but unless you also load the imports first, your code will throw errors.
+|===
+
 === Lazy loading (eager removed)
 
 React4xp now supports pure clientSide rendered components. Such components may
