@@ -256,19 +256,7 @@ dependencies {
 
 Remove all the old react4xp* tasks from your build.gradle file.
 
-If your project is based on an earlier version of the starter-react4xp also remove the `react4xp` plugin:
-
-.build.gradle
-[source,gradle]
-----
-plugins {
-  id 'react4xp' // Delete this line
-}
-----
-
-You can probably also delete the entire buildSrc folder from your project.
-
-Add this instead:
+Add this one task instead:
 
 .build.gradle
 [source,gradle]
@@ -293,6 +281,18 @@ task react4xp(type: NpmTask, dependsOn: npmInstall) {
 }
 jar.dependsOn 'react4xp'
 ----
+
+If your project is based on an earlier version of the starter-react4xp also remove the `react4xp` plugin:
+
+.build.gradle
+[source,gradle]
+----
+plugins {
+  id 'react4xp' // Delete this line
+}
+----
+
+You can probably also delete the entire buildSrc folder from your project.
 
 === package.json
 
