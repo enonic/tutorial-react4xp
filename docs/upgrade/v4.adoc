@@ -124,12 +124,12 @@ You can still override the application configuration in specific controllers.
 .someController.ts
 [source,javascript]
 ----
-    render(compnent, props, request, {
-        // Default is to use application configuration
-        // SSR without hydration will always be enforced when request.mode === 'edit'
-        // hydrate: true // Hydration when ssr = true
-        // hydrate: false // No hydration even when ssr = true
-    })
+  render(compnent, props, request, {
+      // Default is to use application configuration
+      // SSR without hydration will always be enforced when request.mode === 'edit'
+      // hydrate: true // Hydration when ssr = true
+      // hydrate: false // No hydration even when ssr = true
+  })
 ----
 
 ==== react4xp.serveGlobals
@@ -140,7 +140,7 @@ your application configuration file:
 .${XP_HOME}/config/${app}.cfg
 [source]
 ----
-	react4xp.serveGlobals = false
+react4xp.serveGlobals = false
 ----
 
 ==== react4xp.ssr
@@ -160,12 +160,12 @@ You can still override the application configuration in specific part controller
 .partController.ts
 [source,javascript]
 ----
-    render(compnent, props, request, {
-        // Default is to use application configuration
-        // SSR without hydration will always be enforced when request.mode === 'edit'
-        // ssr: true // "Always" SSR
-        // ssr: false // "Always" client-side rendering
-    })
+  render(compnent, props, request, {
+      // Default is to use application configuration
+      // SSR without hydration will always be enforced when request.mode === 'edit'
+      // ssr: true // "Always" SSR
+      // ssr: false // "Always" client-side rendering
+  })
 ----
 
 ==== react4xp.ssr.lazyLoad
@@ -350,15 +350,15 @@ npm upgrade @enonic/react4xp
 .react4xp.config.js
 [source,javacript]
 ----
-	// Used in ssr component(s)
-	globals: {
-		lodash: '_'
-	},
-	// Used in pure clientSide component(s).
-	// Must be provided by other means, for example CDN.
-	externals: {
-		jquery: 'jQuery'
-	},
+  // Used in ssr component(s)
+  globals: {
+    lodash: '_'
+  },
+  // Used in pure clientSide component(s).
+  // Must be provided by other means, for example CDN.
+  externals: {
+    jquery: 'jQuery'
+  },
 ----
 
 === app.cfg
@@ -368,7 +368,7 @@ below to ${XP_HOME}/config/${app}.cfg. One can still enable hydration in
 specific components.
 
 ```${XP_HOME}/config/${app}.cfg
-	react4xp.hydrate = false
+react4xp.hydrate = false
 ```
 
 SSR is enabled by default, to change the default to disabled add the line below
@@ -376,14 +376,14 @@ to ${XP_HOME}/config/${app}.cfg. One can still enable ssr in specific
 components.
 
 ```${XP_HOME}/config/${app}.cfg
-	react4xp.ssr = false
+react4xp.ssr = false
 ```
 
 To disable serving the globals bundle to the client-side add the line below to
 ${XP_HOME}/config/${app}.cfg.
 
 ```${XP_HOME}/config/${app}.cfg
-	react4xp.serveGlobals = false
+react4xp.serveGlobals = false
 ```
 
 === import/require in controllers
