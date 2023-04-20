@@ -17,11 +17,11 @@ And since React4xp now only supports Graal.JS: the Application Configuration set
 
 React4xp version 4 introduces support for TypeScript
 
-The types for lib-explorer are available via npm:
+The types for lib-react4xp are available via npm:
 
 * https://www.npmjs.com/package/@enonic-types/lib-react4xp
 
-See the <<_tsconfig_json>> section below on how to set it up.
+See the <<tsconfig_json>> section below on how to set it up.
 
 === React 18
 
