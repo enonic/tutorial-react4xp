@@ -7,7 +7,7 @@
 == What is an entry?
 React4xp is structured around _entries_.
 
-It's actually a webpack term, but in react4xp we use the word entry for *a React component that can be accessed by react4XP* in an XP controller. They are the _only_ react files that react4xp can use directly.
+It's actually a webpack term, but in React4xp we use the word entry for *a React component that can be accessed by React4xp* in an XP controller. They are the _only_ react files that React4xp can use directly.
 
 [[mentalmodel]]
 Think of entries as *"bridge elements"*:
@@ -24,7 +24,7 @@ On the XP/server side, you have the controllers with their backend XP flow, logi
 [[howto]]
 == How to make an entry
 
-Entries are pretty much just standard JSX files, but they must follow *two requirements* (another <<entries_howto#, cheat sheet>>):
+Entries are pretty much just standard TSX/JSX files, but they must follow *two requirements* (another <<entries_howto#, cheat sheet>>):
 
 1. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.config.js_ (see also <<jsxpath#, jsxPath>>),
 2. and *default-exports a function*: `props?=>reactComponent` - a function that _may_ take a `props` argument (serializable JS object: no functions) and _must_ return a react component.
@@ -41,7 +41,7 @@ Entries are pretty much just standard JSX files, but they must follow *two requi
 
 [[assets_and_apps]]
 == Entries, assets and react apps
-React4xp handles them in build-time and runtime: locates entries, compiles each entry into its own *entry asset* (under _/build/resources/main/assets/react4xp_). React4xp's render methods also generate page contributions that make sure these assets are served to the client.
+React4xp handles them in build-time and runtime: locates entries, compiles each entry into its own *entry asset* (under _/build/resources/main/r4xAssets_). React4xp's render methods also generate page contributions that make sure these assets are served to the client.
 
 For example, early in this tutorial we've seen the entries _hello-react.jsx_ and _color.jsx_, they are compiled into the assets _hello-react.js_ and _color.js_.
 

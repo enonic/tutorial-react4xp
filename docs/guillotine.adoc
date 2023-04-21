@@ -10,13 +10,13 @@ image:guillotine.jpg[title="React4xp goes headless", width=600px]
 
 == Some background
 
-In the previous chapters we've looked at a "traditional CMS" way of using react4xp: as content directly presented (and augmented) by react components, served together by XP. This is fairly easy to set up and works fine for many use cases. But in other cases, we may not want such a tight connection between the content and the presentational components. There may be advantages of handling/serving them separately - or an approach where a content-exposing API works alongside a traditional CMS, as a supplement. These approaches are often called a link:https://enonic.com/blog/headless-or-decoupled-cms[headless] or link:https://enonic.com/blog/what-is-hybrid-cms[hybrid] CMS.
+In the previous chapters we've looked at a "traditional CMS" way of using React4xp: as content directly presented (and augmented) by react components, served together by XP. This is fairly easy to set up and works fine for many use cases. But in other cases, we may not want such a tight connection between the content and the presentational components. There may be advantages of handling/serving them separately - or an approach where a content-exposing API works alongside a traditional CMS, as a supplement. These approaches are often called a link:https://enonic.com/blog/headless-or-decoupled-cms[headless] or link:https://enonic.com/blog/what-is-hybrid-cms[hybrid] CMS.
 
 In Enonic XP, project link:https://developer.enonic.com/docs/headless-cms/stable[guillotine] is a go-to solution for extending the existing CMS capabilities. It exposes a read-only link:https://graphql.org/[GraphQL] API, and provides the ability to *read pure content data* (the "body" in the analogy) from XP with great flexibility and high performance.
 
-Combining this with react as the presentational component (the "head") opens up a range of ways to use XP in headless/hybrid manners. This makes guillotine a neat and natural companion to react4xp, so the *guillotine library is included in the react4xp starter* along with two extra helper wrappers.
+Combining this with react as the presentational component (the "head") opens up a range of ways to use XP in headless/hybrid manners. This makes guillotine a neat and natural companion to React4xp, so the *guillotine library is included in the React4xp starter* along with two extra helper wrappers.
 
-We will now look at how to use react4xp with guillotine in different ways, for different levels of decoupling.
+We will now look at how to use React4xp with guillotine in different ways, for different levels of decoupling.
 
 == Lesson overview
 
@@ -24,11 +24,11 @@ This chapter will focus on setting up the guillotine API and the first usages:
 
 - set up a content type and react visualization for single movie items,
 - making *a graphQL query* for content data in a regular XP controller,
-- using react4xp to *visualize that data*,
+- using React4xp to *visualize that data*,
 - letting the rendered components make *the same query from the frontend*,
 - and use react to dynamically render a visualization of the returned data, and this way fill in more content as we scroll down the page: an *"infinite scroller"* page.
 
-NOTE: The <<webapp#, next chapter>> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same react4xp components in a _standalone webapp_, to render content data from a guillotine API.
+NOTE: The <<webapp#, next chapter>> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same React4xp components in a _standalone webapp_, to render content data from a guillotine API.
 
 [[chapter_source_files]]
 === Source files
@@ -80,7 +80,7 @@ headless/                       <!--6-->
 
 == Groundwork: movie items
 
-This first stage should be easy enough, almost entirely repeating steps you've been through in previous chapters. We'll make a _movie_ content type, set up react4xp to preview-render it with react components (but with <<#controller_mapping, a little twist>>), and add some movie items that will be listed when the site is done.
+This first stage should be easy enough, almost entirely repeating steps you've been through in previous chapters. We'll make a _movie_ content type, set up React4xp to preview-render it with react components (but with <<#controller_mapping, a little twist>>), and add some movie items that will be listed when the site is done.
 
 [NOTE]
 ====
@@ -372,7 +372,7 @@ After the previous chapters, not much in this controller should come as a surpri
 <3> Normalizing the `actor` data to guarantee that it's an array.
 <4> `React4xp.render` needs a unique ID to target a container in the surrounding `body`.
 <5> `"Movie"` is of course the <<jsxpath#, jsxPath>> reference to the entry, _react4xp/myEntries/Movie.jsx_.
-<6> This controller is the only one triggered for rendering _movie_ items. That means that the `body` that the rendering is inserted into, has to be a *full root HTML document* including a `<head>` section (or otherwise react4xp won't know where to put the rendered page contributions, and the component won't work properly).
+<6> This controller is the only one triggered for rendering _movie_ items. That means that the `body` that the rendering is inserted into, has to be a *full root HTML document* including a `<head>` section (or otherwise React4xp won't know where to put the rendered page contributions, and the component won't work properly).
 <7> Workaround for a current link:https://github.com/enonic/lib-react4xp/issues/107[inconvenient bug].
 
 
@@ -418,7 +418,7 @@ Next, we'll make a page controller for a site item that displays a static list o
 [[guillotine_helpers]]
 === Guillotine helpers and usage
 
-First off, an introduction to the guillotine helpers at we'll be using. Two of them -  _headless/guillotineApi.es6_ and  _headless/guillotineRequests.es6_ - are general-purpose helpers *included in the react4xp starter*, and the third one we'll write next.
+First off, an introduction to the guillotine helpers at we'll be using. Two of them -  _headless/guillotineApi.es6_ and  _headless/guillotineRequests.es6_ - are general-purpose helpers *included in the React4xp starter*, and the third one we'll write next.
 
 === Included helper: guillotineApi.es6
 
@@ -747,7 +747,7 @@ But first, a word of caution about doing this in other projects:
 
 [NOTE]
 ====
-In the included form from the react4xp starter, _guillotineAPI.es6_ is as bare-bone as it gets, and primarily meant as a stepping stone for developers to expand from.
+In the included form from the React4xp starter, _guillotineAPI.es6_ is as bare-bone as it gets, and primarily meant as a stepping stone for developers to expand from.
 
 Guillotine is a read-only interface, but still: after adding the controller mapping to an unchanged _guillotineAPI.es6_, it's opened to receiving and *executing any guillotine query* from the frontend, technically exposing any data from the content repo to being read.
 
@@ -778,9 +778,6 @@ For the purpose of running this lesson on your localhost, though, it should be p
 ----
 
 After rebuilding, the API is now up and running at `<site-url>/api/headless` (e.g. `http://localhost:8080/admin/site/preview/default/draft/moviesite/api/headless`).
-
-TIP: If you want to try it out right now, REPL-style and without needing to create the frontend code first, there's a cool tool for that: the <<#graphql_playground, GraphQL Playground>>.
-
 
 {zwsp} +
 
@@ -1233,7 +1230,7 @@ export default (props) => <MovieList {...props} />;
 <1> `listenForScroll` is the scroll-listener's enabled-switch.
 <2> Threshold value: if the distance between the bottom of the screen and the bottom of the movielist DOM container is less than this number of pixels, `makeRequest` should be triggered.
 <3> We store a string to uniquely identify the movie-list container element in the DOM.
-<4> In the component-initializing function (remember `useEffect`), we want to call `initScrollListener`. It's a one-time function that sets up a scroll listener that will last for the lifespan of the component. However, remember that _MovieList.jsx_ is also server-side rendered from the controller, so this very same script will run in Nashorn in XP! We check for `window.navigator` here because *we only want this scroll listener setup to run in a browser context*, not during SSR. Not only because a scroll listener makes no sense during server-side rendering, but to prevent errors that break the rendering (see the <<#nashornbrowserbreakage, note below>>).
+<4> In the component-initializing function (remember `useEffect`), we want to call `initScrollListener`. It's a one-time function that sets up a scroll listener that will last for the lifespan of the component. However, remember that _MovieList.jsx_ is also server-side rendered from the controller, so this very same script will run serverSide by React4xp! We check for `window.navigator` here because *we only want this scroll listener setup to run in a browser context*, not during SSR. Not only because a scroll listener makes no sense during server-side rendering, but to prevent errors that break the rendering (see the <<#serverbrowserbreakage, note below>>).
 <5> During `initScrollListener`, we start by storing a handle to the movie-list container element in the DOM.
 <6> The scroll event listener will be prevented from doing anything as long as `listenForScroll` is false.
 <7> Here the distance between the bottom of the screen and the bottom of the movie-list container element is calculated. If that's smaller than the threshold `TRIGGER_OFFSET_PX_FROM_BOTTOM`, disable the listener and trigger `makeRequest`, which performs the same duties as before: request movie data from the guillotine API, and insert that into the state to trigger rendering...
@@ -1241,10 +1238,10 @@ export default (props) => <MovieList {...props} />;
 <9> Removing the click listener and adding the unique ID `listContainerId` to the container element.
 
 {zwsp} +
-[[nashornbrowserbreakage]]
+[[serverbrowserbreakage]]
 [NOTE]
 ====
-The Nashorn server-side rendering engine lacks most browser-specific JS functionality (except for the things react4xp has specifically polyfilled).
+The server-side rendering engine lacks most browser-specific JS functionality (except for the things React4xp has specifically polyfilled).
 
 *Referring to browser-specific functionality during server-side rendering will usually throw an error in the server log* and break the rendering.
 
@@ -1269,99 +1266,3 @@ TIP: This section is not a vital part of the rest of this or the next chapter. F
 
 To dive deeper into guillotine and graphQL, you can always check out the link:https://developer.enonic.com/templates/headless-cms[headless starter].
 
-[[graphql_playground]]
-=== GraphQL playground
-
-There is a handy tool in the headless starter, that we might as well add here too: the GraphQL Playground.
-
-The GraphQL Playground is basically an in-browser *GraphQL REPL interface*. It allows you to send queries and variables to the frontend API and see the results immediatly: experiment around, get to know link:https://graphql.org/learn/[GraphQL] and link:https://developer.enonic.com/docs/guillotine/2.x/api[guillotine], and build queries more effectively.
-
-To add this, first add the _graphql-playground_ library as a dependency in _build.gradle_:
-
-.<project root>/build.gradle:
-[source,groovy,options="nowrap"]
-----
-
-// (...)
-
-dependencies {
-    // (...)
-
-    // Add this under dependencies:
-    include "com.enonic.lib:lib-graphql-playground:0.0.1"
-}
-----
-
-Next, copy this code in at the end of _headless/guillotineApi.es6_:
-
-.headless/guillotineApi.es6:
-[source,javascript,options="nowrap"]
-----
-
-// ----------------------------------  Graphql playground, at the same URL as the API  -----------------
-
-var graphqlPlaygroundLib = require('/lib/graphql-playground');
-var authLib = require('/lib/xp/auth');
-
-// GraphQL playground
-exports.get = function (req) {
-    if (req.webSocket) {
-
-        return {
-            webSocket: {
-                subProtocols: ['graphql-ws']
-            }
-        };
-    }
-
-    // Simple auth control for the playground
-    if (!authLib.hasRole('system.authenticated')) {
-        return {
-            status: 401,
-            body: {
-                "errors": [ {"errorType": "401", "message": "Unauthorized"} ]
-            }
-        };
-    }
-    if (!(authLib.hasRole('system.admin') || authLib.hasRole('system.admin.login'))) {
-        return {
-            status: 403,
-            body: {
-                "errors": [ {"errorType": "403", "message": "Forbidden"} ]
-            }
-        };
-    }
-
-    var body = graphqlPlaygroundLib.render();
-    return {
-        contentType: 'text/html; charset=utf-8',
-        body: body
-    };
-};
-
-----
-
-That's it. Remember that <<#expose_api, the controller mapping exposes _guillotineApi.es6_>> on the URL `/api/headless` below sites that use this app? We just added a GET response method there, so now if you...
-
-- rebuild your project,
-- enter Content Studio again,
-- select your movielist site,
-- preview it,
-- and then add `/api/headless` after the URL in the preview tab (e.g. `http://localhost:8080/admin/site/preview/default/draft/moviesite/api/headless`),
-
-...the playground should be rendered up and running and ready for you to explore:
-
-image:graphql-playground.png[title="The GraphQL playground", width=1024px]
-
-
-
-{zwsp} +
-{zwsp} +
-{zwsp} +
-{zwsp} +
-{zwsp} +
-{zwsp} +
-
----
-
-The link:https://iconscout.com/icons/movie[movie icon] that marks the _movie_ content type in the screengrabs is by link:https://iconscout.com/contributors/phoenix-group[Phoenix Dungeon] on link:https://iconscout.com[Iconscout].

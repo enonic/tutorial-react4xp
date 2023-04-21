@@ -81,7 +81,9 @@ function makeThingDropper(droppableProp, initialCountProp) {
     return () => {
         currentCount--;
         console.log(currentCount.toString(), droppableProp, 'on the wall.');
-        document.getElementById('counter').innerText = currentCount;
+        if (document) { // <1>
+            document.getElementById('counter').innerText = currentCount;
+        }
     };
 }
 
@@ -100,9 +102,11 @@ export default (props) => {
 }
 ----
 
+<1> React4xp no longer polyfill's document, so an if block is needed to avoid SSR errors.
+
 [TIP]
 ====
-`props` are of course the standard react way to do this. It all is. As long as a _props => reactComponent_ function is default-exported, react4xp accepts standard valid ES6/JSX.
+`props` are of course the standard react way to do this. It all is. As long as a _props => reactComponent_ function is default-exported, React4xp accepts standard valid TSX/JSX/TS/JS/ES6.
 
 Although, if you think that the _makeObjectDropper_ closure thing is a strange way to do something react itself could do better... sure. Just trying to stay focused on one thing at a time.
 ====
@@ -157,7 +161,7 @@ exports.get = function(request) {
 <2> The `props` object is just any standard JS object. So the data can of course come from anywhere you want and take any shape - with one exception: `props` needs to be *serializable*, so functions can't be passed here!
 <3> Connecting the field names in `pageConfig` from _hello-react.xml_ to the prop names that _hello-react.jsx_ needs.
 <4> See how this makes the first two arguments of `React4xp.render` analogous to XP's `thymeleaf.render` template engine? The first argument, `entry`, is just a reference to what should be rendered (_react component_ ~ _template_), and the second one is a collection of data injected into it (_props_ ~ _model_).
-<5> To keep things simpler and clearer, just remove the `clientRender` flag from the previous example.
+<5> To keep things simpler and clearer, just remove the `ssr = false` flag from the previous example.
 
 There it is, now let's take a look!
 
@@ -209,7 +213,7 @@ So did anything change in the rendered response, compared to <<hello-react#hello
     </div>
 
     <!--2-->
-    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>
+    <script src="(...your.app.service) /react4xp/globals.489d97cdf.js"></script>
     <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>
     <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"></script>
 
@@ -219,7 +223,7 @@ So did anything change in the rendered response, compared to <<hello-react#hello
 </html>
 
 ----
-<1> Since we removed the `clientRender` flag again, the target container `react4xpApp` comes filled from the server. But now with a rendering with _your_ texts from `props` already inserted.
+<1> Since we removed the `ssr = false` flag again, the target container `react4xpApp` comes filled from the server. But now with a rendering with _your_ texts from `props` already inserted.
 <2> There's still no change in the asset URLs, but since we changed _hello-react.jsx_, the content of _hello-react.js_ has of course been recompiled.
 <3> The script that actually runs `hydrate` with the `props` on the clientside.
 

@@ -1,4 +1,4 @@
-= Server side JSX with React4XP
+= Server side TSX/JSX with React4XP
 :toc: right
 :imagesdir: media/
 
@@ -13,7 +13,7 @@ image:react4xp.svg[title="React4xp logo",width=256px]
 
 == Upgrade
 
-If you are upgrading to lib-react4xp 3.x.x please ready this <<upgrade#,upgrade guide>>.
+If you are upgrading to lib-react4xp 4.x.x, please read this <<upgrade/v4#,upgrade guide>>.
 
 == Introduction
 
@@ -25,7 +25,7 @@ A little bare-bone knowledge of link:https://reactjs.org/tutorial/tutorial.html[
 
 React4XP is a library (with a companion build structure) that facilitates advanced use of React in Enonic XP, and:
 
-* enables you to use JSX as a templating language, similar to other XP templating engines
+* enables you to use TSX/JSX as a templating language, similar to other XP templating engines
 * supports isomorphic client- or serverside rendering and hydration,
 * handles build flow and compilation with automated optimized asset serving
 * is modular and flexible enough to cover many advanced use cases
@@ -46,11 +46,11 @@ After <<setup#, getting set up>>, we'll begin with *3 basic lessons* - just the 
 
 The next 5 lessons present a few more *advanced usages*:
 
-- <<source-file-structure#, Free source file structure>>: Which react components are available to react4xp (called _entries_), and how to reference them.
+- <<source-file-structure#, Free source file structure>>: Which react components are available to React4xp (called _entries_), and how to reference them.
 - <<custom-flow-syntax#, Custom flow syntax>>: A more detailed and explicit syntax, for when your controller needs more control.
 - <<imports-and-dependency-chunks#, Imports, chunks, config, webpack>>: Importing things into your entries, and controlling the compilation rules and output.
-- <<guillotine#, Headless, part 1>>: Introduction of how to use react4xp in a headless-CMS context: set up a data endpoint that serves XP content as pure data, and have the already-rendered react4xp components add more content asynchronously with that content data.
-- <<webapp#, Headless, part 2>>: "pure headless" with preview - standalone webapps that take the same react4xp components out of Content Studio, and render the content with assets and data served from anywhere.
+- <<guillotine#, Headless, part 1>>: Introduction of how to use React4xp in a headless-CMS context: set up a data endpoint that serves XP content as pure data, and have the already-rendered React4xp components add more content asynchronously with that content data.
+- <<webapp#, Headless, part 2>>: "pure headless" with preview - standalone webapps that take the same React4xp components out of Content Studio, and render the content with assets and data served from anywhere.
 
 {zwsp} +
 

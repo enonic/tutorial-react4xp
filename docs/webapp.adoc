@@ -30,9 +30,9 @@ In that response there was a serverside-rendered initial HTML rendering of the e
 
 === Going fully headless
 
-But in general, when the react4xp buildtime compiles the react component source files (etc) into assets, what happens is just a *regular webpack* process that generates *regular JS (etc) assets* that can be run in the browser in pretty much any regular way - independent of the react4xp runtime.
+But in general, when the React4xp buildtime compiles the react component source files (etc) into assets, what happens is just a *regular webpack* process that generates *regular JS (etc) assets* that can be run in the browser in pretty much any regular way - independent of the React4xp runtime.
 
-*In other words, you can serve the react4xp-compiled assets from anywhere and use them however you want.*
+*In other words, you can serve the React4xp-compiled assets from anywhere and use them however you want.*
 
 Now that we've seen how to set up an API that serves XP content data, and that using that data to render something with react in the browser boils down to passing props and handling a component state, this opens up for *headless approaches!*
 
@@ -41,9 +41,9 @@ Now that we've seen how to set up an API that serves XP content data, and that u
 {zwsp} +
 
 [[nutshell]]
-== Standalone react4xp in a nutshell
+== Standalone React4xp in a nutshell
 
-The takeaway of this chapter is this: react4xp components (entries and dependencies) can be used without any XP controller or `React4xp.render` call. To do that, the base HTML (the response of a first page request, or some script loaded by it) *must do these tasks*:
+The takeaway of this chapter is this: React4xp components (entries and dependencies) can be used without any XP controller or `React4xp.render` call. To do that, the base HTML (the response of a first page request, or some script loaded by it) *must do these tasks*:
 
 1. Load React and ReactDOM from somewhere. For example a CDN,
 2. Load all the <<chunks#, dependency chunks>> that the entries need (before loading the entry assets!),
@@ -68,7 +68,7 @@ If you've used react before, this is the same flow.
 
 {zwsp} +
 
-NOTE: *This approach does NOT include server-side react rendering!* At least not out of the box. But since the react4xp build processes are pretty regular webpack, using regular react, it should be perfectly possible to tweak things and engineer your own solutions. If you go down that path, using Node.js instead of Nashorn for the SSR engine might be easier - Nashorn needs more polyfilling.
+NOTE: *This approach does NOT include server-side react rendering!* At least not out of the box. But since the React4xp build processes are pretty regular webpack, using regular react, it should be perfectly possible to tweak things and engineer your own solutions.
 
 
 {zwsp} +
@@ -77,14 +77,14 @@ NOTE: *This approach does NOT include server-side react rendering!* At least not
 
 == Lesson overview
 
-We'll take a look at *two variations* of how to use react4xp-compiled components without rendering them from XP controllers. Both of them do <<#nutshell, the same steps above>>, in slightly different ways:
+We'll take a look at *two variations* of how to use React4xp-compiled components without rendering them from XP controllers. Both of them do <<#nutshell, the same steps above>>, in slightly different ways:
 
 {zwsp} +
 
 1. *Completely standalone:* this first variation is the manual, hardcoded, vanilla-js-and-react webapp approach. The HTML and script do everything explicitly: asset URLs and initial values are *handled and organized manually in the HTML itself*, and the script at the end fetches data from guillotine, organizes them into props and makes a *regular `ReactDOM.render` call*. In this approach, XP's role is mainly to serve content data through the guillotine API. Pretty independent but there are no helpers; so getting things right is up to you.
 +
 {zwsp} +
-2. *Webapp with XP helpers:* this second variation is "slightly standalone": we use XP to wrap a little boilerplate for convenience: *XP and thymeleaf provides some initial values*. The script at the end is still loaded and used to fetch data and create props, but instead of having the HTML load all the entry and dependency assets and call `React4xp.render`, the react4xp client wrapper is loaded in order to use a *react4xp helper function:* `.renderWithDependencies`. This is an all-in-one rendering trigger that takes one or more <<jsxPath#, entry jsxPaths>> with props and target container ID's, and uses *XP services* for auto-tracking and loading all the assets needed (including dependency chunks) before rendering them.
+2. *Webapp with XP helpers:* this second variation is "slightly standalone": we use XP to wrap a little boilerplate for convenience: *XP and thymeleaf provides some initial values*. The script at the end is still loaded and used to fetch data and create props, but instead of having the HTML load all the entry and dependency assets and call `React4xp.render`, the React4xp client wrapper is loaded in order to use a *React4xp helper function:* `.renderWithDependencies`. This is an all-in-one rendering trigger that takes one or more <<jsxPath#, entry jsxPaths>> with props and target container ID's, and uses *XP services* for auto-tracking and loading all the assets needed (including dependency chunks) before rendering them.
 
 {zwsp} +
 
@@ -184,14 +184,14 @@ The webapp begins with some basic HTML, setting it all up in the browser.
 ====
 The asset paths above have one or two components that depend on details in your setup: `{hash}` and `(...my.asset.url)`.
 
-- `{hash}` stands for the content hashed part of the compiled-asset filename (where webpack is set up to do this - react4xp uses this for cache busting). These change on every recompilation of changed source code in react4xp dependency chunks - in the last chapter: everything below _src/main/resources/_ *_react4xp/shared_*.
+- `{hash}` stands for the content hashed part of the compiled-asset filename (where webpack is set up to do this - React4xp uses this for cache busting). These change on every recompilation of changed source code in React4xp dependency chunks - in the last chapter: everything below _src/main/resources/_ *_react4xp/shared_*.
 - `(...my.asset.url)` stands for the root path to your particular source for the compiled assets.
 
 For example, on my local machine where I'm using XP to fetch assets, the asset path `"(...my.asset.url) /react4xp/shared.{hash}.js"` looks like this:
 
 `"/_/asset/com.enonic.app.react4xp:1604314030/react4xp/shared.d366a6c1b.js"`
 
-*How to find your particular URLs for hardcoding this example?* Again, this depends on your setup, but based on the previous chapter lesson: you can use the page/preview that's produced from the Content Studio version of the movie list page, and just copy the asset paths from the produced page source HTML. Or if you know the asset root path but need the hash, you can run `gradlew clean build` and look at the file names below _build/resources/main/assets/react4xp_.
+*How to find your particular URLs for hardcoding this example?* Again, this depends on your setup, but based on the previous chapter lesson: you can use the page/preview that's produced from the Content Studio version of the movie list page, and just copy the asset paths from the produced page source HTML. Or if you know the asset root path but need the hash, you can run `gradlew clean build` and look at the file names below _build/resources/main/r4xAssets_.
 ====
 
 {zwsp} +
@@ -379,7 +379,7 @@ const requestAndRenderMovies = () => {
 const renderMovies = (movies) => {
     console.log("Rendering initial movies:", movies);
 
-    // When compiled, all react4xp entries are exported as functions,
+    // When compiled, all React4xp entries are exported as functions,
     // as "default" under the entryName (jsxPath), inside the global object React4xp:
     const componentFunc = React4xp['MovieList'].default;
 
@@ -434,7 +434,7 @@ Clicking this link should now show you the working webapp - listing 3 initial mo
 
 This is all nice and well, but a cumbersome part is that it requires you to supply values and asset URLs yourself, or ways to figure them out. Hashes in file names is a neat way of content-based cache busting, but keeping track of the resulting file names can be a chore. Even if that's not an issue, it could be handy to have a way to just supply the name (jsxPath) of the entry (or entries) you want to render, and let the system itself figure out what dependency chunk(s) are needed to load alongside the entry asset(s). Not to mention prevent them from being downloaded twice.
 
-If you have XP running but still want to make things work headlessly and outside of Content Studio, react4xp provides a couple of helpers for this. The client wrapper comes with the function `.renderWithDependencies`, which uses an XP service to track the sum set of dependency chunks required to render a set of jsxPaths, loads them and the entry assets, and renders them.
+If you have XP running but still want to make things work headlessly and outside of Content Studio, React4xp provides a couple of helpers for this. The client wrapper comes with the function `.renderWithDependencies`, which uses an XP service to track the sum set of dependency chunks required to render a set of jsxPaths, loads them and the entry assets, and renders them.
 
 === HTML base
 
@@ -487,7 +487,7 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
     </body>
 </html>
 ----
-<1> This is where we <<#html1, previously>> put URLs to each specific dependency chunk and entry asset we want to use. Here, we only load the react4xp client-wrapper, and make it available in the browser’s namespace as `React4xp.CLIENT`.
+<1> This is where we <<#html1, previously>> put URLs to each specific dependency chunk and entry asset we want to use. Here, we only load the React4xp client-wrapper, and make it available in the browser’s namespace as `React4xp.CLIENT`.
 <2> As before, we set a few initial values for the final script to use. Two things are different here, though: first, we let the XP controller (right below) supply the appname-dependent content type and the content path to the site with the movies below it. And second: `serviceUrlRoot`. This value is the URL root of the XP services, and lets the script know where to look for the service that tracks the entries' assets and dependencies.
 <3> The final script asset (<<#script2, below>>), also loaded by using the `portal.assetUrl` function with thymeleaf instead of hardcoded.
 
@@ -685,7 +685,7 @@ The output when you preview it should be the same as <<#output1, the previous ex
 
 *That concludes the last of these lessons.*
 
-You are now a legit react4xp knight! If you have improvement suggestions, questions, bug reports - welcome to talk with us about it:
+You are now a legit React4xp knight! If you have improvement suggestions, questions, bug reports - welcome to talk with us about it:
 
 - link:https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement[Future improvements, requested features]
 - link:https://discuss.enonic.com[The Enonic Forums]

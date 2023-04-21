@@ -12,24 +12,24 @@ Naturally, this example will focus quite a bit on XP Content Studio and how to u
 **The key takeaways are:**
 
 **1.** `React4xp.render` works the same way **from any controller, and independently**:
-    - A Region in a react4xp-rendered Page can contain any kind of Component (react4xp-rendered or not).
-    - And a react4xp-rendered Component can be placed inside the Region of any kind of Page (react4xp-rendered or not).
+    - A Region in a React4xp-rendered Page can contain any kind of Component (React4xp-rendered or not).
+    - And a React4xp-rendered Component can be placed inside the Region of any kind of Page (React4xp-rendered or not).
 
 **2.** React4xp comes with an **importable `<Regions>` react component** for making XP Regions inside rendered output,
-    - One caveat: Regions work best when server-side rendered. Specifically: using `clientRender` when react4xp-rendering a Region can cause the components inside the Region to drop their page contributions. This can break rendering and/or functionality of the Components inside - both react4xp-type and other kinds.
+    - One caveat: Regions work best when server-side rendered. Specifically: using `ssr = false` when React4xp-rendering a Region can cause the components inside the Region to drop their page contributions. This can break rendering and/or functionality of the Components inside - both React4xp-type and other kinds.
 
 **3.** Each time the rendered page contributions make the browser call <<hello-react#hello_output, `hydrate`>> or <<hello-react#clientrendered_output, `render`>>, an **independent top-level react root app** is created in the browser - so a page can easily have more than one react root app.
 
 [NOTE]
 ====
-This last point means: if you use react4xp to render an XP Region in a Page/Layout, and insert a react4xp-rendered Part into that Region, this is NOT the same as the regular react way of importing and nesting one react component inside another, within the same app. The Page/Layout controller will create one react app, and the Part will be another one.
+This last point means: if you use React4xp to render an XP Region in a Page/Layout, and insert a React4xp-rendered Part into that Region, this is NOT the same as the regular react way of importing and nesting one react component inside another, within the same app. The Page/Layout controller will create one react app, and the Part will be another one.
 
 So be sure to **structure your react app(s) to be self-contained**, with an <<entries#, entry>> at the top level of each. This is especially important for functionality that's shared inside one app, across react components - for example link:https://reactjs.org/docs/context.html[react context providers]).
 ====
 
 == Lesson overview
 
-React4xp don't need to render from a Page controller, but can also render from XP _Part or Layout controllers_, creating react-rendered XP elements that can be dragged into any regular XP Region. And besides, react4xp can (serverside) render these XP Regions themselves, which can then accept any XP Parts/Layouts dropped into them (as well as Fragments, Text and Image components of course).
+React4xp don't need to render from a Page controller, but can also render from XP _Part or Layout controllers_, creating react-rendered XP elements that can be dragged into any regular XP Region. And besides, React4xp can (serverside) render these XP Regions themselves, which can then accept any XP Parts/Layouts dropped into them (as well as Fragments, Text and Image components of course).
 
 In this example, we'll do both:
 
@@ -91,7 +91,7 @@ Start with a completely generic content type: _site/content-types/my-content/my-
 </content-type>
 ----
 
-Again, this content type has nothing to do with react4xp, but it'll make the setup of this and the next examples easier.
+Again, this content type has nothing to do with React4xp, but it'll make the setup of this and the next examples easier.
 
 {zwsp} +
 
@@ -122,9 +122,9 @@ This react component has a single focus, namely rendering the Region.
 ====
 We're going to make a page controller with a react-rendered XP region and insert react-rendered components into the region, just to show how to react-render XP pages, parts and regions.
 
-*But react4xp doesn't depend on this structure,* it works fine with other, "regular" XP components.
+*But React4xp doesn't depend on this structure,* it works fine with other, "regular" XP components.
 
-As long as you follow the general patterns here, you can use parts with react4xp components inside any old XP region (e.g. from Thymeleaf), and the other way around - render XP regions with react and insert any XP components into them.
+As long as you follow the general patterns here, you can use parts with React4xp components inside any old XP region (e.g. from Thymeleaf), and the other way around - render XP regions with react and insert any XP components into them.
 ====
 
 .default.jsx
@@ -140,7 +140,7 @@ export default (props) => (
 );
 ----
 
-<1> Importing a Region template from an NPM package that comes with react4xp (link:https://www.npmjs.com/package/@enonic/react-components[@enonic/react-components]).
+<1> Importing a Region template from an NPM package that comes with React4xp (link:https://www.npmjs.com/package/@enonic/react-components[@enonic/react-components]).
 <2> Nesting the Region in our component. To be precise: it uses `props.regionsData` and selects the Region name(s) in `props.names`, so it will render _all_ Regions given by `props` if more than one is defined and selected.
 
 {zwsp} +
@@ -196,7 +196,7 @@ exports.get = function(request) {
 <4> The optional `tag` prop sets which HTML tag will be at the root of the section rendered by `<Regions>`, instead of `<div>`. Here, we're going for `<main>`.
 <5> We're setting the `request` argument of `React4xp.render` to _null_ - switching off the auto-handling of how _this_ particular rendering is done inside/outside Content Studio, and just forcing `React4xp.render` to *always output a static, serverside rendered HTML body without page contributions*. But why? Two reasons:
   - The way it is now, _default.jsx_ and the Regions in it has no need for page contributions. Only the static HTML is of interest; no client-side JS code needs to be activated/rendered in the client, and there's no styling or anything else coming from it. So by skipping the page contributions rendering, performance is improved a little.
-  - There is a *caveat* when using react4xp to render Regions (like we do in in _default.jsx_): currently, page contributions don't work for XP Parts/Layouts if they are dropped into a _clientside_-rendered Region. So *Regions must be serverside rendered if they contain XP components that need their own page contributions to work* (for example react4xp parts, which rely on page contributions to be activated in the client). So by forcing a static serverside Regions rendering, we prevent that corner case from failing, and make sure _any_ XP element dropped inside the Region will work, even clientside-rendered react4xp parts.
+  - There is a *caveat* when using React4xp to render Regions (like we do in in _default.jsx_): currently, page contributions don't work for XP Parts/Layouts if they are dropped into a _clientside_-rendered Region. So *Regions must be serverside rendered if they contain XP components that need their own page contributions to work* (for example React4xp parts, which rely on page contributions to be activated in the client). So by forcing a static serverside Regions rendering, we prevent that corner case from failing, and make sure _any_ XP element dropped inside the Region will work, even clientside-rendered React4xp parts.
 
 TIP: Adding an XP Region to a Layout is the same, only easier: since it will be injected inside a Page, you don't need to add an outer `body` in the _options_ parameter, and therefore you don't need an `id` parameter either - same as in the XP Part controller below.
 
@@ -209,7 +209,7 @@ Before we move on to the XP Part, we need to bind this Page controller to the `m
 
 This lays the foundation for this example and also the later ones. When this is done, *using the _default_ Page controller will be easy*: create a new _my-content_ item in your site, and it will come out ready to use with the Region from _default_.
 
-. When you've deployed the updated app and logged into Content Studio, make a new Site content and connect it to the react4xp app (or re-use one of your previous ones).
+. When you've deployed the updated app and logged into Content Studio, make a new Site content and connect it to the React4xp app (or re-use one of your previous ones).
 . In the grid (Content Studio browse mode), under your Site, create a new Template content under Templates:
 
 [.thumb]
@@ -305,7 +305,7 @@ exports.get = function(request) {
         props,
         request,
         {                               // <1>
-            clientRender: true,         // <2>
+            ssr: false,                 // <2>
             pageContributions: {        // <3>
                 bodyEnd: `<script>console.log("The color of the thing is: ${component.config.color}");</script>`
             }
@@ -313,7 +313,7 @@ exports.get = function(request) {
 };
 ----
 
-<1> In the _options_ argument (the object with `clientRender` and `pageContributions`), notice how we're _not_ adding `body` or `id` like we did before. `body` is only needed for the controller to _add_ HTML around the rendered react - if you skip it a target container `<div>` will just be generated for you. With an autogenerated container, the ID will match either way: you can still set the ID value with the `id` _option_, or skip it and just let react4xp supply a unique ID. For details, see the <<api#react4xp_render, React4xp.render API>>. For that matter, *we don't even need the options argument here at all* - it could be completely skipped...
+<1> In the _options_ argument (the object with `ssr` and `pageContributions`), notice how we're _not_ adding `body` or `id` like we did before. `body` is only needed for the controller to _add_ HTML around the rendered react - if you skip it a target container `<div>` will just be generated for you. With an autogenerated container, the ID will match either way: you can still set the ID value with the `id` _option_, or skip it and just let React4xp supply a unique ID. For details, see the <<api#react4xp_render, React4xp.render API>>. For that matter, *we don't even need the options argument here at all* - it could be completely skipped...
 <2> ...but for demonstrating, let's use it to show that this Part is _independent_ (from both the _default_ Page we defined a moment ago, and from any other Parts dropped into the same Region, react or otherwise), by clientside rendering the Part...
 <3> ...and adding a tiny color-logging script with the Part. This is done by using the _options_ parameter to pass `pageContributions` through `.render`, the same way we've passed `body` through it so far.
 
@@ -358,7 +358,7 @@ image:content_with_red_part.png[title="Editing new content in Content Studio, wi
 {zwsp} +
 
 == Output
-We won't go into the details about the HTML output anymore - it's structurally and conceptually *the same as in the previous examples*. Looking at the _Page Source_, it should all make sense to you by now: the Page controller and Part are *compiled to separate assets and downloaded exactly once* in the client before calling `render` and `hydrate` as needed (using a react4xp Part more than once does not make the client download the assets more than once - they're recycled for performance).
+We won't go into the details about the HTML output anymore - it's structurally and conceptually *the same as in the previous examples*. Looking at the _Page Source_, it should all make sense to you by now: the Page controller and Part are *compiled to separate assets and downloaded exactly once* in the client before calling `render` and `hydrate` as needed (using a React4xp Part more than once does not make the client download the assets more than once - they're recycled for performance).
 
 [NOTE]
 ====
@@ -371,9 +371,9 @@ Each time the client calls `render` or `hydrate`, it will spawn a *separate root
 
 {zwsp} +
 
-Now we've covered the basics of how to use react4xp. It'll be enough for most simple setups and use cases.
+Now we've covered the basics of how to use React4xp. It'll be enough for most simple setups and use cases.
 
-Moving on from here, we'll take a look at more advanced ways to use react4xp, giving you more control.
+Moving on from here, we'll take a look at more advanced ways to use React4xp, giving you more control.
 
 {zwsp} +
 {zwsp} +

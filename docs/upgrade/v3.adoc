@@ -1,4 +1,4 @@
-= React4XP - Upgrade
+= React4XP - Upgrade to v3
 :toc: right
 
 We have tried to simplify the build system and limit the number of options.
@@ -30,7 +30,7 @@ This file has been dropped in favour of react4xp.config.js
 
 === react4xp.config.js
 
-This is where you can add extra externals, or override some defaults.
+This is where you can add extra globals, or override some defaults.
 There should be an updated example file in the @enonic/react4xp package under examples/react4xp.config.js
 
 See <<https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js>>
@@ -133,7 +133,7 @@ There should be an updated example file in the @enonic/react4xp package under ex
 
 `+npm install --save-dev @enonic/react-components+`
 
-==== Jsx/Tsx files
+==== Jsx files
 
 Edit your jsx files and change import path from:
 

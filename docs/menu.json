@@ -53,8 +53,34 @@
       "document": "api"
     },
     {
+      "title": "Configuration",
+      "menuItems": [
+        {
+          "title": "Build time",
+          "document": "config/build-time"
+        },
+        {
+          "title": "Run time",
+          "document": "config/run-time"
+        }
+      ]
+    },
+    {
+      "title": "Webpack",
+      "document": "webpack"
+    },
+    {
       "title": "Upgrade",
-      "document": "upgrade"
+      "menuItems": [
+        {
+          "title": "v4",
+          "document": "upgrade/v4"
+        },
+        {
+          "title": "v3",
+          "document": "upgrade/v3"
+        }
+      ]
     }
   ]
 }

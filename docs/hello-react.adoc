@@ -7,7 +7,7 @@
 
 React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: displaying a working react component in content studio.
 
-We'll first do that in the serverside rendered way (this is the react4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
+We'll first do that in the serverside rendered way (this is the React4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
 
 {zwsp} +
 
@@ -45,7 +45,8 @@ First, we need a *page * XML file. Just XP boilerplate:
 
 [[react_component]]
 === React component
-Next, we'll add the *react component*. This displays a "Hello world" heading, and we'll add some simple functionality to it: every time you click the message, it will update a number in the next line and print a message in the console. This is to show that we're rendering an _active_ react component; we're not only using JSX as an XP templating language for static HTML - although sure, you could do that too if you want.
+
+Next, we'll add the *react component*. This displays a "Hello world" heading, and we'll add some simple functionality to it: every time you click the message, it will update a number in the next line and print a message in the console. This is to show that we're rendering an _active_ react component; we're not only using TSX/JSX as an XP templating language for static HTML - although sure, you could do that too if you want.
 
 Obviously, the actual updating step is done with vanilla JS instead of actual react, just to keep everything as simple as possible. We'll look at stateful/dynamic components later.
 
@@ -76,9 +77,9 @@ Apart from that, you can use ordinary ES6 and import and nest other JS, react co
 ====
 By the way, a quick gotcha on using `document` and `window` etc, during serverside vs clientside rendering:
 
-Naturally, a lot of **browser-specific functionality won't work well during server-side rendering**. React4xp has polyfilled both `document` and `window` as _empty objects_ in Nashorn. To prevent weird behavior or errors, browser-specific code should only run in the browser.
+Naturally, a lot of **browser-specific functionality won't work well during server-side rendering**. React4xp has polyfilled `window` as _empty object_. To prevent weird behavior or errors, browser-specific code should only run in the browser.
 
-In this example, `dropBottle` is the response to a click listener which won't be triggered to actually _run_ on the server (although the asset is compiled and read the asset into nashorn, but that is safe in itself), so we don't need any more safeguards here. But if you do, it's easy enough - for example:
+In this example, `dropBottle` is the response to a click listener which won't be triggered to actually _run_ on the server (although the asset is compiled and read the asset into memory, but that is safe in itself), so we don't need any more safeguards here. But if you do, it's easy enough - for example:
 
 [source,javascript,options="nowrap"]
 ----
@@ -129,13 +130,13 @@ exports.get = function(request) {                       // <2>
 
 That's it.
 
-If you've used XP before, you'll probably note that there's no HTML view file, no `thymeleaf.render`, and so on - in this example, react4xp completely handles the page view. The essential thing here is that at the end of the `get` function, *react4xp in a single _.render_ call creates a _full_ XP response object that makes react work.*
+If you've used XP before, you'll probably note that there's no HTML view file, no `thymeleaf.render`, and so on - in this example, React4xp completely handles the page view. The essential thing here is that at the end of the `get` function, *React4xp in a single _.render_ call creates a _full_ XP response object that makes react work.*
 
 What's going on in the controller?
 
 <1> In line 2, `React4xp` is imported from the library.
 <2> In line 4, we pick up the `request` data. The render call needs it to know the rendering context.
-<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for react4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that, but for all the juicy details: <<entries#, entries>> and <<jsxpath#, jsxPath>>).
+<3> In line 5, we get the XP component data. Used directly in the `.render` call, it's a convenient shortcut for React4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.jsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that, but for all the juicy details: <<entries#, entries>> and <<jsxpath#, jsxPath>>).
 <4> In line 8, the juicy bit: *the actual render call*. The rendered response from it can be returned directly from the `get` function, since `.render` creates an object with a `body` HTML string and a `pageContributions` attribute with everything needed (more details: <<api#react4xp_render, the render API>>).
 <5> In line 13, the `id` attribute _"react4xpApp"_ is set in the *options* argument of `.render` (lines 12-20). This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
 <6> In lines 14-19, we're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag (such as `<!DOCTYPE html>`).
@@ -149,7 +150,7 @@ If you've added those 3 files, let's get this rendered! If you've used XP and Co
 
 . Compile the project (`enonic project deploy` in a terminal from root) and start the sandbox (`enonic sandbox start`),
 . Navigate your browser to `localhost:8080/admin`. Log in to XP and open Content Studio (if you haven't already, you'll need to link:https://market.enonic.com/vendors/enonic/content-studio[install Content Studio] in XP).
-. Create a new Site content and Edit it in a new tab. Add your react4xp app (_"starter-react4xp"_?) on the upper left.
+. Create a new Site content and Edit it in a new tab. Add your React4xp app (_"starter-react4xp"_?) on the upper left.
 . Select the new _Hello-react_ page controller in the preview panel on the right. Store that change (and refresh the page if needed).
 
 You should now see something like this:
@@ -180,7 +181,7 @@ Two things are worth knowing about the rendering, before we move on:
 [[static_cs_rendering]]
 === Content studio should only have static rendering
 
-If you clicked the rendering _inside XP Content Studio_ instead of a preview tab, you'd notice there was *no bottle-counting*. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the `request` argument is used in `React4xp.render` to handle this automatically: inside Content Studio, you'll only see the rendering as a regular static XP preview / placeholder instead of active react.
+If you edit some content in _inside XP Content Studio_, you'd notice there was *no bottle-counting*. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the `request` argument is used in `React4xp.render` to handle this automatically: inside Content Studio edit mode, you'll only see the rendering as a regular static XP preview / placeholder instead of active react.
 
 NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.renderPageContributions`. These are intended for use cases where it's good to be more explicit than `React4xp.render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. The <<custom-flow-syntax#, custom flow>> chapter shows you how.
 
@@ -188,13 +189,9 @@ NOTE: Later, we'll look at two other rendering functions: `.renderBody` and `.re
 
 === First serverside render can be slow
 
-You may also have noticed that it took a few seconds for the very first rendering to be displayed, either here or in the edit/browse mode in Content Studio. That's the *Nashorn server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
+You may also have noticed that it took a little time for the first server-side rendering to be displayed. That's the *server-side rendering engine warming up*. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.
 
-We're looking into mitigating this delay in the future, but for now, this is nice to know: *This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app. Setting up a continuous build with XP devmode instead, helps. For the react4xp starter, here's how:
-
-  1. `enonic sandbox start <yourSandBoxName> --dev` in one terminal (from anywhere), and
-
-  2. `enonic project deploy && gradlew react4xp_components compileXP -t` from project root in another terminal. Reply _No_ if it asks you to start the sandbox here.
+*This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app.
 
 {zwsp} +
 
@@ -216,7 +213,7 @@ Okay, back to the rendering of the page. Open the *page source* code in the brow
         </div>
     </div>
 
-    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>                          <!--2-->
+    <script src="(...your.app.service) /react4xp/globals.489d97cdf.js"></script>                          <!--2-->
     <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>                              <!--3-->
     <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"></script>  <!--4-->
     <script src="(...your.app.service) /react4xp/dynamic.87654321.js"></script>                             <!--5-->
@@ -228,9 +225,9 @@ We can see this whole output is actually the `body` HTML string we passed into t
 (The asset URLs are shortened for readability, and because some details may vary. At my computer for example, the `(...your.app.service)` part actually looks like: `/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/`)
 
 <1> At the top, we see the `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component. At this point it's only static markup, but it will be activated during step 5 below.
-<2> The first asset is `externals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN.
+<2> The first asset is `globals.<contenthash>.js`: this is react and react-dom bundled together. They are served from XP instead of from a CDN.
 <3> The second loaded asset is a client-wrapper.
-<4> The third asset is the compiled version of _hello-react.jsx_, with the react component and the `dropBottle` routine. During `React4xp.render`, react4xp used the `component` data to locate this asset _after_ compiling. The react component gets an identifier string, `site/pages/hello-react/hello-react`, which is called a _jsxPath_ in react4xp. We'll cover jsxPaths later (full detail reference <<jsxpath#, here>>), but for now you just need to know that this identifier is also used when loading this asset into the the browser's namespace: `React4xp['site/pages/hello-react/hello-react']`.
+<4> The third asset is the compiled version of _hello-react.jsx_, with the react component and the `dropBottle` routine. During `React4xp.render`, React4xp used the `component` data to locate this asset _after_ compiling. The react component gets an identifier string, `site/pages/hello-react/hello-react`, which is called a _jsxPath_ in React4xp. We'll cover jsxPaths later (full detail reference <<jsxpath#, here>>), but for now you just need to know that this identifier is also used when loading this asset into the the browser's namespace: `React4xp['site/pages/hello-react/hello-react']`.
 <5> The script that actually runs `hydrate` with the `props` on the clientside.
 
 NOTE: The assets are served by lib-react4xp services. Most of them (_react4xp-client_ and the content-hashed assets) are optimized for client-side caching, to minimize repeated requests.
@@ -269,15 +266,15 @@ exports.get = function(request) {
                         </body>
                     </html>
                 `,
-            clientRender: true                          // <1>
+            ssr: false                                   // <1>
         }
     )
 };
 ----
-<1> On the server, a truthy `clientRender` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular `.render` call. Mixing up clientside and serverside rendering across different places hasn't been tested very much, but it should work fine).
+<1> On the server, a false `ssr` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular `.render` call. Mixing up clientside and serverside rendering across different places hasn't been tested very much, but it should work fine).
 
 [[clientrendered_output]]
-If you compare with <<#hello_output, the serverside-rendered example>>, the `clientRender` flag causes the *rendered output* to change slightly, changing the behavior in the browser.
+If you compare with <<#hello_output, the serverside-rendered example>>, the `ssr` flag causes the *rendered output* to change slightly, changing the behavior in the browser.
 
 [source,html,options="nowrap"]
 ----
@@ -288,7 +285,7 @@ If you compare with <<#hello_output, the serverside-rendered example>>, the `cli
     <div id="react4xpApp"></div>    <!--1-->
 
     <!--2-->
-    <script src="(...your.app.service) /react4xp/externals.489d97cdf.js"></script>
+    <script src="(...your.app.service) /react4xp/globals.489d97cdf.js"></script>
     <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>
     <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"></script>
 
@@ -300,7 +297,7 @@ If you compare with <<#hello_output, the serverside-rendered example>>, the `cli
 <2> The compiled assets and their URLs are exactly the same as in the serverside version.
 <3> The script that actually runs `render` with the `props` on the clientside.
 
-NOTE: <<#static_cs_rendering, As mentioned before>>, this only applies _outside_ of Content Studio. The `clientRender` flag does not change anything inside Content Studio: still server-side rendered static HTML.
+NOTE: <<#static_cs_rendering, As mentioned before>>, this only applies _outside_ of Content Studio edit mode. The `ssr` flag does not change anything inside Content Studio edit mode: still server-side rendered static HTML.
 
 Apart from these differences behind the scenes, the page will look and behave the same when presented to the user.
 
@@ -308,7 +305,7 @@ Finally, it's worth mentioning a special case where you might want to _temporari
 
 [TIP]
 ====
-You might get _serverside runtime errors_ in the react components that you write. The Nashorn rendering engine will dump an error message and some suspected code in the server log - but it's not always easy to make sense of those.
+You might get _serverside runtime errors_ in the react components that you write. The React4xp rendering engine will dump an error message and some suspected code in the server log - but it's not always easy to make sense of those.
 
 Often, switching over to _clientside rendering_ for that particular react component, will give you a better/sourcemapped error message in the browser console, making your debugging life easier.
 ====

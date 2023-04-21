@@ -7,14 +7,14 @@
 
 In this example things get a bit more complex. We'll make another Part, and re-use the Page controller, Template and Content type we made <<pages-parts-and-regions#template_with_react_page_controller, previously>>.
 
-- However, we won't use the `React4xp.render` shorthand function from before. Instead, we'll look at a more *explicit react4xp syntax*:
+- However, we won't use the `React4xp.render` shorthand function from before. Instead, we'll look at a more *explicit React4xp syntax*:
     a. It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your <<entries#, entry>>; you can manipulate the object(s) or extract data from them _before_ rendering.
     b. Here, each entry is rendered in *two separate methods*: `renderBody` and `renderPageContributions` (full details: <<api#react4xp_object, React4xp data object API>>)
     c. You can pretty easily render *multiple entries* from the same controller, by chaining together their rendering.
 +
 NOTE: Rendering multiple entries like we do here will create multiple <<entries#assets_and_apps, independent react apps>> in the browser.
 
-- We will also use a *thymeleaf* template for one of the entries - and take advantage of the react4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.
+- We will also use a *thymeleaf* template for one of the entries - and take advantage of the React4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.
 
 - In addition to chain-rendering more than one entry, we will use <<jsxpath#, jsxPaths>> to point to entries in a different location. Actually, let's just recycle the same entries we used before:
 
@@ -97,7 +97,7 @@ Next, we're adding a regular *thymeleaf view template file*.
 
 This forms the initial HTML base, with `color` and `targetId` inserted by thymeleaf. This is actually not different from before: <<hello-react#first_helloreact_jsx, previously>> we've used a hardcoded string as the HTML base that react is rendered into. Now we're just letting thymeleaf make it. Same thing, the base HTML string can come from anywhere.
 
-The controller will render _two_ entries into this base HTML. To be clear: even though we're using two entries, this is still _one single XP Part_. The first entry is _color.jsx_ which will be inserted into the element `<div data-th-id="${targetId}"></div>`. The second one, _hello-react.jsx_ will also be rendered and inserted into this base HTML, but it will have a react4xp-ID that does not match any element ID here. This will cause react4xp to revert to the default behavior: generate a new container `<div>` and insert it right at the end of the root element: after `</section>` here:
+The controller will render _two_ entries into this base HTML. To be clear: even though we're using two entries, this is still _one single XP Part_. The first entry is _color.jsx_ which will be inserted into the element `<div data-th-id="${targetId}"></div>`. The second one, _hello-react.jsx_ will also be rendered and inserted into this base HTML, but it will have a React4xp-ID that does not match any element ID here. This will cause React4xp to revert to the default behavior: generate a new container `<div>` and insert it right at the end of the root element: after `</section>` here:
 
 .custom-flow-view.html:
 [source,html,options="nowrap"]
@@ -117,7 +117,7 @@ The controller will render _two_ entries into this base HTML. To be clear: even 
 === Part controller
 *The controller* now has more complexity than before, so here's an overview:
 
-- Each entry is used to set up a data-holding reactxp object, in steps _before the rendering_ is called. In these steps, data (options and props) can be both injected into the react4xp objects, and extracted from them.
+- Each entry is used to set up a data-holding reactxp object, in steps _before the rendering_ is called. In these steps, data (options and props) can be both injected into the React4xp objects, and extracted from them.
 - The output of one rendering is used as the base for the next; chaining them together and gradually building up a final multi-entry output.
 - HTML body and page contributions are rendered/chained separately from each other: there's one flow that repeats `renderBody` across multiple entries and builds one HTML body for all the entries. And another chain that repeates `renderPageContributions`.
 - Just for demonstration, one entry will be client-side rendered and the other one server-side rendered. Both entries include a `request` option to easily automate correct behavior for inside-Content-Studio context. This is most important for the clientRendered one.
@@ -126,7 +126,7 @@ The controller will render _two_ entries into this base HTML. To be clear: even 
 ====
 When client-side rendering an entry, it's recommended to add a `request` option (for both of the entry's rendering calls - see below).
 
-One reason to also add `request` for SSR however, is that in cases of react component errors, react4xp will visualize the entry with an error placeholder. And  `request` adds some clarity: allows it to add the actual error messages (except in live view mode - where the messages are always held back).
+One reason to also add `request` for SSR however, is that in cases of react component errors, React4xp will visualize the entry with an error placeholder. And  `request` adds some clarity: allows it to add the actual error messages (except in live view mode - where the messages are always held back).
 ====
 
 .custom-flow.es6
@@ -191,15 +191,16 @@ exports.get = function(request) {
     // using client-side rendering only outside of Content Studio:
     const finalBody = helloObj.renderBody({
         body: colorBody,                                                     <!--10-->
-        clientRender: true,                                                  <!--11-->
+        ssr: false,                                                          <!--11-->
         request
     });
 
     // Adding helloObj's page contributions to the previously rendered page contributions,
-    // duplicating clientRender between renderPageContributions and renderBody (pair-wise for each entry).
+    // duplicating ssr between renderPageContributions and renderBody (pair-wise for each entry).
     const finalPageContributions = helloObj.renderPageContributions({
         pageContributions: colorPageContributions,                           <!--12-->
-        clientRender: true,
+        // hydrate: false, // Turn off hydration?
+        ssr: false,
         request
     });
 
@@ -212,40 +213,40 @@ exports.get = function(request) {
 };
 
 ----
-<1> Constructing the data-holding react4XP object `helloObj` from the same _hello-react.jsx_ entry we made <<editorial-data-and-props#hello_react_jsx_modified, before>>. The constructor takes one argument, which is mandatory: an <<entries#, entry reference>>. This can be an XP `component` object like before, OR like we're doing here: a <<jsxpath#, jsxPath>>.
+<1> Constructing the data-holding React4xp object `helloObj` from the same _hello-react.jsx_ entry we made <<editorial-data-and-props#hello_react_jsx_modified, before>>. The constructor takes one argument, which is mandatory: an <<entries#, entry reference>>. This can be an XP `component` object like before, OR like we're doing here: a <<jsxpath#, jsxPath>>.
 +
 This entry reference is used the same way as the first argument, _entry_, in <<api#react4xp_render, `React.render`>> (so just to be clear: a jsxPath reference string like this also works fine there).
 <2> `setProps` modifies `helloObj`, to add some `props`. This of course corresponds to the second argument, `props`, in `React4xp.render`.
-<3> After creating a react4xp object `colorObj` for the second entry, _color.jsx_, we're modifying that too, starting with adding props.
+<3> After creating a React4xp object `colorObj` for the second entry, _color.jsx_, we're modifying that too, starting with adding props.
 +
-Note the *builder-like pattern* here: each of the setter methods (`setProps`, `setId` and `uniqueId`) returns the react4xp object itself. This allows you to run them directly after each other like this, so this example is just a shorter way of writing:
+Note the *builder-like pattern* here: each of the setter methods (`setProps`, `setId` and `uniqueId`) returns the React4xp object itself. This allows you to run them directly after each other like this, so this example is just a shorter way of writing:
 +
 ----
 colorObj.setProps({ color: partConfig.color });
 colorObj.setId("myColorThing");
 colorObj.uniqueId();`.
 ----
-<4> `setId` sets the ID of the react4xp object and the target element that the rendering will look for in the HTML. If an ID has previously been set for the react4xp object, `setId` will overwrite it.
-<5> `uniqueId` makes sure the react4xp object has a globally unique ID. It can work in two ways. If an ID has not been set previously, a simple random ID is generated. If an ID _has_ been set, like here in step 4, the random number is appended after the existing ID. So the order between `setId` and `uniqueId` matters.
+<4> `setId` sets the ID of the React4xp object and the target element that the rendering will look for in the HTML. If an ID has previously been set for the React4xp object, `setId` will overwrite it.
+<5> `uniqueId` makes sure the React4xp object has a globally unique ID. It can work in two ways. If an ID has not been set previously, a simple random ID is generated. If an ID _has_ been set, like here in step 4, the random number is appended after the existing ID. So the order between `setId` and `uniqueId` matters.
 +
 The ID ends up as `myColorThing-<someRandomNumber>`. This gives us something recognizable in the output but still ensures that the element ID is not repeated in cases where this part is used more than once on a page. If `setId` had been run _after_ `uniqueId` however, `setId` would just overwrite the previous unique ID with the supplied string - and risk repeating it.
-<6> Now there's a random component in the ID string of the react4xp object, and we want that ID to match a specific element in the HTML. So we read the ID out from `colorObj.react4xpId` and inject it into the thymeleaf template as `targetId`.
+<6> Now there's a random component in the ID string of the React4xp object, and we want that ID to match a specific element in the HTML. So we read the ID out from `colorObj.react4xpId` and inject it into the thymeleaf template as `targetId`.
 <7> We render `colorObj` into an HTML string, based on the HTML output of the thymeleaf rendering...
 <8> ...and render the page contributions for activating it in the client. We'll even add a small extra script just to demonstrate that extra pageContributions can be added in `renderPageContributions` as well, by passing them through as before. Now we have both the HTML body and page contributions from the first entry, _color.jsx_.
-<9> A best practice is to add `request` to options in _both_ `renderBody` and `renderPageContributions`. This is the easiest way to automatically <<api#react4xp_object_request, take care of a couple of corner cases>>. Using it to control clientside rendering is not all that relevant for _color.jsx_ since we're never flagging `clientRender` here, but `request` also makes the output clearer in cases of errors.
+<9> A best practice is to add `request` to options in _both_ `renderBody` and `renderPageContributions`. This is the easiest way to automatically <<api#react4xp_object_request, take care of a couple of corner cases>>. Using it makes the output clearer in cases of errors.
 <10> We're going to add a second react entry to this Part's controller. This demonstrates how to *chain the HTML rendering*: we're including `colorBody` as the `body` option. If added to `renderBody`, the HTML in `body` (which is the output from the previous entry, _color.jsx_) will receive the output from the rendering of the this entry (_hello-react.jsx_).
 +
 Where in `colorBody` is that HTML added? ID and target element is handled the same way as in `React4xp.render`: we created `helloObj` without running `.setId`, so no ID is set, and therefore `helloObj` will get a random ID. Since that ID doesn't match any ID in the base HTML (`colorBody`), the rendering will just create a target container element (with a matching ID) inside the root element of `colorBody`, after all other content. Now that there's a matching-ID element, the new HTML is rendered into that.
 +
 In sum: _"Render hello-react.jsx into the HTML from color.jsx, right at the end."_
-<11> This entry will be clientside rendered (even though _color.jsx_ is serverside rendered - this is not a problem for the chain), but we're adding `request` to let react4xp <<api#react4xp_object_request, keep it serverside-rendered and static>> inside Content Studio.
+<11> This entry will be clientside rendered (even though _color.jsx_ is serverside rendered - this is not a problem for the chain), but we're adding `request` to let React4xp <<api#react4xp_object_request, keep it serverside-rendered and static>> inside Content Studio.
 +
 [NOTE]
 ====
-What if we didn't want to add `request` here, or we wanted to take explicit control? `clientRender` should still be disabled in Content Studio, but that's easy:
+What if we didn't want to add `request` here, or we wanted to take explicit control? `ssr` should still be enabled in Content Studio edit mode, but that's easy:
 
 ----
-clientRender: request.mode !== 'edit' && request.mode !== 'preview'
+ssr: request.mode == 'edit' || request.mode == 'preview'
 ----
 ====
 <12> *Chaining the page contributions:* the activating page contributions for `helloObj` are rendered, and by adding to the previous `colorPageContributions` as a `pageContributions` option, thay're passed through the rendering and added.
@@ -254,7 +255,7 @@ clientRender: request.mode !== 'edit' && request.mode !== 'preview'
 ====
 *The rendering mode (client- or serverside) must match* between `renderBody` and `.renderPageContributions` for an entry!
 
-This is on an entry-by-entry basis: there's no problem mixing multiple entries in the same controller like in this example, where one entry is serverside and the other is clientside rendered - as long as each entry's `renderBody` and `renderPageContributions` have a matching `clientRender`.
+This is on an entry-by-entry basis: there's no problem mixing multiple entries in the same controller like in this example, where one entry is serverside and the other is clientside rendered - as long as each entry's `renderBody` and `renderPageContributions` have a matching `ssr`.
 
 (The same goes for `request`)
 ====
