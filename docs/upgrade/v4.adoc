@@ -421,15 +421,15 @@ export function get(request) {
   r4x.setProps(props);
   return {
     body: r4x.renderBody({
-      body: body,
-      request: request,
-      // ssr: ssr, // Optional
+      body,
+      request,
+      // ssr, // Optional
     }),
     pageContributions: r4x.renderPageContributions({
-      // hydrate: hydrate, // Optional
-      pageContributions: pageContributions,
-      request: request,
-      // ssr: ssr, // Optional
+      // hydrate, // Optional
+      pageContributions,
+      request,
+      // ssr, // Optional
     })
   };
 }
