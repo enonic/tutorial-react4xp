@@ -47,6 +47,8 @@ The default export from '/lib/enonic/react4xp' used to be a class.
 Now we are using named exports.
 You can still import the class exported under the name React4xp.
 
+See <<import>>
+
 === clientRender (hydrate & ssr)
 
 The clientRender option/parameter has been removed in favour of hydrate and ssr.
@@ -386,6 +388,7 @@ ${XP_HOME}/config/${app}.cfg.
 react4xp.serveGlobals = false
 ```
 
+[[import]]
 === import/require in controllers
 
 
@@ -411,6 +414,25 @@ export function get(request) {
 [source,javascript]
 ----
 import {React4xp} from '/lib/enonic/react4xp';
+
+export function get(request) {
+  const r4x = new React4xp(jsxPath);
+  r4x.setId(id);
+  r4x.setProps(props);
+  return {
+    body: r4x.renderBody({
+      body: body,
+      request: request,
+      // ssr: ssr, // Optional
+    }),
+    pageContributions: r4x.renderPageContributions({
+      // hydrate: hydrate, // Optional
+      pageContributions: pageContributions,
+      request: request,
+      // ssr: ssr, // Optional
+    })
+  };
+}
 ----
 
 ==== Common.JS "named" function
