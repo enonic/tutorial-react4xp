@@ -202,6 +202,8 @@ Now React4xp will only enforce SSR without hydration in Content Studio `edit` mo
 
 `inline` mode will use normal React4xp rendering, just as `preview` and `live` mode.
 
+WARNING: If you don't pass on the request to the render functions React4xp will assume `edit` mode.
+
 === Gradle
 
 We have simplified the gradle setup a lot.
