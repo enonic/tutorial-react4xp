@@ -34,21 +34,21 @@ TIP: This is just an overview, no need to know it by heart to get started - we'l
 
 [source,files]
 ----
-build.gradle                    <!--1-->
+build.gradle                    // <1>
 gradle.properties
 settings.gradle
 package.json
 
-react4xp.config.js              <!--2-->
+react4xp.config.js              // <2>
 
 src/
   main/
     resources/
-      react4xp/                 <!--3-->
+      react4xp/                 // <3>
         entries/
         shared/
       headless/
-        guillotineApi.es6       <!--4-->
+        guillotineApi.es6       // <4>
         guillotineRequest.es6
 
 ----

@@ -132,11 +132,11 @@ The webapp begins with some basic HTML, setting it all up in the browser.
         <title>Completely standalone</title>
 
 
-        <!--1-->
+        // <1>
         <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 
-        <!--2-->
+        // <2>
         [(${assetsHtml})]
 
         <style>
@@ -149,12 +149,12 @@ The webapp begins with some basic HTML, setting it all up in the browser.
         <h1>Top 3 movies to put in a list</h1>
         <p>#4 will blow your mind!</p>
 
-        <!--3-->
+        // <3>
         <div id="movieListContainer">
             <div class="faux-spinner">Loading movies...</div>
         </div>
 
-        <!--4-->
+        // <4>
         <script>
           var MOVIE_LIST_PARAMS = {
               parentPath: '/[[${SITE_NAME}]]',
@@ -165,7 +165,7 @@ The webapp begins with some basic HTML, setting it all up in the browser.
           };
         </script>
 
-        <!--5-->
+        // <5>
         <script defer th:src="${assetRoot + '/webapp/script.js'}"></script>
     </body>
 </html>
@@ -454,7 +454,7 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
         <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 
-        <!--1-->
+        // <1>
         [(${clientAssetHtml})]
 
         <style>
@@ -471,7 +471,7 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
             <div class="faux-spinner">Loading movies...</div>
         </div>
 
-        <!--2-->
+        // <2>
         <script data-th-utext="|
         var MOVIE_LIST_PARAMS= {
             serviceUrlRoot: '${portal.serviceUrl({'_service='})}',
@@ -482,7 +482,7 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
             sortExpression: 'data.year ASC',
         }|"></script>
 
-        <!--3-->
+        // <3>
         <script defer data-th-src="${portal.assetUrl({'_path=webapp/script.js'})}"></script>
     </body>
 </html>
@@ -652,7 +652,7 @@ const renderMovies = (movies) => {
         sortExpression: MOVIE_LIST_PARAMS.sortExpression
     };
 
-    <!--1-->
+    // <1>
     React4xp.CLIENT.renderWithDependencies(
         {
             'MovieList': {

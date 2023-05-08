@@ -67,12 +67,12 @@ The Part definition enables two editorial configurations:
     <description>Add your own clickable colors</description>
 
     <form>
-        <input name="SSR" type="CheckBox">          <!--1-->
+        <input name="SSR" type="CheckBox">          // <1>
             <label>Server-side rendering</label>
             <occurrences minimum="1" maximum="1"/>
         </input>
 
-        <input name="colors" type="TextLine">       <!--2-->
+        <input name="colors" type="TextLine">       // <2>
             <label>Color</label>
             <occurrences minimum="0" maximum="0"/>
         </input>
@@ -98,14 +98,14 @@ const React4xp = require('/lib/enonic/react4xp');
 exports.get = function(request) {
     const component = portal.getComponent();
 
-    const ssr = component.config.SSR       <!--1-->
+    const ssr = component.config.SSR       // <1>
 
-    const colors = (component.config.colors || [])   <!--2-->
+    const colors = (component.config.colors || [])   // <2>
         .map( c => (c || '').trim())
         .filter(c => !!c);
 
     return React4xp.render(
-        "MultiColor",                                <!--3-->
+        "MultiColor",                                // <3>
         { colors },
         request,
         { ssr }
@@ -137,25 +137,25 @@ This is a *stateful* react component that not only *imports and nests secondary 
 ----
 import React from 'react';
 
-import Button from '../shared/Button';                  <!--1-->
+import Button from '../shared/Button';                  // <1>
 import ColorButtons from '../shared/ColorButtons';
 import ActiveColorOval from '../shared/ActiveColorOval';
 
-import './MultiColor.scss';                             <!--2-->
-import '../shared/shared-styles.scss';                  <!--3-->
+import './MultiColor.scss';                             // <2>
+import '../shared/shared-styles.scss';                  // <3>
 
-class MultiColor extends React.Component {              <!--4-->
+class MultiColor extends React.Component {              // <4>
     constructor(props) {
         super(props);
         this.state = {
-            selected: 0                                 <!--5-->
+            selected: 0                                 // <5>
         };
 
-        this.shiftUp = this.shiftUp.bind(this);         <!--6-->
+        this.shiftUp = this.shiftUp.bind(this);         // <6>
         this.shiftDown = this.shiftDown.bind(this);
     }
 
-    shiftUp() {                                         <!--7-->
+    shiftUp() {                                         // <7>
         this.setState({
             selected: (this.state.selected + 1) % this.props.colors.length
         });
@@ -169,17 +169,17 @@ class MultiColor extends React.Component {              <!--4-->
     render() {
         const props =  this.props;
         const state = this.state;
-        return props.colors.length ?                    <!--8-->
+        return props.colors.length ?                    // <8>
             <div className="multi-color">
 
-                                                        <!--9-->
+                                                        // <9>
                 <Button className="my-button" clickFunc={this.shiftDown}>Previous color</Button>
                 <Button className="my-button" clickFunc={this.shiftUp}>Next color</Button>
 
-                                                        <!--10-->
+                                                        // <10>
                 <ActiveColorOval color={props.colors[state.selected]} />
 
-                                                        <!--11-->
+                                                        // <11>
                 <ColorButtons colors={props.colors}
                               selectedIndex={state.selected}
                               clickFunc={ i => {
@@ -189,12 +189,12 @@ class MultiColor extends React.Component {              <!--4-->
 
             </div> :
 
-                                                        <!--12-->
+                                                        // <12>
             <p>Add some color!</p>
     }
 }
 
-                                                        <!--13-->
+                                                        // <13>
 export default (props) => <MultiColor {...props} />;
 ----
 <1> The entry imports some secondary react components for nesting later. These imports have nothing to do with React4xp's <<jsxPath#, jsxPaths>>, this is *regular ES6 module importing* and will be handled by webpack at compile time and served to the client at runtime. Basically any react component can be imported from anywhere here, including other entries. In this case we're referring to components below a different folder, _shared/_, which we will <<#webpack_config, later>> mark as a *chunk directory* instead of an entry directory. _Shared/_ is not below _entries/_ (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with `React4xp.render`. As you will see, this *folder separation* is also important for the compiled outcome: the entry, _MultiColor.jsx_, will be compiled into _r4xAssets/MultiColor.js_, but *imported components* like this will be collected inside a common *dependency chunk*: _r4xAssets/shared.<HASH>.js_. React4xp and webpack track the dependency connections between an entry and all its required chunks - so `React4xp.render` automatically generates asset-loading page contributions from the controller. The outcome: when the webpack rules are set up correctly later, *imports like this in entries rendered by React4xp are all that's needed to connect the entries to the additional assets they might need*: no manual url handling in the controller or thymeleaf views etc. Dependency chunks are also  optimized for repeated use (more details on <<chunks#, dependency chunks>>).
@@ -262,7 +262,7 @@ There's the generic *Button* component. This is used both by _MultiColor.jsx_ an
 ----
 import React from 'react';
 
-import './Button.scss';    <!--1-->
+import './Button.scss';    // <1>
 
 export default ({clickFunc, className, style, children}) =>
     <button className={className}
@@ -397,9 +397,9 @@ First, open _react4xp.config.js_ in your project root and add/look up the attrib
 .react4xp.config.js:
 [source,js,options="nowrap"]
 ----
-entryDirs: 'myEntries'   <!--1-->
+entryDirs: 'myEntries'   // <1>
 
-chunkDirs: 'shared'    <!--2-->
+chunkDirs: 'shared'    // <2>
 ----
 <1> `entryDirs` is a list of where React4xp will look for source files to compile and serve as entries: in this case _src/main/resource/react4xp/myEntries_. This list is *in addition* to XP's _site/_ folder - _site/_ always acts as a sort of default, special-case entryDir: under _site/_ only .TSX/.JSX files are picked up as entries, while in all other entryDirs, .TS, .ES6 and .JS are picked up as well.
 <2> `chunkDirs` is a list of folders that will be turned into collection/library assets (dependency chunks): in this case _src/main/resource/react4xp/shared_. One chunk asset for each file type in each chunkDir, named after the chunkDir. If a different name is already here: `entryDirs: ['entries', 'myEntries']` works fine.
@@ -426,13 +426,13 @@ Next, we'll add some *custom webpack rules to handle the style imports*.
 ----
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = function(env, config) {                     <!--1-->
+module.exports = function(env, config) {                     // <1>
 
     // This makes 'npm link' symlinks in node_modules work:
     config.resolve.symlinks = true;
 
     // Compile .scss and friends:
-    config.module.rules = [                                  <!--2-->
+    config.module.rules = [                                  // <2>
         ...(config.module.rules || []),
         {
             test: /\.((sa|sc|c))ss$/i,
@@ -466,7 +466,7 @@ module.exports = function(env, config) {                     <!--1-->
         }),
     ];
 
-    return config;                                           <!--3-->
+    return config;                                           // <3>
 };
 ----
 <1> Currently, the whole file *must export a function* where the arguments are a standard webpack `env` object, and `config` which is the existing webpack config object from React4xp.
@@ -523,7 +523,7 @@ Let's take a look at the rendered response from the controller and underline a f
     <head>
         <title>MultColor</title>
 
-        <!--1-->
+        // <1>
         <link href="(...your.app.service) /react4xp/shared.9fa09c20d.css"
               rel="stylesheet"
               type="text/css"/>
@@ -537,19 +537,19 @@ Let's take a look at the rendered response from the controller and underline a f
             <div class="default-page" data-reactroot="">
                 <div data-portal-region="main" class="xp-region">
 
-                    <!--2-->
+                    // <2>
                     <div data-portal-component-type="part" id="_67815286"></div>
                 </div>
             </div>
         </div>
 
-        <!--3-->
+        // <3>
         <script src="(...your.app.service) /react4xp/shared.27a8a0669.js"></script>
         <script src="(...your.app.service) /react4xp/globals.489d97cdf.js"></script>
         <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>
         <script src="(...your.app.service) /react4xp/MultiColor.12345678.js"></script>
 
-        <script src="(...your.app.service) /react4xp/dynamic.87654321.js"></script>    <!--4-->
+        <script src="(...your.app.service) /react4xp/dynamic.87654321.js"></script>    // <4>
     </body>
 </html>
 ----

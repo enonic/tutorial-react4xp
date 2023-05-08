@@ -62,7 +62,7 @@ function dropBottle() {
     document.getElementById('counter').innerText = bottleCount;
 };
 
-export default (props) => <div onClick={dropBottle}>                <!--1-->
+export default (props) => <div onClick={dropBottle}>                // <1>
     <h1>Hello world!</h1>
     <p>Click me: <span id="counter">{bottleCount}</span> bottles of beer on the wall.</p>
 </div>;
@@ -207,16 +207,16 @@ Okay, back to the rendering of the page. Open the *page source* code in the brow
 <body class="xp-page">
 
     <div id="react4xpApp">
-        <div data-reactroot="">                                                                             <!--1-->
+        <div data-reactroot="">                                                                             // <1>
             <h1>Hello world!</h1>
             <p>Click me: <span id="counter">99</span> bottles of beer on the wall. </p>
         </div>
     </div>
 
-    <script src="(...your.app.service) /react4xp/globals.489d97cdf.js"></script>                          <!--2-->
-    <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>                              <!--3-->
-    <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"></script>  <!--4-->
-    <script src="(...your.app.service) /react4xp/dynamic.87654321.js"></script>                             <!--5-->
+    <script src="(...your.app.service) /react4xp/globals.489d97cdf.js"></script>                          // <2>
+    <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>                              // <3>
+    <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"></script>  // <4>
+    <script src="(...your.app.service) /react4xp/dynamic.87654321.js"></script>                             // <5>
 </body>
 </html>
 ----
@@ -282,14 +282,14 @@ If you compare with <<#hello_output, the serverside-rendered example>>, the `ssr
 <head></head>
 <body class="xp-page">
 
-    <div id="react4xpApp"></div>    <!--1-->
+    <div id="react4xpApp"></div>    // <1>
 
-    <!--2-->
+    // <2>
     <script src="(...your.app.service) /react4xp/globals.489d97cdf.js"></script>
     <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>
     <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"></script>
 
-    <script src="(...your.app.service) /react4xp/dynamic.87654321.js"></script>                            <!--3-->
+    <script src="(...your.app.service) /react4xp/dynamic.87654321.js"></script>                            // <3>
 </body>
 </html>
 ----
