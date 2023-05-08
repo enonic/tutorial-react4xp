@@ -23,17 +23,17 @@ NOTE: Rendering multiple entries like we do here will create multiple <<entries#
 [source,files]
 ----
 site/parts/
-    custom-flow/            <!--1-->
+    custom-flow/            // <1>
         custom-flow.xml
         custom-flow.es6
         custom-flow-view.html
 
     color/
-        color.jsx           <!--2-->
+        color.jsx           // <2>
 
 site/pages/
     hello-react/
-        hello-react.jsx     <!--3-->
+        hello-react.jsx     // <3>
 ----
 
 <1> The new Part we're making, _custom-flow_.
@@ -147,8 +147,8 @@ exports.get = function(request) {
 
 
     // Setting up the data-holding object for hello-react.jsx:
-    const helloObj = new React4xp(`site/pages/hello-react/hello-react`);     <!--1-->
-    helloObj.setProps({                                                      <!--2-->
+    const helloObj = new React4xp(`site/pages/hello-react/hello-react`);     // <1>
+    helloObj.setProps({                                                      // <2>
             message: partConfig.greeting,
             messageTarget: partConfig.greetee,
             droppableThing: partConfig.things,
@@ -158,10 +158,10 @@ exports.get = function(request) {
 
     // Setting up colorObj, the data-holding object for color.jsx:
     const colorObj = new React4xp(`site/parts/color/color`);
-    colorObj                                                                 <!--3-->
+    colorObj                                                                 // <3>
         .setProps({ color: partConfig.color })
-        .setId("myColorThing")                                               <!--4-->
-        .uniqueId()                                                          <!--5-->
+        .setId("myColorThing")                                               // <4>
+        .uniqueId()                                                          // <5>
 
 
     // Using thymeleaf to render container HTML,
@@ -170,35 +170,35 @@ exports.get = function(request) {
         color: colorObj.props.color,
         targetId: colorObj.react4xpId
     }
-    const colorSectionContainer = thymeleaf.render(view, thymeleafModel);    <!--6-->
+    const colorSectionContainer = thymeleaf.render(view, thymeleafModel);    // <6>
 
 
     // Render the color.jsx entry into the same-ID target container in the container HTML:
     const colorBody = colorObj.renderBody({
-        body: colorSectionContainer,                                         <!--7-->
+        body: colorSectionContainer,                                         // <7>
         request
     });
     // Rendering the activating page contributions of color.jsx.
     const colorPageContributions = colorObj.renderPageContributions({
-        pageContributions: {                                                 <!--8-->
+        pageContributions: {                                                 // <8>
             bodyEnd: `<script>console.log('Created: ${colorObj.props.color} thing.');</script>`
         },
-        request                                                              <!--9-->
+        request                                                              // <9>
     });
 
 
     // Rendering helloObj's entry into colorBody (which is basically custom-flow-view.html with color.jsx added),
     // using client-side rendering only outside of Content Studio:
     const finalBody = helloObj.renderBody({
-        body: colorBody,                                                     <!--10-->
-        ssr: false,                                                          <!--11-->
+        body: colorBody,                                                     // <10>
+        ssr: false,                                                          // <11>
         request
     });
 
     // Adding helloObj's page contributions to the previously rendered page contributions,
     // duplicating ssr between renderPageContributions and renderBody (pair-wise for each entry).
     const finalPageContributions = helloObj.renderPageContributions({
-        pageContributions: colorPageContributions,                           <!--12-->
+        pageContributions: colorPageContributions,                           // <12>
         // hydrate: false, // Turn off hydration?
         ssr: false,
         request

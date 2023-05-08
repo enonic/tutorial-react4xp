@@ -204,7 +204,7 @@ So did anything change in the rendered response, compared to <<hello-react#hello
 <head></head>
 <body class="xp-page">
 
-    <!--1-->
+    // <1>
     <div id="react4xpApp">
         <div data-reactroot="">
             <h1>G'day<!-- --> <!-- -->Bruce<!-- --> !</h1>
@@ -212,12 +212,12 @@ So did anything change in the rendered response, compared to <<hello-react#hello
         </div>
     </div>
 
-    <!--2-->
+    // <2>
     <script src="(...your.app.service) /react4xp/globals.489d97cdf.js"></script>
     <script src="(...your.app.service) /react4xp/client.5678abcd.js"></script>
     <script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"></script>
 
-    <script src="(...your.app.service) /react4xp/dynamic.87654321.js"></script>                            <!--3-->
+    <script src="(...your.app.service) /react4xp/dynamic.87654321.js"></script>                            // <3>
 
 </body>
 </html>
