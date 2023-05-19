@@ -179,13 +179,32 @@ Therefore this setting has been removed.
 === Multiple React4xp apps
 
 You can now use components from multiple React4xp apps on the same webpage.
-If the apps are importing any of the same assets, it could be a good idea to
-load those assets from CDN so they aren't part of the vendor bundles.
 
-It's also a good idea to set Application Configuration
-`react4xp.serveGlobals = false` for both apps, and provide all globals
-(including react and react-dom) on your own, rather than loading two copies of
-the globals into the browser.
+[IMPORTANT]
+====
+By default React4xp apps serve a globals bundle to the browser.
+This globals bundle contain react (and more).
+If multiple copies of react are loaded in the browser, you will probably run into problems:
+
+https://legacy.reactjs.org/docs/error-decoder.html/?invariant=321
+https://react.dev/warnings/invalid-hook-call-warning#duplicate-react
+
+Luckily there is a workaround:
+
+You can use Application Configuration to disable the serving of the globals bundle.
+
+```${XP_HOME}/config/${app}.cfg
+react4xp.serveGlobals = false
+```
+
+The challenge then is that you have to provide globals (including react and react-dom) manually. Either using the assets folder, lib-static or from CDN.
+
+You could let one of the apps keep react4xp.serveGlobals = true, but then you would have to use a component from that app on any page that uses components from any of the react4xp apps.
+
+We are working on a better solution for this complexity.
+
+====
+
 
 ==== Client & Executor
 
