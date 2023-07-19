@@ -1,0 +1,27 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - run: ./gradlew run
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: docs
+          path: build/docs
