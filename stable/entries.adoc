@@ -1,0 +1,123 @@
+= React4XP - Entries
+:toc: right
+:imagesdir: media/
+
+
+[[entries]]
+== What is an entry?
+React4xp is structured around _entries_.
+
+It's actually a webpack term, but in React4xp we use the word entry for *a React component that can be accessed by React4xp* in an XP controller. They are the _only_ react files that React4xp can use directly.
+
+[[mentalmodel]]
+Think of entries as *"bridge elements"*:
+
+.A mental model:
+image:entries.png[title="React4xp Entries basic structure. Controllers can use entries, entries can import anything", width=720px]
+
+(Here's a <<entries_cheatsheet#, cheat sheet>>. See also chunks, for a <<chunks#entries_and_chunks, complete picture>>)
+
+On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can *import* stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.
+
+{zwsp} +
+
+[[howto]]
+== How to make an entry
+
+Entries are pretty much just standard TSX/JSX files, but they must follow *two requirements* (another <<entries_howto#, cheat sheet>>):
+
+1. is located either in a folder either below *_/site/_* or below one of the *entryDirs* folders listed in _react4xp.config.js_ (see also <<jsxpath#, jsxPath>>),
+2. and *default-exports a function*: `props?=>reactComponent` - a function that _may_ take a `props` argument (serializable JS object: no functions) and _must_ return a react component.
+
+[NOTE]
+====
+*Important:*
+
+- There should be no call to `React.render` or `ReactDOM.render` in an entry (or a compiled entry or dependency bundle - keep an eye on your imports). React4xp will handle that call in the right context.
+- If your entry uses react hooks or it's a react class component, read <<#classes-and-hooks, Classes and hooks in entries>> below.
+====
+
+{zwsp} +
+
+[[assets_and_apps]]
+== Entries, assets and react apps
+React4xp handles them in build-time and runtime: locates entries, compiles each entry into its own *entry asset* (under _/build/resources/main/r4xAssets_). React4xp's render methods also generate page contributions that make sure these assets are served to the client.
+
+For example, early in this tutorial we've seen the entries _hello-react.jsx_ and _color.jsx_, they are compiled into the assets _hello-react.js_ and _color.js_.
+
+When rendered (whether it's by using `.render` or a pair of `renderBody`/`renderPageContributions` in the <<custom-flow-syntax#, custom flow syntax>>), each entry will become not only assets of their own, but *independent root level react apps* in the browser memory! Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
+
+{zwsp} +
+
+[[classes-and-hooks]]
+== Classes and hooks in entries
+If your entry is a link:https://reactjs.org/docs/react-component.html[react class component] or a functional component that uses link:https://reactjs.org/docs/hooks-intro.html[react hooks] (and possibly other specific react features?), the default-export must be correctly wrapped.
+
+=== JSX entry examples
+
+- *Straight functional component entry:* straight export is okay.
++
+.Header.jsx
+[source,javascript,options="nowrap"]
+----
+function Header(props) {
+    return <h1>{props.text}</h1>;
+};
+
+// This is fine:
+export default Header;
+
+// An extra wrapped layer would work too. But it's usually not necessary:
+//
+// export default (props) => <Header {...props} />;
+----
+
+- *Class component entry:* needs a JSX-wrapped export.
++
+.Welcome.jsx
+[source,javascript,options="nowrap"]
+----
+class Welcome extends React.Component {
+  render() {
+    return <p>Hello, {this.props.name}</p>;
+  }
+}
+
+// Bad:
+// export default Welcome;
+
+// Good:
+export default props => <Welcome {...props} />;
+----
+
+
+- *Functional component that uses hooks:* needs a JSX-wrapped export.
++
+.HookButton.jsx
+[source,javascript,options="nowrap"]
+----
+function HookButton() {
+  const [count, setCount] = useState(0);
+
+  return (
+      <button onClick={() => setCount(count + 1)}>
+        You clicked {count} times
+      </button>
+  );
+}
+
+// Bad:
+// export default HookButton;
+
+// Good:
+export default props => <HookButton {...props} />;
+----
+
+=== Why?
+The reason for this has to do with how the components are compiled, and that the runtime-client trigger call in the browser _uses the default-export directly, in vanilla JS_ - so everything that's exported from an entry must be ready and compiled for vanilla-JS usage.
+
+In the examples above it would be equivalent to `Welcome(props);` and `HookButton(props);`. `Welcome` is not compiled to a function that can be called like this, and the pure `HookButtons` function is not really a _functional component_ (before it's called as a component, the way we do when it's wrapped), just a regular JS function - so the straight export link:https://reactjs.org/warnings/invalid-hook-call-warning.html[breaks the rules of hooks and you get an error].
+
+
+{zwsp} +
+{zwsp} +
