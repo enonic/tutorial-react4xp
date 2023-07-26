@@ -518,16 +518,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="getting_started"><a class="anchor" href="#getting_started"></a><a class="link" href="#getting_started">Getting started</a></h2>
+<h2 id="getting_started"><a class="link" href="#getting_started">Getting started</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="install"><a class="anchor" href="#install"></a><a class="link" href="#install">Install</a></h3>
+<h3 id="install"><a class="link" href="#install">Install</a></h3>
 <div class="paragraph">
 <p>Instructions on how to install the library locally or insert it into your project are at <a href="https://github.com/enonic/lib-react4xp#readme">the library docs</a> at github.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="import_library"><a class="anchor" href="#import_library"></a><a class="link" href="#import_library">Import library</a></h3>
+<h3 id="import_library"><a class="link" href="#import_library">Import library</a></h3>
 <div class="listingblock">
 <div class="title">In an XP controller:</div>
 <div class="content">
@@ -543,7 +543,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="react4xp_render"><a class="anchor" href="#react4xp_render"></a><a class="link" href="#react4xp_render">React4xp.render</a></h2>
+<h2 id="react4xp_render"><a class="link" href="#react4xp_render">React4xp.render</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>All-in-one shorthand function for a lot of use cases. Covers both client- and serverside rendering.</p>
@@ -555,7 +555,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="signature"><a class="anchor" href="#signature"></a><a class="link" href="#signature">Signature</a></h3>
+<h3 id="signature"><a class="link" href="#signature">Signature</a></h3>
 <div class="paragraph">
 <p>The signature is analogous to thymeleaf&#8217;s familiar <code>render(view, model)</code>. But there are two extra parameters, and a full XP response object is returned:</p>
 </div>
@@ -569,7 +569,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="react4xp_render_parameters"><a class="anchor" href="#react4xp_render_parameters"></a><a class="link" href="#react4xp_render_parameters">Parameters</a></h3>
+<h3 id="react4xp_render_parameters"><a class="link" href="#react4xp_render_parameters">Parameters</a></h3>
 <table class="tableblock frame-none grid-none stretch">
 <colgroup>
 <col style="width: 1%;">
@@ -688,7 +688,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="returns"><a class="anchor" href="#returns"></a><a class="link" href="#returns">Returns</a></h3>
+<h3 id="returns"><a class="link" href="#returns">Returns</a></h3>
 <div class="paragraph">
 <p>Returns an <a href="https://developer.enonic.com/docs/xp/stable/framework/http">XP response object</a> with these main attributes:</p>
 </div>
@@ -734,7 +734,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="render_request"><a class="anchor" href="#render_request"></a><a class="link" href="#render_request">Request and automated behavior</a></h3>
+<h3 id="render_request"><a class="link" href="#render_request">Request and automated behavior</a></h3>
 <div class="paragraph">
 <p><code>.render</code> is intended to be convenient to work with and safely wrap around some common corner cases. It automates a little bit of behavior, depending on the <code>request</code> object argument (which stems from the XP controller):</p>
 </div>
@@ -742,7 +742,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>&#8203;<br></p>
 </div>
 <div class="sect3">
-<h4 id="render_with_request"><a class="anchor" href="#render_with_request"></a><a class="link" href="#render_with_request"><code>render</code> with <code>request</code>:</a></h4>
+<h4 id="render_with_request"><a class="link" href="#render_with_request"><code>render</code> with <code>request</code>:</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">React4xp.render(entry, props, request);
@@ -770,7 +770,7 @@ React4xp.render(entry, props, request, options); // ...etc etc</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="render_without_request"><a class="anchor" href="#render_without_request"></a><a class="link" href="#render_without_request"><code>render</code> without <code>request</code>:</a></h4>
+<h4 id="render_without_request"><a class="link" href="#render_without_request"><code>render</code> without <code>request</code>:</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">React4xp.render(entry, props);
@@ -793,7 +793,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="examples"><a class="anchor" href="#examples"></a><a class="link" href="#examples">Examples</a></h3>
+<h3 id="examples"><a class="link" href="#examples">Examples</a></h3>
 <div class="paragraph">
 <p>Most of the lessons in the guide use <code>React4xp.render</code> (except the "custom flow" ones). For example <a href="hello-react.ahtml#first_helloreact_jsx">here</a> or <a href="pages-parts-and-regions.ahtml#color_part_controller">here</a>.</p>
 </div>
@@ -806,7 +806,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="react4xp_object"><a class="anchor" href="#react4xp_object"></a><a class="link" href="#react4xp_object">React4xp object: custom flow</a></h2>
+<h2 id="react4xp_object"><a class="link" href="#react4xp_object">React4xp object: custom flow</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>More flexible and controllable than <code>React4xp.render</code>: create a data-holding react4xp object with the React4xp contructor, manipulate it or extract data from it, combine with other objects, and then later render it to an HTML body string and/or page contributions, separately. This is actually what <code>React4xp.render</code> does behind the scenes.</p>
@@ -847,7 +847,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 &#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="constructor"><a class="anchor" href="#constructor"></a><a class="link" href="#constructor">Object constructor</a></h3>
+<h3 id="constructor"><a class="link" href="#constructor">Object constructor</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const myComponent = new React4xp(entry);</code></pre>
@@ -888,7 +888,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="main_object_attributes"><a class="anchor" href="#main_object_attributes"></a><a class="link" href="#main_object_attributes">Main object attributes</a></h3>
+<h3 id="main_object_attributes"><a class="link" href="#main_object_attributes">Main object attributes</a></h3>
 <div class="paragraph">
 <p>Extract from the object the data that has been generated or set in it.</p>
 </div>
@@ -941,7 +941,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="setter_methods"><a class="anchor" href="#setter_methods"></a><a class="link" href="#setter_methods">Setter methods</a></h3>
+<h3 id="setter_methods"><a class="link" href="#setter_methods">Setter methods</a></h3>
 <div class="paragraph">
 <p>Use these to set the object&#8217;s properties. All of them are optional; if not used, the object will render with empty values or placeholders where needed, along the same logic as for <a href="#react4xp_render">React4xp.render</a> above.</p>
 </div>
@@ -970,7 +970,7 @@ myComponent.thirdSetter("c");</code></pre>
 <p>&#8203;<br></p>
 </div>
 <div class="sect3">
-<h4 id="setprops"><a class="anchor" href="#setprops"></a><a class="link" href="#setprops">.setProps</a></h4>
+<h4 id="setprops"><a class="link" href="#setprops">.setProps</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">myComponent.setProps(props);</code></pre>
@@ -1007,7 +1007,7 @@ myComponent.thirdSetter("c");</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="set_id"><a class="anchor" href="#set_id"></a><a class="link" href="#set_id">.setId</a></h4>
+<h4 id="set_id"><a class="link" href="#set_id">.setId</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">myComponent.setId(id);</code></pre>
@@ -1059,7 +1059,7 @@ If <code>render</code> or <code>renderBody</code> are called without an ID havin
 </div>
 </div>
 <div class="sect3">
-<h4 id="uniqueid"><a class="anchor" href="#uniqueid"></a><a class="link" href="#uniqueid">.uniqueId</a></h4>
+<h4 id="uniqueid"><a class="link" href="#uniqueid">.uniqueId</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">myComponent.uniqueId();</code></pre>
@@ -1076,7 +1076,7 @@ If <code>render</code> or <code>renderBody</code> are called without an ID havin
 </div>
 </div>
 <div class="sect3">
-<h4 id="setjsxpath"><a class="anchor" href="#setjsxpath"></a><a class="link" href="#setjsxpath">.setJsxPath</a></h4>
+<h4 id="setjsxpath"><a class="link" href="#setjsxpath">.setJsxPath</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">myComponent.setJsxPath(jsxPath);</code></pre>
@@ -1115,7 +1115,7 @@ If <code>render</code> or <code>renderBody</code> are called without an ID havin
 </div>
 </div>
 <div class="sect2">
-<h3 id="rendering_methods"><a class="anchor" href="#rendering_methods"></a><a class="link" href="#rendering_methods">Rendering methods</a></h3>
+<h3 id="rendering_methods"><a class="link" href="#rendering_methods">Rendering methods</a></h3>
 <div class="paragraph">
 <p>These methods perform specific rendering tasks independently, using the data object as a basis, the way it&#8217;s set up with the <a href="#setter_methods">setters</a> and with the entry from the <a href="#constructor">constructor</a> (or the <code>setJsxPath</code> setter).</p>
 </div>
@@ -1136,7 +1136,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 &#8203;<br></p>
 </div>
 <div class="sect3">
-<h4 id="render_body"><a class="anchor" href="#render_body"></a><a class="link" href="#render_body">.renderBody</a></h4>
+<h4 id="render_body"><a class="link" href="#render_body">.renderBody</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const responseBody = myComponent.renderBody(options);</code></pre>
@@ -1172,7 +1172,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <p>&#8203;<br></p>
 </div>
 <div class="sect4">
-<h5 id="parameters"><a class="anchor" href="#parameters"></a><a class="link" href="#parameters">Parameters</a></h5>
+<h5 id="parameters"><a class="link" href="#parameters">Parameters</a></h5>
 <table class="tableblock frame-none grid-none stretch">
 <colgroup>
 <col style="width: 1%;">
@@ -1247,7 +1247,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 </div>
 </div>
 <div class="sect4">
-<h5 id="returns_2"><a class="anchor" href="#returns_2"></a><a class="link" href="#returns_2">Returns</a></h5>
+<h5 id="returns_2"><a class="link" href="#returns_2">Returns</a></h5>
 <div class="paragraph">
 <p>Returns an HTML string ready to return as the <code>body</code> attribute in an <a href="https://developer.enonic.com/docs/xp/stable/framework/http#http-response">XP response object</a> from the controller.</p>
 </div>
@@ -1264,7 +1264,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 </div>
 </div>
 <div class="sect3">
-<h4 id="render_pgcontr"><a class="anchor" href="#render_pgcontr"></a><a class="link" href="#render_pgcontr">.renderPageContributions</a></h4>
+<h4 id="render_pgcontr"><a class="link" href="#render_pgcontr">.renderPageContributions</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const outputPageContributions = myComponent.renderPageContributions(options);</code></pre>
@@ -1397,7 +1397,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 </div>
 </div>
 <div class="sect2">
-<h3 id="react4xp_object_request"><a class="anchor" href="#react4xp_object_request"></a><a class="link" href="#react4xp_object_request">Request and automated behavior</a></h3>
+<h3 id="react4xp_object_request"><a class="link" href="#react4xp_object_request">Request and automated behavior</a></h3>
 <div class="paragraph">
 <p>The <a href="custom-flow-syntax.ahtml">"custom flow"</a> (<code>.renderBody</code> in tandem with <code>.renderPageContributions</code>) is intended as a more low-level approach: less hand-holding, more control to the developer for cases where that&#8217;s needed.</p>
 </div>
@@ -1411,7 +1411,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <p>&#8203;<br></p>
 </div>
 <div class="sect3">
-<h4 id="custom_flow_with_request"><a class="anchor" href="#custom_flow_with_request"></a><a class="link" href="#custom_flow_with_request">Custom flow with <code>request</code></a></h4>
+<h4 id="custom_flow_with_request"><a class="link" href="#custom_flow_with_request">Custom flow with <code>request</code></a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const body = myComponent.renderBody({
@@ -1436,7 +1436,7 @@ const pageContributions = myComponent.renderPageContributions({
 </div>
 </div>
 <div class="sect3">
-<h4 id="custom_flow_without_request"><a class="anchor" href="#custom_flow_without_request"></a><a class="link" href="#custom_flow_without_request">Custom flow without <code>request</code>:</a></h4>
+<h4 id="custom_flow_without_request"><a class="link" href="#custom_flow_without_request">Custom flow without <code>request</code>:</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const body = myComponent.renderBody({ /* clientRender, etc */ });
@@ -1488,7 +1488,7 @@ Best case scenario: this might make a clientRender&#8217;ed entry visible in Con
 </div>
 </div>
 <div class="sect2">
-<h3 id="custom_flow_examples"><a class="anchor" href="#custom_flow_examples"></a><a class="link" href="#custom_flow_examples">Custom flow examples</a></h3>
+<h3 id="custom_flow_examples"><a class="link" href="#custom_flow_examples">Custom flow examples</a></h3>
 <div class="paragraph">
 <p>Custom flow usage in is demonstrated <a href="custom-flow-syntax.ahtml">here</a>.</p>
 </div>
@@ -1501,7 +1501,7 @@ Best case scenario: this might make a clientRender&#8217;ed entry visible in Con
 </div>
 </div>
 <div class="sect1">
-<h2 id="ssr"><a class="anchor" href="#ssr"></a><a class="link" href="#ssr">SSR engine</a></h2>
+<h2 id="ssr"><a class="link" href="#ssr">SSR engine</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The default running mode of react4xp is <a href="https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/">serverside rendering (SSR)</a> (although <code>clientRender</code> can override this).</p>
@@ -1516,7 +1516,7 @@ Best case scenario: this might make a clientRender&#8217;ed entry visible in Con
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="graaljs"><a class="anchor" href="#graaljs"></a><a class="link" href="#graaljs">Graal.JS</a></h3>
+<h3 id="graaljs"><a class="link" href="#graaljs">Graal.JS</a></h3>
 <div class="paragraph">
 <p>Graal.JS is a default SSR engine, if available in JVM (XP version &gt; 7.10 includes it).</p>
 </div>
@@ -1525,7 +1525,7 @@ Best case scenario: this might make a clientRender&#8217;ed entry visible in Con
 </div>
 </div>
 <div class="sect2">
-<h3 id="nashorn"><a class="anchor" href="#nashorn"></a><a class="link" href="#nashorn">Nashorn</a></h3>
+<h3 id="nashorn"><a class="link" href="#nashorn">Nashorn</a></h3>
 <div class="paragraph">
 <p>React4xp can use <a href="https://docs.oracle.com/javase/10/nashorn/introduction.htm">nashorn</a> as SSR engine. Since most of the world of react SSR is oriented towards <a href="https://nodejs.org/en/">node.js</a>, and nashorn does not have full support for the features in node (nor all features expected by a lot of NPM packages that can be imported by react components), react4xp does some polyfilling of the SSR engine at startup.</p>
 </div>
@@ -1533,7 +1533,7 @@ Best case scenario: this might make a clientRender&#8217;ed entry visible in Con
 <p>&#8203;<br></p>
 </div>
 <div class="sect3">
-<h4 id="renderers"><a class="anchor" href="#renderers"></a><a class="link" href="#renderers">Renderers</a></h4>
+<h4 id="renderers"><a class="link" href="#renderers">Renderers</a></h4>
 <div class="paragraph">
 <p>Starting from version 1.5.0, react4xp handles multithreaded rendering. This is done by setting up a number of renderers where each one is ready to answer to rendering requests in parallel, independently.</p>
 </div>
@@ -1548,7 +1548,7 @@ Best case scenario: this might make a clientRender&#8217;ed entry visible in Con
 </div>
 </div>
 <div class="sect3">
-<h4 id="warmup"><a class="anchor" href="#warmup"></a><a class="link" href="#warmup">Warmup time</a></h4>
+<h4 id="warmup"><a class="link" href="#warmup">Warmup time</a></h4>
 <div class="paragraph">
 <p>After your react4xp app is (re)started, the first time react4xp is triggered to render something, the engine will initialize. This means the renderers will load the <em>compiled assets</em> necessary for the rendering, into nashorn in memory:</p>
 </div>
@@ -1578,7 +1578,7 @@ Best case scenario: this might make a clientRender&#8217;ed entry visible in Con
 <p>But as long as the code runs in nashorn without errors, initialization happens only once (i.e. each asset is loaded once at most, on each renderer). After the warmup, the react apps are ready-to-run from nashorn memory, so repeated renderings after that (even with different props) are fast.</p>
 </div>
 <div class="sect4">
-<h5 id="improving_warmup_time_for_development"><a class="anchor" href="#improving_warmup_time_for_development"></a><a class="link" href="#improving_warmup_time_for_development">Improving warmup time for development</a></h5>
+<h5 id="improving_warmup_time_for_development"><a class="link" href="#improving_warmup_time_for_development">Improving warmup time for development</a></h5>
 <div class="paragraph">
 <p>Since development can involve repeated app/server restarts, here are a couple of ways to improve initial loading time when developing large projects:</p>
 </div>
@@ -1601,7 +1601,7 @@ Best case scenario: this might make a clientRender&#8217;ed entry visible in Con
 </div>
 </div>
 <div class="sect3">
-<h4 id="performance"><a class="anchor" href="#performance"></a><a class="link" href="#performance">SSR performance</a></h4>
+<h4 id="performance"><a class="link" href="#performance">SSR performance</a></h4>
 <div class="paragraph">
 <p>Apart from when assets are initialized during the engine <a href="#warmup">warmup</a>, each SSR should be fast. However, in cases where you need to improve SSR performance further, it can be done by wrapping the rendering in a <a href="https://developer.enonic.com/docs/cache-library/master">cache</a> in the controller.</p>
 </div>
@@ -1661,7 +1661,7 @@ exports.get = request =&gt; {
 </div>
 </div>
 <div class="sect1">
-<h2 id="react4xp.properties"><a class="anchor" href="#react4xp.properties"></a><a class="link" href="#react4xp.properties">react4xp.properties</a></h2>
+<h2 id="react4xp.properties"><a class="link" href="#react4xp.properties">react4xp.properties</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <code>react4xp.properties</code> file has been removed and it&#8217;s settings moved to other files, see the <a href="upgrade.ahtml">upgrade guide</a>.</p>
@@ -1669,7 +1669,7 @@ exports.get = request =&gt; {
 </div>
 </div>
 <div class="sect1">
-<h2 id="react4xp.config.js"><a class="anchor" href="#react4xp.config.js"></a><a class="link" href="#react4xp.config.js">react4xp.config.js</a></h2>
+<h2 id="react4xp.config.js"><a class="link" href="#react4xp.config.js">react4xp.config.js</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Several aspects of react4xp can be configured with a file <em>react4xp.config.js</em>.</p>
@@ -1681,7 +1681,7 @@ exports.get = request =&gt; {
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="including_react4xp_config_js_in_your_project"><a class="anchor" href="#including_react4xp_config_js_in_your_project"></a><a class="link" href="#including_react4xp_config_js_in_your_project">Including react4xp.config.js in your project</a></h3>
+<h3 id="including_react4xp_config_js_in_your_project"><a class="link" href="#including_react4xp_config_js_in_your_project">Including react4xp.config.js in your project</a></h3>
 <div class="paragraph">
 <p>Put <em>react4xp.config.js</em> at the root of your XP project. A template can be copied from <a href="https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js">here</a>, or from <em>node_modules/@enonic/react4xp/examples/react4xp.config.js</em> after installing the react4xp NPM package.</p>
 </div>
@@ -1730,7 +1730,7 @@ apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="entryDirs"><a class="anchor" href="#entryDirs"></a><a class="link" href="#entryDirs">entryDirs</a></h3>
+<h3 id="entryDirs"><a class="link" href="#entryDirs">entryDirs</a></h3>
 <div class="listingblock">
 <div class="title">react4xp.config.js:</div>
 <div class="content">
@@ -1748,7 +1748,7 @@ apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="chunkDirs"><a class="anchor" href="#chunkDirs"></a><a class="link" href="#chunkDirs">chunkDirs</a></h3>
+<h3 id="chunkDirs"><a class="link" href="#chunkDirs">chunkDirs</a></h3>
 <div class="paragraph">
 <p>By default, react4xp will look for (ie. sets up webpack to look for) resources <em>imported by</em> the entries. These are <a href="https://webpack.js.org/concepts/">bundled</a> into separate assets that react4xp automatically loads at both server- and clientside rendering: <a href="chunks.ahtml">chunks</a>, by this pattern:</p>
 </div>
@@ -1803,7 +1803,7 @@ apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="webpack.config.react4xp.js"><a class="anchor" href="#webpack.config.react4xp.js"></a><a class="link" href="#webpack.config.react4xp.js">webpack.config.react4xp.js</a></h2>
+<h2 id="webpack.config.react4xp.js"><a class="link" href="#webpack.config.react4xp.js">webpack.config.react4xp.js</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>React4xp comes with a minimal set of webpack rules built-in, for compiling react components in JSX files into vanilla JS.</p>
@@ -1878,7 +1878,7 @@ apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'</code></pre>
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="nashornPolyfills"><a class="anchor" href="#nashornPolyfills"></a><a class="link" href="#nashornPolyfills">NashornPolyfills (&lt;Project.Dir&gt;/src/main/resources/react4xpNashornPolyfills.es6)</a></h3>
+<h3 id="nashornPolyfills"><a class="link" href="#nashornPolyfills">NashornPolyfills (&lt;Project.Dir&gt;/src/main/resources/react4xpNashornPolyfills.es6)</a></h3>
 <div class="paragraph">
 <p>React4xp doesn&#8217;t have any ambition to completely polyfill the nashorn engine so that the full feature set of node.js (or modern browsers) is supported.</p>
 </div>
@@ -1900,10 +1900,10 @@ apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="command_line_arguments"><a class="anchor" href="#command_line_arguments"></a><a class="link" href="#command_line_arguments">Command line arguments</a></h2>
+<h2 id="command_line_arguments"><a class="link" href="#command_line_arguments">Command line arguments</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="BUILD_ENV"><a class="anchor" href="#BUILD_ENV"></a><a class="link" href="#BUILD_ENV">Build environment</a></h3>
+<h3 id="BUILD_ENV"><a class="link" href="#BUILD_ENV">Build environment</a></h3>
 <div class="paragraph">
 <p>Use the gradle commandline flag <code>-Pdev</code> or <code>-Pdevelopment</code> to enable building in development mode.</p>
 </div>
@@ -1933,7 +1933,7 @@ apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="VERBOSE"><a class="anchor" href="#VERBOSE"></a><a class="link" href="#VERBOSE">Verbosity</a></h3>
+<h3 id="VERBOSE"><a class="link" href="#VERBOSE">Verbosity</a></h3>
 <div class="paragraph">
 <p>Use the gradle commandline flag -i or --info to enable a more verbose output when compiling react4xp components, externals and nashornPolyfills.</p>
 </div>
@@ -1944,7 +1944,7 @@ apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="application_configuration_file"><a class="anchor" href="#application_configuration_file"></a><a class="link" href="#application_configuration_file">Application configuration file</a></h2>
+<h2 id="application_configuration_file"><a class="link" href="#application_configuration_file">Application configuration file</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>$XP_HOME/config/&lt;app.name&gt;.cfg</p>
@@ -1953,7 +1953,7 @@ apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'</code></pre>
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="ssrLazyload"><a class="anchor" href="#ssrLazyload"></a><a class="link" href="#ssrLazyload">ssrLazyload</a></h3>
+<h3 id="ssrLazyload"><a class="link" href="#ssrLazyload">ssrLazyload</a></h3>
 <div class="listingblock">
 <div class="title">$XP_HOME/config/&lt;app.name&gt;.cfg:</div>
 <div class="content">
@@ -1991,7 +1991,7 @@ apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ssrMaxThreads"><a class="anchor" href="#ssrMaxThreads"></a><a class="link" href="#ssrMaxThreads">ssrMaxThreads</a></h3>
+<h3 id="ssrMaxThreads"><a class="link" href="#ssrMaxThreads">ssrMaxThreads</a></h3>
 <div class="listingblock">
 <div class="title">$XP_HOME/config/&lt;app.name&gt;.cfg:</div>
 <div class="content">
@@ -2014,7 +2014,7 @@ apply from: 'node_modules/@enonic/react4xp/react4xp.gradle'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ssrSettings"><a class="anchor" href="#ssrSettings"></a><a class="link" href="#ssrSettings">ssrSettings</a></h3>
+<h3 id="ssrSettings"><a class="link" href="#ssrSettings">ssrSettings</a></h3>
 <div class="paragraph">
 <p>This value is a comma-separated string of <a href="https://github.com/openjdk/nashorn/blob/main/src/org.openjdk.nashorn/share/classes/org/openjdk/nashorn/internal/runtime/resources/Options.properties">nashorn options</a>:</p>
 </div>
@@ -2045,7 +2045,7 @@ react4xp.ssr.settings = --optimistic-types=false</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="engineName"><a class="anchor" href="#engineName"></a><a class="link" href="#engineName">engineName</a></h3>
+<h3 id="engineName"><a class="link" href="#engineName">engineName</a></h3>
 <div class="paragraph">
 <p>Allows to override JavaScript engine name.</p>
 </div>
@@ -2065,7 +2065,7 @@ react4xp.ssr.engineName = Nashorn</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:13 UTC
+Last updated 2023-07-26 09:16:58 UTC
 </div>
 </div>
 </body>

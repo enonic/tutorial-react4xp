@@ -449,7 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="jsxPath"><a class="anchor" href="#jsxPath"></a><a class="link" href="#jsxPath">What is the jsxPath?</a></h2>
+<h2 id="jsxPath"><a class="link" href="#jsxPath">What is the jsxPath?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Each <a href="entries.ahtml">entry</a> is identified by its own <em>jsxPath</em>.</p>
@@ -460,7 +460,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="from_source_file_location_to_jsxpath"><a class="anchor" href="#from_source_file_location_to_jsxpath"></a><a class="link" href="#from_source_file_location_to_jsxpath">From source file location to jsxPath</a></h2>
+<h2 id="from_source_file_location_to_jsxpath"><a class="link" href="#from_source_file_location_to_jsxpath">From source file location to jsxPath</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>During development though, these 3 rules are probably easier:</p>
@@ -505,7 +505,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="overview_in_entries_json"><a class="anchor" href="#overview_in_entries_json"></a><a class="link" href="#overview_in_entries_json">Overview in entries.json</a></h2>
+<h2 id="overview_in_entries_json"><a class="link" href="#overview_in_entries_json">Overview in entries.json</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you&#8217;re ever unsure: after building, the <strong>jsxPaths of all the available entries</strong> are stored in <em>build/resources/main/assets/react4xp/entries.json</em>.</p>
@@ -516,7 +516,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="name_not_path"><a class="anchor" href="#name_not_path"></a><a class="link" href="#name_not_path">Name, not path</a></h2>
+<h2 id="name_not_path"><a class="link" href="#name_not_path">Name, not path</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>JsxPaths are not actually file system paths, but <strong>static name strings</strong>. So avoid shortcuts and relative references like <code>../</code>, etc.</p>
@@ -536,7 +536,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:13 UTC
+Last updated 2023-07-26 09:16:58 UTC
 </div>
 </div>
 </body>

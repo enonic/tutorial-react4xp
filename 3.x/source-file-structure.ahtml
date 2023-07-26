@@ -454,7 +454,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="lesson_overview"><a class="anchor" href="#lesson_overview"></a><a class="link" href="#lesson_overview">Lesson overview</a></h2>
+<h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>So far, every time we&#8217;ve referenced a <em>.jsx</em> react component from react4xp in a controller, we&#8217;ve used a <code>component</code> object in the <em>entry</em> argument of <code>React4xp.render</code>. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the <em>.jsx</em> source file must be in the same folder as the controller, and have the same name.</p>
@@ -468,7 +468,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="entries_and_locations"><a class="anchor" href="#entries_and_locations"></a><a class="link" href="#entries_and_locations">Entries and locations</a></h2>
+<h2 id="entries_and_locations"><a class="link" href="#entries_and_locations">Entries and locations</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For react components to be available to React4xp the way we&#8217;ve seen so far, their <strong>JSX source files must be located in certain folders</strong> where react4xp is looking for them and auto-compiles them.</p>
@@ -480,7 +480,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="1_below_site"><a class="anchor" href="#1_below_site"></a><a class="link" href="#1_below_site">1: Below <em>site/</em></a></h3>
+<h3 id="1_below_site"><a class="link" href="#1_below_site">1: Below <em>site/</em></a></h3>
 <div class="paragraph">
 <p>Below the folder <em>src/main/resources/site/</em>, all source files with the extension <em>.jsx</em> are detected at compile-time and available as entries to react4xp. If you take the <strong>path relative to <em>resources/</em></strong> and the file name without the extension, you get a string that can be used to point react4xp to that react component:</p>
 </div>
@@ -571,7 +571,7 @@ All the <em>entries</em> in your project are listed with their <em>jsxPath</em> 
 </div>
 </div>
 <div class="sect2">
-<h3 id="2_below_react4xp"><a class="anchor" href="#2_below_react4xp"></a><a class="link" href="#2_below_react4xp">2: Below <em>react4xp/</em></a></h3>
+<h3 id="2_below_react4xp"><a class="link" href="#2_below_react4xp">2: Below <em>react4xp/</em></a></h3>
 <div class="paragraph">
 <p>If you just want to keep your react components out of the regular XP file structure in <em>site/</em> and be independent of the structure of Parts, Pages etc, the folder <em>src/main/resources/react4xp/</em> is meant for that. Here&#8217;s how (assuming you&#8217;re using <a href="https://market.enonic.com/vendors/enonic/react4xp-starter">the starter</a> or generally following <a href="https://github.com/enonic/lib-react4xp/blob/master/README.md#setup-option-2-using-react4xp-in-an-existing-project">the recommended react4xp setup pattern</a>):</p>
 </div>
@@ -623,7 +623,7 @@ React4xp doesn&#8217;t currently separate between different <em>entryDirs</em>, 
 </div>
 </div>
 <div class="sect2">
-<h3 id="3_anywhere_else"><a class="anchor" href="#3_anywhere_else"></a><a class="link" href="#3_anywhere_else">3: Anywhere else</a></h3>
+<h3 id="3_anywhere_else"><a class="link" href="#3_anywhere_else">3: Anywhere else</a></h3>
 <div class="paragraph">
 <p>The <em>entryDirs</em> are paths relative to <em>src/main/resources/react4xp/</em>, so just use relative <em>entryDirs</em> if you need entries outside of that.</p>
 </div>
@@ -646,7 +646,7 @@ React4xp doesn&#8217;t currently separate between different <em>entryDirs</em>, 
 </div>
 </div>
 <div class="sect1">
-<h2 id="further_reading"><a class="anchor" href="#further_reading"></a><a class="link" href="#further_reading">Further reading</a></h2>
+<h2 id="further_reading"><a class="link" href="#further_reading">Further reading</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you want a deeper dive into details before moving on, here&#8217;s more about <a href="entries.ahtml">entries</a> and the <a href="jsxpath.ahtml">jsxPaths</a> that point react4xp to them.</p>
@@ -666,7 +666,7 @@ React4xp doesn&#8217;t currently separate between different <em>entryDirs</em>, 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:13 UTC
+Last updated 2023-07-26 09:16:58 UTC
 </div>
 </div>
 </body>

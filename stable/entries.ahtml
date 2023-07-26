@@ -454,7 +454,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="entries"><a class="anchor" href="#entries"></a><a class="link" href="#entries">What is an entry?</a></h2>
+<h2 id="entries"><a class="link" href="#entries">What is an entry?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>React4xp is structured around <em>entries</em>.</p>
@@ -481,7 +481,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="howto"><a class="anchor" href="#howto"></a><a class="link" href="#howto">How to make an entry</a></h2>
+<h2 id="howto"><a class="link" href="#howto">How to make an entry</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Entries are pretty much just standard TSX/JSX files, but they must follow <strong>two requirements</strong> (another <a href="entries_howto.ahtml">cheat sheet</a>):</p>
@@ -526,7 +526,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="assets_and_apps"><a class="anchor" href="#assets_and_apps"></a><a class="link" href="#assets_and_apps">Entries, assets and react apps</a></h2>
+<h2 id="assets_and_apps"><a class="link" href="#assets_and_apps">Entries, assets and react apps</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>React4xp handles them in build-time and runtime: locates entries, compiles each entry into its own <strong>entry asset</strong> (under <em>/build/resources/main/r4xAssets</em>). React4xp&#8217;s render methods also generate page contributions that make sure these assets are served to the client.</p>
@@ -543,13 +543,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="classes-and-hooks"><a class="anchor" href="#classes-and-hooks"></a><a class="link" href="#classes-and-hooks">Classes and hooks in entries</a></h2>
+<h2 id="classes-and-hooks"><a class="link" href="#classes-and-hooks">Classes and hooks in entries</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If your entry is a <a href="https://reactjs.org/docs/react-component.html">react class component</a> or a functional component that uses <a href="https://reactjs.org/docs/hooks-intro.html">react hooks</a> (and possibly other specific react features?), the default-export must be correctly wrapped.</p>
 </div>
 <div class="sect2">
-<h3 id="jsx_entry_examples"><a class="anchor" href="#jsx_entry_examples"></a><a class="link" href="#jsx_entry_examples">JSX entry examples</a></h3>
+<h3 id="jsx_entry_examples"><a class="link" href="#jsx_entry_examples">JSX entry examples</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -616,7 +616,7 @@ export default props =&gt; &lt;HookButton {...props} /&gt;;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="why"><a class="anchor" href="#why"></a><a class="link" href="#why">Why?</a></h3>
+<h3 id="why"><a class="link" href="#why">Why?</a></h3>
 <div class="paragraph">
 <p>The reason for this has to do with how the components are compiled, and that the runtime-client trigger call in the browser <em>uses the default-export directly, in vanilla JS</em> - so everything that&#8217;s exported from an entry must be ready and compiled for vanilla-JS usage.</p>
 </div>
@@ -633,7 +633,7 @@ export default props =&gt; &lt;HookButton {...props} /&gt;;</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:21 UTC
+Last updated 2023-07-26 09:17:13 UTC
 </div>
 </div>
 </body>

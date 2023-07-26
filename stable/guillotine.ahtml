@@ -492,7 +492,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="some_background"><a class="anchor" href="#some_background"></a><a class="link" href="#some_background">Some background</a></h2>
+<h2 id="some_background"><a class="link" href="#some_background">Some background</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In the previous chapters we&#8217;ve looked at a "traditional CMS" way of using React4xp: as content directly presented (and augmented) by react components, served together by XP. This is fairly easy to set up and works fine for many use cases. But in other cases, we may not want such a tight connection between the content and the presentational components. There may be advantages of handling/serving them separately - or an approach where a content-exposing API works alongside a traditional CMS, as a supplement. These approaches are often called a <a href="https://enonic.com/blog/headless-or-decoupled-cms">headless</a> or <a href="https://enonic.com/blog/what-is-hybrid-cms">hybrid</a> CMS.</p>
@@ -509,7 +509,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="lesson_overview"><a class="anchor" href="#lesson_overview"></a><a class="link" href="#lesson_overview">Lesson overview</a></h2>
+<h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This chapter will focus on setting up the guillotine API and the first usages:</p>
@@ -546,7 +546,7 @@ The <a href="webapp.ahtml">next chapter</a> will expand on this lesson. It demon
 </table>
 </div>
 <div class="sect2">
-<h3 id="chapter_source_files"><a class="anchor" href="#chapter_source_files"></a><a class="link" href="#chapter_source_files">Source files</a></h3>
+<h3 id="chapter_source_files"><a class="link" href="#chapter_source_files">Source files</a></h3>
 <div class="listingblock">
 <div class="title">Files involved (src/main/resources/&#8230;&#8203;):</div>
 <div class="content">
@@ -616,7 +616,7 @@ headless/                       <i class="conum" data-value="6"></i><b>(6)</b>
 </div>
 </div>
 <div class="sect1">
-<h2 id="groundwork_movie_items"><a class="anchor" href="#groundwork_movie_items"></a><a class="link" href="#groundwork_movie_items">Groundwork: movie items</a></h2>
+<h2 id="groundwork_movie_items"><a class="link" href="#groundwork_movie_items">Groundwork: movie items</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This first stage should be easy enough, almost entirely repeating steps you&#8217;ve been through in previous chapters. We&#8217;ll make a <em>movie</em> content type, set up React4xp to preview-render it with react components (but with <a href="#controller_mapping">a little twist</a>), and add some movie items that will be listed when the site is done.</p>
@@ -642,7 +642,7 @@ headless/                       <i class="conum" data-value="6"></i><b>(6)</b>
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="movie_content_type"><a class="anchor" href="#movie_content_type"></a><a class="link" href="#movie_content_type">Movie content type</a></h3>
+<h3 id="movie_content_type"><a class="link" href="#movie_content_type">Movie content type</a></h3>
 <div class="paragraph">
 <p>When the setup is ready, we&#8217;ll start by adding a <em>movie</em> <strong>content type</strong>, with an ImageSelector for a poster <code>image</code>, a simple TextArea with a movie <code>description</code>, a numeral Long field for adding the release <code>year</code> and an array of <code>actor</code> names:</p>
 </div>
@@ -682,7 +682,7 @@ headless/                       <i class="conum" data-value="6"></i><b>(6)</b>
 </div>
 </div>
 <div class="sect2">
-<h3 id="react_components"><a class="anchor" href="#react_components"></a><a class="link" href="#react_components">React components</a></h3>
+<h3 id="react_components"><a class="link" href="#react_components">React components</a></h3>
 <div class="paragraph">
 <p>Next, we&#8217;ll set up a few react components for visualizing each movie item.</p>
 </div>
@@ -829,7 +829,7 @@ export default Movie;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="controller_mapping"><a class="anchor" href="#controller_mapping"></a><a class="link" href="#controller_mapping">Controller mapping</a></h3>
+<h3 id="controller_mapping"><a class="link" href="#controller_mapping">Controller mapping</a></h3>
 <div class="paragraph">
 <p>Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the <em>Movie.jsx</em> entry. But we don&#8217;t want to mess around with setting up a <a href="pages-parts-and-regions.ahtml#page_template_setup">template with a part</a> the way we&#8217;ve done so far. Instead, we can use a <a href="https://developer.enonic.com/docs/xp/stable/cms/mappings">controller mapping</a> to make that connection in code.</p>
 </div>
@@ -980,7 +980,7 @@ exports.get = function(request) {
 </div>
 </div>
 <div class="sect2">
-<h3 id="make_some_movies"><a class="anchor" href="#make_some_movies"></a><a class="link" href="#make_some_movies">Make some Movies</a></h3>
+<h3 id="make_some_movies"><a class="link" href="#make_some_movies">Make some Movies</a></h3>
 <div class="paragraph">
 <p>With all this in place, we&#8217;re about to finish the groundwork stage: let&#8217;s add some <em>movie</em> content items to list.</p>
 </div>
@@ -1020,7 +1020,7 @@ exports.get = function(request) {
 </div>
 </div>
 <div class="sect1">
-<h2 id="static_movie_list"><a class="anchor" href="#static_movie_list"></a><a class="link" href="#static_movie_list">Static movie list</a></h2>
+<h2 id="static_movie_list"><a class="link" href="#static_movie_list">Static movie list</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Next, we&#8217;ll make a page controller for a site item that displays a static list of the <em>movie</em> items below it. The controller will use a configurable guillotine query to fetch an array of movie data items.</p>
@@ -1029,13 +1029,13 @@ exports.get = function(request) {
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="guillotine_helpers"><a class="anchor" href="#guillotine_helpers"></a><a class="link" href="#guillotine_helpers">Guillotine helpers and usage</a></h3>
+<h3 id="guillotine_helpers"><a class="link" href="#guillotine_helpers">Guillotine helpers and usage</a></h3>
 <div class="paragraph">
 <p>First off, an introduction to the guillotine helpers at we&#8217;ll be using. Two of them -  <em>headless/guillotineApi.es6</em> and  <em>headless/guillotineRequests.es6</em> - are general-purpose helpers <strong>included in the React4xp starter</strong>, and the third one we&#8217;ll write next.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="included_helper_guillotineapi_es6"><a class="anchor" href="#included_helper_guillotineapi_es6"></a><a class="link" href="#included_helper_guillotineapi_es6">Included helper: guillotineApi.es6</a></h3>
+<h3 id="included_helper_guillotineapi_es6"><a class="link" href="#included_helper_guillotineapi_es6">Included helper: guillotineApi.es6</a></h3>
 <div class="paragraph">
 <p>The most central of the helpers and the first one we&#8217;ll use, is <strong><em>headless/guillotineApi.es6</em></strong>. If we strip away a little boilerplate, the bare essence of it looks like this:</p>
 </div>
@@ -1107,7 +1107,7 @@ This endpoint is <strong>disabled by default</strong> in the starter, to encoura
 </div>
 </div>
 <div class="sect2">
-<h3 id="domain_specific_helper_for_listing_movies"><a class="anchor" href="#domain_specific_helper_for_listing_movies"></a><a class="link" href="#domain_specific_helper_for_listing_movies">Domain-specific helper for listing movies</a></h3>
+<h3 id="domain_specific_helper_for_listing_movies"><a class="link" href="#domain_specific_helper_for_listing_movies">Domain-specific helper for listing movies</a></h3>
 <div class="paragraph">
 <p>In order to make requests for a list of movies below a container item in the content hierarchy, we&#8217;ll need a specific guillotine query string, as well as functionality to adapt the resulting data into the proper props structure for the react components.</p>
 </div>
@@ -1245,7 +1245,7 @@ Remember that this query hardcodes qualified names to a content type, that conta
 </div>
 </div>
 <div class="sect2">
-<h3 id="part_controller"><a class="anchor" href="#part_controller"></a><a class="link" href="#part_controller">Part controller</a></h3>
+<h3 id="part_controller"><a class="link" href="#part_controller">Part controller</a></h3>
 <div class="paragraph">
 <p>Armed with these helpers, we can build an XP part controller that runs a guillotine query, extracts movie props from it, and renders a list of movies. We can even let the part&#8217;s config control how the movies are listed:</p>
 </div>
@@ -1368,7 +1368,7 @@ exports.get = function(request) {
 </div>
 </div>
 <div class="sect2">
-<h3 id="static_movielist"><a class="anchor" href="#static_movielist"></a><a class="link" href="#static_movielist">React components</a></h3>
+<h3 id="static_movielist"><a class="link" href="#static_movielist">React components</a></h3>
 <div class="paragraph">
 <p>We&#8217;re still missing that <strong><em>MovieList</em> entry</strong> that will display the list of movie items:</p>
 </div>
@@ -1432,7 +1432,7 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="render_the_list"><a class="anchor" href="#render_the_list"></a><a class="link" href="#render_the_list">Render the list</a></h3>
+<h3 id="render_the_list"><a class="link" href="#render_the_list">Render the list</a></h3>
 <div class="paragraph">
 <p>We can now set up the parent site with the movies, with a <em>movie-list</em> part. Rebuild the app, enter/refresh Content Studio, and make the <em>movie-list</em> part handle the visualization of the <em>MovieSite</em> item.</p>
 </div>
@@ -1478,7 +1478,7 @@ As usual, click Preview to see the rendering in a tab of its own. A preview brow
 </div>
 </div>
 <div class="sect1">
-<h2 id="making_the_list_dynamic"><a class="anchor" href="#making_the_list_dynamic"></a><a class="link" href="#making_the_list_dynamic">Making the list dynamic</a></h2>
+<h2 id="making_the_list_dynamic"><a class="link" href="#making_the_list_dynamic">Making the list dynamic</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In this next section we&#8217;ll expose the API to the frontend and let the client send a request to it. The returned data will be merged into the component state of the <em>MovieList</em> entry, and used to render the new movies into the page DOM. Finally, we&#8217;ll add a scroll listener to trigger the process.</p>
@@ -1487,7 +1487,7 @@ As usual, click Preview to see the rendering in a tab of its own. A preview brow
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="expose_api"><a class="anchor" href="#expose_api"></a><a class="link" href="#expose_api">Exposing the guillotine API</a></h3>
+<h3 id="expose_api"><a class="link" href="#expose_api">Exposing the guillotine API</a></h3>
 <div class="paragraph">
 <p>The <code>post</code> method in the included <em>guillotineApi.es6</em> is nearly ready to use. All it needs to be activated for API requests from outside, is a controller mapping. We&#8217;ll add that next to the mapping <a href="#controller_mapping">we&#8217;ve already added</a>.</p>
 </div>
@@ -1546,7 +1546,7 @@ As usual, click Preview to see the rendering in a tab of its own. A preview brow
 </div>
 </div>
 <div class="sect2">
-<h3 id="guillotine_request_helper"><a class="anchor" href="#guillotine_request_helper"></a><a class="link" href="#guillotine_request_helper">Included helper: guillotineRequest.es6</a></h3>
+<h3 id="guillotine_request_helper"><a class="link" href="#guillotine_request_helper">Included helper: guillotineRequest.es6</a></h3>
 <div class="paragraph">
 <p>Time to add some code to the existing <em>MovieList.jsx</em> so it can fetch data from the guillotine endpoint. To easily get started with that, we&#8217;ll use the second helper module <strong>included in the react4xp starter</strong>: <em>headless/guillotineRequest.es6</em>
 (the first of the two helpers is of course <a href="#guillotine_helpers">guillotineApi.es6</a>).</p>
@@ -1631,7 +1631,7 @@ export default doGuillotineRequest;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="frontend_guillotine_request"><a class="anchor" href="#frontend_guillotine_request"></a><a class="link" href="#frontend_guillotine_request">Frontend guillotine request</a></h3>
+<h3 id="frontend_guillotine_request"><a class="link" href="#frontend_guillotine_request">Frontend guillotine request</a></h3>
 <div class="paragraph">
 <p>Now we&#8217;re ready to <strong>add a guillotine call from the frontend</strong>, specifically to <em>MovieList.jsx</em>. Here&#8217;s what we&#8217;ll do:</p>
 </div>
@@ -1802,7 +1802,7 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dynamic_dom_updates"><a class="anchor" href="#dynamic_dom_updates"></a><a class="link" href="#dynamic_dom_updates">Dynamic DOM updates</a></h3>
+<h3 id="dynamic_dom_updates"><a class="link" href="#dynamic_dom_updates">Dynamic DOM updates</a></h3>
 <div class="paragraph">
 <p>With the request and the data flow in place, we&#8217;re just a small step away from <strong>rendering the returned movies</strong> at the bottom of the page, effectively filling in new movies on the page for each click.</p>
 </div>
@@ -1975,7 +1975,7 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="scroll_listener"><a class="anchor" href="#scroll_listener"></a><a class="link" href="#scroll_listener">Scroll listener</a></h3>
+<h3 id="scroll_listener"><a class="link" href="#scroll_listener">Scroll listener</a></h3>
 <div class="paragraph">
 <p>We have arrived! The final step in this chapter:</p>
 </div>
@@ -2207,7 +2207,7 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="other_resources_and_tools"><a class="anchor" href="#other_resources_and_tools"></a><a class="link" href="#other_resources_and_tools">Other resources and tools</a></h2>
+<h2 id="other_resources_and_tools"><a class="link" href="#other_resources_and_tools">Other resources and tools</a></h2>
 <div class="sectionbody">
 <div class="admonitionblock tip">
 <table>
@@ -2229,7 +2229,7 @@ This section is not a vital part of the rest of this or the next chapter. Feel f
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:21 UTC
+Last updated 2023-07-26 09:17:13 UTC
 </div>
 </div>
 </body>

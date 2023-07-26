@@ -465,7 +465,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="react4xp.config.js"><a class="anchor" href="#react4xp.config.js"></a><a class="link" href="#react4xp.config.js">react4xp.config.js</a></h2>
+<h2 id="react4xp.config.js"><a class="link" href="#react4xp.config.js">react4xp.config.js</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Several aspects of React4xp can be configured with a file <em>react4xp.config.js</em>.</p>
@@ -477,7 +477,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="including_react4xp_config_js_in_your_project"><a class="anchor" href="#including_react4xp_config_js_in_your_project"></a><a class="link" href="#including_react4xp_config_js_in_your_project">Including react4xp.config.js in your project</a></h3>
+<h3 id="including_react4xp_config_js_in_your_project"><a class="link" href="#including_react4xp_config_js_in_your_project">Including react4xp.config.js in your project</a></h3>
 <div class="paragraph">
 <p>Put <em>react4xp.config.js</em> at the root of your XP project. A template can be copied from <a href="https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js">here</a>, or from <em>node_modules/@enonic/react4xp/examples/react4xp.config.js</em> after installing the React4xp NPM package.</p>
 </div>
@@ -534,7 +534,7 @@ jar.dependsOn 'react4xp'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="entryDirs"><a class="anchor" href="#entryDirs"></a><a class="link" href="#entryDirs">entryDirs</a></h3>
+<h3 id="entryDirs"><a class="link" href="#entryDirs">entryDirs</a></h3>
 <div class="listingblock">
 <div class="title">react4xp.config.js:</div>
 <div class="content">
@@ -552,7 +552,7 @@ jar.dependsOn 'react4xp'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="chunkDirs"><a class="anchor" href="#chunkDirs"></a><a class="link" href="#chunkDirs">chunkDirs</a></h3>
+<h3 id="chunkDirs"><a class="link" href="#chunkDirs">chunkDirs</a></h3>
 <div class="paragraph">
 <p>By default, React4xp will look for (ie. sets up webpack to look for) resources <em>imported by</em> the entries. These are <a href="https://webpack.js.org/concepts/">bundled</a> into separate assets that React4xp automatically loads at both server- and clientside rendering: <a href="chunks.ahtml">chunks</a>, by this pattern:</p>
 </div>
@@ -602,7 +602,7 @@ jar.dependsOn 'react4xp'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="hydrate"><a class="anchor" href="#hydrate"></a><a class="link" href="#hydrate">hydrate</a></h3>
+<h3 id="hydrate"><a class="link" href="#hydrate">hydrate</a></h3>
 <div class="paragraph">
 <p>Hydration is enabled by default, to change the default to disabled add the line
 below to ${XP_HOME}/config/${app}.cfg. One can still enable hydration in
@@ -615,7 +615,7 @@ specific components.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ssr"><a class="anchor" href="#ssr"></a><a class="link" href="#ssr">ssr</a></h3>
+<h3 id="ssr"><a class="link" href="#ssr">ssr</a></h3>
 <div class="paragraph">
 <p>SSR is enabled by default, to change the default to disabled add the line below
 to ${XP_HOME}/config/${app}.cfg. One can still enable ssr in specific
@@ -645,7 +645,7 @@ React4xp doesn&#8217;t fully support clientSide rendering of components in regio
 </div>
 </div>
 <div class="sect1">
-<h2 id="webpack.config.react4xp.js"><a class="anchor" href="#webpack.config.react4xp.js"></a><a class="link" href="#webpack.config.react4xp.js">webpack.config.react4xp.js</a></h2>
+<h2 id="webpack.config.react4xp.js"><a class="link" href="#webpack.config.react4xp.js">webpack.config.react4xp.js</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>React4xp comes with a minimal set of webpack rules built-in, for compiling react components in TSX/JSX files into vanilla JS.</p>
@@ -717,7 +717,7 @@ React4xp doesn&#8217;t fully support clientSide rendering of components in regio
 </table>
 </div>
 <div class="sect2">
-<h3 id="webpack_caching"><a class="anchor" href="#webpack_caching"></a><a class="link" href="#webpack_caching">Webpack caching</a></h3>
+<h3 id="webpack_caching"><a class="link" href="#webpack_caching">Webpack caching</a></h3>
 <div class="paragraph">
 <p>It is possible to decrease build time by using Webpack filesystem caching. The
 first build after clean, may be slower, but the subsequent (incremental) builds
@@ -748,10 +748,10 @@ first build after clean, may be slower, but the subsequent (incremental) builds
 </div>
 </div>
 <div class="sect1">
-<h2 id="command_line_arguments"><a class="anchor" href="#command_line_arguments"></a><a class="link" href="#command_line_arguments">Command line arguments</a></h2>
+<h2 id="command_line_arguments"><a class="link" href="#command_line_arguments">Command line arguments</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="NODE_ENV"><a class="anchor" href="#NODE_ENV"></a><a class="link" href="#NODE_ENV">Build environment</a></h3>
+<h3 id="NODE_ENV"><a class="link" href="#NODE_ENV">Build environment</a></h3>
 <div class="paragraph">
 <p>Use the gradle commandline flag <code>-Pdev</code> or <code>-Pdevelopment</code> to enable building in development mode.</p>
 </div>
@@ -781,7 +781,7 @@ first build after clean, may be slower, but the subsequent (incremental) builds
 </div>
 </div>
 <div class="sect2">
-<h3 id="VERBOSE"><a class="anchor" href="#VERBOSE"></a><a class="link" href="#VERBOSE">Verbosity</a></h3>
+<h3 id="VERBOSE"><a class="link" href="#VERBOSE">Verbosity</a></h3>
 <div class="paragraph">
 <p>Use the gradle commandline flag -i or --info to enable a more verbose output when compiling React4xp components and globals.</p>
 </div>
@@ -791,7 +791,7 @@ first build after clean, may be slower, but the subsequent (incremental) builds
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:21 UTC
+Last updated 2023-07-26 09:17:13 UTC
 </div>
 </div>
 </body>

@@ -452,7 +452,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="what_is_a_chunk"><a class="anchor" href="#what_is_a_chunk"></a><a class="link" href="#what_is_a_chunk">What is a chunk?</a></h2>
+<h2 id="what_is_a_chunk"><a class="link" href="#what_is_a_chunk">What is a chunk?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>A dependency chunk is <strong>a compiled asset that can contain multiple components</strong> that are used at runtime.</p>
@@ -469,7 +469,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="importing"><a class="anchor" href="#importing"></a><a class="link" href="#importing">Importing</a></h2>
+<h2 id="importing"><a class="link" href="#importing">Importing</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Entries and other chunks can import resources from chunks using <strong>ordinary ES6 imports</strong>, as long as the necessary webpack rules are added. Compilation rules for regular TSX, JSX, TS, JS and ES6 are included with React4xp. Other rules (loaders etc) you must add yourself - see <a href="imports-and-dependency-chunks.ahtml#_adding_webpack_rules">lesson 6</a>.</p>
@@ -490,7 +490,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="standard_chunks"><a class="anchor" href="#standard_chunks"></a><a class="link" href="#standard_chunks">Standard chunks</a></h2>
+<h2 id="standard_chunks"><a class="link" href="#standard_chunks">Standard chunks</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In the standard React4xp setup, two chunks are likely to appear without any further setup: <strong>globals and vendors</strong>. That is, their names are hashed and will appear as <code>globals.&lt;hash&gt;.js</code> and <code>vendors.&lt;hash&gt;.js</code>.</p>
@@ -511,7 +511,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="defining_chunk_structure"><a class="anchor" href="#defining_chunk_structure"></a><a class="link" href="#defining_chunk_structure">Defining chunk structure</a></h2>
+<h2 id="defining_chunk_structure"><a class="link" href="#defining_chunk_structure">Defining chunk structure</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>You can also <strong>define your own dependency chunk structure</strong>. Additional folders (relative to <em>src/main/resources/react4xp/</em>) can be defined with <code>chunkDirs</code> in <em>react4xp.config.js</em>. This will cause all source files under each chunkDir to be compiled into one common dependency chunk (or to be precise: one chunk for each codetype defined by webpack rules, e.g. separate JS and CSS chunks).</p>
@@ -532,7 +532,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="importing_from_outside_of_chunkdirs"><a class="anchor" href="#importing_from_outside_of_chunkdirs"></a><a class="link" href="#importing_from_outside_of_chunkdirs">Importing from outside of chunkDirs</a></h2>
+<h2 id="importing_from_outside_of_chunkdirs"><a class="link" href="#importing_from_outside_of_chunkdirs">Importing from outside of chunkDirs</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>What happens if an entry imports something from folders <strong>not marked as chunkDirs</strong>?</p>
@@ -556,7 +556,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="entries_vs_chunks"><a class="anchor" href="#entries_vs_chunks"></a><a class="link" href="#entries_vs_chunks">Entries vs chunks</a></h2>
+<h2 id="entries_vs_chunks"><a class="link" href="#entries_vs_chunks">Entries vs chunks</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Dependency chunks never contain <a href="entries.ahtml">entries</a>; each entry is an asset file of its own. Consequently, nothing inside a dependency chunk will have a jsxPath.</p>
@@ -573,7 +573,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="why_for_optimization"><a class="anchor" href="#why_for_optimization"></a><a class="link" href="#why_for_optimization">Why? For optimization!</a></h2>
+<h2 id="why_for_optimization"><a class="link" href="#why_for_optimization">Why? For optimization!</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Why use chunks?</p>
@@ -615,7 +615,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:21 UTC
+Last updated 2023-07-26 09:17:13 UTC
 </div>
 </div>
 </body>

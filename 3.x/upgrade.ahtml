@@ -474,10 +474,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="what"><a class="anchor" href="#what"></a><a class="link" href="#what">What</a></h2>
+<h2 id="what"><a class="link" href="#what">What</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="npm_packages"><a class="anchor" href="#npm_packages"></a><a class="link" href="#npm_packages">Npm packages</a></h3>
+<h3 id="npm_packages"><a class="link" href="#npm_packages">Npm packages</a></h3>
 <div class="paragraph">
 <p>There used to be 7 npm packages, now there are only two:</p>
 </div>
@@ -493,7 +493,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="development_mode"><a class="anchor" href="#development_mode"></a><a class="link" href="#development_mode">Development Mode</a></h3>
+<h3 id="development_mode"><a class="link" href="#development_mode">Development Mode</a></h3>
 <div class="paragraph">
 <p>In order to make a development build you can add -Pdev or -Pdevelopment to the gradle commandline.</p>
 </div>
@@ -502,7 +502,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="verbosity"><a class="anchor" href="#verbosity"></a><a class="link" href="#verbosity">Verbosity</a></h3>
+<h3 id="verbosity"><a class="link" href="#verbosity">Verbosity</a></h3>
 <div class="paragraph">
 <p>In order to increase verbosity you can add -i or --info to the gradle commandline.</p>
 </div>
@@ -511,13 +511,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="react4xp_properties"><a class="anchor" href="#react4xp_properties"></a><a class="link" href="#react4xp_properties">react4xp.properties</a></h3>
+<h3 id="react4xp_properties"><a class="link" href="#react4xp_properties">react4xp.properties</a></h3>
 <div class="paragraph">
 <p>This file has been dropped in favour of react4xp.config.js</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="react4xp_config_js"><a class="anchor" href="#react4xp_config_js"></a><a class="link" href="#react4xp_config_js">react4xp.config.js</a></h3>
+<h3 id="react4xp_config_js"><a class="link" href="#react4xp_config_js">react4xp.config.js</a></h3>
 <div class="paragraph">
 <p>This is where you can add extra externals, or override some defaults.
 There should be an updated example file in the @enonic/react4xp package under examples/react4xp.config.js</p>
@@ -542,7 +542,7 @@ There should be an updated example file in the @enonic/react4xp package under ex
 </div>
 </div>
 <div class="sect2">
-<h3 id="nashornpolyfills"><a class="anchor" href="#nashornpolyfills"></a><a class="link" href="#nashornpolyfills">NashornPolyfills</a></h3>
+<h3 id="nashornpolyfills"><a class="link" href="#nashornpolyfills">NashornPolyfills</a></h3>
 <div class="paragraph">
 <p>The path for the entry file for extra nashorn polyfills is now hardcoded to</p>
 </div>
@@ -551,7 +551,7 @@ There should be an updated example file in the @enonic/react4xp package under ex
 </div>
 </div>
 <div class="sect2">
-<h3 id="webpack_overrides_only_used_when_building_components"><a class="anchor" href="#webpack_overrides_only_used_when_building_components"></a><a class="link" href="#webpack_overrides_only_used_when_building_components">Webpack overrides (only used when building components)</a></h3>
+<h3 id="webpack_overrides_only_used_when_building_components"><a class="link" href="#webpack_overrides_only_used_when_building_components">Webpack overrides (only used when building components)</a></h3>
 <div class="paragraph">
 <p>The path for the webpack overrides file is now hardcoded to
 &lt;Project.Dir&gt;/webpack.config.react4xp.js</p>
@@ -561,7 +561,7 @@ There should be an updated example file in the @enonic/react4xp package under ex
 </div>
 </div>
 <div class="sect2">
-<h3 id="application_configuration_file_runtime_settings"><a class="anchor" href="#application_configuration_file_runtime_settings"></a><a class="link" href="#application_configuration_file_runtime_settings">Application configuration file (runtime settings)</a></h3>
+<h3 id="application_configuration_file_runtime_settings"><a class="link" href="#application_configuration_file_runtime_settings">Application configuration file (runtime settings)</a></h3>
 <div class="paragraph">
 <p>You can now set some runtime options in $XP_HOME/config/&lt;app.name&gt;.cfg
 There should be an updated example file in the @enonic/react4xp package under examples/app.cfg</p>
@@ -586,27 +586,27 @@ react4xp.ssr.settings = --optimistic-types=false</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="how"><a class="anchor" href="#how"></a><a class="link" href="#how">How</a></h2>
+<h2 id="how"><a class="link" href="#how">How</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="package_json"><a class="anchor" href="#package_json"></a><a class="link" href="#package_json">package.json</a></h3>
+<h3 id="package_json"><a class="link" href="#package_json">package.json</a></h3>
 <div class="sect3">
-<h4 id="uninstall_the_react4xp_npm_package"><a class="anchor" href="#uninstall_the_react4xp_npm_package"></a><a class="link" href="#uninstall_the_react4xp_npm_package">Uninstall the react4xp npm package</a></h4>
+<h4 id="uninstall_the_react4xp_npm_package"><a class="link" href="#uninstall_the_react4xp_npm_package">Uninstall the react4xp npm package</a></h4>
 <div class="paragraph">
 <p><code>npm uninstall react4xp</code></p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="install_the_enonicreact4xp_npm_package"><a class="anchor" href="#install_the_enonicreact4xp_npm_package"></a><a class="link" href="#install_the_enonicreact4xp_npm_package">Install the @enonic/react4xp npm package</a></h4>
+<h4 id="install_the_enonicreact4xp_npm_package"><a class="link" href="#install_the_enonicreact4xp_npm_package">Install the @enonic/react4xp npm package</a></h4>
 <div class="paragraph">
 <p><code>npm install --save-dev @enonic/react4xp</code></p>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="build_gradle"><a class="anchor" href="#build_gradle"></a><a class="link" href="#build_gradle">build.gradle</a></h3>
+<h3 id="build_gradle"><a class="link" href="#build_gradle">build.gradle</a></h3>
 <div class="sect3">
-<h4 id="upgrade_lib_react4xp_to_3_x_x_in_build_gradle"><a class="anchor" href="#upgrade_lib_react4xp_to_3_x_x_in_build_gradle"></a><a class="link" href="#upgrade_lib_react4xp_to_3_x_x_in_build_gradle">Upgrade lib-react4xp to 3.x.x in build.gradle</a></h4>
+<h4 id="upgrade_lib_react4xp_to_3_x_x_in_build_gradle"><a class="link" href="#upgrade_lib_react4xp_to_3_x_x_in_build_gradle">Upgrade lib-react4xp to 3.x.x in build.gradle</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-build.gradle" data-lang="build.gradle">rootProject.ext.LIB_REACT4XP_VERSION = "3.2.0"</code></pre>
@@ -614,7 +614,7 @@ react4xp.ssr.settings = --optimistic-types=false</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="update_paths_to_gradle_files_imported_from_node_modulesenonicreact4xp"><a class="anchor" href="#update_paths_to_gradle_files_imported_from_node_modulesenonicreact4xp"></a><a class="link" href="#update_paths_to_gradle_files_imported_from_node_modulesenonicreact4xp">Update paths to gradle files imported from node_modules/@enonic/react4xp</a></h4>
+<h4 id="update_paths_to_gradle_files_imported_from_node_modulesenonicreact4xp"><a class="link" href="#update_paths_to_gradle_files_imported_from_node_modulesenonicreact4xp">Update paths to gradle files imported from node_modules/@enonic/react4xp</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-build.gradle" data-lang="build.gradle">def react4xpGradlePath = 'node_modules/@enonic/react4xp/react4xp.gradle'
@@ -625,9 +625,9 @@ apply from: 'node_modules/@enonic/react4xp/updaters.gradle'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="if_you_have_extra_externals_chunkdirs_entrydirs_or_entryextensions"><a class="anchor" href="#if_you_have_extra_externals_chunkdirs_entrydirs_or_entryextensions"></a><a class="link" href="#if_you_have_extra_externals_chunkdirs_entrydirs_or_entryextensions">If you have extra externals, chunkDirs, entryDirs or entryExtensions</a></h3>
+<h3 id="if_you_have_extra_externals_chunkdirs_entrydirs_or_entryextensions"><a class="link" href="#if_you_have_extra_externals_chunkdirs_entrydirs_or_entryextensions">If you have extra externals, chunkDirs, entryDirs or entryExtensions</a></h3>
 <div class="sect3">
-<h4 id="copy_node_modulesenonicreact4xpexamplesreact4xp_config_js_into_you_project"><a class="anchor" href="#copy_node_modulesenonicreact4xpexamplesreact4xp_config_js_into_you_project"></a><a class="link" href="#copy_node_modulesenonicreact4xpexamplesreact4xp_config_js_into_you_project">Copy node_modules/@enonic/react4xp/examples/react4xp.config.js into you project.</a></h4>
+<h4 id="copy_node_modulesenonicreact4xpexamplesreact4xp_config_js_into_you_project"><a class="link" href="#copy_node_modulesenonicreact4xpexamplesreact4xp_config_js_into_you_project">Copy node_modules/@enonic/react4xp/examples/react4xp.config.js into you project.</a></h4>
 <div class="paragraph">
 <p><code>cp node_modules/@enonic/react4xp/examples/react4xp.config.js .</code></p>
 </div>
@@ -641,7 +641,7 @@ apply from: 'node_modules/@enonic/react4xp/updaters.gradle'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="if_you_have_extra_nashorn_polyfills"><a class="anchor" href="#if_you_have_extra_nashorn_polyfills"></a><a class="link" href="#if_you_have_extra_nashorn_polyfills">If you have extra nashorn polyfills</a></h3>
+<h3 id="if_you_have_extra_nashorn_polyfills"><a class="link" href="#if_you_have_extra_nashorn_polyfills">If you have extra nashorn polyfills</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -651,7 +651,7 @@ apply from: 'node_modules/@enonic/react4xp/updaters.gradle'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="if_you_have_webpack_overrides"><a class="anchor" href="#if_you_have_webpack_overrides"></a><a class="link" href="#if_you_have_webpack_overrides">If you have webpack overrides</a></h3>
+<h3 id="if_you_have_webpack_overrides"><a class="link" href="#if_you_have_webpack_overrides">If you have webpack overrides</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -664,7 +664,7 @@ apply from: 'node_modules/@enonic/react4xp/updaters.gradle'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="if_you_are_using_react_components_from_the_react4xp_regions_package"><a class="anchor" href="#if_you_are_using_react_components_from_the_react4xp_regions_package"></a><a class="link" href="#if_you_are_using_react_components_from_the_react4xp_regions_package">If you are using react components from the react4xp-regions package</a></h3>
+<h3 id="if_you_are_using_react_components_from_the_react4xp_regions_package"><a class="link" href="#if_you_are_using_react_components_from_the_react4xp_regions_package">If you are using react components from the react4xp-regions package</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -673,13 +673,13 @@ apply from: 'node_modules/@enonic/react4xp/updaters.gradle'</code></pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="install_the_enonicreact_components_npm_package"><a class="anchor" href="#install_the_enonicreact_components_npm_package"></a><a class="link" href="#install_the_enonicreact_components_npm_package">Install the @enonic/react-components npm package</a></h4>
+<h4 id="install_the_enonicreact_components_npm_package"><a class="link" href="#install_the_enonicreact_components_npm_package">Install the @enonic/react-components npm package</a></h4>
 <div class="paragraph">
 <p><code>npm install --save-dev @enonic/react-components</code></p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="jsxtsx_files"><a class="anchor" href="#jsxtsx_files"></a><a class="link" href="#jsxtsx_files">Jsx/Tsx files</a></h4>
+<h4 id="jsxtsx_files"><a class="link" href="#jsxtsx_files">Jsx/Tsx files</a></h4>
 <div class="paragraph">
 <p>Edit your jsx files and change import path from:</p>
 </div>
@@ -703,7 +703,7 @@ apply from: 'node_modules/@enonic/react4xp/updaters.gradle'</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:13 UTC
+Last updated 2023-07-26 09:16:58 UTC
 </div>
 </div>
 </body>

@@ -1,1 +1,13 @@
-{"versions":[{"label":"3.x","checkout":"4d6e719","latest":false},{"label":"stable","checkout":"master","latest":true}]}
+{
+  "versions": [
+    {
+      "label": "3.x",
+      "checkout": "4d6e719"
+    },
+    {
+      "label": "stable",
+      "checkout": "master",
+      "latest": true
+    }
+  ]
+}

@@ -476,7 +476,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="lesson_overview"><a class="anchor" href="#lesson_overview"></a><a class="link" href="#lesson_overview">Lesson overview</a></h2>
+<h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This final example is going to be more real-life-like. We&#8217;ll focus on these features:</p>
@@ -547,7 +547,7 @@ webpack.config.react4xp.js</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="the_multi_color_part"><a class="anchor" href="#the_multi_color_part"></a><a class="link" href="#the_multi_color_part">The <em>multi-color</em> Part</a></h2>
+<h2 id="the_multi_color_part"><a class="link" href="#the_multi_color_part">The <em>multi-color</em> Part</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Starting out with the <em>multi-color</em> Part at the core of it all, everything in this section will probably be familiar by now.</p>
@@ -556,7 +556,7 @@ webpack.config.react4xp.js</code></pre>
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="part_definition"><a class="anchor" href="#part_definition"></a><a class="link" href="#part_definition">Part definition</a></h3>
+<h3 id="part_definition"><a class="link" href="#part_definition">Part definition</a></h3>
 <div class="paragraph">
 <p>The Part definition enables two editorial configurations:</p>
 </div>
@@ -599,7 +599,7 @@ webpack.config.react4xp.js</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="part_controller"><a class="anchor" href="#part_controller"></a><a class="link" href="#part_controller">Part controller</a></h3>
+<h3 id="part_controller"><a class="link" href="#part_controller">Part controller</a></h3>
 <div class="paragraph">
 <p>For the Part controller, we don&#8217;t need any more than this in this example:</p>
 </div>
@@ -650,7 +650,7 @@ exports.get = function(request) {
 </div>
 </div>
 <div class="sect1">
-<h2 id="the_multicolor_entry"><a class="anchor" href="#the_multicolor_entry"></a><a class="link" href="#the_multicolor_entry">The <em>MultiColor</em> entry</a></h2>
+<h2 id="the_multicolor_entry"><a class="link" href="#the_multicolor_entry">The <em>MultiColor</em> entry</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Before we do the React4xp / webpack configuration, we&#8217;ll make <strong>the <em>MultiColor.jsx</em> entry</strong> and its dependencies.</p>
@@ -662,7 +662,7 @@ exports.get = function(request) {
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="react_component"><a class="anchor" href="#react_component"></a><a class="link" href="#react_component">React component</a></h3>
+<h3 id="react_component"><a class="link" href="#react_component">React component</a></h3>
 <div class="paragraph">
 <p>This is a <strong>stateful</strong> react component that not only <strong>imports and nests secondary react components</strong>, but also imports <strong>styling</strong> - both its own specific and shared general styling - and relies on webpack and React4xp to handle all the compilation and assets behind the scenes.</p>
 </div>
@@ -793,9 +793,9 @@ export default (props) =&gt; &lt;MultiColor {...props} /&gt;;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dependencies_for_the_entry"><a class="anchor" href="#dependencies_for_the_entry"></a><a class="link" href="#dependencies_for_the_entry">Dependencies for the entry</a></h3>
+<h3 id="dependencies_for_the_entry"><a class="link" href="#dependencies_for_the_entry">Dependencies for the entry</a></h3>
 <div class="sect3">
-<h4 id="styling"><a class="anchor" href="#styling"></a><a class="link" href="#styling">Styling</a></h4>
+<h4 id="styling"><a class="link" href="#styling">Styling</a></h4>
 <div class="paragraph">
 <p>Now, with the entry done, we can look at the <strong>entry&#8217;s styling</strong> - a lot simpler, only the buttons' class <code>my-button</code> is targeted and styled:</p>
 </div>
@@ -834,7 +834,7 @@ export default (props) =&gt; &lt;MultiColor {...props} /&gt;;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="imported_react_components"><a class="anchor" href="#imported_react_components"></a><a class="link" href="#imported_react_components">Imported react components</a></h4>
+<h4 id="imported_react_components"><a class="link" href="#imported_react_components">Imported react components</a></h4>
 <div class="paragraph">
 <p>Next, <em>shared/</em> also contains the <strong>secondary react components</strong> imported by  <em>MultiColor.jsx</em>. Note how each of them imports their own specific styling the same way as the entry <em>MultiColor.jsx</em>.</p>
 </div>
@@ -854,7 +854,7 @@ It&#8217;s important that these react components are <strong>not <a href="entrie
 <p>&#8203;<br></p>
 </div>
 <div class="sect4">
-<h5 id="button"><a class="anchor" href="#button"></a><a class="link" href="#button">Button</a></h5>
+<h5 id="button"><a class="link" href="#button">Button</a></h5>
 <div class="paragraph">
 <p>There&#8217;s the generic <strong>Button</strong> component. This is used both by <em>MultiColor.jsx</em> and the secondary component <em>ColorButtons.jsx</em>. It gets custom onClick function, HTML class, inline styling (for single-button-specific attributes) and label (<code>children</code>) from <code>props</code> (the spread-out function parameters):</p>
 </div>
@@ -896,7 +896,7 @@ export default ({clickFunc, className, style, children}) =&gt;
 </div>
 </div>
 <div class="sect4">
-<h5 id="activecoloroval"><a class="anchor" href="#activecoloroval"></a><a class="link" href="#activecoloroval">ActiveColorOval</a></h5>
+<h5 id="activecoloroval"><a class="link" href="#activecoloroval">ActiveColorOval</a></h5>
 <div class="paragraph">
 <p>Then there&#8217;s the <strong>ActiveColorOval</strong> component, which just displays <code>props.color</code> inside a circle/ellipse thing, filled with the same color:</p>
 </div>
@@ -933,7 +933,7 @@ export default ({color}) =&gt;
 </div>
 </div>
 <div class="sect4">
-<h5 id="colorbuttons"><a class="anchor" href="#colorbuttons"></a><a class="link" href="#colorbuttons">ColorButtons</a></h5>
+<h5 id="colorbuttons"><a class="link" href="#colorbuttons">ColorButtons</a></h5>
 <div class="paragraph">
 <p>And finally a <strong>ColorButtons</strong> component. It takes the list of <code>props.colors</code> (from the editorial data), and assigns each of them to a <code>Button</code> labeled with the color, each of them triggering the change-color-selection from <em>MultiColor.jsx</em> with its own specific color index <code>i</code> in the list of colors. In addition, the HTML class name(s) of the buttons is assigned dynamically: the buttons all have a <code>color-button</code> class, and each item checks if its own array index <code>i</code> matches the current <code>selectedIndex</code>. If it does, the class <code>selected</code> is added, making that button differently styled:</p>
 </div>
@@ -1002,7 +1002,7 @@ export default ({colors, selectedIndex, clickFunc}) =&gt;
 </div>
 </div>
 <div class="sect1">
-<h2 id="webpack_config"><a class="anchor" href="#webpack_config"></a><a class="link" href="#webpack_config">Configuring React4xp and webpack</a></h2>
+<h2 id="webpack_config"><a class="link" href="#webpack_config">Configuring React4xp and webpack</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In this section we&#8217;ll adjust some settings to make the code above work.</p>
@@ -1023,7 +1023,7 @@ If you need more details, some of this is covered in more depth under <a href="e
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="folders_for_entries_and_chunks"><a class="anchor" href="#folders_for_entries_and_chunks"></a><a class="link" href="#folders_for_entries_and_chunks">Folders for entries and chunks</a></h3>
+<h3 id="folders_for_entries_and_chunks"><a class="link" href="#folders_for_entries_and_chunks">Folders for entries and chunks</a></h3>
 <div class="paragraph">
 <p>First, open <em>react4xp.config.js</em> in your project root and add/look up the attributes <code>entryDirs</code> and <code>chunkDirs</code>. Make sure <code>myEntries</code> are added as an <code>entryDir</code> and <code>shared</code> is added as a <code>chunkDir</code>.</p>
 </div>
@@ -1075,7 +1075,7 @@ chunkDirs: 'shared'    <i class="conum" data-value="2"></i><b>(2)</b></code></pr
 </div>
 </div>
 <div class="sect2">
-<h3 id="webpack_rules"><a class="anchor" href="#webpack_rules"></a><a class="link" href="#webpack_rules">Adding webpack rules</a></h3>
+<h3 id="webpack_rules"><a class="link" href="#webpack_rules">Adding webpack rules</a></h3>
 <div class="paragraph">
 <p>Next, we&#8217;ll add some <strong>custom webpack rules to handle the style imports</strong>.</p>
 </div>
@@ -1148,7 +1148,7 @@ module.exports = function(env, config) {                     <i class="conum" da
 <p>&#8203;<br></p>
 </div>
 <div class="sect3">
-<h4 id="npm_dependencies"><a class="anchor" href="#npm_dependencies"></a><a class="link" href="#npm_dependencies">NPM dependencies</a></h4>
+<h4 id="npm_dependencies"><a class="link" href="#npm_dependencies">NPM dependencies</a></h4>
 <div class="paragraph">
 <p>Also, you&#8217;ll probably need to add the required NPM packages for this example:</p>
 </div>
@@ -1171,7 +1171,7 @@ module.exports = function(env, config) {                     <i class="conum" da
 </div>
 </div>
 <div class="sect1">
-<h2 id="setup_and_rendering"><a class="anchor" href="#setup_and_rendering"></a><a class="link" href="#setup_and_rendering">Setup and rendering</a></h2>
+<h2 id="setup_and_rendering"><a class="link" href="#setup_and_rendering">Setup and rendering</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Build again and add the <em>multi-color</em> Part in Content Studio, <a href="pages-parts-and-regions.ahtml#adding_parts_to_new_content">the same way as before</a>.</p>
@@ -1206,7 +1206,7 @@ module.exports = function(env, config) {                     <i class="conum" da
 </div>
 </div>
 <div class="sect1">
-<h2 id="output"><a class="anchor" href="#output"></a><a class="link" href="#output">Output</a></h2>
+<h2 id="output"><a class="link" href="#output">Output</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Let&#8217;s take a look at the rendered response from the controller and underline a few things that by now might be as you expected:</p>
@@ -1280,7 +1280,7 @@ module.exports = function(env, config) {                     <i class="conum" da
 </div>
 </div>
 <div class="sect1">
-<h2 id="further_reading"><a class="anchor" href="#further_reading"></a><a class="link" href="#further_reading">Further reading</a></h2>
+<h2 id="further_reading"><a class="link" href="#further_reading">Further reading</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you haven&#8217;t already, it&#8217;s recommended to take a look at the additional explanations of central concepts and API, in the documentation below - especially the dependency chunks which are used for optimization, as we touched upon in this chapter:</p>
@@ -1315,7 +1315,7 @@ module.exports = function(env, config) {                     <i class="conum" da
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:21 UTC
+Last updated 2023-07-26 09:17:13 UTC
 </div>
 </div>
 </body>

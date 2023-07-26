@@ -466,7 +466,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="upgrade"><a class="anchor" href="#upgrade"></a><a class="link" href="#upgrade">Upgrade</a></h2>
+<h2 id="upgrade"><a class="link" href="#upgrade">Upgrade</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you are upgrading to lib-react4xp 3.x.x please ready this <a href="upgrade.ahtml">upgrade guide</a>.</p>
@@ -474,7 +474,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="introduction"><a class="anchor" href="#introduction"></a><a class="link" href="#introduction">Introduction</a></h2>
+<h2 id="introduction"><a class="link" href="#introduction">Introduction</a></h2>
 <div class="sectionbody">
 <div class="admonitionblock note">
 <table>
@@ -515,7 +515,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="tutorial_overview"><a class="anchor" href="#tutorial_overview"></a><a class="link" href="#tutorial_overview">Tutorial overview</a></h2>
+<h2 id="tutorial_overview"><a class="link" href="#tutorial_overview">Tutorial overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>After <a href="setup.ahtml">getting set up</a>, we&#8217;ll begin with <strong>3 basic lessons</strong> - just the minimum of what you need to get started:</p>
@@ -564,7 +564,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="details"><a class="anchor" href="#details"></a><a class="link" href="#details">Details</a></h2>
+<h2 id="details"><a class="link" href="#details">Details</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you <strong>need to go deeper</strong> after going through the lessons, the most important concepts you&#8217;ll encounter along the way are explained on pages of their own:</p>
@@ -601,7 +601,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="issues"><a class="anchor" href="#issues"></a><a class="link" href="#issues">Issues?</a></h2>
+<h2 id="issues"><a class="link" href="#issues">Issues?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Questions, bug reports or suggestions are welcome!</p>
@@ -624,7 +624,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:13 UTC
+Last updated 2023-07-26 09:16:58 UTC
 </div>
 </div>
 </body>

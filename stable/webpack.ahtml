@@ -447,7 +447,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="overrides_file"><a class="anchor" href="#overrides_file"></a><a class="link" href="#overrides_file">Overrides file</a></h2>
+<h2 id="overrides_file"><a class="link" href="#overrides_file">Overrides file</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The path for the webpack overrides file is hardcoded to
@@ -471,7 +471,7 @@ It is only used when building components.
 </div>
 </div>
 <div class="sect1">
-<h2 id="cache"><a class="anchor" href="#cache"></a><a class="link" href="#cache">Cache</a></h2>
+<h2 id="cache"><a class="link" href="#cache">Cache</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>To improve the speed of incremental builds, you may use webpack caching.</p>
@@ -502,7 +502,7 @@ It is only used when building components.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:21 UTC
+Last updated 2023-07-26 09:17:13 UTC
 </div>
 </div>
 </body>

@@ -455,7 +455,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="create_project"><a class="anchor" href="#create_project"></a><a class="link" href="#create_project">Create project</a></h2>
+<h2 id="create_project"><a class="link" href="#create_project">Create project</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Set up the starter project locally, run the following command:</p>
@@ -491,7 +491,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="project_structure"><a class="anchor" href="#project_structure"></a><a class="link" href="#project_structure">Project structure</a></h2>
+<h2 id="project_structure"><a class="link" href="#project_structure">Project structure</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you&#8217;re used to working with a typical XP project using <a href="https://developer.enonic.com/templates/webpack">webpack</a>, the structure in your project root folder will now look familiar -
@@ -555,7 +555,7 @@ src/
 </div>
 </div>
 <div class="sect1">
-<h2 id="build_and_deploy"><a class="anchor" href="#build_and_deploy"></a><a class="link" href="#build_and_deploy">Build and Deploy</a></h2>
+<h2 id="build_and_deploy"><a class="link" href="#build_and_deploy">Build and Deploy</a></h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -619,7 +619,7 @@ With versions <em>1.1 and below</em> of the React4xp starter, you must run <code
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:21 UTC
+Last updated 2023-07-26 09:17:13 UTC
 </div>
 </div>
 </body>

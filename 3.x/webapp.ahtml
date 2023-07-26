@@ -502,10 +502,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="background"><a class="anchor" href="#background"></a><a class="link" href="#background">Background</a></h2>
+<h2 id="background"><a class="link" href="#background">Background</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="the_story_so_far"><a class="anchor" href="#the_story_so_far"></a><a class="link" href="#the_story_so_far">The story so far</a></h3>
+<h3 id="the_story_so_far"><a class="link" href="#the_story_so_far">The story so far</a></h3>
 <div class="paragraph">
 <p>Until now in all the previous examples, the XP controllers have still been at the center of the rendering.</p>
 </div>
@@ -520,7 +520,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="going_fully_headless"><a class="anchor" href="#going_fully_headless"></a><a class="link" href="#going_fully_headless">Going fully headless</a></h3>
+<h3 id="going_fully_headless"><a class="link" href="#going_fully_headless">Going fully headless</a></h3>
 <div class="paragraph">
 <p>But in general, when the react4xp buildtime compiles the react component source files (etc) into assets, what happens is just a <strong>regular webpack</strong> process that generates <strong>regular JS (etc) assets</strong> that can be run in the browser in pretty much any regular way - independent of the react4xp runtime.</p>
 </div>
@@ -539,7 +539,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="nutshell"><a class="anchor" href="#nutshell"></a><a class="link" href="#nutshell">Standalone react4xp in a nutshell</a></h2>
+<h2 id="nutshell"><a class="link" href="#nutshell">Standalone react4xp in a nutshell</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The takeaway of this chapter is this: react4xp components (entries and dependencies) can be used without any XP controller or <code>React4xp.render</code> call. To do that, the base HTML (the response of a first page request, or some script loaded by it) <strong>must do these tasks</strong>:</p>
@@ -605,7 +605,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="lesson_overview"><a class="anchor" href="#lesson_overview"></a><a class="link" href="#lesson_overview">Lesson overview</a></h2>
+<h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>We&#8217;ll take a look at <strong>two variations</strong> of how to use react4xp-compiled components without rendering them from XP controllers. Both of them do <a href="#nutshell">the same steps above</a>, in slightly different ways:</p>
@@ -639,7 +639,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="source_files"><a class="anchor" href="#source_files"></a><a class="link" href="#source_files">Source files</a></h3>
+<h3 id="source_files"><a class="link" href="#source_files">Source files</a></h3>
 <div class="listingblock">
 <div class="title">Files involved (src/main/resources/&#8230;&#8203;) - in addition to <a href="guillotine.ahtml#chapter_source_files">the ones from chapter 8</a>:</div>
 <div class="content">
@@ -663,13 +663,13 @@ assets/webapp/
 </div>
 </div>
 <div class="sect1">
-<h2 id="1_completely_standalone"><a class="anchor" href="#1_completely_standalone"></a><a class="link" href="#1_completely_standalone">1. Completely standalone</a></h2>
+<h2 id="1_completely_standalone"><a class="link" href="#1_completely_standalone">1. Completely standalone</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In this first of the two approaches, we&#8217;ll minimize the use of runtime XP: all values and asset URLs are hardcoded. XP is used to serve the initial HTML and the assets, as well as providing a guillotine endpoint where the browser can fetch data, but this functionality can easily be replaced with any other file- and data-serving solution and still work just fine.</p>
 </div>
 <div class="sect2">
-<h3 id="html1"><a class="anchor" href="#html1"></a><a class="link" href="#html1">HTML base</a></h3>
+<h3 id="html1"><a class="link" href="#html1">HTML base</a></h3>
 <div class="paragraph">
 <p>The webapp begins with some basic HTML, setting it all up in the browser.</p>
 </div>
@@ -839,7 +839,7 @@ export function get() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="script"><a class="anchor" href="#script"></a><a class="link" href="#script">The script</a></h3>
+<h3 id="script"><a class="link" href="#script">The script</a></h3>
 <div class="paragraph">
 <p>Finally, the script that&#8217;s called at the end of the HTML.</p>
 </div>
@@ -859,7 +859,7 @@ If you&#8217;ve been through the lesson in the previous chapter, you might recog
 <p>&#8203;<br></p>
 </div>
 <div class="sect3">
-<h4 id="quick_overview_of_the_script"><a class="anchor" href="#quick_overview_of_the_script"></a><a class="link" href="#quick_overview_of_the_script">Quick overview of the script:</a></h4>
+<h4 id="quick_overview_of_the_script"><a class="link" href="#quick_overview_of_the_script">Quick overview of the script:</a></h4>
 <div class="ulist">
 <ul>
 <li>
@@ -901,7 +901,7 @@ If you&#8217;ve been through the lesson in the previous chapter, you might recog
 </div>
 </div>
 <div class="sect3">
-<h4 id="script_code"><a class="anchor" href="#script_code"></a><a class="link" href="#script_code">Script code</a></h4>
+<h4 id="script_code"><a class="link" href="#script_code">Script code</a></h4>
 <div class="listingblock">
 <div class="title">script.es6:</div>
 <div class="content">
@@ -1046,7 +1046,7 @@ requestAndRenderMovies();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="output1"><a class="anchor" href="#output1"></a><a class="link" href="#output1">Output</a></h3>
+<h3 id="output1"><a class="link" href="#output1">Output</a></h3>
 <div class="paragraph">
 <p>Assuming you&#8217;ve been through the <a href="guillotine.ahtml">previous lesson</a>, you can now rebuild the project. But instead of opening Content Studio, open the XP main menu in the top right corner, choose <em>Applications</em>, and in the Applications viewer, select your app:</p>
 </div>
@@ -1077,7 +1077,7 @@ requestAndRenderMovies();</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="2_webapp_with_xp_helpers"><a class="anchor" href="#2_webapp_with_xp_helpers"></a><a class="link" href="#2_webapp_with_xp_helpers">2. Webapp with XP helpers</a></h2>
+<h2 id="2_webapp_with_xp_helpers"><a class="link" href="#2_webapp_with_xp_helpers">2. Webapp with XP helpers</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This is all nice and well, but a cumbersome part is that it requires you to supply values and asset URLs yourself, or ways to figure them out. Hashes in file names is a neat way of content-based cache busting, but keeping track of the resulting file names can be a chore. Even if that&#8217;s not an issue, it could be handy to have a way to just supply the name (jsxPath) of the entry (or entries) you want to render, and let the system itself figure out what dependency chunk(s) are needed to load alongside the entry asset(s). Not to mention prevent them from being downloaded twice.</p>
@@ -1086,7 +1086,7 @@ requestAndRenderMovies();</code></pre>
 <p>If you have XP running but still want to make things work headlessly and outside of Content Studio, react4xp provides a couple of helpers for this. The client wrapper comes with the function <code>.renderWithDependencies</code>, which uses an XP service to track the sum set of dependency chunks required to render a set of jsxPaths, loads them and the entry assets, and renders them.</p>
 </div>
 <div class="sect2">
-<h3 id="html_base"><a class="anchor" href="#html_base"></a><a class="link" href="#html_base">HTML base</a></h3>
+<h3 id="html_base"><a class="link" href="#html_base">HTML base</a></h3>
 <div class="paragraph">
 <p>The HTML base is very similar to the one in <a href="#html1">the previous example</a>, only this time since we&#8217;re using XP anyway, it&#8217;s a more traditional <a href="https://developer.enonic.com/docs/thymeleaf-library/master">thymeleaf template</a>. This means we can get rid of most of the hardcoded stuff in the HTML.</p>
 </div>
@@ -1197,7 +1197,7 @@ export function get(req) {
 </div>
 </div>
 <div class="sect2">
-<h3 id="script2"><a class="anchor" href="#script2"></a><a class="link" href="#script2">The script asset</a></h3>
+<h3 id="script2"><a class="link" href="#script2">The script asset</a></h3>
 <div class="paragraph">
 <p>The script asset is almost identical to before. All that&#8217;s changed is in <code>renderMovies</code> at the end:</p>
 </div>
@@ -1354,7 +1354,7 @@ requestAndRenderMovies();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="output"><a class="anchor" href="#output"></a><a class="link" href="#output">Output</a></h3>
+<h3 id="output"><a class="link" href="#output">Output</a></h3>
 <div class="paragraph">
 <p>The output when you preview it should be the same as <a href="#output1">the previous example</a>.</p>
 </div>
@@ -1387,7 +1387,7 @@ requestAndRenderMovies();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:13 UTC
+Last updated 2023-07-26 09:16:58 UTC
 </div>
 </div>
 </body>

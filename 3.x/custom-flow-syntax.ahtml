@@ -459,7 +459,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="lesson_overview"><a class="anchor" href="#lesson_overview"></a><a class="link" href="#lesson_overview">Lesson overview</a></h2>
+<h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In this example things get a bit more complex. We&#8217;ll make another Part, and re-use the Page controller, Template and Content type we made <a href="pages-parts-and-regions.ahtml#template_with_react_page_controller">previously</a>.</p>
@@ -503,7 +503,7 @@ Rendering multiple entries like we do here will create multiple <a href="entries
 </ul>
 </div>
 <div class="sect2">
-<h3 id="files_involved"><a class="anchor" href="#files_involved"></a><a class="link" href="#files_involved">Files involved</a></h3>
+<h3 id="files_involved"><a class="link" href="#files_involved">Files involved</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-files" data-lang="files">site/parts/
@@ -543,10 +543,10 @@ site/pages/
 </div>
 </div>
 <div class="sect1">
-<h2 id="code"><a class="anchor" href="#code"></a><a class="link" href="#code">Code</a></h2>
+<h2 id="code"><a class="link" href="#code">Code</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="part_definition"><a class="anchor" href="#part_definition"></a><a class="link" href="#part_definition">Part definition</a></h3>
+<h3 id="part_definition"><a class="link" href="#part_definition">Part definition</a></h3>
 <div class="paragraph">
 <p>The Part definition again defines some base data for us to play with. This is exactly the same definitions as before, just merged together into one Part: the greeting and bottle/thing counter from <em>hello-react.xml</em>, and the color from <em>color.xml</em>.</p>
 </div>
@@ -595,7 +595,7 @@ site/pages/
 </div>
 </div>
 <div class="sect2">
-<h3 id="thymeleaf_view"><a class="anchor" href="#thymeleaf_view"></a><a class="link" href="#thymeleaf_view">Thymeleaf view</a></h3>
+<h3 id="thymeleaf_view"><a class="link" href="#thymeleaf_view">Thymeleaf view</a></h3>
 <div class="paragraph">
 <p>Next, we&#8217;re adding a regular <strong>thymeleaf view template file</strong>.</p>
 </div>
@@ -622,7 +622,7 @@ site/pages/
 </div>
 </div>
 <div class="sect2">
-<h3 id="part_controller"><a class="anchor" href="#part_controller"></a><a class="link" href="#part_controller">Part controller</a></h3>
+<h3 id="part_controller"><a class="link" href="#part_controller">Part controller</a></h3>
 <div class="paragraph">
 <p><strong>The controller</strong> now has more complexity than before, so here&#8217;s an overview:</p>
 </div>
@@ -865,7 +865,7 @@ colorObj.uniqueId();`.</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="setup"><a class="anchor" href="#setup"></a><a class="link" href="#setup">Setup</a></h2>
+<h2 id="setup"><a class="link" href="#setup">Setup</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>All of this amounted to a new Part, <em>custom-flow</em>. It can be added to any Region, so just follow <a href="pages-parts-and-regions.ahtml#adding_parts_to_new_content">the same setup steps</a> in Content Studio to add and see it.</p>
@@ -876,7 +876,7 @@ colorObj.uniqueId();`.</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="further_reading"><a class="anchor" href="#further_reading"></a><a class="link" href="#further_reading">Further reading</a></h2>
+<h2 id="further_reading"><a class="link" href="#further_reading">Further reading</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The API behind the custom flow syntax: <a href="api.ahtml#react4xp_object">React4xp data objects</a>.</p>
@@ -891,7 +891,7 @@ colorObj.uniqueId();`.</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:13 UTC
+Last updated 2023-07-26 09:16:58 UTC
 </div>
 </div>
 </body>

@@ -467,7 +467,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="tldr"><a class="anchor" href="#tldr"></a><a class="link" href="#tldr">TL;DR</a></h2>
+<h2 id="tldr"><a class="link" href="#tldr">TL;DR</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Naturally, this example will focus quite a bit on XP Content Studio and how to use Parts, Pages, Regions and Templates. If this is familiar to you, you can pretty much just skim through it.</p>
@@ -507,7 +507,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="lesson_overview"><a class="anchor" href="#lesson_overview"></a><a class="link" href="#lesson_overview">Lesson overview</a></h2>
+<h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>React4xp don&#8217;t need to render from a Page controller, but can also render from XP <em>Part or Layout controllers</em>, creating react-rendered XP elements that can be dragged into any regular XP Region. And besides, React4xp can (serverside) render these XP Regions themselves, which can then accept any XP Parts/Layouts dropped into them (as well as Fragments, Text and Image components of course).</p>
@@ -554,7 +554,7 @@ site/parts/
 </div>
 </div>
 <div class="sect1">
-<h2 id="template_with_react_page_controller"><a class="anchor" href="#template_with_react_page_controller"></a><a class="link" href="#template_with_react_page_controller">Template with React Page Controller</a></h2>
+<h2 id="template_with_react_page_controller"><a class="link" href="#template_with_react_page_controller">Template with React Page Controller</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>We&#8217;ll make a generic XP content type, then make a Template in Content Studio and connect the content type to a react-based XP Page, <em>site/pages/default/</em>, which is just a bare-bone page with nothing but a Region in it.</p>
@@ -577,9 +577,9 @@ site/parts/
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="code"><a class="anchor" href="#code"></a><a class="link" href="#code">Code</a></h3>
+<h3 id="code"><a class="link" href="#code">Code</a></h3>
 <div class="sect3">
-<h4 id="content_type"><a class="anchor" href="#content_type"></a><a class="link" href="#content_type">Content Type</a></h4>
+<h4 id="content_type"><a class="link" href="#content_type">Content Type</a></h4>
 <div class="paragraph">
 <p>Start with a completely generic content type: <em>site/content-types/my-content/my-content.xml</em>. Content types tend to define more than this, but for now, this is all we need:</p>
 </div>
@@ -602,7 +602,7 @@ site/parts/
 </div>
 </div>
 <div class="sect3">
-<h4 id="xp_page_definition"><a class="anchor" href="#xp_page_definition"></a><a class="link" href="#xp_page_definition">XP Page definition</a></h4>
+<h4 id="xp_page_definition"><a class="link" href="#xp_page_definition">XP Page definition</a></h4>
 <div class="paragraph">
 <p>The page definition is simple. We&#8217;re now leaving the <code>&lt;form&gt;</code> node empty, but adding a <code>&lt;regions&gt;</code> node with a single <code>"main"</code> Region defined in it:</p>
 </div>
@@ -624,7 +624,7 @@ site/parts/
 </div>
 </div>
 <div class="sect3">
-<h4 id="react_component"><a class="anchor" href="#react_component"></a><a class="link" href="#react_component">React component</a></h4>
+<h4 id="react_component"><a class="link" href="#react_component">React component</a></h4>
 <div class="paragraph">
 <p>This react component has a single focus, namely rendering the Region.</p>
 </div>
@@ -678,7 +678,7 @@ export default (props) =&gt; (
 </div>
 </div>
 <div class="sect3">
-<h4 id="page_controller"><a class="anchor" href="#page_controller"></a><a class="link" href="#page_controller">Page controller</a></h4>
+<h4 id="page_controller"><a class="link" href="#page_controller">Page controller</a></h4>
 <div class="paragraph">
 <p>The <code>props</code> of course come from the <strong>Page controller</strong>. Still similar to the previous examples, we&#8217;re mainly just adding props that are needed by <code>&lt;Regions&gt;</code> in the react component.</p>
 </div>
@@ -773,7 +773,7 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 </div>
 </div>
 <div class="sect2">
-<h3 id="page_template_setup"><a class="anchor" href="#page_template_setup"></a><a class="link" href="#page_template_setup">Setting up the Template</a></h3>
+<h3 id="page_template_setup"><a class="link" href="#page_template_setup">Setting up the Template</a></h3>
 <div class="paragraph">
 <p>Before we move on to the XP Part, we need to bind this Page controller to the <code>my-content</code> Content Type we just made, in the regular XP way: a <a href="https://developer.enonic.com/docs/xp/stable/cms#page_templates">Page Template</a>.</p>
 </div>
@@ -823,7 +823,7 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 </div>
 </div>
 <div class="sect1">
-<h2 id="xp_part"><a class="anchor" href="#xp_part"></a><a class="link" href="#xp_part">XP Part</a></h2>
+<h2 id="xp_part"><a class="link" href="#xp_part">XP Part</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Now we&#8217;re ready to add a simple react-rendered Part to drop into the Region: <em>site/parts/color/</em> .</p>
@@ -832,9 +832,9 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="code_2"><a class="anchor" href="#code_2"></a><a class="link" href="#code_2">Code</a></h3>
+<h3 id="code_2"><a class="link" href="#code_2">Code</a></h3>
 <div class="sect3">
-<h4 id="part_definition"><a class="anchor" href="#part_definition"></a><a class="link" href="#part_definition">Part definition</a></h4>
+<h4 id="part_definition"><a class="link" href="#part_definition">Part definition</a></h4>
 <div class="paragraph">
 <p>The Part definition is still pretty unremarkable. There&#8217;s just a <code>color</code> TextLine input field in the form:</p>
 </div>
@@ -860,7 +860,7 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 </div>
 </div>
 <div class="sect3">
-<h4 id="react_component_2"><a class="anchor" href="#react_component_2"></a><a class="link" href="#react_component_2">React component</a></h4>
+<h4 id="react_component_2"><a class="link" href="#react_component_2">React component</a></h4>
 <div class="paragraph">
 <p>The react component only displays the color name from the props and inline-styles it with that color (as long as the <code>props.color</code> value is HTML-compliant):</p>
 </div>
@@ -886,7 +886,7 @@ export default (props) =&gt; (
 </div>
 </div>
 <div class="sect3">
-<h4 id="part_controller"><a class="anchor" href="#part_controller"></a><a class="link" href="#part_controller">Part controller</a></h4>
+<h4 id="part_controller"><a class="link" href="#part_controller">Part controller</a></h4>
 <div class="paragraph">
 <p>Like before, the controller mainly hooks the XP editorial data into the props:</p>
 </div>
@@ -939,7 +939,7 @@ exports.get = function(request) {
 </div>
 </div>
 <div class="sect1">
-<h2 id="adding_parts_to_new_content"><a class="anchor" href="#adding_parts_to_new_content"></a><a class="link" href="#adding_parts_to_new_content">Setup and render</a></h2>
+<h2 id="adding_parts_to_new_content"><a class="link" href="#adding_parts_to_new_content">Setup and render</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Time to get this displayed and see it all in action! Again, just XP routine: creating a <em>my-content</em> item, and since the Template makes it show up ready with a <em>default</em> Page controller and Region, we can just drop our new <em>color</em> Part into it.</p>
@@ -1002,7 +1002,7 @@ exports.get = function(request) {
 </div>
 </div>
 <div class="sect1">
-<h2 id="output"><a class="anchor" href="#output"></a><a class="link" href="#output">Output</a></h2>
+<h2 id="output"><a class="link" href="#output">Output</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>We won&#8217;t go into the details about the HTML output anymore - it&#8217;s structurally and conceptually <strong>the same as in the previous examples</strong>. Looking at the <em>Page Source</em>, it should all make sense to you by now: the Page controller and Part are <strong>compiled to separate assets and downloaded exactly once</strong> in the client before calling <code>render</code> and <code>hydrate</code> as needed (using a React4xp Part more than once does not make the client download the assets more than once - they&#8217;re recycled for performance).</p>
@@ -1045,7 +1045,7 @@ exports.get = function(request) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:21 UTC
+Last updated 2023-07-26 09:17:13 UTC
 </div>
 </div>
 </body>

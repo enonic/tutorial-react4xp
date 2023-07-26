@@ -451,7 +451,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="application_configuration_file"><a class="anchor" href="#application_configuration_file"></a><a class="link" href="#application_configuration_file">Application configuration file</a></h2>
+<h2 id="application_configuration_file"><a class="link" href="#application_configuration_file">Application configuration file</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>$XP_HOME/config/&lt;app.name&gt;.cfg</p>
@@ -460,7 +460,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>&#8203;<br></p>
 </div>
 <div class="sect2">
-<h3 id="ssrMaxThreads"><a class="anchor" href="#ssrMaxThreads"></a><a class="link" href="#ssrMaxThreads">ssrMaxThreads</a></h3>
+<h3 id="ssrMaxThreads"><a class="link" href="#ssrMaxThreads">ssrMaxThreads</a></h3>
 <div class="listingblock">
 <div class="title">$XP_HOME/config/&lt;app.name&gt;.cfg:</div>
 <div class="content">
@@ -483,7 +483,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="serveglobals"><a class="anchor" href="#serveglobals"></a><a class="link" href="#serveglobals">serveGlobals</a></h3>
+<h3 id="serveglobals"><a class="link" href="#serveglobals">serveGlobals</a></h3>
 <div class="paragraph">
 <p>React4xp builds a globals bundle, which MUST contain all assets NEEDED to render
 server-side. By default it contains react and react-dom, but more assets can be
@@ -510,7 +510,7 @@ means, for example via CDN.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-20 14:49:21 UTC
+Last updated 2023-07-26 09:17:13 UTC
 </div>
 </div>
 </body>
