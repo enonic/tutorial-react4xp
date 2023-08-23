@@ -48,9 +48,10 @@ You can also *define your own dependency chunk structure*. Additional folders (r
 
 What happens if an entry imports something from folders *not marked as chunkDirs*?
 
-- Importing an entry into anonther entry is possible, and leaves both entries compiled and handled as regular entries.
 - Imported JS (react components etc) from non-entry folders will be *compiled into the entry asset* itself. Try to avoid this, since the entries can become bloated, and code can become repeated if it's imported into more than entry. The entry assets are also less performance optimized.
 - Non-JS imports (CSS etc), are compiled to separate assets under their own name, the same way as entries (but are not given a _jsxPath_, of course).
+
+WARNING: Do not import from entries! It causes random SSR errors. Place shared code in separate React components.
 
 {zwsp} +
 
