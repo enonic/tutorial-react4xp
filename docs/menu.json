@@ -73,6 +73,10 @@
       "title": "Upgrade",
       "menuItems": [
         {
+          "title": "v5",
+          "document": "upgrade/v5"
+        },
+        {
           "title": "v4",
           "document": "upgrade/v4"
         },
