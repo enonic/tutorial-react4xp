@@ -484,7 +484,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">We&#8217;ll add the following files to the project</div>
 <div class="content">
-<pre class="highlight"><code class="language-files" data-lang="files">/src/resources/site/pages/hello-react/
+<pre class="highlight"><code class="language-files" data-lang="files">/src/main/resources/site/pages/hello-react/
   hello-react.xml
   hello-react.jsx
   hello-react.es6</code></pre>
@@ -963,7 +963,7 @@ exports.get = function(request) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-23 10:02:39 UTC
+Last updated 2023-08-31 10:52:13 UTC
 </div>
 </div>
 </body>
