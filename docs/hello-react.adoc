@@ -20,7 +20,7 @@ Lets start by setting up a *regular XP page controller* called `hello-react`.
 .We'll add the following files to the project
 [source,files]
 ----
-/src/resources/site/pages/hello-react/
+/src/main/resources/site/pages/hello-react/
   hello-react.xml
   hello-react.jsx
   hello-react.es6
