@@ -3,6 +3,8 @@
 
 == What
 
+=== Import restrictions
+
 It turns out importing from React4xp entries causes "intermittent" SSR errors.
 
 "When" it happens depends upon which page is visited first, after starting the React4xp application.
@@ -13,6 +15,19 @@ When an entry is imported somewhere: the imported entry's source code is duplica
 To avoid this we have introduced import restrictions on the site folder and entryDirs.
 
 Trying to import from any restricted path, will cause a compilation error with a helpful error message.
+
+=== Entry Extension Whitelist
+
+We have also introduced a configurable `entryExtensionWhitelist`.
+
+This is a list of file extensions that are allowed to be imported from under site and entryDirs.
+
+There is a default list, but you can override it in react4xp.config.json.
+
+=== @enonic/react-components
+
+If you are using @enonic/react-components, you might run into some compiletime resolve issues.
+There a new version of the package that fixes that.
 
 == How
 
@@ -33,6 +48,22 @@ dependencies {
 }
 ----
 
+=== react4xp.config.json
+
+.react4xp.config.json
+[source,gradle]
+----
+entryExtensionWhitelist: [
+    'css',
+    'd', <1>
+    'png',
+    'sass',
+    'scss',
+    'styl'
+],
+----
+<1> TypeScript declaration files
+
 === Build
 
 Try to compile and see if you get the compilation error mentioned in the what section at the top.
@@ -41,3 +72,9 @@ Try to compile and see if you get the compilation error mentioned in the what se
 
 If you get a compilation error, move any imported entry code outside site and entryDirs. For example into the src/main/resources/react4xp folder.
 
+== Side notes
+
+=== @enonic/react-components
+
+[source,console]
+npm install --save-dev @enonic/react-components@^4
