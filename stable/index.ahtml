@@ -469,7 +469,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="upgrade"><a class="link" href="#upgrade">Upgrade</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you are upgrading to lib-react4xp 4.x.x, please read this <a href="upgrade/v4.ahtml">upgrade guide</a>.</p>
+<p>If you are upgrading to lib-react4xp 5.x.x, please read this <a href="upgrade/v5.ahtml">upgrade guide</a>.</p>
 </div>
 </div>
 </div>
@@ -624,7 +624,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-31 10:52:13 UTC
+Last updated 2023-09-07 12:24:05 UTC
 </div>
 </div>
 </body>
