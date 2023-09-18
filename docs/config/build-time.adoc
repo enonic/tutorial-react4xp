@@ -100,28 +100,6 @@ This example adds these folders as chunkDirs, and anything the entries import fr
 - _src/main/resources/react4xp/bundle2/_ ➔ `bundle2.*.js`
 - _src/main/resources/react4xp/other/stuff/_ ➔ `stuff.*.js`
 
-=== hydrate
-
-Hydration is enabled by default, to change the default to disabled add the line
-below to ${XP_HOME}/config/${app}.cfg. One can still enable hydration in
-specific components.
-
-```${XP_HOME}/config/${app}.cfg
-	react4xp.hydrate = false
-```
-
-=== ssr
-
-SSR is enabled by default, to change the default to disabled add the line below
-to ${XP_HOME}/config/${app}.cfg. One can still enable ssr in specific
-components.
-
-```${XP_HOME}/config/${app}.cfg
-	react4xp.ssr = false
-```
-
-NOTE: React4xp doesn't fully support clientSide rendering of components in regions. So the default for pages and layouts will still be ssr. You can test how your page of layout renders clientSide by passing ssr: false as an option to the render function in your page or layout controller.
-
 {zwsp} +
 
 [[webpack.config.react4xp.js]]

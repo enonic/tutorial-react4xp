@@ -86,6 +86,9 @@ If `false` / falsy or omitted, you get serverside rendering and the returned obj
 If `true` / truthy, the server-side rendering is skipped for this particular rendering. The client will call `.render`.
 
 This *only applies in live mode and previews*: inside _edit_ or _browse_ modes in Content Studio, you still only get a static server-side rendered representation).
+
+! `urlType` ! server \| absolute ! app.config['react4xp.urlType'] or server ! URL type. Either server (server-relative URL) or absolute. Default is server. Available from `React4xp-5.1.0`.
+
 !===
 
 |===
