@@ -660,6 +660,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>This <strong>only applies in live mode and previews</strong>: inside <em>edit</em> or <em>browse</em> modes in Content Studio, you still only get a static server-side rendered representation).</p>
 </div></div></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>urlType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">server | absolute</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">app.config['react4xp.urlType'] or server</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>URL type. Either server (server-relative URL) or absolute. Default is server. Available from <code>React4xp-5.1.0</code>.</p>
+</div></div></td>
+</tr>
 </tbody>
 </table></div></td>
 </tr>
@@ -1624,7 +1632,7 @@ exports.get = request =&gt; {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-07 12:41:41 UTC
+Last updated 2023-09-18 11:44:53 UTC
 </div>
 </div>
 </body>

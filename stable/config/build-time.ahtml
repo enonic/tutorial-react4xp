@@ -445,8 +445,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#including_react4xp_config_js_in_your_project">Including react4xp.config.js in your project</a></li>
 <li><a href="#entryDirs">entryDirs</a></li>
 <li><a href="#chunkDirs">chunkDirs</a></li>
-<li><a href="#hydrate">hydrate</a></li>
-<li><a href="#ssr">ssr</a></li>
 </ul>
 </li>
 <li><a href="#webpack.config.react4xp.js">webpack.config.react4xp.js</a>
@@ -599,44 +597,6 @@ jar.dependsOn 'react4xp'</code></pre>
 <p><em>src/main/resources/react4xp/other/stuff/</em> ➔ <code>stuff.*.js</code></p>
 </li>
 </ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="hydrate"><a class="link" href="#hydrate">hydrate</a></h3>
-<div class="paragraph">
-<p>Hydration is enabled by default, to change the default to disabled add the line
-below to ${XP_HOME}/config/${app}.cfg. One can still enable hydration in
-specific components.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-${XP_HOME}/config/${app}.cfg" data-lang="${XP_HOME}/config/${app}.cfg">	react4xp.hydrate = false</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="ssr"><a class="link" href="#ssr">ssr</a></h3>
-<div class="paragraph">
-<p>SSR is enabled by default, to change the default to disabled add the line below
-to ${XP_HOME}/config/${app}.cfg. One can still enable ssr in specific
-components.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-${XP_HOME}/config/${app}.cfg" data-lang="${XP_HOME}/config/${app}.cfg">	react4xp.ssr = false</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-React4xp doesn&#8217;t fully support clientSide rendering of components in regions. So the default for pages and layouts will still be ssr. You can test how your page of layout renders clientSide by passing ssr: false as an option to the render function in your page or layout controller.
-</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
 <p>&#8203;<br></p>
@@ -791,7 +751,7 @@ first build after clean, may be slower, but the subsequent (incremental) builds
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-07 12:41:41 UTC
+Last updated 2023-09-18 11:44:53 UTC
 </div>
 </div>
 </body>
