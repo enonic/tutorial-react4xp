@@ -69,7 +69,7 @@ The Part definition enables two editorial configurations:
     <form>
         <input name="SSR" type="CheckBox">          // <1>
             <label>Server-side rendering</label>
-            <occurrences minimum="1" maximum="1"/>
+            <occurrences minimum="0" maximum="1"/>
         </input>
 
         <input name="colors" type="TextLine">       // <2>
