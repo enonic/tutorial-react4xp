@@ -571,7 +571,7 @@ webpack.config.react4xp.js</code></pre>
     &lt;form&gt;
         &lt;input name="SSR" type="CheckBox"&gt;          <i class="conum" data-value="1"></i><b>(1)</b>
             &lt;label&gt;Server-side rendering&lt;/label&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
+            &lt;occurrences minimum="0" maximum="1"/&gt;
         &lt;/input&gt;
 
         &lt;input name="colors" type="TextLine"&gt;       <i class="conum" data-value="2"></i><b>(2)</b>
@@ -1315,7 +1315,7 @@ module.exports = function(env, config) {                     <i class="conum" da
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-18 11:44:53 UTC
+Last updated 2023-09-20 08:22:35 UTC
 </div>
 </div>
 </body>
