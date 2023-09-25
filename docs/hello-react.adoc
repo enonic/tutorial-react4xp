@@ -22,8 +22,8 @@ Lets start by setting up a *regular XP page controller* called `hello-react`.
 ----
 /src/main/resources/site/pages/hello-react/
   hello-react.xml
-  hello-react.tsx
   hello-react.ts
+  hello-react.tsx
 ----
 
 
