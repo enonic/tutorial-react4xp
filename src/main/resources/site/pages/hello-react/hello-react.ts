@@ -22,7 +22,7 @@ export function get(request) {               // <2>
       <div id="${react4xpId}"></div>
   </body>
 </html>`,
-      ssr: false                          // <7>
+      // ssr: false                          // <7>
     }
   );
 }
