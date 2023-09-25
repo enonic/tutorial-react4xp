@@ -82,7 +82,7 @@ Of course, this also applies to imported packages / nested components and so on.
 Finally, we'll add a bare-bone *page controller* that calls the rendering engine:
 
 [[first_helloreact_jsx]]
-.hello-react.es6:
+.hello-react.ts:
 [source,javascript,options="nowrap"]
 ----
 include::../src/main/resources/site/pages/hello-react/hello-react.ts[]
@@ -208,7 +208,7 @@ Sometimes you might want or need to skip the server-side rendering of a react co
 Let's return to *the controller* and comment in the ssr: false line. Callout <7>:
 
 
-.hello-react.es6:
+.hello-react.ts:
 [source,javascript,options="nowrap"]
 ----
 include::../src/main/resources/site/pages/hello-react/hello-react.ts[]
