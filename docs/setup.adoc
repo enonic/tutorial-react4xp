@@ -48,12 +48,12 @@ src/
         entries/
         shared/
       headless/
-        guillotineApi.es6       // <4>
-        guillotineRequest.es6
+        guillotineApi.ts        // <4>
+        guillotineRequest.ts
 
 ----
 
-<1> A set of gradle config files and _package.json_. These define the build process and project structure, and in particular, make sure that the *lib-react4xp library* and *@enonic/react4xp npm package* are installed right.
+<1> A set of gradle config files and _package.json_. These define the build process and project structure, and in particular, make sure that the *lib-react4xp library* and *@enonic/react4xp npm package* are installed.
 <2> _react4xp.config.js_: Place to add extra globals and tune the most common properties of the React4xp project.
 <3> The _react4xp/_ folder is opt-in: can be ignored for now, and doesn't need to contain anything. But when fine-tuning the build later in the tutorial, we'll get back to why you might find it handy to have a separate place for some of your react components (in ultra-short: the _entries/_ folder is for react components that can be used directly by React4xp, the _shared\_ folder is for common components imported by, and shared between, the entries).
 <4> Under _headless/_, the starter includes two wrappers that make it easier to use the optional guillotine api for using React4xp in a <<guillotine#, headless context>>.
@@ -68,8 +68,6 @@ src/
 ----
 enonic project deploy
 ----
-+
-NOTE: With versions _1.1 and below_ of the React4xp starter, you must run `npm install` before this; _gradle.build_ imports some extra react4xp-related gradle tasks from link:https://www.npmjs.com/package/react4xp[node_modules/@enonic/react4xp/]. At version 1.2 and above, _build.gradle_ in the starter is set up to auto-check and install.
 +
 2. *Start the XP sandbox* (or accept when the enonic CLI asks you to).
 +
