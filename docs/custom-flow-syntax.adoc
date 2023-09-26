@@ -7,7 +7,7 @@
 
 In this example things get a bit more complex. We'll make another Part, and re-use the Page controller, Template and Content type we made <<pages-parts-and-regions#template_with_react_page_controller, previously>>.
 
-- However, we won't use the `React4xp.render` shorthand function from before. Instead, we'll look at a more *explicit React4xp syntax*:
+- However, we won't use the `render` shorthand function from before. Instead, we'll look at a more *explicit React4xp syntax*:
     a. It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your <<entries#, entry>>; you can manipulate the object(s) or extract data from them _before_ rendering.
     b. Here, each entry is rendered in *two separate methods*: `renderBody` and `renderPageContributions` (full details: <<api#react4xp_object, React4xp data object API>>)
     c. You can pretty easily render *multiple entries* from the same controller, by chaining together their rendering.
@@ -25,20 +25,20 @@ NOTE: Rendering multiple entries like we do here will create multiple <<entries#
 site/parts/
     custom-flow/            // <1>
         custom-flow.xml
-        custom-flow.es6
+        custom-flow.ts
         custom-flow-view.html
 
     color/
-        color.jsx           // <2>
+        color.tsx           // <2>
 
 site/pages/
     hello-react/
-        hello-react.jsx     // <3>
+        hello-react.tsx     // <3>
 ----
 
 <1> The new Part we're making, _custom-flow_.
-<2> The already existing entry <<pages-parts-and-regions#color_jsx, _color.jsx_>>: a different folder from our _custom-flow_ Part, and different name.
-<3> We're also reusing another existing entry <<editorial-data-and-props#hello_react_jsx_modified, _hello-react.jsx_>> (with props, not the first hardcoded one), located under _site/*pages*/hello-react/_. So even though what we're making here is a Part, an entry from a Page, or anywhere, is fine: when using jsxPaths, all entries are equal.
+<2> The already existing entry <<pages-parts-and-regions#color_jsx, _color.tsx_>>: a different folder from our _custom-flow_ Part, and different name.
+<3> We're also reusing another existing entry <<editorial-data-and-props#hello_react_jsx_modified, _hello-react.tsx_>> (with props, not the first hardcoded one), located under _site/*pages*/hello-react/_. So even though what we're making here is a Part, an entry from a Page, or anywhere, is fine: when using jsxPaths, all entries are equal.
 
 
 {zwsp} +
@@ -52,42 +52,7 @@ The Part definition again defines some base data for us to play with. This is ex
 .custom-flow.xml:
 [source,xml,options="nowrap"]
 ----
-<part>
-    <display-name>CustomFlow example</display-name>
-    <description>Single part with multiple entries</description>
-    <form>
-        <input name="color" type="TextLine">
-            <label>What's the color of the thing?</label>
-            <occurrences minimum="1" maximum="1"/>
-            <default>red</default>
-        </input>
-
-        <input type="TextLine" name="greeting">
-            <label>What's the greeting?</label>
-            <default>Hello</default>
-            <occurrences minimum="1" maximum="1"/>
-        </input>
-
-        <input type="TextLine" name="greetee">
-            <label>Who shall we greet?</label>
-            <occurrences minimum="1" maximum="1"/>
-            <default>world</default>
-        </input>
-
-        <input type="TextLine" name="things">
-            <label>What are the things on the wall?</label>
-            <occurrences minimum="1" maximum="1"/>
-            <default>bottles of beer</default>
-        </input>
-
-        <input type="Long" name="startCount">
-            <label>How many of them are there?</label>
-            <occurrences minimum="1" maximum="1"/>
-            <default>99</default>
-        </input>
-    </form>
-</part>
-
+include::../src/main/resources/site/parts/custom-flow/custom-flow.xml[]
 ----
 
 {zwsp} +
@@ -102,13 +67,7 @@ The controller will render _two_ entries into this base HTML. To be clear: even 
 .custom-flow-view.html:
 [source,html,options="nowrap"]
 ----
-<div class="custom-flow-view">
-    <section class="color-section">
-        <h2 data-th-text="|Ain't nothing but a ${color} thing|"></h2>
-        <p>Here it comes:</p>
-        <div data-th-id="${targetId}"></div>
-    </section>
-</div>
+include::../src/main/resources/site/parts/custom-flow/custom-flow-view.html[]
 ----
 
 {zwsp} +
@@ -129,89 +88,10 @@ When client-side rendering an entry, it's recommended to add a `request` option 
 One reason to also add `request` for SSR however, is that in cases of react component errors, React4xp will visualize the entry with an error placeholder. And  `request` adds some clarity: allows it to add the actual error messages (except in live view mode - where the messages are always held back).
 ====
 
-.custom-flow.es6
-[source,javascript,options="nowrap"]
+.custom-flow.ts
+[source,typescript,options="nowrap"]
 ----
-const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
-const thymeleaf = require('/lib/thymeleaf');
-
-const view = resolve('custom-flow-view.html');
-
-
-exports.get = function(request) {
-    // Fetching data from the part config:
-    const component = portal.getComponent();
-    const partConfig = (component || {}).config || {};
-
-
-
-    // Setting up the data-holding object for hello-react.jsx:
-    const helloObj = new React4xp(`site/pages/hello-react/hello-react`);     // <1>
-    helloObj.setProps({                                                      // <2>
-            message: partConfig.greeting,
-            messageTarget: partConfig.greetee,
-            droppableThing: partConfig.things,
-            initialCount: partConfig.startCount
-        })
-
-
-    // Setting up colorObj, the data-holding object for color.jsx:
-    const colorObj = new React4xp(`site/parts/color/color`);
-    colorObj                                                                 // <3>
-        .setProps({ color: partConfig.color })
-        .setId("myColorThing")                                               // <4>
-        .uniqueId()                                                          // <5>
-
-
-    // Using thymeleaf to render container HTML,
-    // inserting the colorObj's ID into the target container where colorObj will be rendered:
-    const thymeleafModel = {
-        color: colorObj.props.color,
-        targetId: colorObj.react4xpId
-    }
-    const colorSectionContainer = thymeleaf.render(view, thymeleafModel);    // <6>
-
-
-    // Render the color.jsx entry into the same-ID target container in the container HTML:
-    const colorBody = colorObj.renderBody({
-        body: colorSectionContainer,                                         // <7>
-        request
-    });
-    // Rendering the activating page contributions of color.jsx.
-    const colorPageContributions = colorObj.renderPageContributions({
-        pageContributions: {                                                 // <8>
-            bodyEnd: `<script>console.log('Created: ${colorObj.props.color} thing.');</script>`
-        },
-        request                                                              // <9>
-    });
-
-
-    // Rendering helloObj's entry into colorBody (which is basically custom-flow-view.html with color.jsx added),
-    // using client-side rendering only outside of Content Studio:
-    const finalBody = helloObj.renderBody({
-        body: colorBody,                                                     // <10>
-        ssr: false,                                                          // <11>
-        request
-    });
-
-    // Adding helloObj's page contributions to the previously rendered page contributions,
-    // duplicating ssr between renderPageContributions and renderBody (pair-wise for each entry).
-    const finalPageContributions = helloObj.renderPageContributions({
-        pageContributions: colorPageContributions,                           // <12>
-        // hydrate: false, // Turn off hydration?
-        ssr: false,
-        request
-    });
-
-
-    // Finally, returning the response object in the standard XP-controller way:
-    return {
-        body: finalBody,
-        pageContributions: finalPageContributions
-    }
-};
-
+include::../src/main/resources/site/parts/custom-flow/custom-flow.ts[]
 ----
 <1> Constructing the data-holding React4xp object `helloObj` from the same _hello-react.jsx_ entry we made <<editorial-data-and-props#hello_react_jsx_modified, before>>. The constructor takes one argument, which is mandatory: an <<entries#, entry reference>>. This can be an XP `component` object like before, OR like we're doing here: a <<jsxpath#, jsxPath>>.
 +

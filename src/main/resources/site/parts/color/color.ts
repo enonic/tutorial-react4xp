@@ -1,5 +1,6 @@
 import type {PartComponent} from '@enonic-types/core';
 
+
 import {getComponent} from '/lib/xp/portal';
 import {render} from '/lib/enonic/react4xp';
 
@@ -8,7 +9,7 @@ declare global {
   interface XpPartMap {
     ['com.enonic.app.samples-react4xp:color']: {
       color: string
-    };
+    }
   }
 }
 
