@@ -1,13 +1,13 @@
-= defining your own source structure
+= Defining your own source structure
 :toc: right
 :imagesdir: media/
 
 
 == Lesson overview
 
-So far, every time we've referenced a _.jsx_ react component from React4xp in a controller, we've used a `component` object in the _entry_ argument of `React4xp.render`. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the _.jsx_ source file must be in the same folder as the controller, and have the same name.
+So far, every time we've referenced a _.tsx_ react component from React4xp in a controller, we've used a `component` object in the _entry_ argument of `render`. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the _.tsx_ source file must be in the same folder as the controller, and have the same name.
 
-It doesn't have to be that way. In this example, we'll take a look at which react components are available to `React4xp.render` - called *entries* in React4xp - and how to reference them, whatever they're called and wherever they're located.
+It doesn't have to be that way. In this example, we'll take a look at which react components are available to `render` - called *entries* in React4xp - and how to reference them, whatever they're called and wherever they're located.
 
 
 
@@ -25,18 +25,18 @@ When they are located where they should (and export a `props=>component` functio
 
 Below the folder _src/main/resources/site/_, all source files with the extension _.jsx_ are detected at compile-time and available as entries to React4xp. If you take the *path relative to _resources/_* and the file name without the extension, you get a string that can be used to point React4xp to that react component:
 
-- `"site/parts/hello-react/hello-react"` -> _src/main/resources/site/parts/hello-react/hello-react.jsx_
-- `"site/parts/color/color"` -> _src/main/resources/site/parts/color/color.jsx_
-- `"site/parts/color/differentEntry"` -> _src/main/resources/site/parts/color/differentEntry.jsx_
+- `"site/parts/hello-react/hello-react"` -> _src/main/resources/site/parts/hello-react/hello-react.tsx_
+- `"site/parts/color/color"` -> _src/main/resources/site/parts/color/color.tsx_
+- `"site/parts/color/differentEntry"` -> _src/main/resources/site/parts/color/differentEntry.tsx_
 
 ...etc.
 
 These strings are called *jsxPaths* in React4xp, and they can be used directly in controllers as the _entry_ argument. For example in the <<pages-parts-and-regions#color_part_controller, _color_ Part controller>> from before:
 
-.site/parts/color/color.es6
-[source,javascript,options="nowrap"]
+.site/parts/color/color.ts
+[source,typescript,options="nowrap"]
 ----
-React4xp.render(
+render(
     component,
     props,
     request,
@@ -46,9 +46,9 @@ React4xp.render(
 
 ...is equivalent to:
 
-[source,javascript,options="nowrap"]
+[source,typescript,options="nowrap"]
 ----
-React4xp.render(
+render(
     "site/parts/color/color",
     props,
     request,
@@ -56,9 +56,9 @@ React4xp.render(
 );
 ----
 
-And so on. Calling the _.jsx_ source file something else, or having it in a different folder, is fine as long as you refer it correctly like this.
+And so on. Calling the _.tsx_ source file something else, or having it in a different folder, is fine as long as you refer it correctly like this.
 
-NOTE: _jsxPaths_ are name strings, not relative paths! You can't refer to _color.jsx_ from _color.es6_ as `"color"` or `"./color"` etc.
+WARNING: _jsxPaths_ are name strings, not relative paths! You can't refer to _color.tsx_ from _color.ts_ as `"color"` or `"./color"` etc.
 
 TIP: If you look at the rendered HTML output in page source, you can see React4xp using the jsxPaths to refer to the compiled assets from the client - even if you used the `component` object in the _entry_ argument.
 
@@ -70,13 +70,13 @@ TIP: All the _entries_ in your project are listed with their _jsxPath_ after com
 === 2: Below _react4xp/_
 If you just want to keep your react components out of the regular XP file structure in _site/_ and be independent of the structure of Parts, Pages etc, the folder _src/main/resources/react4xp/_ is meant for that. Here's how (assuming you're using link:https://market.enonic.com/vendors/enonic/react4xp-starter[the starter] or generally following link:https://github.com/enonic/lib-react4xp/blob/master/README.md#setup-option-2-using-react4xp-in-an-existing-project[the recommended react4xp setup pattern]):
 
-Open _react4xp.config.js_ in the project root, and look for the property `entryDirs`. This is a (comma-separated) list of folder names *relative to the _react4xp/_ folder*. React4xp comes with a built-in suggestion here: `entryDirs: ['entries']`. This means that all _.jsx_ (and _.js_ and _.es6_) source files below _src/main/resources/react4xp/entries_ will become entries: react components available to React4xp.
+Open _react4xp.config.js_ in the project root, and look for the property `entryDirs`. This is a (comma-separated) list of folder names *relative to the _react4xp/_ folder*. React4xp comes with a built-in suggestion here: `entryDirs: ['entries']`. This means that all _.tsx_ source files below _src/main/resources/react4xp/entries_ will become entries: react components available to React4xp.
 
 They will get a *_jsxPath_ relative to the closest _entryDirs_ folder*.
 
-So for example if `entryDirs = entries`, then the closest _entryDirs_ folder is _src/main/resources/react4xp/entries_, and any XP controller can render _src/main/resources/react4xp/entries/subFolder/myEntry.jsx_ like this:
+So for example if `entryDirs = entries`, then the closest _entryDirs_ folder is _src/main/resources/react4xp/entries_, and any XP controller can render _src/main/resources/react4xp/entries/subFolder/myEntry.tsx_ like this:
 
-[source,javascript,options="nowrap"]
+[source,typescript,options="nowrap"]
 ----
 React4xp.render(
     "subFolder/myEntry",
@@ -86,9 +86,9 @@ React4xp.render(
 );
 ----
 
-TIP: *Under the _site/_ folder, entry source files must have the extension _.jsx_*. This is because regular XP source files can have _.js_ and _.es6_ extensions, and must be separated since the compilation and handling is very different. However, *under the _entryDirs_ folder(s), entries can have _.js_ and _.es6_ extensions too!*
+TIP: *Under the _site/_ folder, entry source files must have the extension _.tsx_*. This is because regular XP source files can have _.ts_ extension, and must be separated since the compilation and handling is very different. However, *under the _entryDirs_ folder(s), entries can have _.ts_ and _.js_ extensions too!*
 
-NOTE: React4xp doesn't currently separate between different _entryDirs_, they behave as one. So if `entryDirs = entries,moreEntries` then _react4xp/entries/foo/bar.jsx_ and  _react4xp/moreEntries/foo/bar.jsx_ will get the same _jsxPath_: `"foo/bar"`. Beware of *namespace collisions*; you won't be able to refer to both.
+NOTE: React4xp doesn't currently separate between different _entryDirs_, they behave as one. So if `entryDirs = entries,moreEntries` then _react4xp/entries/foo/bar.tsx_ and  _react4xp/moreEntries/foo/bar.tsx_ will get the same _jsxPath_: `"foo/bar"`. Beware of *namespace collisions*; you won't be able to refer to both.
 
 
 {zwsp} +
