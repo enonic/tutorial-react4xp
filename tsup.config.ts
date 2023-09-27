@@ -35,6 +35,7 @@ export default defineConfig((options: MyOptions) => {
       },
 			external: [
 				'/lib/enonic/react4xp',
+        '/lib/graphql',
 				'/lib/guillotine',
 				'/lib/thymeleaf',
 				'/lib/xp/admin',
