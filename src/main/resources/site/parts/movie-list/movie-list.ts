@@ -28,7 +28,10 @@ declare global {
 type MovieListComponent = PartComponent<'com.enonic.app.samples-react4xp:movie-list'>
 
 
-const ENTRY = 'MovieList4';
+const ENTRY = 'MovieList';
+// const ENTRY = 'MovieList2';
+// const ENTRY = 'MovieList3';
+// const ENTRY = 'MovieList4';
 
 
 export function get(request) {
