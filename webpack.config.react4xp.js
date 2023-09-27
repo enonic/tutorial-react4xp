@@ -1,29 +1,11 @@
-//──────────────────────────────────────────────────────────────────────────────
-// Use this file to adjust the webpack config.
-//──────────────────────────────────────────────────────────────────────────────
-// A template version of this, with upated properties and explanations,
-//  can always be found in the react4xp NPM package:
-//   node_modules/react4xp/examples/webpack.config.react4xp.js after installing,
-//  or:
-//   https://github.com/enonic/enonic-react4xp/blob/master/examples/webpack.config.react4xp.js
-//──────────────────────────────────────────────────────────────────────────────
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-module.exports = function(env, config) {
-
-	// Comment in and customize the lines below to improve incremental builds in
-	// development mode. (see https://webpack.js.org/configuration/cache/)
-	//
-	// if (process.env.NODE_ENV === 'development') {
-	// 	config.cache = {
-	// 		type: 'filesystem'
-	// 	}
-	// }
+module.exports = function(env, config) { // <1>
 
 	// This makes 'npm link' symlinks in node_modules work:
 	config.resolve.symlinks = true;
 
-	config.module.rules = [
+	config.module.rules = [ // <2>
 		...(config.module.rules || []),
 		{
 			test: /\.((sa|sc|c))ss$/i,
@@ -57,5 +39,5 @@ module.exports = function(env, config) {
 		})
 	]
 
-	return config;
+	return config; // <3>
 };
