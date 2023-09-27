@@ -41,7 +41,9 @@ module.exports = {
 	//  paths to the react4xp root to imported dependency code from elsewhere.
 	//  Don't overlap with entryDirs or /site/.
 	//
-	// chunkDirs: [''],
+	chunkDirs: [
+    'shared'
+  ],
 
 
 	// entryDirs are additional folder names where webpack will look for entry
@@ -57,7 +59,9 @@ module.exports = {
 	//
 	// For compatibility with earlier versions of react4xp, add _entries here.
 	//
-	// entryDirs: [''],
+	entryDirs: [
+    'myEntries'
+  ],
 
 
 	// entryExtensions are filename extensions of files (comma-separated list)
