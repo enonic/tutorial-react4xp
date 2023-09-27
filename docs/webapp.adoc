@@ -51,13 +51,13 @@ The takeaway of this chapter is this: React4xp components (entries and dependenc
 4. Construct a props object for each entry that uses props. This is where we'll contact the <<guillotine#expose_api, guillotine endpoint>> in this lesson, for fetching the data from XP.
 5. Use the props with each entry's component-creating function to create a react-renderable component:
 +
-[source,javascript,options="nowrap"]
+[source,typescript,options="nowrap"]
 ----
-var component = React4xp[jsxPath].default(props);
+const component = React4xp[jsxPath].default(props);
 ----
 6. Finally, render the component into your DOM as a react app:
 +
-[source,javascript,options="nowrap"]
+[source,typescript,options="nowrap"]
 ----
 ReactDOM.render(component, document.getElementById("my-target-container-id"));
 ----
@@ -100,14 +100,15 @@ But we'll use XP anyway in this chapter: we already have it up and running from 
 [source,files]
 ----
 webapp/
-    webapp.es6
-    webapp.html
+    webapp.ts
+    standalone.ts
+    standalone.html
 
 assets/webapp/
-    script.es6
+    script.js
 ----
 
-XP uses _webapp.es6_ and _webapp.html_ to generate an initial HTML that directly makes the browser run most of <<#nutshell, the steps above>>, fetching assets and setting up initial values, and then calling the final _script.es6_ asset, which handles the rest.
+XP uses _webapp.ts_ and _webapp.html_ to generate an initial HTML that directly makes the browser run most of <<#nutshell, the steps above>>, fetching assets and setting up initial values, and then calling the final _script.js_ asset, which handles the rest.
 
 {zwsp} +
 {zwsp} +
@@ -122,60 +123,16 @@ In this first of the two approaches, we'll minimize the use of runtime XP: all v
 
 The webapp begins with some basic HTML, setting it all up in the browser.
 
-.webapp.html:
+.standalone.html:
 [source,html,options="nowrap"]
 ----
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Completely standalone</title>
-
-
-        // <1>
-        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-
-        // <2>
-        [(${assetsHtml})]
-
-        <style>
-            body { margin: 0; padding: 0; }
-            h1, p, .faux-spinner { padding: 30px; margin: 0 auto; font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif; }
-        </style>
-    </head>
-
-    <body>
-        <h1>Top 3 movies to put in a list</h1>
-        <p>#4 will blow your mind!</p>
-
-        // <3>
-        <div id="movieListContainer">
-            <div class="faux-spinner">Loading movies...</div>
-        </div>
-
-        // <4>
-        <script>
-          var MOVIE_LIST_PARAMS = {
-              parentPath: '/[[${SITE_NAME}]]',
-              apiUrl: '[[${apiUrl}]]',
-              movieType: '[[${APP_NAME}]]:movie',
-              movieCount: 3,
-              sortExpression: 'data.year ASC',
-          };
-        </script>
-
-        // <5>
-        <script defer th:src="${assetRoot + '/webapp/script.js'}"></script>
-    </body>
-</html>
-
+include::../src/main/resources/webapp/standalone.html[]
 ----
 <1> We start by running React and ReactDOM from a CDN.
 <2> All the required css and js assets are linked. See controller below.
 <3> The target container for the react app. The not-really-a-spinner (_"Loading movies..."_) will be replaced when the actual _MovieList_ is rendered into the container.
 <4> Variables used by our particular script later, just wrapped in a `MOVIE_LIST_PARAMS` object to encapsulate them in the global namespace. These are the same values as in in the previous chapter, and the script at the end will use these in a `props` object, to create the renderable react app from the _MovieList_ entry. Also note that we just hardcoded the values of `parentPath`, `apiUrl` and `movieType` here - they may be different in your setup. As <<guillotine#, before>>: `parentPath` is the content path of the site item under which the movie items will be found, `apiUrl` is the full path to `/api/headless` _below that site_ (recall that the URL to the guillotine API depends on the URL of a site item like this, because of the way we set the API up with a controller mapping <<guillotine#expose_api, earlier>>), and `movietype` is the full, appname-dependent content type of the movie items to look for.
-<5> Finally, loading the compiled script from _script.es6_, see <<#script, below>>.
+<5> Finally, loading the compiled script from _script.ts_, see <<#script, below>>.
 
 {zwsp} +
 
@@ -198,50 +155,16 @@ For example, on my local machine where I'm using XP to fetch assets, the asset p
 
 Okay, moving on, a *webapp controller* is needed for XP to serve this HTML, and it's about as minimal as an XP controller can be:
 
-.webapp.es6:
-[source,javascript,options="nowrap"]
+.webapp.ts:
+[source,typescript,options="nowrap"]
 ----
-import {getAssetUrls} from '/lib/enonic/react4xp';
-import thymeleaf from '/lib/thymeleaf';
-import {
-  assetUrl as getAssetUrl,
-  serviceUrl as getServiceUrl
-} from '/lib/xp/portal';
+include::../src/main/resources/webapp/webapp.ts[]
+----
 
-
-const VIEW = resolve('webapp.html');
-const PROJECT = 'default';
-const BRANCH = 'master';
-const SITE_NAME = 'webapp';
-const SITE_ROOT = `/site/${PROJECT}/${BRANCH}/${SITE_NAME}`;
-
-
-export function get() {
-  const assetUrls = getAssetUrls('MovieList');
-
-  const assetsArray = [];
-  for (let i = 0; i < assetUrls.length; i++) {
-    const assetUrl = assetUrls[i];
-    const ext = assetUrl.split('.').pop();
-    if (ext === 'css') {
-      assetsArray.push(`<link rel="stylesheet" type="text/css" href="${assetUrl}" />`);
-    } else if (ext === 'js') {
-      assetsArray.push(`<script src="${assetUrl}"></script>`);
-    }
-  }
-
-  return {
-    contentType: 'text/html',
-    body: thymeleaf.render(VIEW, {
-      apiUrl: `${SITE_ROOT}/api/headless`,
-      APP_NAME: app.name,
-      assetRoot: getAssetUrl({path: ''}),
-      assetsHtml: assetsArray.join('\n'),
-      serviceRoot: getServiceUrl({service: ''}),
-      SITE_NAME
-    })
-  };
-}
+.standalone.ts:
+[source,typescript,options="nowrap"]
+----
+include::../src/main/resources/webapp/standalone.ts[]
 ----
 
 {zwsp} +
@@ -251,7 +174,7 @@ export function get() {
 
 Finally, the script that's called at the end of the HTML.
 
-TIP: If you've been through the lesson in the previous chapter, you might recognize that *the logic in is script is the same* - the functions here are just copied or slightly modified from <<guillotine#movielistrequests, _movieListRequests.es6_>> and <<guillotine#guillotine_request_helper, _guillotineRequest.es6_>> - see those for more reference.
+TIP: If you've been through the lesson in the previous chapter, you might recognize that *the logic in is script is the same* - the functions here are just copied or slightly modified from <<guillotine#movielistrequests, _movieListRequests.ts_>> and <<guillotine#guillotine_request_helper, _guillotineRequest.ts_>> - see those for more reference.
 
 {zwsp} +
 
@@ -268,142 +191,10 @@ TIP: If you've been through the lesson in the previous chapter, you might recogn
 {zwsp} +
 
 ==== Script code
-.script.es6:
+.script.js:
 [source,javascript,options="nowrap"]
 ----
-const buildQueryListMovies = (movieType, parentPath) => {
-    // verify content type names like "com.enonic.app.react4xp:movie" and match up groups before and after the colon:
-    const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);
-    if (!matched) {
-        throw Error(`movieType '${movieType}' is not a valid format.` +
-            "Expecting <appName>:<XP content type>, for example: 'com.enonic.app.react4xp:movie' etc");
-    }
-
-    // e.g. "com.enonic.app.react4xp" --> "com_enonic_app_react4xp:
-    const appNameUnderscored = matched[1].replace(/\./g, '_');
-
-    // e.g. "movie" --> "Movie"
-    const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);
-
-    return `
-query($first:Int!, $offset:Int!, $sort:String!) {
-  guillotine {
-    query(contentTypes: ["${movieType}"], query: "_parentPath = '/content${parentPath}'", first: $first, offset: $offset, sort: $sort) {
-      ... on ${appNameUnderscored}_${ctyCapitalized} {
-        _id
-        displayName
-        data {
-          year
-          description
-          actor
-          image {
-            ... on media_Image {
-              imageUrl(type: absolute, scale: "width(300)")
-            }
-          }
-        }
-      }
-    }
-  }
-}`;
-};
-
-// Returns arrays unchanged.
-// If the maybeArray arg is a non-array value, wraps it in a single-item array.
-// If arg is falsy, returns an empty array.
-const forceArray = maybeArray => {
-    if (Array.isArray(maybeArray)) {
-        return maybeArray;
-    }
-    return (maybeArray) ? [maybeArray] : [];
-};
-
-// Adapts the output from the guillotine query to the MovieList props signature
-const extractMovieArray = responseData => responseData.data.guillotine.query
-    .filter( movieItem => movieItem && typeof movieItem === 'object' && Object.keys(movieItem).indexOf('data') !== -1)
-    .map(
-        movieItem => ({
-            id: movieItem._id,
-            title: movieItem.displayName.trim(),
-            imageUrl: movieItem.data.image.imageUrl,
-            year: movieItem.data.year,
-            description: movieItem.data.description,
-            actors: forceArray(movieItem.data.actor)
-                .map( actor => (actor || '').trim())
-                .filter(actor => !!actor)
-        })
-    );
-
-
-// ---------------------------------------------------------
-
-// Makes a (guillotine) request for data with these search parameters and passes updateDOMWithNewMovies as the callback
-// function to use on the returned list of movie data
-const requestAndRenderMovies = () => {
-    fetch(
-        MOVIE_LIST_PARAMS.apiUrl,
-        {
-            method: "POST",
-            body: JSON.stringify({
-                query: buildQueryListMovies(
-                    MOVIE_LIST_PARAMS.movieType,
-                    MOVIE_LIST_PARAMS.parentPath
-                ),
-                variables: {
-                    first: MOVIE_LIST_PARAMS.movieCount,
-                    offset: 0,
-                    sort: MOVIE_LIST_PARAMS.sortExpression
-                }}
-            ),
-        }
-    )
-        .then(response => {
-            if (!(response.status < 300)) {
-                throw Error(`Guillotine API response:\n
-                \n${response.status} - ${response.statusText}.\n
-                \nAPI url: ${response.url}\n
-                \nInspect the request and/or the server log.`);
-            }
-            return response;
-        })
-
-        .then(response => response.json())
-        .then(extractMovieArray)
-        .then(renderMovies)
-        .catch( error => {console.error(error);})
-};
-
-
-
-
-const renderMovies = (movies) => {
-    console.log("Rendering initial movies:", movies);
-
-    // When compiled, all React4xp entries are exported as functions,
-    // as "default" under the entryName (jsxPath), inside the global object React4xp:
-    const componentFunc = React4xp['MovieList'].default;
-
-    // Run the componentFunc with the props as argument, to build a renderable react component:
-    const props = {
-        movies: movies,
-        apiUrl: MOVIE_LIST_PARAMS.apiUrl,
-        parentPath: MOVIE_LIST_PARAMS.parentPath,
-        movieCount: MOVIE_LIST_PARAMS.movieCount,
-        movieType: MOVIE_LIST_PARAMS.movieType,
-        sortExpression: MOVIE_LIST_PARAMS.sortExpression
-    };
-    const component = componentFunc(props);
-
-    // Get the DOM element where the movie list should be rendered:
-    const targetElement = document.getElementById("movieListContainer");
-
-    // Straight call to ReactDOM (loaded from CDN):
-    ReactDOM.render(component, targetElement);
-};
-
-
-// Finally, calling the entry function and running it all:
-requestAndRenderMovies();
+include::../src/main/resources/assets/webapp/script.js[]
 ----
 
 {zwsp} +
@@ -442,50 +233,10 @@ The HTML base is very similar to the one in <<#html1, the previous example>>, on
 
 Just like before, we get react/react-dom from a CDN, provide a pinch of styling and a ready container to render into (with a "spinner". Whatever). But the differences are these:
 
-.webapp.html:
+.withHelpers.html:
 [source,html,options="nowrap"]
 ----
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>All headless</title>
-
-        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-
-        // <1>
-        [(${clientAssetHtml})]
-
-        <style>
-            body { margin: 0; padding: 0; }
-            h1, p, .faux-spinner { padding: 30px; margin: 0 auto; font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif; }
-        </style>
-    </head>
-
-    <body>
-        <h1>Top 3 movies to put in a list</h1>
-        <p>#4 will blow your mind!</p>
-
-        <div id="movieListContainer">
-            <div class="faux-spinner">Loading movies...</div>
-        </div>
-
-        // <2>
-        <script data-th-utext="|
-        var MOVIE_LIST_PARAMS= {
-            serviceUrlRoot: '${portal.serviceUrl({'_service='})}',
-            parentPath: '/${SITE_NAME}',
-            apiUrl: '/site/${PROJECT}/${BRANCH}/${SITE_NAME}/api/headless',
-            movieType: '${movieType}',
-            movieCount: 3,
-            sortExpression: 'data.year ASC',
-        }|"></script>
-
-        // <3>
-        <script defer data-th-src="${portal.assetUrl({'_path=webapp/script.js'})}"></script>
-    </body>
-</html>
+include::../src/main/resources/webapp/withHelpers.html[]
 ----
 <1> This is where we <<#html1, previously>> put URLs to each specific dependency chunk and entry asset we want to use. Here, we only load the React4xp client-wrapper, and make it available in the browser’s namespace as `React4xp.CLIENT`.
 <2> As before, we set a few initial values for the final script to use. Two things are different here, though: first, we let the XP controller (right below) supply the appname-dependent content type and the content path to the site with the movies below it. And second: `serviceUrlRoot`. This value is the URL root of the XP services, and lets the script know where to look for the service that tracks the entries' assets and dependencies.
@@ -495,35 +246,11 @@ Just like before, we get react/react-dom from a CDN, provide a pinch of styling 
 
 The *webapp controller* needs to provide that extra little info to the values in `MOVIE_LIST_PARAMS`, in the thymeleaf `model` now:
 
-.webapp.es6:
-[source,javascript,options="nowrap"]
+.withHelpers.ts:
+[source,typescript,options="nowrap"]
 ----
-import {getClientUrl} from '/lib/enonic/react4xp';
-import thymeleaf from '/lib/thymeleaf';
+include::../src/main/resources/webapp/withHelpers.ts[]
 
-
-const VIEW = resolve('webapp.html');
-const PROJECT = 'default';
-const BRANCH = 'master';
-const SITE_NAME = 'webapp';
-
-
-export function get(req) {
-  const clientUrl = getClientUrl();
-
-  const model = {
-    clientAssetHtml: `<script src="${clientUrl}"></script>`,
-    BRANCH,
-    movieType: `${app.name}:movie`,
-    PROJECT,
-    SITE_NAME
-  };
-
-  return {
-    contentType: 'text/html',
-    body: thymeleaf.render(VIEW, model)
-  };
-}
 ----
 
 {zwsp} +
@@ -533,141 +260,10 @@ export function get(req) {
 
 The script asset is almost identical to before. All that's changed is in `renderMovies` at the end:
 
-.script.es6:
+.script2.js:
 [source,javascript,options="nowrap"]
 ----
-const buildQueryListMovies = (movieType, parentPath) => {
-    // verify content type names like "com.enonic.app.react4xp:movie" and match up groups before and after the colon:
-    const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);
-    if (!matched) {
-        throw Error(`movieType '${movieType}' is not a valid format. Expecting <appName>:<XP content type>, for example: 'com.enonic.app.react4xp:movie' etc`);
-    }
-
-    // e.g. "com.enonic.app.react4xp" --> "com_enonic_app_react4xp
-    const appNameUnderscored = matched[1].replace(/\./g, '_');
-
-    // e.g. "movie" --> "Movie"
-    const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);
-
-    return `
-query($first:Int!, $offset:Int!, $sort:String!) {
-  guillotine {
-    query(contentTypes: ["${movieType}"], query: "_parentPath = '/content${parentPath}'", first: $first, offset: $offset, sort: $sort) {
-      ... on ${appNameUnderscored}_${ctyCapitalized} {
-        _id
-        displayName
-        data {
-          year
-          description
-          actor
-          image {
-            ... on media_Image {
-              imageUrl(type: absolute, scale: "width(300)")
-            }
-          }
-        }
-      }
-    }
-  }
-}`;
-};
-
-// Returns arrays unchanged.
-// If the maybeArray arg is a non-array value, wraps it in a single-item array.
-// If arg is falsy, returns an empty array.
-const forceArray = maybeArray => {
-    if (Array.isArray(maybeArray)) {
-        return maybeArray;
-    }
-    return (maybeArray) ? [maybeArray] : [];
-};
-
-// Adapt the output from the guillotine query to the MovieList props signature
-const extractMovieArray = responseData => responseData.data.guillotine.query
-    .filter( movieItem => movieItem && typeof movieItem === 'object' && Object.keys(movieItem).indexOf('data') !== -1)
-    .map(
-        movieItem => ({
-            id: movieItem._id,
-            title: movieItem.displayName.trim(),
-            imageUrl: movieItem.data.image.imageUrl,
-            year: movieItem.data.year,
-            description: movieItem.data.description,
-            actors: forceArray(movieItem.data.actor)
-                .map( actor => (actor || '').trim())
-                .filter(actor => !!actor)
-        })
-    );
-
-
-// ---------------------------------------------------------
-
-// Makes a (guillotine) request for data with these search parameters and passes updateDOMWithNewMovies as the callback
-// function to use on the returned list of movie data
-const requestAndRenderMovies = () => {
-    fetch(
-        MOVIE_LIST_PARAMS.apiUrl,
-        {
-            method: "POST",
-            body: JSON.stringify({
-                query: buildQueryListMovies(
-                    MOVIE_LIST_PARAMS.movieType,
-                    MOVIE_LIST_PARAMS.parentPath
-                ),
-                variables: {
-                    first: MOVIE_LIST_PARAMS.movieCount,
-                    offset: 0,
-                    sort: MOVIE_LIST_PARAMS.sortExpression
-                }}
-            ),
-        }
-    )
-        .then(response => {
-            if (!(response.status < 300)) {
-                throw Error(`Guillotine API response:\n
-                \n${response.status} - ${response.statusText}.\n
-                \nAPI url: ${response.url}\n
-                \nInspect the request and/or the server log.`);
-            }
-            return response;
-        })
-
-        .then(response => response.json())
-        .then(extractMovieArray)
-        .then(renderMovies)
-        .catch( error => {console.error(error);})
-};
-
-
-
-
-const renderMovies = (movies) => {
-    console.log("Rendering movies:", movies);
-
-    const props = {
-        movies: movies,
-        apiUrl: MOVIE_LIST_PARAMS.apiUrl,
-        parentPath: MOVIE_LIST_PARAMS.parentPath,
-        movieCount: MOVIE_LIST_PARAMS.movieCount,
-        movieType: MOVIE_LIST_PARAMS.movieType,
-        sortExpression: MOVIE_LIST_PARAMS.sortExpression
-    };
-
-    // <1>
-    React4xp.CLIENT.renderWithDependencies(
-        {
-            'MovieList': {
-                targetId: 'movieListContainer',
-                props: props
-            }
-        },
-        null,
-        MOVIE_LIST_PARAMS.serviceUrlRoot
-    );
-};
-
-
-// Finally, calling the entry function and running it all:
-requestAndRenderMovies();
+include::../src/main/resources/assets/webapp/script2.js[]
 ----
 <1> No need to create the react components explicitly. As soon as the `props` are created, everything from there is handled by the `React4xp.CLIENT.renderWithDependencies` wrapper function.
 +
