@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
   <form/>
+  <mappings>
+
+    <!-- Added during the guillotine tutorial -->
+    <mapping controller="/controllers/previewMovie.js" order="50">
+      <match>type:'com.enonic.app.react4xp:movie'</match>
+    </mapping>
+
+    <!-- Also added during the guillotine tutorial -->
+    <mapping controller="/headless/guillotineApi.js" order="50">
+      <pattern>/api/headless</pattern>
+    </mapping>
+
+  </mappings>
 </site>
