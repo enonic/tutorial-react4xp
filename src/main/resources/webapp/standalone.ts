@@ -2,6 +2,7 @@ import {
   // getAssetUrls
   getComponentChunkUrls
 } from '/lib/enonic/react4xp';
+// @ts-expect-error No types for /lib/thymeleaf yet.
 import thymeleaf from '/lib/thymeleaf';
 import {
   assetUrl as getAssetUrl,
@@ -12,7 +13,7 @@ import {
 const VIEW = resolve('standalone.html');
 const PROJECT = 'default';
 const BRANCH = 'master';
-const SITE_NAME = 'webapp';
+const SITE_NAME = 'sample-site';
 const SITE_ROOT = `/site/${PROJECT}/${BRANCH}/${SITE_NAME}`;
 
 

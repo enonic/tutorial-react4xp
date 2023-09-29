@@ -14,7 +14,7 @@ const buildQueryListMovies = (movieType, parentPath) => {
   return `
 query($first:Int!, $offset:Int!, $sort:String!) {
 guillotine {
-  query(contentTypes: ["${movieType}"], query: "_parentPath = '/content${parentPath}'", first: $first, offset: $offset, sort: $sort) {
+  query(contentTypes: ["${movieType}"], query: "_path LIKE '/content${parentPath}/*'", first: $first, offset: $offset, sort: $sort) {
     ... on ${appNameUnderscored}_${ctyCapitalized} {
       _id
       displayName
@@ -115,7 +115,7 @@ const renderMovies = (movies) => {
   };
 
   // <1>
-  React4xp.CLIENT.renderWithDependencies(
+  ComEnonicAppSamples_react4xpReact4xpClient.renderWithDependencies(
       {
           'MovieList': {
               targetId: 'movieListContainer',

@@ -15,7 +15,7 @@ const buildQueryListMovies = (movieType, parentPath) => {
   return `
 query($first:Int!, $offset:Int!, $sort:String!) {
 guillotine {
-  query(contentTypes: ["${movieType}"], query: "_parentPath = '/content${parentPath}'", first: $first, offset: $offset, sort: $sort) {
+  query(contentTypes: ["${movieType}"], query: "_path LIKE '/content${parentPath}/*'", first: $first, offset: $offset, sort: $sort) {
     ... on ${appNameUnderscored}_${ctyCapitalized} {
       _id
       displayName
@@ -107,8 +107,8 @@ const renderMovies = (movies) => {
   console.log("Rendering initial movies:", movies);
 
   // When compiled, all React4xp entries are exported as functions,
-  // as "default" under the entryName (jsxPath), inside the global object React4xp:
-  const componentFunc = React4xp['MovieList'].default;
+  // as "default" under the entryName (jsxPath), inside the global object `sanitized(app.name)React4xp`:
+  const componentFunc = ComEnonicAppSamples_react4xpReact4xp['MovieList'].default;
 
   // Run the componentFunc with the props as argument, to build a renderable react component:
   const props = {
