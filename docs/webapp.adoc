@@ -108,7 +108,7 @@ assets/webapp/
     script.js
 ----
 
-XP uses _webapp.ts_ and _webapp.html_ to generate an initial HTML that directly makes the browser run most of <<#nutshell, the steps above>>, fetching assets and setting up initial values, and then calling the final _script.js_ asset, which handles the rest.
+XP uses _standalone.ts_ and _standalone.html_ to generate an initial HTML that directly makes the browser run most of <<#nutshell, the steps above>>, fetching assets and setting up initial values, and then calling the final _script.js_ asset, which handles the rest.
 
 {zwsp} +
 {zwsp} +

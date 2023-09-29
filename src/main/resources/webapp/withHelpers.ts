@@ -6,7 +6,7 @@ import thymeleaf from '/lib/thymeleaf';
 const VIEW = resolve('withHelpers.html');
 const PROJECT = 'default';
 const BRANCH = 'master';
-const SITE_NAME = 'webapp';
+const SITE_NAME = 'sample-site';
 
 
 export function get(req) {
