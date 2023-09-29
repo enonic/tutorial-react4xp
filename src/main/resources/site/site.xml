@@ -5,7 +5,7 @@
 
     <!-- Added during the guillotine tutorial -->
     <mapping controller="/controllers/previewMovie.js" order="50">
-      <match>type:'com.enonic.app.react4xp:movie'</match>
+      <match>type:'com.enonic.app.samples_react4xp:movie'</match>
     </mapping>
 
     <!-- Also added during the guillotine tutorial -->
