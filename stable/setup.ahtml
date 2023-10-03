@@ -525,15 +525,15 @@ src/
         entries/
         shared/
       headless/
-        guillotineApi.es6       <i class="conum" data-value="4"></i><b>(4)</b>
-        guillotineRequest.es6</code></pre>
+        guillotineApi.ts        <i class="conum" data-value="4"></i><b>(4)</b>
+        guillotineRequest.ts</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>A set of gradle config files and <em>package.json</em>. These define the build process and project structure, and in particular, make sure that the <strong>lib-react4xp library</strong> and <strong>@enonic/react4xp npm package</strong> are installed right.</td>
+<td>A set of gradle config files and <em>package.json</em>. These define the build process and project structure, and in particular, make sure that the <strong>lib-react4xp library</strong> and <strong>@enonic/react4xp npm package</strong> are installed.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -565,18 +565,6 @@ src/
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">enonic project deploy</code></pre>
 </div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-With versions <em>1.1 and below</em> of the React4xp starter, you must run <code>npm install</code> before this; <em>gradle.build</em> imports some extra react4xp-related gradle tasks from <a href="https://www.npmjs.com/package/react4xp">node_modules/@enonic/react4xp/</a>. At version 1.2 and above, <em>build.gradle</em> in the starter is set up to auto-check and install.
-</td>
-</tr>
-</table>
 </div>
 </li>
 <li>
@@ -619,7 +607,7 @@ With versions <em>1.1 and below</em> of the React4xp starter, you must run <code
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-20 08:22:35 UTC
+Last updated 2023-10-03 13:10:19 UTC
 </div>
 </div>
 </body>

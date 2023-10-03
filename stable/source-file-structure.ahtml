@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.20">
-<title>defining your own source structure</title>
+<title>Defining your own source structure</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,7 +436,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>defining your own source structure</h1>
+<h1>Defining your own source structure</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -457,10 +457,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>So far, every time we&#8217;ve referenced a <em>.jsx</em> react component from React4xp in a controller, we&#8217;ve used a <code>component</code> object in the <em>entry</em> argument of <code>React4xp.render</code>. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the <em>.jsx</em> source file must be in the same folder as the controller, and have the same name.</p>
+<p>So far, every time we&#8217;ve referenced a <em>.tsx</em> react component from React4xp in a controller, we&#8217;ve used a <code>component</code> object in the <em>entry</em> argument of <code>render</code>. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the <em>.tsx</em> source file must be in the same folder as the controller, and have the same name.</p>
 </div>
 <div class="paragraph">
-<p>It doesn&#8217;t have to be that way. In this example, we&#8217;ll take a look at which react components are available to <code>React4xp.render</code> - called <strong>entries</strong> in React4xp - and how to reference them, whatever they&#8217;re called and wherever they&#8217;re located.</p>
+<p>It doesn&#8217;t have to be that way. In this example, we&#8217;ll take a look at which react components are available to <code>render</code> - called <strong>entries</strong> in React4xp - and how to reference them, whatever they&#8217;re called and wherever they&#8217;re located.</p>
 </div>
 <div class="paragraph">
 <p>&#8203;<br></p>
@@ -487,13 +487,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p><code>"site/parts/hello-react/hello-react"</code> &#8594; <em>src/main/resources/site/parts/hello-react/hello-react.jsx</em></p>
+<p><code>"site/parts/hello-react/hello-react"</code> &#8594; <em>src/main/resources/site/parts/hello-react/hello-react.tsx</em></p>
 </li>
 <li>
-<p><code>"site/parts/color/color"</code> &#8594; <em>src/main/resources/site/parts/color/color.jsx</em></p>
+<p><code>"site/parts/color/color"</code> &#8594; <em>src/main/resources/site/parts/color/color.tsx</em></p>
 </li>
 <li>
-<p><code>"site/parts/color/differentEntry"</code> &#8594; <em>src/main/resources/site/parts/color/differentEntry.jsx</em></p>
+<p><code>"site/parts/color/differentEntry"</code> &#8594; <em>src/main/resources/site/parts/color/differentEntry.tsx</em></p>
 </li>
 </ul>
 </div>
@@ -504,9 +504,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>These strings are called <strong>jsxPaths</strong> in React4xp, and they can be used directly in controllers as the <em>entry</em> argument. For example in the <a href="pages-parts-and-regions.ahtml#color_part_controller"><em>color</em> Part controller</a> from before:</p>
 </div>
 <div class="listingblock">
-<div class="title">site/parts/color/color.es6</div>
+<div class="title">site/parts/color/color.ts</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">React4xp.render(
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">render(
     component,
     props,
     request,
@@ -519,7 +519,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">React4xp.render(
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">render(
     "site/parts/color/color",
     props,
     request,
@@ -528,16 +528,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>And so on. Calling the <em>.jsx</em> source file something else, or having it in a different folder, is fine as long as you refer it correctly like this.</p>
+<p>And so on. Calling the <em>.tsx</em> source file something else, or having it in a different folder, is fine as long as you refer it correctly like this.</p>
 </div>
-<div class="admonitionblock note">
+<div class="admonitionblock warning">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-<em>jsxPaths</em> are name strings, not relative paths! You can&#8217;t refer to <em>color.jsx</em> from <em>color.es6</em> as <code>"color"</code> or <code>"./color"</code> etc.
+<em>jsxPaths</em> are name strings, not relative paths! You can&#8217;t refer to <em>color.tsx</em> from <em>color.ts</em> as <code>"color"</code> or <code>"./color"</code> etc.
 </td>
 </tr>
 </table>
@@ -576,17 +576,17 @@ All the <em>entries</em> in your project are listed with their <em>jsxPath</em> 
 <p>If you just want to keep your react components out of the regular XP file structure in <em>site/</em> and be independent of the structure of Parts, Pages etc, the folder <em>src/main/resources/react4xp/</em> is meant for that. Here&#8217;s how (assuming you&#8217;re using <a href="https://market.enonic.com/vendors/enonic/react4xp-starter">the starter</a> or generally following <a href="https://github.com/enonic/lib-react4xp/blob/master/README.md#setup-option-2-using-react4xp-in-an-existing-project">the recommended react4xp setup pattern</a>):</p>
 </div>
 <div class="paragraph">
-<p>Open <em>react4xp.config.js</em> in the project root, and look for the property <code>entryDirs</code>. This is a (comma-separated) list of folder names <strong>relative to the <em>react4xp/</em> folder</strong>. React4xp comes with a built-in suggestion here: <code>entryDirs: ['entries']</code>. This means that all <em>.jsx</em> (and <em>.js</em> and <em>.es6</em>) source files below <em>src/main/resources/react4xp/entries</em> will become entries: react components available to React4xp.</p>
+<p>Open <em>react4xp.config.js</em> in the project root, and look for the property <code>entryDirs</code>. This is a (comma-separated) list of folder names <strong>relative to the <em>react4xp/</em> folder</strong>. React4xp comes with a built-in suggestion here: <code>entryDirs: ['entries']</code>. This means that all <em>.tsx</em> source files below <em>src/main/resources/react4xp/entries</em> will become entries: react components available to React4xp.</p>
 </div>
 <div class="paragraph">
 <p>They will get a <strong><em>jsxPath</em> relative to the closest <em>entryDirs</em> folder</strong>.</p>
 </div>
 <div class="paragraph">
-<p>So for example if <code>entryDirs = entries</code>, then the closest <em>entryDirs</em> folder is <em>src/main/resources/react4xp/entries</em>, and any XP controller can render <em>src/main/resources/react4xp/entries/subFolder/myEntry.jsx</em> like this:</p>
+<p>So for example if <code>entryDirs = entries</code>, then the closest <em>entryDirs</em> folder is <em>src/main/resources/react4xp/entries</em>, and any XP controller can render <em>src/main/resources/react4xp/entries/subFolder/myEntry.tsx</em> like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">React4xp.render(
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">React4xp.render(
     "subFolder/myEntry",
     props,
     request,
@@ -601,7 +601,7 @@ All the <em>entries</em> in your project are listed with their <em>jsxPath</em> 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<strong>Under the <em>site/</em> folder, entry source files must have the extension <em>.jsx</em></strong>. This is because regular XP source files can have <em>.js</em> and <em>.es6</em> extensions, and must be separated since the compilation and handling is very different. However, <strong>under the <em>entryDirs</em> folder(s), entries can have <em>.js</em> and <em>.es6</em> extensions too!</strong>
+<strong>Under the <em>site/</em> folder, entry source files must have the extension <em>.tsx</em></strong>. This is because regular XP source files can have <em>.ts</em> extension, and must be separated since the compilation and handling is very different. However, <strong>under the <em>entryDirs</em> folder(s), entries can have <em>.ts</em> and <em>.js</em> extensions too!</strong>
 </td>
 </tr>
 </table>
@@ -613,7 +613,7 @@ All the <em>entries</em> in your project are listed with their <em>jsxPath</em> 
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-React4xp doesn&#8217;t currently separate between different <em>entryDirs</em>, they behave as one. So if <code>entryDirs = entries,moreEntries</code> then <em>react4xp/entries/foo/bar.jsx</em> and  <em>react4xp/moreEntries/foo/bar.jsx</em> will get the same <em>jsxPath</em>: <code>"foo/bar"</code>. Beware of <strong>namespace collisions</strong>; you won&#8217;t be able to refer to both.
+React4xp doesn&#8217;t currently separate between different <em>entryDirs</em>, they behave as one. So if <code>entryDirs = entries,moreEntries</code> then <em>react4xp/entries/foo/bar.tsx</em> and  <em>react4xp/moreEntries/foo/bar.tsx</em> will get the same <em>jsxPath</em>: <code>"foo/bar"</code>. Beware of <strong>namespace collisions</strong>; you won&#8217;t be able to refer to both.
 </td>
 </tr>
 </table>
@@ -666,7 +666,7 @@ React4xp doesn&#8217;t currently separate between different <em>entryDirs</em>, 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-20 08:22:35 UTC
+Last updated 2023-10-03 13:10:19 UTC
 </div>
 </div>
 </body>

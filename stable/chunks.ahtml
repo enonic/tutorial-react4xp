@@ -472,7 +472,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="importing"><a class="link" href="#importing">Importing</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Entries and other chunks can import resources from chunks using <strong>ordinary ES6 imports</strong>, as long as the necessary webpack rules are added. Compilation rules for regular TSX, JSX, TS, JS and ES6 are included with React4xp. Other rules (loaders etc) you must add yourself - see <a href="imports-and-dependency-chunks.ahtml#_adding_webpack_rules">lesson 6</a>.</p>
+<p>Entries and other chunks can import resources from chunks, as long as the necessary webpack rules are added. Compilation rules for regular TSX, JSX, TS, JS and ES6 are included with React4xp. Other rules (loaders etc) you must add yourself - see <a href="imports-and-dependency-chunks.ahtml#_adding_webpack_rules">lesson 6</a>.</p>
 </div>
 <div id="entries_and_chunks" class="paragraph">
 <div class="title">Entries and chunks - the full picture:</div>
@@ -624,7 +624,7 @@ Do not import from entries! It causes random SSR errors. Place shared code in se
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-20 08:22:35 UTC
+Last updated 2023-10-03 13:10:19 UTC
 </div>
 </div>
 </body>

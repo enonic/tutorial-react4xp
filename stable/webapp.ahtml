@@ -562,7 +562,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Use the props with each entry&#8217;s component-creating function to create a react-renderable component:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">var component = React4xp[jsxPath].default(props);</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">const component = React4xp[jsxPath].default(props);</code></pre>
 </div>
 </div>
 </li>
@@ -570,7 +570,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Finally, render the component into your DOM as a react app:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">ReactDOM.render(component, document.getElementById("my-target-container-id"));</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">ReactDOM.render(component, document.getElementById("my-target-container-id"));</code></pre>
 </div>
 </div>
 </li>
@@ -644,15 +644,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="title">Files involved (src/main/resources/&#8230;&#8203;) - in addition to <a href="guillotine.ahtml#chapter_source_files">the ones from chapter 8</a>:</div>
 <div class="content">
 <pre class="highlight"><code class="language-files" data-lang="files">webapp/
-    webapp.es6
-    webapp.html
+    webapp.ts
+    standalone.ts
+    standalone.html
 
 assets/webapp/
-    script.es6</code></pre>
+    script.js</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>XP uses <em>webapp.es6</em> and <em>webapp.html</em> to generate an initial HTML that directly makes the browser run most of <a href="#nutshell">the steps above</a>, fetching assets and setting up initial values, and then calling the final <em>script.es6</em> asset, which handles the rest.</p>
+<p>XP uses <em>standalone.ts</em> and <em>standalone.html</em> to generate an initial HTML that directly makes the browser run most of <a href="#nutshell">the steps above</a>, fetching assets and setting up initial values, and then calling the final <em>script.js</em> asset, which handles the rest.</p>
 </div>
 <div class="paragraph">
 <p>&#8203;<br>
@@ -674,7 +675,7 @@ assets/webapp/
 <p>The webapp begins with some basic HTML, setting it all up in the browser.</p>
 </div>
 <div class="listingblock">
-<div class="title">webapp.html:</div>
+<div class="title">standalone.html:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-html" data-lang="html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -683,11 +684,11 @@ assets/webapp/
         &lt;title&gt;Completely standalone&lt;/title&gt;
 
 
-        <i class="conum" data-value="1"></i><b>(1)</b>
+        &lt;!-- &lt;1&gt; --&gt;
         &lt;script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"&gt;&lt;/script&gt;
         &lt;script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"&gt;&lt;/script&gt;
 
-        <i class="conum" data-value="2"></i><b>(2)</b>
+        &lt;!-- &lt;2&gt; --&gt;
         [(${assetsHtml})]
 
         &lt;style&gt;
@@ -700,12 +701,12 @@ assets/webapp/
         &lt;h1&gt;Top 3 movies to put in a list&lt;/h1&gt;
         &lt;p&gt;#4 will blow your mind!&lt;/p&gt;
 
-        <i class="conum" data-value="3"></i><b>(3)</b>
+        &lt;!-- &lt;3&gt; --&gt;
         &lt;div id="movieListContainer"&gt;
             &lt;div class="faux-spinner"&gt;Loading movies...&lt;/div&gt;
         &lt;/div&gt;
 
-        <i class="conum" data-value="4"></i><b>(4)</b>
+        &lt;!-- &lt;4&gt; --&gt;
         &lt;script&gt;
           var MOVIE_LIST_PARAMS = {
               parentPath: '/[[${SITE_NAME}]]',
@@ -716,7 +717,7 @@ assets/webapp/
           };
         &lt;/script&gt;
 
-        <i class="conum" data-value="5"></i><b>(5)</b>
+        &lt;!-- &lt;5&gt; --&gt;
         &lt;script defer th:src="${assetRoot + '/webapp/script.js'}"&gt;&lt;/script&gt;
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -742,7 +743,7 @@ assets/webapp/
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Finally, loading the compiled script from <em>script.es6</em>, see <a href="#script">below</a>.</td>
+<td>Finally, loading the compiled script from <em>script.ts</em>, see <a href="#script">below</a>.</td>
 </tr>
 </table>
 </div>
@@ -789,9 +790,20 @@ assets/webapp/
 <p>Okay, moving on, a <strong>webapp controller</strong> is needed for XP to serve this HTML, and it&#8217;s about as minimal as an XP controller can be:</p>
 </div>
 <div class="listingblock">
-<div class="title">webapp.es6:</div>
+<div class="title">webapp.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import {getAssetUrls} from '/lib/enonic/react4xp';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">// export {get} from './standalone';
+export {get} from './withHelpers';</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">standalone.ts:</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import {
+  // getAssetUrls
+  getComponentChunkUrls
+} from '/lib/enonic/react4xp';
+// @ts-expect-error No types for /lib/thymeleaf yet.
 import thymeleaf from '/lib/thymeleaf';
 import {
   assetUrl as getAssetUrl,
@@ -799,15 +811,15 @@ import {
 } from '/lib/xp/portal';
 
 
-const VIEW = resolve('webapp.html');
+const VIEW = resolve('standalone.html');
 const PROJECT = 'default';
 const BRANCH = 'master';
-const SITE_NAME = 'webapp';
+const SITE_NAME = 'sample-site';
 const SITE_ROOT = `/site/${PROJECT}/${BRANCH}/${SITE_NAME}`;
 
 
 export function get() {
-  const assetUrls = getAssetUrls('MovieList');
+  const assetUrls = getComponentChunkUrls('MovieList');
 
   const assetsArray = [];
   for (let i = 0; i &lt; assetUrls.length; i++) {
@@ -850,7 +862,7 @@ export function get() {
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you&#8217;ve been through the lesson in the previous chapter, you might recognize that <strong>the logic in is script is the same</strong> - the functions here are just copied or slightly modified from <a href="guillotine.ahtml#movielistrequests"><em>movieListRequests.es6</em></a> and <a href="guillotine.ahtml#guillotine_request_helper"><em>guillotineRequest.es6</em></a> - see those for more reference.
+If you&#8217;ve been through the lesson in the previous chapter, you might recognize that <strong>the logic in is script is the same</strong> - the functions here are just copied or slightly modified from <a href="guillotine.ahtml#movielistrequests"><em>movieListRequests.ts</em></a> and <a href="guillotine.ahtml#guillotine_request_helper"><em>guillotineRequest.ts</em></a> - see those for more reference.
 </td>
 </tr>
 </table>
@@ -903,42 +915,42 @@ If you&#8217;ve been through the lesson in the previous chapter, you might recog
 <div class="sect3">
 <h4 id="script_code"><a class="link" href="#script_code">Script code</a></h4>
 <div class="listingblock">
-<div class="title">script.es6:</div>
+<div class="title">script.js:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const buildQueryListMovies = (movieType, parentPath) =&gt; {
-    // verify content type names like "com.enonic.app.react4xp:movie" and match up groups before and after the colon:
-    const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);
-    if (!matched) {
-        throw Error(`movieType '${movieType}' is not a valid format.` +
-            "Expecting &lt;appName&gt;:&lt;XP content type&gt;, for example: 'com.enonic.app.react4xp:movie' etc");
-    }
+  // verify content type names like "com.enonic.app.react4xp:movie" and match up groups before and after the colon:
+  const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);
+  if (!matched) {
+      throw Error(`movieType '${movieType}' is not a valid format.` +
+          "Expecting &lt;appName&gt;:&lt;XP content type&gt;, for example: 'com.enonic.app.react4xp:movie' etc");
+  }
 
-    // e.g. "com.enonic.app.react4xp" --&gt; "com_enonic_app_react4xp:
-    const appNameUnderscored = matched[1].replace(/\./g, '_');
+  // e.g. "com.enonic.app.react4xp" --&gt; "com_enonic_app_react4xp:
+  const appNameUnderscored = matched[1].replace(/\./g, '_');
 
-    // e.g. "movie" --&gt; "Movie"
-    const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);
+  // e.g. "movie" --&gt; "Movie"
+  const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);
 
-    return `
+  return `
 query($first:Int!, $offset:Int!, $sort:String!) {
-  guillotine {
-    query(contentTypes: ["${movieType}"], query: "_parentPath = '/content${parentPath}'", first: $first, offset: $offset, sort: $sort) {
-      ... on ${appNameUnderscored}_${ctyCapitalized} {
-        _id
-        displayName
-        data {
-          year
-          description
-          actor
-          image {
-            ... on media_Image {
-              imageUrl(type: absolute, scale: "width(300)")
-            }
+guillotine {
+  query(contentTypes: ["${movieType}"], query: "_path LIKE '/content${parentPath}/*'", first: $first, offset: $offset, sort: $sort) {
+    ... on ${appNameUnderscored}_${ctyCapitalized} {
+      _id
+      displayName
+      data {
+        year
+        description
+        actor
+        image {
+          ... on media_Image {
+            imageUrl(type: absolute, scale: "width(300)")
           }
         }
       }
     }
   }
+}
 }`;
 };
 
@@ -946,27 +958,27 @@ query($first:Int!, $offset:Int!, $sort:String!) {
 // If the maybeArray arg is a non-array value, wraps it in a single-item array.
 // If arg is falsy, returns an empty array.
 const forceArray = maybeArray =&gt; {
-    if (Array.isArray(maybeArray)) {
-        return maybeArray;
-    }
-    return (maybeArray) ? [maybeArray] : [];
+  if (Array.isArray(maybeArray)) {
+      return maybeArray;
+  }
+  return (maybeArray) ? [maybeArray] : [];
 };
 
 // Adapts the output from the guillotine query to the MovieList props signature
 const extractMovieArray = responseData =&gt; responseData.data.guillotine.query
-    .filter( movieItem =&gt; movieItem &amp;&amp; typeof movieItem === 'object' &amp;&amp; Object.keys(movieItem).indexOf('data') !== -1)
-    .map(
-        movieItem =&gt; ({
-            id: movieItem._id,
-            title: movieItem.displayName.trim(),
-            imageUrl: movieItem.data.image.imageUrl,
-            year: movieItem.data.year,
-            description: movieItem.data.description,
-            actors: forceArray(movieItem.data.actor)
-                .map( actor =&gt; (actor || '').trim())
-                .filter(actor =&gt; !!actor)
-        })
-    );
+  .filter( movieItem =&gt; movieItem &amp;&amp; typeof movieItem === 'object' &amp;&amp; Object.keys(movieItem).indexOf('data') !== -1)
+  .map(
+      movieItem =&gt; ({
+          id: movieItem._id,
+          title: movieItem.displayName.trim(),
+          imageUrl: movieItem.data.image.imageUrl,
+          year: movieItem.data.year,
+          description: movieItem.data.description,
+          actors: forceArray(movieItem.data.actor)
+              .map( actor =&gt; (actor || '').trim())
+              .filter(actor =&gt; !!actor)
+      })
+  );
 
 
 // ---------------------------------------------------------
@@ -974,65 +986,65 @@ const extractMovieArray = responseData =&gt; responseData.data.guillotine.query
 // Makes a (guillotine) request for data with these search parameters and passes updateDOMWithNewMovies as the callback
 // function to use on the returned list of movie data
 const requestAndRenderMovies = () =&gt; {
-    fetch(
-        MOVIE_LIST_PARAMS.apiUrl,
-        {
-            method: "POST",
-            body: JSON.stringify({
-                query: buildQueryListMovies(
-                    MOVIE_LIST_PARAMS.movieType,
-                    MOVIE_LIST_PARAMS.parentPath
-                ),
-                variables: {
-                    first: MOVIE_LIST_PARAMS.movieCount,
-                    offset: 0,
-                    sort: MOVIE_LIST_PARAMS.sortExpression
-                }}
-            ),
-        }
-    )
-        .then(response =&gt; {
-            if (!(response.status &lt; 300)) {
-                throw Error(`Guillotine API response:\n
-                \n${response.status} - ${response.statusText}.\n
-                \nAPI url: ${response.url}\n
-                \nInspect the request and/or the server log.`);
-            }
-            return response;
-        })
+  fetch(
+      MOVIE_LIST_PARAMS.apiUrl,
+      {
+          method: "POST",
+          body: JSON.stringify({
+              query: buildQueryListMovies(
+                  MOVIE_LIST_PARAMS.movieType,
+                  MOVIE_LIST_PARAMS.parentPath
+              ),
+              variables: {
+                  first: MOVIE_LIST_PARAMS.movieCount,
+                  offset: 0,
+                  sort: MOVIE_LIST_PARAMS.sortExpression
+              }}
+          ),
+      }
+  )
+      .then(response =&gt; {
+          if (!(response.status &lt; 300)) {
+              throw Error(`Guillotine API response:\n
+              \n${response.status} - ${response.statusText}.\n
+              \nAPI url: ${response.url}\n
+              \nInspect the request and/or the server log.`);
+          }
+          return response;
+      })
 
-        .then(response =&gt; response.json())
-        .then(extractMovieArray)
-        .then(renderMovies)
-        .catch( error =&gt; {console.error(error);})
+      .then(response =&gt; response.json())
+      .then(extractMovieArray)
+      .then(renderMovies)
+      .catch( error =&gt; {console.error(error);})
 };
 
 
 
 
 const renderMovies = (movies) =&gt; {
-    console.log("Rendering initial movies:", movies);
+  console.log("Rendering initial movies:", movies);
 
-    // When compiled, all React4xp entries are exported as functions,
-    // as "default" under the entryName (jsxPath), inside the global object React4xp:
-    const componentFunc = React4xp['MovieList'].default;
+  // When compiled, all React4xp entries are exported as functions,
+  // as "default" under the entryName (jsxPath), inside the global object `sanitized(app.name)React4xp`:
+  const componentFunc = ComEnonicAppSamples_react4xpReact4xp['MovieList'].default;
 
-    // Run the componentFunc with the props as argument, to build a renderable react component:
-    const props = {
-        movies: movies,
-        apiUrl: MOVIE_LIST_PARAMS.apiUrl,
-        parentPath: MOVIE_LIST_PARAMS.parentPath,
-        movieCount: MOVIE_LIST_PARAMS.movieCount,
-        movieType: MOVIE_LIST_PARAMS.movieType,
-        sortExpression: MOVIE_LIST_PARAMS.sortExpression
-    };
-    const component = componentFunc(props);
+  // Run the componentFunc with the props as argument, to build a renderable react component:
+  const props = {
+      movies: movies,
+      apiUrl: MOVIE_LIST_PARAMS.apiUrl,
+      parentPath: MOVIE_LIST_PARAMS.parentPath,
+      movieCount: MOVIE_LIST_PARAMS.movieCount,
+      movieType: MOVIE_LIST_PARAMS.movieType,
+      sortExpression: MOVIE_LIST_PARAMS.sortExpression
+  };
+  const component = componentFunc(props);
 
-    // Get the DOM element where the movie list should be rendered:
-    const targetElement = document.getElementById("movieListContainer");
+  // Get the DOM element where the movie list should be rendered:
+  const targetElement = document.getElementById("movieListContainer");
 
-    // Straight call to ReactDOM (loaded from CDN):
-    ReactDOM.render(component, targetElement);
+  // Straight call to ReactDOM (loaded from CDN):
+  ReactDOM.render(component, targetElement);
 };
 
 
@@ -1094,7 +1106,7 @@ requestAndRenderMovies();</code></pre>
 <p>Just like before, we get react/react-dom from a CDN, provide a pinch of styling and a ready container to render into (with a "spinner". Whatever). But the differences are these:</p>
 </div>
 <div class="listingblock">
-<div class="title">webapp.html:</div>
+<div class="title">withHelpers.html:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-html" data-lang="html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -1105,7 +1117,7 @@ requestAndRenderMovies();</code></pre>
         &lt;script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"&gt;&lt;/script&gt;
         &lt;script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"&gt;&lt;/script&gt;
 
-        <i class="conum" data-value="1"></i><b>(1)</b>
+        &lt;!-- &lt;1&gt; --&gt;
         [(${clientAssetHtml})]
 
         &lt;style&gt;
@@ -1122,7 +1134,7 @@ requestAndRenderMovies();</code></pre>
             &lt;div class="faux-spinner"&gt;Loading movies...&lt;/div&gt;
         &lt;/div&gt;
 
-        <i class="conum" data-value="2"></i><b>(2)</b>
+        &lt;!-- &lt;2&gt; --&gt;
         &lt;script data-th-utext="|
         var MOVIE_LIST_PARAMS= {
             serviceUrlRoot: '${portal.serviceUrl({'_service='})}',
@@ -1133,8 +1145,8 @@ requestAndRenderMovies();</code></pre>
             sortExpression: 'data.year ASC',
         }|"&gt;&lt;/script&gt;
 
-        <i class="conum" data-value="3"></i><b>(3)</b>
-        &lt;script defer data-th-src="${portal.assetUrl({'_path=webapp/script.js'})}"&gt;&lt;/script&gt;
+        &lt;!-- &lt;3&gt; --&gt;
+        &lt;script defer data-th-src="${portal.assetUrl({'_path=webapp/script2.js'})}"&gt;&lt;/script&gt;
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
@@ -1162,16 +1174,17 @@ requestAndRenderMovies();</code></pre>
 <p>The <strong>webapp controller</strong> needs to provide that extra little info to the values in <code>MOVIE_LIST_PARAMS</code>, in the thymeleaf <code>model</code> now:</p>
 </div>
 <div class="listingblock">
-<div class="title">webapp.es6:</div>
+<div class="title">withHelpers.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import {getClientUrl} from '/lib/enonic/react4xp';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import {getClientUrl} from '/lib/enonic/react4xp';
+// @ts-expect-error No types for '/lib/thymeleaf' yet.
 import thymeleaf from '/lib/thymeleaf';
 
 
-const VIEW = resolve('webapp.html');
+const VIEW = resolve('withHelpers.html');
 const PROJECT = 'default';
 const BRANCH = 'master';
-const SITE_NAME = 'webapp';
+const SITE_NAME = 'sample-site';
 
 
 export function get(req) {
@@ -1202,41 +1215,41 @@ export function get(req) {
 <p>The script asset is almost identical to before. All that&#8217;s changed is in <code>renderMovies</code> at the end:</p>
 </div>
 <div class="listingblock">
-<div class="title">script.es6:</div>
+<div class="title">script2.js:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const buildQueryListMovies = (movieType, parentPath) =&gt; {
-    // verify content type names like "com.enonic.app.react4xp:movie" and match up groups before and after the colon:
-    const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);
-    if (!matched) {
-        throw Error(`movieType '${movieType}' is not a valid format. Expecting &lt;appName&gt;:&lt;XP content type&gt;, for example: 'com.enonic.app.react4xp:movie' etc`);
-    }
+  // verify content type names like "com.enonic.app.react4xp:movie" and match up groups before and after the colon:
+  const matched = movieType.match(/(\w+(\.\w+)*):(\w+)/i);
+  if (!matched) {
+      throw Error(`movieType '${movieType}' is not a valid format. Expecting &lt;appName&gt;:&lt;XP content type&gt;, for example: 'com.enonic.app.react4xp:movie' etc`);
+  }
 
-    // e.g. "com.enonic.app.react4xp" --&gt; "com_enonic_app_react4xp
-    const appNameUnderscored = matched[1].replace(/\./g, '_');
+  // e.g. "com.enonic.app.react4xp" --&gt; "com_enonic_app_react4xp
+  const appNameUnderscored = matched[1].replace(/\./g, '_');
 
-    // e.g. "movie" --&gt; "Movie"
-    const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);
+  // e.g. "movie" --&gt; "Movie"
+  const ctyCapitalized = matched[3][0].toUpperCase() + matched[3].substr(1);
 
-    return `
+  return `
 query($first:Int!, $offset:Int!, $sort:String!) {
-  guillotine {
-    query(contentTypes: ["${movieType}"], query: "_parentPath = '/content${parentPath}'", first: $first, offset: $offset, sort: $sort) {
-      ... on ${appNameUnderscored}_${ctyCapitalized} {
-        _id
-        displayName
-        data {
-          year
-          description
-          actor
-          image {
-            ... on media_Image {
-              imageUrl(type: absolute, scale: "width(300)")
-            }
+guillotine {
+  query(contentTypes: ["${movieType}"], query: "_path LIKE '/content${parentPath}/*'", first: $first, offset: $offset, sort: $sort) {
+    ... on ${appNameUnderscored}_${ctyCapitalized} {
+      _id
+      displayName
+      data {
+        year
+        description
+        actor
+        image {
+          ... on media_Image {
+            imageUrl(type: absolute, scale: "width(300)")
           }
         }
       }
     }
   }
+}
 }`;
 };
 
@@ -1244,27 +1257,27 @@ query($first:Int!, $offset:Int!, $sort:String!) {
 // If the maybeArray arg is a non-array value, wraps it in a single-item array.
 // If arg is falsy, returns an empty array.
 const forceArray = maybeArray =&gt; {
-    if (Array.isArray(maybeArray)) {
-        return maybeArray;
-    }
-    return (maybeArray) ? [maybeArray] : [];
+  if (Array.isArray(maybeArray)) {
+      return maybeArray;
+  }
+  return (maybeArray) ? [maybeArray] : [];
 };
 
 // Adapt the output from the guillotine query to the MovieList props signature
 const extractMovieArray = responseData =&gt; responseData.data.guillotine.query
-    .filter( movieItem =&gt; movieItem &amp;&amp; typeof movieItem === 'object' &amp;&amp; Object.keys(movieItem).indexOf('data') !== -1)
-    .map(
-        movieItem =&gt; ({
-            id: movieItem._id,
-            title: movieItem.displayName.trim(),
-            imageUrl: movieItem.data.image.imageUrl,
-            year: movieItem.data.year,
-            description: movieItem.data.description,
-            actors: forceArray(movieItem.data.actor)
-                .map( actor =&gt; (actor || '').trim())
-                .filter(actor =&gt; !!actor)
-        })
-    );
+  .filter( movieItem =&gt; movieItem &amp;&amp; typeof movieItem === 'object' &amp;&amp; Object.keys(movieItem).indexOf('data') !== -1)
+  .map(
+      movieItem =&gt; ({
+          id: movieItem._id,
+          title: movieItem.displayName.trim(),
+          imageUrl: movieItem.data.image.imageUrl,
+          year: movieItem.data.year,
+          description: movieItem.data.description,
+          actors: forceArray(movieItem.data.actor)
+              .map( actor =&gt; (actor || '').trim())
+              .filter(actor =&gt; !!actor)
+      })
+  );
 
 
 // ---------------------------------------------------------
@@ -1272,65 +1285,65 @@ const extractMovieArray = responseData =&gt; responseData.data.guillotine.query
 // Makes a (guillotine) request for data with these search parameters and passes updateDOMWithNewMovies as the callback
 // function to use on the returned list of movie data
 const requestAndRenderMovies = () =&gt; {
-    fetch(
-        MOVIE_LIST_PARAMS.apiUrl,
-        {
-            method: "POST",
-            body: JSON.stringify({
-                query: buildQueryListMovies(
-                    MOVIE_LIST_PARAMS.movieType,
-                    MOVIE_LIST_PARAMS.parentPath
-                ),
-                variables: {
-                    first: MOVIE_LIST_PARAMS.movieCount,
-                    offset: 0,
-                    sort: MOVIE_LIST_PARAMS.sortExpression
-                }}
-            ),
-        }
-    )
-        .then(response =&gt; {
-            if (!(response.status &lt; 300)) {
-                throw Error(`Guillotine API response:\n
-                \n${response.status} - ${response.statusText}.\n
-                \nAPI url: ${response.url}\n
-                \nInspect the request and/or the server log.`);
-            }
-            return response;
-        })
+  fetch(
+      MOVIE_LIST_PARAMS.apiUrl,
+      {
+          method: "POST",
+          body: JSON.stringify({
+              query: buildQueryListMovies(
+                  MOVIE_LIST_PARAMS.movieType,
+                  MOVIE_LIST_PARAMS.parentPath
+              ),
+              variables: {
+                  first: MOVIE_LIST_PARAMS.movieCount,
+                  offset: 0,
+                  sort: MOVIE_LIST_PARAMS.sortExpression
+              }}
+          ),
+      }
+  )
+      .then(response =&gt; {
+          if (!(response.status &lt; 300)) {
+              throw Error(`Guillotine API response:\n
+              \n${response.status} - ${response.statusText}.\n
+              \nAPI url: ${response.url}\n
+              \nInspect the request and/or the server log.`);
+          }
+          return response;
+      })
 
-        .then(response =&gt; response.json())
-        .then(extractMovieArray)
-        .then(renderMovies)
-        .catch( error =&gt; {console.error(error);})
+      .then(response =&gt; response.json())
+      .then(extractMovieArray)
+      .then(renderMovies)
+      .catch( error =&gt; {console.error(error);})
 };
 
 
 
 
 const renderMovies = (movies) =&gt; {
-    console.log("Rendering movies:", movies);
+  console.log("Rendering movies:", movies);
 
-    const props = {
-        movies: movies,
-        apiUrl: MOVIE_LIST_PARAMS.apiUrl,
-        parentPath: MOVIE_LIST_PARAMS.parentPath,
-        movieCount: MOVIE_LIST_PARAMS.movieCount,
-        movieType: MOVIE_LIST_PARAMS.movieType,
-        sortExpression: MOVIE_LIST_PARAMS.sortExpression
-    };
+  const props = {
+      movies: movies,
+      apiUrl: MOVIE_LIST_PARAMS.apiUrl,
+      parentPath: MOVIE_LIST_PARAMS.parentPath,
+      movieCount: MOVIE_LIST_PARAMS.movieCount,
+      movieType: MOVIE_LIST_PARAMS.movieType,
+      sortExpression: MOVIE_LIST_PARAMS.sortExpression
+  };
 
-    <i class="conum" data-value="1"></i><b>(1)</b>
-    React4xp.CLIENT.renderWithDependencies(
-        {
-            'MovieList': {
-                targetId: 'movieListContainer',
-                props: props
-            }
-        },
-        null,
-        MOVIE_LIST_PARAMS.serviceUrlRoot
-    );
+  <i class="conum" data-value="1"></i><b>(1)</b>
+  ComEnonicAppSamples_react4xpReact4xpClient.renderWithDependencies(
+      {
+          'MovieList': {
+              targetId: 'movieListContainer',
+              props: props
+          }
+      },
+      null,
+      MOVIE_LIST_PARAMS.serviceUrlRoot
+  );
 };
 
 
@@ -1387,7 +1400,7 @@ requestAndRenderMovies();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-20 08:22:35 UTC
+Last updated 2023-10-03 13:10:19 UTC
 </div>
 </div>
 </body>

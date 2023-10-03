@@ -486,8 +486,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-files" data-lang="files">/src/main/resources/site/pages/hello-react/
   hello-react.xml
-  hello-react.jsx
-  hello-react.es6</code></pre>
+  hello-react.ts
+  hello-react.tsx</code></pre>
 </div>
 </div>
 <div class="sect2">
@@ -502,6 +502,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   &lt;display-name&gt;Hello React&lt;/display-name&gt;
   &lt;description&gt;Super simple example&lt;/description&gt;
   &lt;form /&gt;
+  &lt;regions /&gt;
 &lt;/page&gt;</code></pre>
 </div>
 </div>
@@ -518,30 +519,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Obviously, the actual updating step is done with vanilla JS instead of actual react, just to keep everything as simple as possible. We&#8217;ll look at stateful/dynamic components later.</p>
 </div>
 <div class="listingblock">
-<div class="title">hello-react.jsx</div>
+<div class="title">hello-react.tsx</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react';
 
-let bottleCount = 99;
-function dropBottle() {
+
+function HelloReact() {
+  let bottleCount = 99;
+  function dropBottle() {
     bottleCount--;
     console.log(bottleCount, 'bottles of beer on the wall.');
-    document.getElementById('counter').innerText = bottleCount;
-};
+    (document.getElementById('counter') as HTMLElement).innerText = bottleCount.toString();
+  };
 
-export default (props) =&gt; &lt;div onClick={dropBottle}&gt;                <i class="conum" data-value="1"></i><b>(1)</b>
-    &lt;h1&gt;Hello world!&lt;/h1&gt;
-    &lt;p&gt;Click me: &lt;span id="counter"&gt;{bottleCount}&lt;/span&gt; bottles of beer on the wall.&lt;/p&gt;
-&lt;/div&gt;;</code></pre>
+  return (
+    &lt;div onClick={dropBottle}&gt;
+      &lt;h1&gt;Hello world!&lt;/h1&gt;
+      &lt;p&gt;Click me: &lt;span id="counter"&gt;{bottleCount}&lt;/span&gt; bottles of beer on the wall.&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default () =&gt; &lt;HelloReact/&gt;;</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>One thing is mandatory for this to work, shown in the <code>export default</code> line: the JSX file <strong>must default-export a function</strong> that <strong><em>may</em> take a props object</strong> and <strong><em>must</em> return a react component</strong>. <a href="source-file-structure.ahtml">More on this later</a>.
+<td>One thing is mandatory for this to work, shown in the <code>export default</code> line: the TSX file <strong>must default-export a function</strong> that <strong><em>may</em> take a props object</strong> and <strong><em>must</em> return a react component</strong>. <a href="source-file-structure.ahtml">More on this later</a>.
 <div class="paragraph">
-<p>Apart from that, you can use ordinary ES6 and import and nest other JS, react components and third-party stuff from <em>node_modules/</em> in the regular way. <a href="imports-and-dependency-chunks.ahtml">We&#8217;ll also get back to that later</a>, including a caveat or two.</p>
+<p>Apart from that, you can use ordinary TS and import and nest other JS, react components and third-party stuff from <em>node_modules/</em> in the regular way. <a href="imports-and-dependency-chunks.ahtml">We&#8217;ll also get back to that later</a>, including a caveat or two.</p>
 </div></td>
 </tr>
 </table>
@@ -586,40 +594,43 @@ export default (props) =&gt; &lt;div onClick={dropBottle}&gt;                <i 
 <p>Finally, we&#8217;ll add a bare-bone <strong>page controller</strong> that calls the rendering engine:</p>
 </div>
 <div id="first_helloreact_jsx" class="listingblock">
-<div class="title">hello-react.es6:</div>
+<div class="title">hello-react.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');       <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import {getContent} from '/lib/xp/portal';
+import {render} from '/lib/enonic/react4xp'; <i class="conum" data-value="1"></i><b>(1)</b>
 
-exports.get = function(request) {                       <i class="conum" data-value="2"></i><b>(2)</b>
-    const entry = portal.getComponent();                <i class="conum" data-value="3"></i><b>(3)</b>
-    const props = null;
 
-    return React4xp.render(                             <i class="conum" data-value="4"></i><b>(4)</b>
-        entry,
-        props,
-        request,
-        {
-            id: "react4xpApp",                          <i class="conum" data-value="5"></i><b>(5)</b>
-            body:                                       <i class="conum" data-value="6"></i><b>(6)</b>
-                `
-                    &lt;html&gt;
-                        &lt;head&gt;&lt;/head&gt;
-                        &lt;body class="xp-page"&gt;
-                            &lt;div id="react4xpApp"&gt;&lt;/div&gt;
-                        &lt;/body&gt;
-                    &lt;/html&gt;
-                `
-        }
-    )
-};</code></pre>
+export function get(request) {               <i class="conum" data-value="2"></i><b>(2)</b>
+  const entry = getContent().page;           <i class="conum" data-value="3"></i><b>(3)</b>
+  const props = {};
+  const react4xpId = 'react4xpApp';
+
+  return render(                             <i class="conum" data-value="4"></i><b>(4)</b>
+    entry,
+    props,
+    request,
+    {
+      id: react4xpId,                        <i class="conum" data-value="5"></i><b>(5)</b>
+      body:                                  <i class="conum" data-value="6"></i><b>(6)</b>
+`&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+  &lt;/head&gt;
+  &lt;body class="xp-page"&gt;
+      &lt;div id="${react4xpId}"&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;`,
+      // ssr: false                          <i class="conum" data-value="7"></i><b>(7)</b>
+    }
+  );
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>That&#8217;s it.</p>
 </div>
 <div class="paragraph">
-<p>If you&#8217;ve used XP before, you&#8217;ll probably note that there&#8217;s no HTML view file, no <code>thymeleaf.render</code>, and so on - in this example, React4xp completely handles the page view. The essential thing here is that at the end of the <code>get</code> function, <strong>React4xp in a single <em>.render</em> call creates a <em>full</em> XP response object that makes react work.</strong></p>
+<p>If you&#8217;ve used XP before, you&#8217;ll probably note that there&#8217;s no HTML view file, no <code>thymeleaf.render</code>, and so on - in this example, React4xp completely handles the page view. The essential thing here is that at the end of the <code>get</code> function, <strong>React4xp in a single <em>render</em> call creates a <em>full</em> XP response object that makes react work.</strong></p>
 </div>
 <div class="paragraph">
 <p>What&#8217;s going on in the controller?</p>
@@ -628,27 +639,31 @@ exports.get = function(request) {                       <i class="conum" data-va
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>In line 2, <code>React4xp</code> is imported from the library.</td>
+<td>The <code>render</code> function is imported from the library.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>In line 4, we pick up the <code>request</code> data. The render call needs it to know the rendering context.</td>
+<td>We pick up the <code>request</code> data. The render call needs it to know the rendering context.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>In line 5, we get the XP component data. Used directly in the <code>.render</code> call, it&#8217;s a convenient shortcut for React4xp to "this XP component", for finding the same-name react component in the same folder: <em>hello-react.jsx</em>. React4xp has more ways to refer to react components, or <em>entries</em> (we&#8217;ll get to that, but for all the juicy details: <a href="entries.ahtml">entries</a> and <a href="jsxpath.ahtml">jsxPath</a>).</td>
+<td>We get the XP component data. Used directly in the <code>render</code> call, it&#8217;s a convenient shortcut for React4xp to "this XP component", for finding the same-name react component in the same folder: <em>hello-react.tsx</em>. React4xp has more ways to refer to react components, or <em>entries</em> (we&#8217;ll get to that, but for all the juicy details: <a href="entries.ahtml">entries</a> and <a href="jsxpath.ahtml">jsxPath</a>).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>In line 8, the juicy bit: <strong>the actual render call</strong>. The rendered response from it can be returned directly from the <code>get</code> function, since <code>.render</code> creates an object with a <code>body</code> HTML string and a <code>pageContributions</code> attribute with everything needed (more details: <a href="api.ahtml#react4xp_render">the render API</a>).</td>
+<td>The juicy bit: <strong>the actual render call</strong>. The rendered response from it can be returned directly from the <code>get</code> function, since <code>render</code> creates an object with a <code>body</code> HTML string and a <code>pageContributions</code> attribute with everything needed (more details: <a href="api.ahtml#react4xp_render">the render API</a>).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>In line 13, the <code>id</code> attribute <em>"react4xpApp"</em> is set in the <strong>options</strong> argument of <code>.render</code> (lines 12-20). This is the unique ID we&#8217;re giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML <code>body</code>:</td>
+<td>The <code>id</code> attribute <em>"react4xpApp"</em> is set in the <strong>options</strong> argument of <code>render</code>. This is the unique ID we&#8217;re giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML <code>body</code>:</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>In lines 14-19, we&#8217;re hardcoding a <code>body</code> option, an HTML string as a base for the output, with a <em>"react4xpApp"</em> ID element. In many cases you can do without this string but here it&#8217;s needed for the output, since react itself doesn&#8217;t like to render the tags <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code> or anything outside of a containing root tag (such as <code>&lt;!DOCTYPE html&gt;</code>).</td>
+<td>We&#8217;re hardcoding a <code>body</code> option, an HTML string as a base for the output, with a <em>"react4xpApp"</em> ID element. In many cases you can do without this string but here it&#8217;s needed for the output, since react itself doesn&#8217;t like to render the tags <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code> or anything outside of a containing root tag.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>On the server, a false <code>ssr</code> flag in the <em>options</em> object makes the server skip the HTML rendering (in <em>this</em> particular <code>render</code> call).</td>
 </tr>
 </table>
 </div>
@@ -703,7 +718,7 @@ exports.get = function(request) {                       <i class="conum" data-va
 <p>&#8203;<br></p>
 </div>
 <div class="paragraph">
-<p>Clicking somewhere on the rendered text in the preview window will trigger the <code>dropBottle</code> function from <em>hello-react.jsx</em>, and modify the DOM and output a message in the browser console. Look at those bottles go!</p>
+<p>Clicking somewhere on the rendered text in the preview window will trigger the <code>dropBottle</code> function from <em>hello-react.tsx</em>, and modify the DOM and output a message in the browser console. Look at those bottles go!</p>
 </div>
 <div class="paragraph">
 <p>&#8203;<br></p>
@@ -722,7 +737,7 @@ exports.get = function(request) {                       <i class="conum" data-va
 <div class="sect2">
 <h3 id="static_cs_rendering"><a class="link" href="#static_cs_rendering">Content studio should only have static rendering</a></h3>
 <div class="paragraph">
-<p>If you edit some content in <em>inside XP Content Studio</em>, you&#8217;d notice there was <strong>no bottle-counting</strong>. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the <code>request</code> argument is used in <code>React4xp.render</code> to handle this automatically: inside Content Studio edit mode, you&#8217;ll only see the rendering as a regular static XP preview / placeholder instead of active react.</p>
+<p>If you edit some content in <em>inside XP Content Studio</em>, you&#8217;d notice there was <strong>no bottle-counting</strong>. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the <code>request</code> argument is used in <code>render</code> to handle this automatically: inside Content Studio edit mode, you&#8217;ll only see the rendering as a regular static XP preview / placeholder instead of active react.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -731,7 +746,7 @@ exports.get = function(request) {                       <i class="conum" data-va
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Later, we&#8217;ll look at two other rendering functions: <code>.renderBody</code> and <code>.renderPageContributions</code>. These are intended for use cases where it&#8217;s good to be more explicit than <code>React4xp.render</code>. For that reason, they <em>don&#8217;t automatically handle this for you</em>. Usually, you should still keep your components from being client-activated inside Content Studio, but you&#8217;ll have to handle it yourself. The <a href="custom-flow-syntax.ahtml">custom flow</a> chapter shows you how.
+Later, we&#8217;ll look at two other rendering functions: <code>renderBody</code> and <code>renderPageContributions</code>. These are intended for use cases where it&#8217;s good to be more explicit than <code>render</code>. For that reason, they <em>don&#8217;t automatically handle this for you</em>. Usually, you should still keep your components from being client-activated inside Content Studio, but you&#8217;ll have to handle it yourself. The <a href="custom-flow-syntax.ahtml">custom flow</a> chapter shows you how.
 </td>
 </tr>
 </table>
@@ -758,31 +773,35 @@ Later, we&#8217;ll look at two other rendering functions: <code>.renderBody</cod
 <h2 id="hello_output"><a class="link" href="#hello_output">Output</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Okay, back to the rendering of the page. Open the <strong>page source</strong> code in the browser. Here&#8217;s what <code>React4xp.render</code> created - the response the client receives on the initial page request:</p>
+<p>Okay, back to the rendering of the page. Open the <strong>page source</strong> code in the browser. Here&#8217;s what <code>render</code> created - the response the client receives on the initial page request:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-html" data-lang="html">&lt;html&gt;
-&lt;head&gt;&lt;/head&gt;
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;script defer src="(...your.app.service) /react4xp/globals.js"&gt;&lt;/script&gt;                            <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;script defer src="(...your.app.service) /react4xp/runtime.js"&gt;&lt;/script&gt;                            <i class="conum" data-value="2"></i><b>(2)</b>
+  &lt;script defer src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"&gt;&lt;/script&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+  &lt;script defer src="(...your.app.service) /react4xp/client-QZN5J5VC.global.js"&gt;&lt;/script&gt;             <i class="conum" data-value="4"></i><b>(4)</b>
+  &lt;script data-react4xp-app-name="com.enonic.app.samples_react4xp" data-react4xp-ref="react4xpApp" type="application/json"&gt;{"command":"hydrate","devMode":false,"hasRegions":0,"isPage":1,"jsxPath":"site/pages/hello-react/hello-react","props":{}}&lt;/script&gt; <i class="conum" data-value="5"></i><b>(5)</b>
+&lt;/head&gt;
 &lt;body class="xp-page"&gt;
 
     &lt;div id="react4xpApp"&gt;
-        &lt;div data-reactroot=""&gt;                                                                             <i class="conum" data-value="1"></i><b>(1)</b>
+        &lt;div data-reactroot=""&gt;                                                                       <i class="conum" data-value="6"></i><b>(6)</b>
             &lt;h1&gt;Hello world!&lt;/h1&gt;
             &lt;p&gt;Click me: &lt;span id="counter"&gt;99&lt;/span&gt; bottles of beer on the wall. &lt;/p&gt;
         &lt;/div&gt;
     &lt;/div&gt;
 
-    &lt;script src="(...your.app.service) /react4xp/globals.489d97cdf.js"&gt;&lt;/script&gt;                          <i class="conum" data-value="2"></i><b>(2)</b>
-    &lt;script src="(...your.app.service) /react4xp/client.5678abcd.js"&gt;&lt;/script&gt;                              <i class="conum" data-value="3"></i><b>(3)</b>
-    &lt;script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"&gt;&lt;/script&gt;  <i class="conum" data-value="4"></i><b>(4)</b>
-    &lt;script src="(...your.app.service) /react4xp/dynamic.87654321.js"&gt;&lt;/script&gt;                             <i class="conum" data-value="5"></i><b>(5)</b>
+    &lt;script defer src="(...your.app.service) /react4xp/executor-BL4RRDZO.js"&gt;&lt;/script&gt;                <i class="conum" data-value="7"></i><b>(7)</b>
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>We can see this whole output is actually the <code>body</code> HTML string we passed into the <code>React4xp.render</code> call in the controller - but <strong>a lot has been inserted</strong>. Most importantly, three assets are loaded into the client.</p>
+<p>We can see this whole output is actually the <code>body</code> HTML string we passed into the <code>render</code> call in the controller - but <strong>a lot has been inserted</strong>. Most importantly, three assets are loaded into the client.</p>
 </div>
 <div class="paragraph">
 <p>(The asset URLs are shortened for readability, and because some details may vary. At my computer for example, the <code>(&#8230;&#8203;your.app.service)</code> part actually looks like: <code>/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/</code>)</p>
@@ -791,22 +810,30 @@ Later, we&#8217;ll look at two other rendering functions: <code>.renderBody</cod
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>At the top, we see the <code>&lt;div id="react4xpApp"&gt;</code> target container, now filled with a server-side rendering of the react component. At this point it&#8217;s only static markup, but it will be activated during step 5 below.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>The first asset is <code>globals.&lt;contenthash&gt;.js</code>: this is react and react-dom bundled together. They are served from XP instead of from a CDN.</td>
 </tr>
 <tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The second loaded asset is the runtime chunk. Shared boilerplate code needed to run entries.</td>
+</tr>
+<tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The second loaded asset is a client-wrapper.</td>
+<td>The third asset is the compiled version of <em>hello-react.tsx</em>, with the react component and the <code>dropBottle</code> routine. During <code>render</code>, React4xp used the <code>component</code> data to locate this asset <em>after</em> compiling. The react component gets an identifier string, <code>site/pages/hello-react/hello-react</code>, which is called a <em>jsxPath</em> in React4xp. We&#8217;ll cover jsxPaths later (full detail reference <a href="jsxpath.ahtml">here</a>), but for now you just need to know that this identifier is also used when loading this asset into the the browser&#8217;s namespace: <code>React4xp['site/pages/hello-react/hello-react']</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>The third asset is the compiled version of <em>hello-react.jsx</em>, with the react component and the <code>dropBottle</code> routine. During <code>React4xp.render</code>, React4xp used the <code>component</code> data to locate this asset <em>after</em> compiling. The react component gets an identifier string, <code>site/pages/hello-react/hello-react</code>, which is called a <em>jsxPath</em> in React4xp. We&#8217;ll cover jsxPaths later (full detail reference <a href="jsxpath.ahtml">here</a>), but for now you just need to know that this identifier is also used when loading this asset into the the browser&#8217;s namespace: <code>React4xp['site/pages/hello-react/hello-react']</code>.</td>
+<td>The third asset is a client-wrapper.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Properties and props, that the executor uses when calling the client wrapper.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>The <code>&lt;div id="react4xpApp"&gt;</code> target container, now filled with a server-side rendering of the react component. At this point it&#8217;s only static markup, but it will be activated during step 7 below.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
 <td>The script that actually runs <code>hydrate</code> with the <code>props</code> on the clientside.</td>
 </tr>
 </table>
@@ -832,67 +859,61 @@ The assets are served by lib-react4xp services. Most of them (<em>react4xp-clien
 <h2 id="client_side_rendering"><a class="link" href="#client_side_rendering">Client-side rendering</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Sometimes you might want or need to skip the server-side rendering of a react component, and relay the react rendering entirely to the browser. This a one-line operation in <code>React4xp.render</code>.</p>
+<p>Sometimes you might want or need to skip the server-side rendering of a react component, and relay the react rendering entirely to the browser. This a one-line operation in <code>render</code>.</p>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s return to <strong>the controller</strong> and add a line on line 23:</p>
+<p>Let&#8217;s return to <strong>the controller</strong> and comment in the ssr: false line. Callout &lt;7&gt;:</p>
 </div>
 <div class="listingblock">
-<div class="title">hello-react.es6:</div>
+<div class="title">hello-react.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
+<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import {getContent} from '/lib/xp/portal';
+import {render} from '/lib/enonic/react4xp'; <i class="conum" data-value="1"></i><b>(1)</b>
 
-exports.get = function(request) {
-    const entry = portal.getComponent();
-    const props = null;
 
-    return React4xp.render(
-        entry,
-        props,
-        request,
-        {
-            id: "react4xpApp",
-            body:
-                `
-                    &lt;html&gt;
-                        &lt;head&gt;&lt;/head&gt;
-                        &lt;body class="xp-page"&gt;
-                            &lt;div id="react4xpApp"&gt;&lt;/div&gt;
-                        &lt;/body&gt;
-                    &lt;/html&gt;
-                `,
-            ssr: false                                   <i class="conum" data-value="1"></i><b>(1)</b>
-        }
-    )
-};</code></pre>
+export function get(request) {               <i class="conum" data-value="2"></i><b>(2)</b>
+  const entry = getContent().page;           <i class="conum" data-value="3"></i><b>(3)</b>
+  const props = {};
+  const react4xpId = 'react4xpApp';
+
+  return render(                             <i class="conum" data-value="4"></i><b>(4)</b>
+    entry,
+    props,
+    request,
+    {
+      id: react4xpId,                        <i class="conum" data-value="5"></i><b>(5)</b>
+      body:                                  <i class="conum" data-value="6"></i><b>(6)</b>
+`&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+  &lt;/head&gt;
+  &lt;body class="xp-page"&gt;
+      &lt;div id="${react4xpId}"&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;`,
+      // ssr: false                          <i class="conum" data-value="7"></i><b>(7)</b>
+    }
+  );
+}</code></pre>
 </div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>On the server, a false <code>ssr</code> flag in the <em>options</em> object makes the server skip the HTML rendering (in <em>this</em> particular <code>.render</code> call. Mixing up clientside and serverside rendering across different places hasn&#8217;t been tested very much, but it should work fine).</td>
-</tr>
-</table>
 </div>
 <div id="clientrendered_output" class="paragraph">
 <p>If you compare with <a href="#hello_output">the serverside-rendered example</a>, the <code>ssr</code> flag causes the <strong>rendered output</strong> to change slightly, changing the behavior in the browser.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-html" data-lang="html">&lt;html&gt;
-&lt;head&gt;&lt;/head&gt;
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;script defer src="(...your.app.service) /react4xp/globals.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;script defer src="(...your.app.service) /react4xp/runtime.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;script defer src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;script defer src="(...your.app.service) /react4xp/client-QZN5J5VC.global.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;script data-react4xp-app-name="com.enonic.app.samples_react4xp" data-react4xp-ref="react4xpApp" type="application/json"&gt;{"command":"render","devMode":false,"hasRegions":0,"isPage":1,"jsxPath":"site/pages/hello-react/hello-react","props":{}}&lt;/script&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+&lt;/head&gt;
 &lt;body class="xp-page"&gt;
-
-    &lt;div id="react4xpApp"&gt;&lt;/div&gt;    <i class="conum" data-value="1"></i><b>(1)</b>
-
-    <i class="conum" data-value="2"></i><b>(2)</b>
-    &lt;script src="(...your.app.service) /react4xp/globals.489d97cdf.js"&gt;&lt;/script&gt;
-    &lt;script src="(...your.app.service) /react4xp/client.5678abcd.js"&gt;&lt;/script&gt;
-    &lt;script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"&gt;&lt;/script&gt;
-
-    &lt;script src="(...your.app.service) /react4xp/dynamic.87654321.js"&gt;&lt;/script&gt;                            <i class="conum" data-value="3"></i><b>(3)</b>
+    &lt;div id="react4xpApp"&gt;&lt;/div&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+    &lt;script defer src="(...your.app.service) /react4xp/executor-BL4RRDZO.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
@@ -901,15 +922,15 @@ exports.get = function(request) {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>As expected, the target container is no longer filled with a serverside-rendered HTML representation of the react component. Instead, the browser fills in the DOM from scratch in step 3 below.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>The compiled assets and their URLs are exactly the same as in the serverside version.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>The script that actually runs <code>render</code> with the <code>props</code> on the clientside.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>As expected, the target container is no longer filled with a serverside-rendered HTML representation of the react component. Instead, the browser fills in the DOM from scratch in step 3 below.</td>
 </tr>
 </table>
 </div>
@@ -920,7 +941,7 @@ exports.get = function(request) {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<a href="#static_cs_rendering">As mentioned before</a>, this only applies <em>outside</em> of Content Studio edit mode. The <code>ssr</code> flag does not change anything inside Content Studio edit mode: still server-side rendered static HTML.
+In Content Studio edit mode, a yellow placeholder is used for client-side rendered components. This is to avoid the components interactive behaviors from interfering with the Content Studio editing workflow.
 </td>
 </tr>
 </table>
@@ -963,7 +984,7 @@ exports.get = function(request) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-20 08:22:35 UTC
+Last updated 2023-10-03 13:10:19 UTC
 </div>
 </div>
 </body>

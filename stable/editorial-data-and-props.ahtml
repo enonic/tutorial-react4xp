@@ -444,8 +444,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#code">Code</a>
 <ul class="sectlevel2">
 <li><a href="#page_definition">Page definition</a></li>
-<li><a href="#react_component">React component</a></li>
+<li><a href="#type_declarations">Type declarations</a></li>
 <li><a href="#page_controller">Page controller</a></li>
+<li><a href="#react_component">React component</a></li>
 </ul>
 </li>
 <li><a href="#setup_and_rendering">Setup and rendering</a></li>
@@ -462,15 +463,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Here we&#8217;ll spice up our react component a little bit, by using <code>props</code> to insert editorial data from XP into the react component.</p>
 </div>
 <div class="paragraph">
-<p>We&#8217;ll modify the same files you created <a href="hello-react.ahtml#code">previously</a>:</p>
+<p>We&#8217;ll modify a copy of the same files you created <a href="hello-react.ahtml#code">previously</a>:</p>
 </div>
 <div class="listingblock">
 <div class="title">Files involved:</div>
 <div class="content">
-<pre class="highlight"><code class="language-files" data-lang="files">site/pages/hello-react/
-  hello-react.xml
-  hello-react.jsx
-  hello-react.es6</code></pre>
+<pre class="highlight"><code class="language-files" data-lang="files">site/pages/hello-react2/
+  hello-react2.xml
+  hello-react2.ts
+  hello-react2.tsx</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -496,9 +497,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="title">hello-react.xml:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;page&gt;
-    &lt;display-name&gt;Hello React&lt;/display-name&gt;
-    &lt;description&gt;Editorial example&lt;/description&gt;
-    &lt;form&gt;
+  &lt;display-name&gt;Hello React 2&lt;/display-name&gt;
+  &lt;description&gt;Super simple example 2&lt;/description&gt;
+  &lt;form&gt;
         &lt;input type="TextLine" name="greeting"&gt;
             &lt;label&gt;What's the greeting?&lt;/label&gt;
             &lt;default&gt;Hello&lt;/default&gt;
@@ -523,6 +524,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
             &lt;occurrences minimum="1" maximum="1"/&gt;
         &lt;/input&gt;
     &lt;/form&gt;
+  &lt;regions /&gt;
 &lt;/page&gt;</code></pre>
 </div>
 </div>
@@ -531,66 +533,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="react_component"><a class="link" href="#react_component">React component</a></h3>
+<h3 id="type_declarations"><a class="link" href="#type_declarations">Type declarations</a></h3>
 <div class="paragraph">
-<p>Next, we&#8217;ll modify <a href="hello-react.ahtml#react_component">the react component</a> so that it displays data from a <code>props</code> object, instead of hardcoding everything.</p>
+<p>Declare which inputs come from the XML, and what props we want to pass on into the react component.</p>
 </div>
-<div id="hello_react_jsx_modified" class="listingblock">
-<div class="title">hello-react.jsx</div>
+<div class="listingblock">
+<div class="title">hello-react2.d.ts</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react';
-
-
-function makeThingDropper(droppableProp, initialCountProp) {
-    let currentCount = initialCountProp;
-    return () =&gt; {
-        currentCount--;
-        console.log(currentCount.toString(), droppableProp, 'on the wall.');
-        if (document) { <i class="conum" data-value="1"></i><b>(1)</b>
-            document.getElementById('counter').innerText = currentCount;
-        }
-    };
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">export type HelloPageConfig = {
+  greeting: string
+  greetee: string
+  things: string
+  startCount: number
 }
 
-export default (props) =&gt; {
-    const dropThing = makeThingDropper(props.droppableThing, props.initialCount);
-    return (
-        &lt;div onClick={dropThing}&gt;
-            &lt;h1&gt;
-                {props.message} {props.messageTarget}!
-            &lt;/h1&gt;
-            &lt;p&gt;
-                Click me: &lt;span id="counter"&gt;{props.initialCount}&lt;/span&gt; {props.droppableThing} on the wall.
-            &lt;/p&gt;
-        &lt;/div&gt;
-    );
+export type HelloProps = {
+  message: HelloPageConfig['greeting']
+  messageTarget: HelloPageConfig['greetee']
+  droppableThing: HelloPageConfig['things']
+  initialCount: HelloPageConfig['startCount']
+}
+
+// Adding the page configuration to the global XP type map.
+declare global {
+  interface XpPageMap {
+    'com.enonic.app.samples-react4xp:hello-react2': HelloPageConfig
+  }
 }</code></pre>
 </div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>React4xp no longer polyfill&#8217;s document, so an if block is needed to avoid SSR errors.</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p><code>props</code> are of course the standard react way to do this. It all is. As long as a <em>props &#8658; reactComponent</em> function is default-exported, React4xp accepts standard valid TSX/JSX/TS/JS/ES6.</p>
-</div>
-<div class="paragraph">
-<p>Although, if you think that the <em>makeObjectDropper</em> closure thing is a strange way to do something react itself could do better&#8230;&#8203; sure. Just trying to stay focused on one thing at a time.</p>
-</div>
-</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
 <p>&#8203;<br></p>
@@ -599,45 +569,76 @@ export default (props) =&gt; {
 <div class="sect2">
 <h3 id="page_controller"><a class="link" href="#page_controller">Page controller</a></h3>
 <div class="paragraph">
-<p>And lastly, we&#8217;ll hook them together: modify <a href="hello-react.ahtml#page_controller">the controller</a> to fetch the data we defined in XML, then use a <code>props</code> object to inject the data into the react component:</p>
+<p>Next, we&#8217;ll modify <a href="hello-react.ahtml#page_controller">the controller</a> to fetch the data we defined in XML, then use a <code>props</code> object to inject the data into the react component:</p>
 </div>
 <div id="controller_with_props" class="listingblock">
-<div class="title">hello-react.es6:</div>
+<div class="title">hello-react.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">// Importing type utils from the XP core type library.
+import type {
+  Content,
+  PageComponent
+} from '@enonic-types/core';
+
+// Importing types for the page configuration and the component props.
+import type {HelloProps} from './hello-react2.d';
 
 
-exports.get = function(request) {
-    const entry = portal.getComponent();
+import {getContent} from '/lib/xp/portal';
+import {render} from '/lib/enonic/react4xp';
 
-    const content = portal.getContent();                    <i class="conum" data-value="1"></i><b>(1)</b>
-    const pageConfig = (content.page || {}).config || {};
 
-    const props = {                                         <i class="conum" data-value="2"></i><b>(2)</b>
-        message: pageConfig.greeting,                       <i class="conum" data-value="3"></i><b>(3)</b>
-        messageTarget: pageConfig.greetee,
-        droppableThing: pageConfig.things,
-        initialCount: pageConfig.startCount
-    };
+export function get(request) {
+  // Getting the page content object
+  const content = getContent&lt;
+    // Using the imported type utils and the global XP type map,
+    // so `the page content object` will be properly typed.
+    Content&lt;
+      {},
+      'portal:page',
+      PageComponent&lt;'com.enonic.app.samples-react4xp:hello-react2'&gt;
+    &gt;
+  &gt;();
 
-    return React4xp.render(
-        entry,
-        props,                                              <i class="conum" data-value="4"></i><b>(4)</b>
-        request,
-        {
-            id: "react4xpApp",
-            body: `
-                &lt;html&gt;
-                    &lt;head&gt;&lt;/head&gt;
-                    &lt;body class="xp-page"&gt;
-                        &lt;div id="react4xpApp"&gt;&lt;/div&gt;
-                    &lt;/body&gt;
-                &lt;/html&gt;
-            `
-        }                                                   <i class="conum" data-value="5"></i><b>(5)</b>
-    )
-};</code></pre>
+  // Deconstructing the page configuration
+  // If your IDE supports it, you can hover over the variable names and see their types
+  const {
+    greeting,
+    greetee,
+    things,
+    startCount
+  } = content.page.config;
+
+  // Renaming the page configuration variables into the component props, just for fun.
+  // You don't have to pass along all the page configuration variables to the component.
+  // And you can ofcourse add other props, that doesn't come from the page configuration.
+  const props: HelloProps = {
+    message: greeting,
+    messageTarget: greetee,
+    droppableThing: things,
+    initialCount: startCount
+  };
+
+  const react4xpId = 'react4xpApp';
+
+  return render(
+    content.page, // Using the page content object as the component entry
+    props,
+    request,
+    {
+      id: react4xpId,
+      body:
+`&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+  &lt;/head&gt;
+  &lt;body class="xp-page"&gt;
+      &lt;div id="${react4xpId}"&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;`
+    }
+  );
+}</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -661,6 +662,73 @@ exports.get = function(request) {
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>To keep things simpler and clearer, just remove the <code>ssr = false</code> flag from the previous example.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="react_component"><a class="link" href="#react_component">React component</a></h3>
+<div class="paragraph">
+<p>Finally, we&#8217;ll modify <a href="hello-react.ahtml#react_component">the react component</a> so that it displays data from a <code>props</code> object, instead of hardcoding everything.</p>
+</div>
+<div id="hello_react_jsx_modified" class="listingblock">
+<div class="title">hello-react2.tsx</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import type {HelloProps} from './hello-react2.d';
+
+import React from 'react';
+
+
+function HelloReact({
+  // Decontruct the props, do they can be used below:
+  message,
+  messageTarget,
+  droppableThing,
+  initialCount
+}: HelloProps) {
+
+  function makeThingDropper(droppableProp: string, initialCountProp: number) {
+    let currentCount = initialCountProp;
+    return () =&gt; {
+      currentCount--;
+      console.log(currentCount.toString(), droppableProp, 'on the wall.');
+
+      // React4xp no longer polyfill's document, so an if block is needed to avoid SSR errors.
+      if (document) {
+        (document.getElementById('counter') as HTMLElement).innerText = currentCount.toString();
+      }
+
+    };
+  }
+
+  const dropThing = makeThingDropper(droppableThing, initialCount);
+
+  return (
+    &lt;div onClick={dropThing}&gt;
+      &lt;h1&gt;{message} {messageTarget}!&lt;/h1&gt;
+      &lt;p&gt;Click me: &lt;span id="counter"&gt;{initialCount}&lt;/span&gt; {droppableThing} on the wall.&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Pass on the props to the component:
+export default (props: HelloProps) =&gt; &lt;HelloReact {...props}/&gt;;</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>props</code> are of course the standard react way to do this. It all is. As long as a <em>props &#8658; reactComponent</em> function is default-exported, React4xp accepts standard valid TSX/JSX/TS/JS/ES6.</p>
+</div>
+<div class="paragraph">
+<p>Although, if you think that the <em>makeObjectDropper</em> closure thing is a strange way to do something react itself could do better&#8230;&#8203; sure. Just trying to stay focused on one thing at a time.</p>
+</div>
+</td>
 </tr>
 </table>
 </div>
@@ -720,10 +788,17 @@ exports.get = function(request) {
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-html" data-lang="html">&lt;html&gt;
-&lt;head&gt;&lt;/head&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;script defer src="(...your.app.service) /react4xp/globals.4427e5cbb5e9bb528fc6.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;script defer src="(...your.app.service) /react4xp/runtime.706073d99846f9d14ca4.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;script defer src="(...your.app.service) /react4xp/site/pages/hello-react2/hello-react2.53c91627acf165d77409.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;script defer src="(...your.app.service) /react4xp/client-QZN5J5VC.global.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;script data-react4xp-app-name="com.enonic.app.samples_react4xp" data-react4xp-ref="react4xpApp" type="application/json"&gt;{"command":"hydrate","devMode":false,"hasRegions":0,"isPage":1,"jsxPath":"site/pages/hello-react2/hello-react2","props":{"message":"G'day","messageTarget":"Dave","droppableThing":"dudas","initialCount":50}}&lt;/script&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+&lt;/head&gt;
 &lt;body class="xp-page"&gt;
 
-    <i class="conum" data-value="1"></i><b>(1)</b>
+    <i class="conum" data-value="3"></i><b>(3)</b>
     &lt;div id="react4xpApp"&gt;
         &lt;div data-reactroot=""&gt;
             &lt;h1&gt;G'day&lt;!-- --&gt; &lt;!-- --&gt;Bruce&lt;!-- --&gt; !&lt;/h1&gt;
@@ -731,13 +806,7 @@ exports.get = function(request) {
         &lt;/div&gt;
     &lt;/div&gt;
 
-    <i class="conum" data-value="2"></i><b>(2)</b>
-    &lt;script src="(...your.app.service) /react4xp/globals.489d97cdf.js"&gt;&lt;/script&gt;
-    &lt;script src="(...your.app.service) /react4xp/client.5678abcd.js"&gt;&lt;/script&gt;
-    &lt;script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"&gt;&lt;/script&gt;
-
-    &lt;script src="(...your.app.service) /react4xp/dynamic.87654321.js"&gt;&lt;/script&gt;                            <i class="conum" data-value="3"></i><b>(3)</b>
-
+  &lt;script defer src="(...your.app.service) /react4xp/executor-BL4RRDZO.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
@@ -746,15 +815,15 @@ exports.get = function(request) {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Since we removed the <code>ssr = false</code> flag again, the target container <code>react4xpApp</code> comes filled from the server. But now with a rendering with <em>your</em> texts from <code>props</code> already inserted.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>There&#8217;s still no change in the asset URLs, but since we changed <em>hello-react.jsx</em>, the content of <em>hello-react.js</em> has of course been recompiled.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>The script that actually runs <code>hydrate</code> with the <code>props</code> on the clientside.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Since we removed the <code>ssr = false</code> flag again, the target container <code>react4xpApp</code> comes filled from the server. But now with a rendering with <em>your</em> texts from <code>props</code> already inserted.</td>
 </tr>
 </table>
 </div>
@@ -784,7 +853,7 @@ exports.get = function(request) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-20 08:22:35 UTC
+Last updated 2023-10-03 13:10:19 UTC
 </div>
 </div>
 </body>

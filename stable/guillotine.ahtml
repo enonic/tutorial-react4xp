@@ -457,7 +457,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#static_movie_list">Static movie list</a>
 <ul class="sectlevel2">
 <li><a href="#guillotine_helpers">Guillotine helpers and usage</a></li>
-<li><a href="#included_helper_guillotineapi_es6">Included helper: guillotineApi.es6</a></li>
+<li><a href="#included_helper_guillotineapi_ts">Included helper: guillotineApi.ts</a></li>
 <li><a href="#domain_specific_helper_for_listing_movies">Domain-specific helper for listing movies</a></li>
 <li><a href="#part_controller">Part controller</a></li>
 <li><a href="#static_movielist">React components</a></li>
@@ -467,7 +467,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#making_the_list_dynamic">Making the list dynamic</a>
 <ul class="sectlevel2">
 <li><a href="#expose_api">Exposing the guillotine API</a></li>
-<li><a href="#guillotine_request_helper">Included helper: guillotineRequest.es6</a></li>
+<li><a href="#guillotine_request_helper">Included helper: guillotineRequest.ts</a></li>
 <li><a href="#frontend_guillotine_request">Frontend guillotine request</a></li>
 <li><a href="#dynamic_dom_updates">Dynamic DOM updates</a></li>
 <li><a href="#scroll_listener">Scroll listener</a></li>
@@ -552,11 +552,11 @@ The <a href="webapp.ahtml">next chapter</a> will expand on this lesson. It demon
 <div class="content">
 <pre class="highlight"><code class="language-files" data-lang="files">react4xp/
     myEntries/                  <i class="conum" data-value="1"></i><b>(1)</b>
-        Movie.jsx
-        MovieList.jsx
+        Movie.tsx
+        MovieList.tsx
         MovieList.scss
     shared/
-        Movie.jsx
+        Movie.tsx
         Movie.scss
 
 site/
@@ -565,18 +565,18 @@ site/
             movie.xml           <i class="conum" data-value="2"></i><b>(2)</b>
     parts/
         movie-list/
-            movie-list.es6      <i class="conum" data-value="3"></i><b>(3)</b>
+            movie-list.ts       <i class="conum" data-value="3"></i><b>(3)</b>
             movie-list.xml
     site.xml                    <i class="conum" data-value="4"></i><b>(4)</b>
 
 controllers/
-    previewMovie.es6            <i class="conum" data-value="5"></i><b>(5)</b>
+    previewMovie.ts             <i class="conum" data-value="5"></i><b>(5)</b>
 
 headless/                       <i class="conum" data-value="6"></i><b>(6)</b>
     helpers/
-        movieListRequests.es6
-    guillotineApi.es6
-    guillotineRequest.es6</code></pre>
+        movieListRequests.ts
+    guillotineApi.ts
+    guillotineRequest.ts</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -603,7 +603,7 @@ headless/                       <i class="conum" data-value="6"></i><b>(6)</b>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td><em>guillotineApi.es6</em> is the actual API to guillotine. It can run graphQL queries both from XP controllers and through received HTTP requests. And <em>guillotineRequest.es6</em> simplifies making such a request from the browser. Both of these are general-purpose and come with the starter (since version 1.1.0). But <em>helpers/movieListRequests.es6</em> contains helper functions specific to the lesson site we&#8217;re building here: it helps with building a query for fetching movie-list data, and parsing the returned data into the <code>props</code> format that the <em>Movie</em> component needs. These helpers are also used on both frontend and backend.</td>
+<td><em>guillotineApi.ts</em> is the actual API to guillotine. It can run graphQL queries both from XP controllers and through received HTTP requests. And <em>guillotineRequest.ts</em> simplifies making such a request from the browser. Both of these are general-purpose and come with the starter (since version 1.1.0). But <em>helpers/movieListRequests.ts</em> contains helper functions specific to the lesson site we&#8217;re building here: it helps with building a query for fetching movie-list data, and parsing the returned data into the <code>props</code> format that the <em>Movie</em> component needs. These helpers are also used on both frontend and backend.</td>
 </tr>
 </table>
 </div>
@@ -687,12 +687,12 @@ headless/                       <i class="conum" data-value="6"></i><b>(6)</b>
 <p>Next, we&#8217;ll set up a few react components for visualizing each movie item.</p>
 </div>
 <div class="paragraph">
-<p>The <strong>entry</strong>, <em>Movie.jsx</em>, will take care of rendering a preview of each movie content item in content studio later:</p>
+<p>The <strong>entry</strong>, <em>Movie.tsx</em>, will take care of rendering a preview of each movie content item in content studio later:</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/myEntries/Movie.jsx:</div>
+<div class="title">react4xp/myEntries/Movie.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react'
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react'
 
 import Movie from '../shared/Movie';
 
@@ -706,9 +706,9 @@ export default (props) =&gt; &lt;Movie {...props} /&gt;;</code></pre>
 <p>Why import code from <em>shared</em> instead of keeping it all in the entry? Firstly, it&#8217;s a good rule of thumb to keep entries slim, for better optimization. And secondly, in addition to a Content Studio preview for single movies, we&#8217;re going to use the <strong>imported components</strong> in the actual movie list too, for each single movie in the list. This way, the preview in Content Studio will always directly reflect what&#8217;s displayed on the final page, because it&#8217;s the same code that&#8217;s used everywhere:</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/shared/Movie.jsx:</div>
+<div class="title">react4xp/shared/Movie.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react'
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react'
 
 import './Movie.scss';
 
@@ -767,13 +767,13 @@ export default Movie;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Not a lot of functionality here, just a JSX file that contains some structural units nested inside each other: the exported root level in the component, <code>Movie</code>, contains a movie poster image, and nests an <code>InfoContainer</code> component that displays the rest of the movie data. There, each movie data section is wrapped in an <code>Info</code> component (which just displays a header), and finally each actor name is mapped out in a list in the <code>Cast</code> component.</p>
+<p>Not a lot of functionality here, just a TSX file that contains some structural units nested inside each other: the exported root level in the component, <code>Movie</code>, contains a movie poster image, and nests an <code>InfoContainer</code> component that displays the rest of the movie data. There, each movie data section is wrapped in an <code>Info</code> component (which just displays a header), and finally each actor name is mapped out in a list in the <code>Cast</code> component.</p>
 </div>
 <div class="paragraph">
-<p>Take a moment to note the <strong>props signature</strong> of <em>Movie.jsx</em>. <code>Movie</code> clearly expects the <code>imageUrl</code> prop to be a URL, so we&#8217;ll need to handle the <code>image</code> field from the content type. The props <code>description</code>, <code>title</code> and <code>year</code> are expected to be simple strings, but <code>actors</code> should be handled as a string array. As you&#8217;ll see, we&#8217;ll make sure that each data readout of a movie item is adapted to this signature.</p>
+<p>Take a moment to note the <strong>props signature</strong> of <em>Movie.tsx</em>. <code>Movie</code> clearly expects the <code>imageUrl</code> prop to be a URL, so we&#8217;ll need to handle the <code>image</code> field from the content type. The props <code>description</code>, <code>title</code> and <code>year</code> are expected to be simple strings, but <code>actors</code> should be handled as a string array. As you&#8217;ll see, we&#8217;ll make sure that each data readout of a movie item is adapted to this signature.</p>
 </div>
 <div class="paragraph">
-<p>Moving on, <em>Movie.jsx</em> also imports some <strong>styling</strong> that&#8217;ll be handled by webpack the same way as in <a href="imports-and-dependency-chunks.ahtml#webpack_rules">the previous chapter</a>:</p>
+<p>Moving on, <em>Movie.tsx</em> also imports some <strong>styling</strong> that&#8217;ll be handled by webpack the same way as in <a href="imports-and-dependency-chunks.ahtml#webpack_rules">the previous chapter</a>:</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/shared/Movie.scss:</div>
@@ -831,7 +831,7 @@ export default Movie;</code></pre>
 <div class="sect2">
 <h3 id="controller_mapping"><a class="link" href="#controller_mapping">Controller mapping</a></h3>
 <div class="paragraph">
-<p>Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the <em>Movie.jsx</em> entry. But we don&#8217;t want to mess around with setting up a <a href="pages-parts-and-regions.ahtml#page_template_setup">template with a part</a> the way we&#8217;ve done so far. Instead, we can use a <a href="https://developer.enonic.com/docs/xp/stable/cms/mappings">controller mapping</a> to make that connection in code.</p>
+<p>Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the <em>Movie.tsx</em> entry. But we don&#8217;t want to mess around with setting up a <a href="pages-parts-and-regions.ahtml#page_template_setup">template with a part</a> the way we&#8217;ve done so far. Instead, we can use a <a href="https://developer.enonic.com/docs/xp/stable/cms/mappings">controller mapping</a> to make that connection in code.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s open <em>site.xml</em> and add a mapping:</p>
@@ -842,15 +842,15 @@ export default Movie;</code></pre>
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;site&gt;
   &lt;form/&gt;
-    &lt;mappings&gt;
+  &lt;mappings&gt;
 
-        &lt;!-- Add this... --&gt;
-        &lt;mapping controller="/controllers/previewMovie.js" order="50"&gt;
-            &lt;match&gt;type:'com.enonic.app.react4xp:movie'&lt;/match&gt;
-        &lt;/mapping&gt;
-        &lt;!-- ...and that's it. --&gt;
+    &lt;!-- Add this... --&gt;
+    &lt;mapping controller="/controllers/previewMovie.js" order="50"&gt;
+        &lt;match&gt;type:'com.enonic.app.react4xp:movie'&lt;/match&gt;
+    &lt;/mapping&gt;
+    &lt;!-- ...and that's it. --&gt;
 
-    &lt;/mappings&gt;
+  &lt;/mappings&gt;
 &lt;/site&gt;</code></pre>
 </div>
 </div>
@@ -868,7 +868,7 @@ export default Movie;</code></pre>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>First, the controller reference in a mapping in <em>site.xml</em> must always refer to <strong>the runtime name of the controller</strong>. In our case, the source file of our controller is <em>/controllers/previewMovie</em> <strong><em>.es6</em></strong>, but at compile time, this is compiled into <strong><em>.js</em></strong> which is used at XP runtime.</p>
+<p>First, the controller reference in a mapping in <em>site.xml</em> must always refer to <strong>the runtime name of the controller</strong>. In our case, the source file of our controller is <em>/controllers/previewMovie</em> <strong><em>.ts</em></strong>, but at compile time, this is compiled into <strong><em>.js</em></strong> which is used at XP runtime.</p>
 </div>
 <div class="paragraph">
 <p>Second, controller mappings use qualified content type names that have <strong>the name of the app</strong> in it: <code>com.enonic.app.react4xp</code>. If/when you use a different name for your app, make sure to update content type references like this, e.g. <code>&lt;match&gt;type:'my.awesome.app:movie'&lt;/match&gt;</code></p>
@@ -881,9 +881,9 @@ export default Movie;</code></pre>
 <p>Now, with that mapping set up, we can add the <em>previewMovie</em> controller:</p>
 </div>
 <div class="listingblock">
-<div class="title">controllers/previewMovie.es6:</div>
+<div class="title">controllers/previewMovie.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const portal = require('/lib/xp/portal');
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
 
 const forceArray = maybeArray =&gt; {
@@ -893,7 +893,7 @@ const forceArray = maybeArray =&gt; {
     return (maybeArray) ? [maybeArray] : [];
 };
 
-exports.get = function(request) {
+export function get(request) {
     const content = portal.getContent();            <i class="conum" data-value="1"></i><b>(1)</b>
 
     const props = {
@@ -947,7 +947,7 @@ exports.get = function(request) {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>We use <code>getContent</code> to fetch the movie item data as usual (later, we&#8217;ll use guillotine in a similar fashion. This doesn&#8217;t matter as long as the props are constructed according to the signature of <em>Movie.jsx</em>).</td>
+<td>We use <code>getContent</code> to fetch the movie item data as usual (later, we&#8217;ll use guillotine in a similar fashion. This doesn&#8217;t matter as long as the props are constructed according to the signature of <em>Movie.tsx</em>).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -963,7 +963,7 @@ exports.get = function(request) {
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td><code>"Movie"</code> is of course the <a href="jsxpath.ahtml">jsxPath</a> reference to the entry, <em>react4xp/myEntries/Movie.jsx</em>.</td>
+<td><code>"Movie"</code> is of course the <a href="jsxpath.ahtml">jsxPath</a> reference to the entry, <em>react4xp/myEntries/Movie.tsx</em>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
@@ -1031,40 +1031,44 @@ exports.get = function(request) {
 <div class="sect2">
 <h3 id="guillotine_helpers"><a class="link" href="#guillotine_helpers">Guillotine helpers and usage</a></h3>
 <div class="paragraph">
-<p>First off, an introduction to the guillotine helpers at we&#8217;ll be using. Two of them -  <em>headless/guillotineApi.es6</em> and  <em>headless/guillotineRequests.es6</em> - are general-purpose helpers <strong>included in the React4xp starter</strong>, and the third one we&#8217;ll write next.</p>
+<p>First off, an introduction to the guillotine helpers at we&#8217;ll be using. Two of them -  <em>headless/guillotineApi.ts</em> and  <em>headless/guillotineRequests.ts</em> - are general-purpose helpers <strong>included in the React4xp starter</strong>, and the third one we&#8217;ll write next.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="included_helper_guillotineapi_es6"><a class="link" href="#included_helper_guillotineapi_es6">Included helper: guillotineApi.es6</a></h3>
+<h3 id="included_helper_guillotineapi_ts"><a class="link" href="#included_helper_guillotineapi_ts">Included helper: guillotineApi.ts</a></h3>
 <div class="paragraph">
-<p>The most central of the helpers and the first one we&#8217;ll use, is <strong><em>headless/guillotineApi.es6</em></strong>. If we strip away a little boilerplate, the bare essence of it looks like this:</p>
+<p>The most central of the helpers and the first one we&#8217;ll use, is <strong><em>headless/guillotineApi.ts</em></strong>. If we strip away a little boilerplate, the bare essence of it looks like this:</p>
 </div>
 <div class="listingblock">
-<div class="title">headless/guillotineApi.es6:</div>
+<div class="title">headless/guillotineApi.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const guillotineLib = require('/lib/guillotine');
-const graphQlLib = require('/lib/graphql');
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">// @ts-expect-error No types for /lib/guillotine yet.
+import {createSchema} from '/lib/guillotine';
 
-const SCHEMA = guillotineLib.createSchema();
-
-const executeQuery = (query, variables) =&gt;         <i class="conum" data-value="1"></i><b>(1)</b>
-    graphQlLib.execute(SCHEMA, query, variables);
+// @ts-expect-error No types for /lib/graphql yet.
+import {execute} from '/lib/graphql';
 
 
+const SCHEMA = createSchema();
 
-// Use in XP controllers:
-exports.executeQuery = executeQuery;                <i class="conum" data-value="2"></i><b>(2)</b>
+
+// Expose and use in XP controllers:
+export const executeQuery = (query, variables) =&gt;         <i class="conum" data-value="1"></i><b>(1)</b> <i class="conum" data-value="2"></i><b>(2)</b>
+  execute(SCHEMA, query, variables);
 
 
 // Expose and use in POST requests from frontend:
-exports.post = req =&gt; {                             <i class="conum" data-value="3"></i><b>(3)</b>
-    var body = JSON.parse(req.body);
+export const post = req =&gt; {                             <i class="conum" data-value="3"></i><b>(3)</b>
+  const {
+    query,
+    variables
+  } = JSON.parse(req.body);
 
-    return {
-        contentType: 'application/json',
-        body: executeQuery(body.query, body.variables),
-        status: 200
-    };
+  return {
+    contentType: 'application/json',
+    body: executeQuery(query, variables),
+    status: 200
+  };
 };</code></pre>
 </div>
 </div>
@@ -1100,7 +1104,7 @@ This endpoint is <strong>disabled by default</strong> in the starter, to encoura
 <p>&#8203;<br></p>
 </div>
 <div class="paragraph">
-<p>The second included helper, <a href="#guillotine_request_helper">guillotineRequest.es6</a>, is a <code>fetch</code> wrapper to simplify guillotine requests at the frontend. We&#8217;ll take a look at that later.</p>
+<p>The second included helper, <a href="#guillotine_request_helper">guillotineRequest.ts</a>, is a <code>fetch</code> wrapper to simplify guillotine requests at the frontend. We&#8217;ll take a look at that later.</p>
 </div>
 <div class="paragraph">
 <p>&#8203;<br></p>
@@ -1118,11 +1122,11 @@ This endpoint is <strong>disabled by default</strong> in the starter, to encoura
 <p>Let&#8217;s go ahead an write this:</p>
 </div>
 <div id="movielistrequests" class="listingblock">
-<div class="title">headless/helpers/movieListRequests.es6:</div>
+<div class="title">headless/helpers/movieListRequests.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">// Used by both backend and frontend (the movie-list part controller, and react4xp/entries/MovieList.jsx)
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">// Used by both backend and frontend (the movie-list part controller, and react4xp/entries/MovieList.jsx)
 
-             <i class="conum" data-value="1"></i><b>(1)</b>
+<i class="conum" data-value="1"></i><b>(1)</b>
 export const buildQueryListMovies = () =&gt; `
 query(
     $first:Int!,
@@ -1132,13 +1136,13 @@ query(
 ) {
   guillotine {
     query(
-        contentTypes: ["com.enonic.app.react4xp:movie"],
+        contentTypes: ["com.enonic.app.samples_react4xp:movie"],
         query: $parentPathQuery,
         first: $first,
         offset: $offset,
         sort: $sort
     ) {
-      ... on com_enonic_app_react4xp_Movie {
+      ... on com_enonic_app_samples_react4xp_Movie {
         _id
         displayName
         data {
@@ -1156,7 +1160,7 @@ query(
   }
 }`;
 
-             <i class="conum" data-value="2"></i><b>(2)</b>
+<i class="conum" data-value="2"></i><b>(2)</b>
 export const buildParentPathQuery = (parentPath) =&gt; `_parentPath = '/content${parentPath}'`;
 
 
@@ -1170,7 +1174,7 @@ const forceArray = maybeArray =&gt; {
     return (maybeArray) ? [maybeArray] : [];
 };
 
-             <i class="conum" data-value="3"></i><b>(3)</b>
+<i class="conum" data-value="3"></i><b>(3)</b>
 // Adapts the output from the guillotine query to the MovieList props signature
 export const extractMovieArray = responseData =&gt; responseData.data.guillotine.query
     .filter( movieItem =&gt; movieItem &amp;&amp; typeof movieItem === 'object' &amp;&amp; Object.keys(movieItem).indexOf('data') !== -1)
@@ -1287,47 +1291,82 @@ Remember that this query hardcodes qualified names to a content type, that conta
 <p>The actual controller:</p>
 </div>
 <div class="listingblock">
-<div class="title">site/parts/movie-list/movie-list.es6:</div>
+<div class="title">site/parts/movie-list/movie-list.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import type {PartComponent} from '@enonic-types/core';
 
-const guillotine = require('/headless/guillotineApi');  <i class="conum" data-value="1"></i><b>(1)</b>
-const { buildQueryListMovies, buildParentPathQuery, extractMovieArray } = require('/headless/helpers/movieListRequests');
+import {toStr} from '@enonic/js-utils/value/toStr';
+import {
+  getComponent,
+  getContent,
+  getSite
+} from '/lib/xp/portal';
+import {render} from '/lib/enonic/react4xp';
+import {executeQuery} from '/headless/guillotineApi';      <i class="conum" data-value="1"></i><b>(1)</b>
+import {
+  buildQueryListMovies,
+  buildParentPathQuery,
+  extractMovieArray
+} from '/headless/helpers/movieListRequests';
 
 
-exports.get = function(request) {
-    const content = portal.getContent();
-    const component = portal.getComponent();
+declare global {
+  interface XpPartMap {
+    ['com.enonic.app.samples-react4xp:movie-list']: {
+      descending?: boolean
+      movieCount: number
+      sortBy?: 'displayName'|'data.year'|'createdTime'
+    }
+  }
+}
 
-    const sortExpression = `${component.config.sortBy} ${     <i class="conum" data-value="2"></i><b>(2)</b>
-        component.config.descending ? 'DESC' : 'ASC'
-    }`;
+type MovieListComponent = PartComponent&lt;'com.enonic.app.samples-react4xp:movie-list'&gt;
 
-    const query = buildQueryListMovies();                     <i class="conum" data-value="3"></i><b>(3)</b>
 
-    const variables = {                                       <i class="conum" data-value="4"></i><b>(4)</b>
-        first: component.config.movieCount,
-        offset: 0,
-        sort: sortExpression,
-        parentPathQuery: buildParentPathQuery(content._path)
-    };
+const ENTRY = 'MovieList';
+// const ENTRY = 'MovieList2';
+// const ENTRY = 'MovieList3';
+// const ENTRY = 'MovieList4';
 
-    const guillotineResult = guillotine.executeQuery(query, variables);     <i class="conum" data-value="5"></i><b>(5)</b>
 
-    const movies = extractMovieArray(guillotineResult);         <i class="conum" data-value="6"></i><b>(6)</b>
+export function get(request) {
+  const content = getContent();
+  const component = getComponent&lt;MovieListComponent&gt;();
+  const {
+    descending = false,
+    movieCount = 0,
+    sortBy = 'createdTime'
+  } = component.config;
 
-    return React4xp.render(
-        'MovieList',
-        {                                                       <i class="conum" data-value="7"></i><b>(7)</b>
-            movies,
-            apiUrl: `./${portal.getSite()._path}/api/headless`,
-            parentPath: content._path,
-            movieCount: component.config.movieCount,
-            sortExpression
-        },
-        request
-    );
+  const sortExpression = `${sortBy} ${                     <i class="conum" data-value="2"></i><b>(2)</b>
+      descending ? 'DESC' : 'ASC'
+  }`;
+
+  const query = buildQueryListMovies();                    <i class="conum" data-value="3"></i><b>(3)</b>
+
+  const variables = {                                      <i class="conum" data-value="4"></i><b>(4)</b>
+    first: movieCount,
+    offset: 0,
+    sort: sortExpression,
+    parentPathQuery: buildParentPathQuery(content._path)
+  };
+
+  const guillotineResult = executeQuery(query, variables); <i class="conum" data-value="5"></i><b>(5)</b>
+  log.info('guillotineResult: %s', toStr(guillotineResult));
+
+  const movies = extractMovieArray(guillotineResult);      <i class="conum" data-value="6"></i><b>(6)</b>
+
+  return render(
+    ENTRY,
+    {                                                      <i class="conum" data-value="7"></i><b>(7)</b>
+      movies,
+      apiUrl: `./${getSite()._path}/api/headless`,
+      parentPath: content._path,
+      movieCount: component.config.movieCount,
+      sortExpression
+    },
+    request
+  );
 };</code></pre>
 </div>
 </div>
@@ -1355,11 +1394,11 @@ exports.get = function(request) {
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Extract <code>movies</code> props (an array of objects with the same signature as the props for <em>Movie.jsx</em>) from the result of the query,</td>
+<td>Extract <code>movies</code> props (an array of objects with the same signature as the props for <em>Movie.tsx</em>) from the result of the query,</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>Render a <em>MovieList</em> entry with the <code>movies</code> props (as well as some additional props that we will need later for making the same guillotine query from the frontend. Especially note the <code>apiUrl</code> prop: this is basically just the URL to the site itself, with <code>/api/headless</code> appended to it. When we later <a href="#expose_api">expose the guillotine API</a> to the frontend, this is the URL to the API - specifically, the POST method in <em>guillotineApi.es6</em>).</td>
+<td>Render a <em>MovieList</em> entry with the <code>movies</code> props (as well as some additional props that we will need later for making the same guillotine query from the frontend. Especially note the <code>apiUrl</code> prop: this is basically just the URL to the site itself, with <code>/api/headless</code> appended to it. When we later <a href="#expose_api">expose the guillotine API</a> to the frontend, this is the URL to the API - specifically, the POST method in <em>guillotineApi.ts</em>).</td>
 </tr>
 </table>
 </div>
@@ -1373,9 +1412,9 @@ exports.get = function(request) {
 <p>We&#8217;re still missing that <strong><em>MovieList</em> entry</strong> that will display the list of movie items:</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/myEntries/MovieList.jsx:</div>
+<div class="title">react4xp/myEntries/MovieList.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react'
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react'
 
 import './MovieList.scss';
 
@@ -1408,7 +1447,7 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 <p>A lot of the props aren&#8217;t used yet, just the <code>movies</code> array. The rest of the props are a preparation for later.</p>
 </li>
 <li>
-<p>Each item object in the array in <code>movies</code> is just mapped onto an imported <em>shared/Movie.jsx</em> component: the same react component that&#8217;s used to render the movie previews in Content Studio.</p>
+<p>Each item object in the array in <code>movies</code> is just mapped onto an imported <em>shared/Movie.tsx</em> component: the same react component that&#8217;s used to render the movie previews in Content Studio.</p>
 </li>
 </ul>
 </div>
@@ -1489,7 +1528,7 @@ As usual, click Preview to see the rendering in a tab of its own. A preview brow
 <div class="sect2">
 <h3 id="expose_api"><a class="link" href="#expose_api">Exposing the guillotine API</a></h3>
 <div class="paragraph">
-<p>The <code>post</code> method in the included <em>guillotineApi.es6</em> is nearly ready to use. All it needs to be activated for API requests from outside, is a controller mapping. We&#8217;ll add that next to the mapping <a href="#controller_mapping">we&#8217;ve already added</a>.</p>
+<p>The <code>post</code> method in the included <em>guillotineApi.ts</em> is nearly ready to use. All it needs to be activated for API requests from outside, is a controller mapping. We&#8217;ll add that next to the mapping <a href="#controller_mapping">we&#8217;ve already added</a>.</p>
 </div>
 <div class="paragraph">
 <p>But first, a word of caution about doing this in other projects:</p>
@@ -1502,13 +1541,13 @@ As usual, click Preview to see the rendering in a tab of its own. A preview brow
 </td>
 <td class="content">
 <div class="paragraph">
-<p>In the included form from the React4xp starter, <em>guillotineAPI.es6</em> is as bare-bone as it gets, and primarily meant as a stepping stone for developers to expand from.</p>
+<p>In the included form from the React4xp starter, <em>guillotineAPI.ts</em> is as bare-bone as it gets, and primarily meant as a stepping stone for developers to expand from.</p>
 </div>
 <div class="paragraph">
-<p>Guillotine is a read-only interface, but still: after adding the controller mapping to an unchanged <em>guillotineAPI.es6</em>, it&#8217;s opened to receiving and <strong>executing any guillotine query</strong> from the frontend, technically exposing any data from the content repo to being read.</p>
+<p>Guillotine is a read-only interface, but still: after adding the controller mapping to an unchanged <em>guillotineAPI.ts</em>, it&#8217;s opened to receiving and <strong>executing any guillotine query</strong> from the frontend, technically exposing any data from the content repo to being read.</p>
 </div>
 <div class="paragraph">
-<p>Before using it in production, <strong>it&#8217;s highly recommended to implement your own security measures</strong> in/around <em>guillotineAPI.es6</em>. For example authorization/permissions-checking/filtering what data is available/keeping the actual query string on the backend and only exposing the <code>variables</code> object, etc - depending on your environment and use case.</p>
+<p>Before using it in production, <strong>it&#8217;s highly recommended to implement your own security measures</strong> in/around <em>guillotineAPI.ts</em>. For example authorization/permissions-checking/filtering what data is available/keeping the actual query string on the backend and only exposing the <code>variables</code> object, etc - depending on your environment and use case.</p>
 </div>
 </td>
 </tr>
@@ -1546,43 +1585,43 @@ As usual, click Preview to see the rendering in a tab of its own. A preview brow
 </div>
 </div>
 <div class="sect2">
-<h3 id="guillotine_request_helper"><a class="link" href="#guillotine_request_helper">Included helper: guillotineRequest.es6</a></h3>
+<h3 id="guillotine_request_helper"><a class="link" href="#guillotine_request_helper">Included helper: guillotineRequest.ts</a></h3>
 <div class="paragraph">
-<p>Time to add some code to the existing <em>MovieList.jsx</em> so it can fetch data from the guillotine endpoint. To easily get started with that, we&#8217;ll use the second helper module <strong>included in the react4xp starter</strong>: <em>headless/guillotineRequest.es6</em>
-(the first of the two helpers is of course <a href="#guillotine_helpers">guillotineApi.es6</a>).</p>
+<p>Time to add some code to the existing <em>MovieList.tsx</em> so it can fetch data from the guillotine endpoint. To easily get started with that, we&#8217;ll use the second helper module <strong>included in the react4xp starter</strong>: <em>headless/guillotineRequest.ts</em>
+(the first of the two helpers is of course <a href="#guillotine_helpers">guillotineApi.ts</a>).</p>
 </div>
 <div class="paragraph">
 <p>This too has some convenience error handling and boilerplate like default parameter values/functions, but if we skip that, the bare essence is a <code>fetch</code> wrapper:</p>
 </div>
 <div class="listingblock">
-<div class="title">headless/guillotineRequest.es6:</div>
+<div class="title">headless/guillotineRequest.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const doGuillotineRequest = ({
-    url,                        <i class="conum" data-value="1"></i><b>(1)</b>
-    query,                      <i class="conum" data-value="2"></i><b>(2)</b>
-    variables,                  <i class="conum" data-value="3"></i><b>(3)</b>
-    handleResponseErrorFunc,    <i class="conum" data-value="4"></i><b>(4)</b>
-    extractDataFunc,            <i class="conum" data-value="5"></i><b>(5)</b>
-    handleDataFunc,             <i class="conum" data-value="6"></i><b>(6)</b>
-    catchErrorsFunc             <i class="conum" data-value="7"></i><b>(7)</b>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">const doGuillotineRequest = ({
+  url,                        <i class="conum" data-value="1"></i><b>(1)</b>
+  query,                      <i class="conum" data-value="2"></i><b>(2)</b>
+  variables,                  <i class="conum" data-value="3"></i><b>(3)</b>
+  handleResponseErrorFunc,    <i class="conum" data-value="4"></i><b>(4)</b>
+  extractDataFunc,            <i class="conum" data-value="5"></i><b>(5)</b>
+  handleDataFunc,             <i class="conum" data-value="6"></i><b>(6)</b>
+  catchErrorsFunc             <i class="conum" data-value="7"></i><b>(7)</b>
 }) =&gt; {
 
-    fetch(
-        url,
-        {
-            method: "POST",
-            body: JSON.stringify({
-                query,
-                variables}
-            ),
-            credentials: "same-origin",
-        }
-    )
-        .then(handleResponseErrorFunc)
-        .then(response =&gt; response.json())
-        .then(extractDataFunc)
-        .then(handleDataFunc)
-        .catch(catchErrorsFunc)
+  fetch(
+      url,
+      {
+          method: "POST",
+          body: JSON.stringify({
+              query,
+              variables}
+          ),
+          credentials: "same-origin",
+      }
+  )
+      .then(handleResponseErrorFunc)
+      .then(response =&gt; response.json())
+      .then(extractDataFunc)
+      .then(handleDataFunc)
+      .catch(catchErrorsFunc)
 };
 
 export default doGuillotineRequest;</code></pre>
@@ -1598,7 +1637,7 @@ export default doGuillotineRequest;</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td><code>url</code> (string, mandatory): URL to the API endpoint, i.e. to the controller mapping of <code>headless/guillotineApi.es6</code>: <code>&lt;site-url&gt;/api/headless</code>.</td>
+<td><code>url</code> (string, mandatory): URL to the API endpoint, i.e. to the controller mapping of <code>headless/guillotineApi.ts</code>: <code>&lt;site-url&gt;/api/headless</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -1633,7 +1672,7 @@ export default doGuillotineRequest;</code></pre>
 <div class="sect2">
 <h3 id="frontend_guillotine_request"><a class="link" href="#frontend_guillotine_request">Frontend guillotine request</a></h3>
 <div class="paragraph">
-<p>Now we&#8217;re ready to <strong>add a guillotine call from the frontend</strong>, specifically to <em>MovieList.jsx</em>. Here&#8217;s what we&#8217;ll do:</p>
+<p>Now we&#8217;re ready to <strong>add a guillotine call from the frontend</strong>, specifically to <em>MovieList.tsx</em>. Here&#8217;s what we&#8217;ll do:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1641,7 +1680,7 @@ export default doGuillotineRequest;</code></pre>
 <p>Focus on the guillotine request and just add a click listener that asks for the <em>next X movie items</em> in the list after the ones that are displayed</p>
 </li>
 <li>
-<p>&#8230;&#8203;where X is the number of movies rendered to begin with. So if the <em>movie-list</em> part is configured to do the first rendering from the controller with X=3 movies, the guillotine request in <em>MovieList.jsx</em> will ask for data about the movies 4 through 6. Or in the language of our guillotine query: <code>first: 3, offset: 3</code>.</p>
+<p>&#8230;&#8203;where X is the number of movies rendered to begin with. So if the <em>movie-list</em> part is configured to do the first rendering from the controller with X=3 movies, the guillotine request in <em>MovieList.tsx</em> will ask for data about the movies 4 through 6. Or in the language of our guillotine query: <code>first: 3, offset: 3</code>.</p>
 </li>
 <li>
 <p>It should also keep counting so that if we click one more time, it should ask for the next X movies <em>after</em> the ones it previously found</p>
@@ -1655,7 +1694,7 @@ export default doGuillotineRequest;</code></pre>
 </ul>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/myEntries/MovieList.jsx:</div>
+<div class="title">react4xp/myEntries/MovieList2.tsx:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React, { useState, useEffect } from 'react';     <i class="conum" data-value="1"></i><b>(1)</b>
 
@@ -1718,7 +1757,7 @@ const MovieList = ({movies, apiUrl, parentPath, movieCount, sortExpression}) =&g
     // Actual rendering:
 
     return (
-        &lt;div className="movieList" onClick={makeRequest}&gt;           <i class="conum" data-value="12"></i><b>(12)</b>
+        &lt;div className="movieList" onClick={makeRequest}&gt;           {/* &lt;12&gt; */}
             {movies
                 ? movies.map(movie =&gt;
                         &lt;Movie key={movie.id} {...movie} /&gt;
@@ -1744,7 +1783,7 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Import <code>doGuillotineRequest</code> described moments ago, and also the same helpers from <em>headless/helpers/movieListRequests.es6</em> that we&#8217;re already using <a href="#movie-list-part-controller">in the part controller</a>.</td>
+<td>Import <code>doGuillotineRequest</code> described moments ago, and also the same helpers from <em>headless/helpers/movieListRequests.ts</em> that we&#8217;re already using <a href="#movie-list-part-controller">in the part controller</a>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -1776,7 +1815,7 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="10"></i><b>10</b></td>
-<td>And also like in the controller, we use <code>extractMovieArray</code> to convert guillotine results to a data format that corresponds to an array of <em>Movie.jsx</em> props - just by passing the function into <code>doGuillotineRequest</code> as the <code>extractDataFunc</code> parameter,</td>
+<td>And also like in the controller, we use <code>extractMovieArray</code> to convert guillotine results to a data format that corresponds to an array of <em>Movie.tsx</em> props - just by passing the function into <code>doGuillotineRequest</code> as the <code>extractDataFunc</code> parameter,</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="11"></i><b>11</b></td>
@@ -1810,9 +1849,9 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 <p>React is <em>very</em> eager to do this whenever a component state is updated, so we&#8217;ll let it <strong>render from the state</strong> instead of directly from the <code>movie</code> prop:</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/myEntries/MovieList.jsx:</div>
+<div class="title">react4xp/myEntries/MovieList3.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React, { useState, useEffect } from 'react'
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React, { useState, useEffect } from 'react'
 
 import './MovieList.scss';
 
@@ -1980,15 +2019,15 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 <p>We have arrived! The final step in this chapter:</p>
 </div>
 <div class="paragraph">
-<p>We&#8217;ll finish <em>MovieList.jsx</em> by replacing the click listener with a scroll listener. The scroll listener will check if the page has been scrolled almost all the way to the bottom (i.e. the bottom of the movie-list container is just a little bit below the bottom of the screen) and triggers the same procedure if it has.</p>
+<p>We&#8217;ll finish <em>MovieList.tsx</em> by replacing the click listener with a scroll listener. The scroll listener will check if the page has been scrolled almost all the way to the bottom (i.e. the bottom of the movie-list container is just a little bit below the bottom of the screen) and triggers the same procedure if it has.</p>
 </div>
 <div class="paragraph">
-<p>With one additional change to the procedure: the trigger should disable the scroll listener temporarily, only re-enabling it when we get some data back (or after a delay). This is to avoid flooding <em>guillotineApi.es6</em> with requests - since scroll events are fast and numerous.</p>
+<p>With one additional change to the procedure: the trigger should disable the scroll listener temporarily, only re-enabling it when we get some data back (or after a delay). This is to avoid flooding <em>guillotineApi.ts</em> with requests - since scroll events are fast and numerous.</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/myEntries/MovieList.jsx:</div>
+<div class="title">react4xp/myEntries/MovieList4.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React, { useState, useEffect } from 'react'
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React, { useState, useEffect } from 'react'
 
 import './MovieList.scss';
 
@@ -2110,7 +2149,7 @@ const MovieList = ({movies, apiUrl, parentPath, movieCount, sortExpression}) =&g
     // Actual rendering:
 
     return (
-        &lt;div id={listContainerId} className="movieList"&gt;            <i class="conum" data-value="9"></i><b>(9)</b>
+        &lt;div id={listContainerId} className="movieList"&gt;            {/* &lt;9&gt; */}
             {state.movies
                 ? state.movies.map(movie =&gt;
                         &lt;Movie key={movie.id} {...movie} /&gt;
@@ -2141,7 +2180,7 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>In the component-initializing function (remember <code>useEffect</code>), we want to call <code>initScrollListener</code>. It&#8217;s a one-time function that sets up a scroll listener that will last for the lifespan of the component. However, remember that <em>MovieList.jsx</em> is also server-side rendered from the controller, so this very same script will run serverSide by React4xp! We check for <code>window.navigator</code> here because <strong>we only want this scroll listener setup to run in a browser context</strong>, not during SSR. Not only because a scroll listener makes no sense during server-side rendering, but to prevent errors that break the rendering (see the <a href="#serverbrowserbreakage">note below</a>).</td>
+<td>In the component-initializing function (remember <code>useEffect</code>), we want to call <code>initScrollListener</code>. It&#8217;s a one-time function that sets up a scroll listener that will last for the lifespan of the component. However, remember that <em>MovieList.tsx</em> is also server-side rendered from the controller, so this very same script will run serverSide by React4xp! We check for <code>window.navigator</code> here because <strong>we only want this scroll listener setup to run in a browser context</strong>, not during SSR. Not only because a scroll listener makes no sense during server-side rendering, but to prevent errors that break the rendering (see the <a href="#serverbrowserbreakage">note below</a>).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
@@ -2229,7 +2268,7 @@ This section is not a vital part of the rest of this or the next chapter. Feel f
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-20 08:22:35 UTC
+Last updated 2023-10-03 13:10:19 UTC
 </div>
 </div>
 </body>

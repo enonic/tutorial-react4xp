@@ -467,7 +467,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>However, we won&#8217;t use the <code>React4xp.render</code> shorthand function from before. Instead, we&#8217;ll look at a more <strong>explicit React4xp syntax</strong>:</p>
+<p>However, we won&#8217;t use the <code>render</code> shorthand function from before. Instead, we&#8217;ll look at a more <strong>explicit React4xp syntax</strong>:</p>
 <div class="olist loweralpha">
 <ol class="loweralpha">
 <li>
@@ -509,15 +509,15 @@ Rendering multiple entries like we do here will create multiple <a href="entries
 <pre class="highlight"><code class="language-files" data-lang="files">site/parts/
     custom-flow/            <i class="conum" data-value="1"></i><b>(1)</b>
         custom-flow.xml
-        custom-flow.es6
+        custom-flow.ts
         custom-flow-view.html
 
     color/
-        color.jsx           <i class="conum" data-value="2"></i><b>(2)</b>
+        color.tsx           <i class="conum" data-value="2"></i><b>(2)</b>
 
 site/pages/
     hello-react/
-        hello-react.jsx     <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+        hello-react.tsx     <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -528,11 +528,11 @@ site/pages/
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The already existing entry <a href="pages-parts-and-regions.ahtml#color_jsx"><em>color.jsx</em></a>: a different folder from our <em>custom-flow</em> Part, and different name.</td>
+<td>The already existing entry <a href="pages-parts-and-regions.ahtml#color_jsx"><em>color.tsx</em></a>: a different folder from our <em>custom-flow</em> Part, and different name.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>We&#8217;re also reusing another existing entry <a href="editorial-data-and-props.ahtml#hello_react_jsx_modified"><em>hello-react.jsx</em></a> (with props, not the first hardcoded one), located under <em>site/<strong>pages</strong>/hello-react/</em>. So even though what we&#8217;re making here is a Part, an entry from a Page, or anywhere, is fine: when using jsxPaths, all entries are equal.</td>
+<td>We&#8217;re also reusing another existing entry <a href="editorial-data-and-props.ahtml#hello_react_jsx_modified"><em>hello-react.tsx</em></a> (with props, not the first hardcoded one), located under <em>site/<strong>pages</strong>/hello-react/</em>. So even though what we&#8217;re making here is a Part, an entry from a Page, or anywhere, is fine: when using jsxPaths, all entries are equal.</td>
 </tr>
 </table>
 </div>
@@ -609,11 +609,11 @@ site/pages/
 <div class="title">custom-flow-view.html:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-html" data-lang="html">&lt;div class="custom-flow-view"&gt;
-    &lt;section class="color-section"&gt;
-        &lt;h2 data-th-text="|Ain't nothing but a ${color} thing|"&gt;&lt;/h2&gt;
-        &lt;p&gt;Here it comes:&lt;/p&gt;
-        &lt;div data-th-id="${targetId}"&gt;&lt;/div&gt;
-    &lt;/section&gt;
+  &lt;section class="color-section"&gt;
+      &lt;h2 data-th-text="|Ain't nothing but a ${color} thing|"&gt;&lt;/h2&gt;
+      &lt;p&gt;Here it comes:&lt;/p&gt;
+      &lt;div data-th-id="${targetId}"&gt;&lt;/div&gt;
+  &lt;/section&gt;
 &lt;/div&gt;</code></pre>
 </div>
 </div>
@@ -660,36 +660,58 @@ site/pages/
 </table>
 </div>
 <div class="listingblock">
-<div class="title">custom-flow.es6</div>
+<div class="title">custom-flow.ts</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
-const thymeleaf = require('/lib/thymeleaf');
-
-const view = resolve('custom-flow-view.html');
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import type {PartComponent} from '@enonic-types/core';
 
 
-exports.get = function(request) {
+import {getComponent} from '/lib/xp/portal';
+import {React4xp} from '/lib/enonic/react4xp';
+// @ts-expect-error No types for /lib/thymeleaf yet.
+import {render as renderThymeleaf} from '/lib/thymeleaf';
+
+
+declare global {
+  interface XpPartMap {
+    ['com.enonic.app.samples-react4xp:custom-flow']: {
+      color: string
+      greeting: string
+      greetee: string
+      things: string
+      startCount: number
+    }
+  }
+}
+
+
+const VIEW = resolve('custom-flow-view.html');
+
+
+export function get(request) {
     // Fetching data from the part config:
-    const component = portal.getComponent();
-    const partConfig = (component || {}).config || {};
+    const component = getComponent&lt;PartComponent&lt;'com.enonic.app.samples-react4xp:custom-flow'&gt;&gt;();
+    const {
+        color,
+        greeting,
+        greetee,
+        things,
+        startCount
+    } = component.config;
 
-
-
-    // Setting up the data-holding object for hello-react.jsx:
-    const helloObj = new React4xp(`site/pages/hello-react/hello-react`);     <i class="conum" data-value="1"></i><b>(1)</b>
+    // Setting up the data-holding object for hello-react2.tsx:
+    const helloObj = new React4xp(`site/pages/hello-react2/hello-react2`);     <i class="conum" data-value="1"></i><b>(1)</b>
     helloObj.setProps({                                                      <i class="conum" data-value="2"></i><b>(2)</b>
-            message: partConfig.greeting,
-            messageTarget: partConfig.greetee,
-            droppableThing: partConfig.things,
-            initialCount: partConfig.startCount
+            message: greeting,
+            messageTarget: greetee,
+            droppableThing: things,
+            initialCount: startCount
         })
 
 
-    // Setting up colorObj, the data-holding object for color.jsx:
+    // Setting up colorObj, the data-holding object for color.tsx:
     const colorObj = new React4xp(`site/parts/color/color`);
     colorObj                                                                 <i class="conum" data-value="3"></i><b>(3)</b>
-        .setProps({ color: partConfig.color })
+        .setProps({ color })
         .setId("myColorThing")                                               <i class="conum" data-value="4"></i><b>(4)</b>
         .uniqueId()                                                          <i class="conum" data-value="5"></i><b>(5)</b>
 
@@ -700,15 +722,15 @@ exports.get = function(request) {
         color: colorObj.props.color,
         targetId: colorObj.react4xpId
     }
-    const colorSectionContainer = thymeleaf.render(view, thymeleafModel);    <i class="conum" data-value="6"></i><b>(6)</b>
+    const colorSectionContainer = renderThymeleaf(VIEW, thymeleafModel);    <i class="conum" data-value="6"></i><b>(6)</b>
 
 
-    // Render the color.jsx entry into the same-ID target container in the container HTML:
+    // Render the color.tsx entry into the same-ID target container in the container HTML:
     const colorBody = colorObj.renderBody({
         body: colorSectionContainer,                                         <i class="conum" data-value="7"></i><b>(7)</b>
         request
     });
-    // Rendering the activating page contributions of color.jsx.
+    // Rendering the activating page contributions of color.tsx.
     const colorPageContributions = colorObj.renderPageContributions({
         pageContributions: {                                                 <i class="conum" data-value="8"></i><b>(8)</b>
             bodyEnd: `&lt;script&gt;console.log('Created: ${colorObj.props.color} thing.');&lt;/script&gt;`
@@ -717,7 +739,7 @@ exports.get = function(request) {
     });
 
 
-    // Rendering helloObj's entry into colorBody (which is basically custom-flow-view.html with color.jsx added),
+    // Rendering helloObj's entry into colorBody (which is basically custom-flow-view.html with color.tsx added),
     // using client-side rendering only outside of Content Studio:
     const finalBody = helloObj.renderBody({
         body: colorBody,                                                     <i class="conum" data-value="10"></i><b>(10)</b>
@@ -740,7 +762,7 @@ exports.get = function(request) {
         body: finalBody,
         pageContributions: finalPageContributions
     }
-};</code></pre>
+}</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -892,7 +914,7 @@ colorObj.uniqueId();`.</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-20 08:22:35 UTC
+Last updated 2023-10-03 13:10:19 UTC
 </div>
 </div>
 </body>

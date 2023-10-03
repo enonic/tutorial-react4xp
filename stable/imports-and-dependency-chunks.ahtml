@@ -487,13 +487,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Using an entry from a <strong>myEntries</strong> folder outside of the <em>site/</em> structure</p>
 </li>
 <li>
-<p>Letting the entry itself <strong>import and nest its own react components</strong>. Imports like this are just regular frontend ES6, and happen at compile time, done by webpack.</p>
+<p>Letting the entry itself <strong>import and nest its own react components</strong>.</p>
 </li>
 <li>
 <p>Importing those secondary assets from a shared non-entry folder, and marking that folder so everything in it is turned into a separate bundle - a <strong>dependency chunk</strong>. These chunks are repeatedly-used, effectively-cached and rarely-downloaded "library assets" of shared secondary components. They&#8217;re meant to take care of bigger stuff while keeping the footprint of the entry small (while still automatically compiled and tracked by React4xp).</p>
 </li>
 <li>
-<p>Our react components will need some compilation that React4xp doesn&#8217;t handle: styling our react components (but it could be anything on the webpack step: asset handling, loaders etc). So we&#8217;ll see how to <strong>add custom webpack config</strong> to the React4xp setup.</p>
+<p>The react components import some styling from <code>scss</code> files, which React4xp doesn&#8217;t support by default: So we&#8217;ll see how to <strong>add custom webpack config</strong>.</p>
 </li>
 </ul>
 </div>
@@ -502,20 +502,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-files" data-lang="files">site/parts/
     multi-color/
-        multi-color.es6
+        multi-color.ts
         multi-color.xml
 
 react4xp/
     myEntries/
-        MultiColor.jsx
         MultiColor.scss
+        MultiColor.tsx
     shared/
-        ActiveColorOval.jsx
         ActiveColorOval.scss
-        Button.jsx
+        ActiveColorOval.tsx
         Button.scss
-        ColorButtons.jsx
+        Button.tsx
         ColorButtons.scss
+        ColorButtons.tsx
         shared-styles.scss
 
 react4xp.config.js
@@ -569,12 +569,12 @@ webpack.config.react4xp.js</code></pre>
     &lt;description&gt;Add your own clickable colors&lt;/description&gt;
 
     &lt;form&gt;
-        &lt;input name="SSR" type="CheckBox"&gt;          <i class="conum" data-value="1"></i><b>(1)</b>
+        &lt;input name="SSR" type="CheckBox"&gt;          &lt;!-- &lt;1&gt; --&gt;
             &lt;label&gt;Server-side rendering&lt;/label&gt;
             &lt;occurrences minimum="0" maximum="1"/&gt;
         &lt;/input&gt;
 
-        &lt;input name="colors" type="TextLine"&gt;       <i class="conum" data-value="2"></i><b>(2)</b>
+        &lt;input name="colors" type="TextLine"&gt;       &lt;!-- &lt;2&gt; --&gt;
             &lt;label&gt;Color&lt;/label&gt;
             &lt;occurrences minimum="0" maximum="0"/&gt;
         &lt;/input&gt;
@@ -604,27 +604,49 @@ webpack.config.react4xp.js</code></pre>
 <p>For the Part controller, we don&#8217;t need any more than this in this example:</p>
 </div>
 <div class="listingblock">
-<div class="title">site/parts/multi-color/multi-color.es6:</div>
+<div class="title">site/parts/multi-color/multi-color.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import type {PartComponent} from '@enonic-types/core';
+import type {MultiColorProps} from '../../../react4xp/myEntries/MultiColor.d';
 
-exports.get = function(request) {
-    const component = portal.getComponent();
 
-    const ssr = component.config.SSR       <i class="conum" data-value="1"></i><b>(1)</b>
+import {forceArray} from '@enonic/js-utils/array/forceArray';
+import {getComponent} from '/lib/xp/portal';
+import {render} from '/lib/enonic/react4xp';
 
-    const colors = (component.config.colors || [])   <i class="conum" data-value="2"></i><b>(2)</b>
-        .map( c =&gt; (c || '').trim())
-        .filter(c =&gt; !!c);
 
-    return React4xp.render(
-        "MultiColor",                                <i class="conum" data-value="3"></i><b>(3)</b>
-        { colors },
-        request,
-        { ssr }
-    );
-};</code></pre>
+declare global {
+  interface XpPartMap {
+    ['com.enonic.app.samples-react4xp:multi-color']: {
+      colors?: string|string[]
+      SSR?: boolean
+    }
+  }
+}
+
+
+const ENTRY = 'MultiColor';
+
+
+export function get(request) {
+  const component = getComponent&lt;PartComponent&lt;'com.enonic.app.samples-react4xp:multi-color'&gt;&gt;();
+
+  const {
+    colors = [],
+    SSR: ssr = false, <i class="conum" data-value="1"></i><b>(1)</b>
+  } = component.config;
+
+  const props: MultiColorProps = {
+    colors: forceArray(colors).map(c =&gt; (c || '').trim()).filter(c =&gt; !!c) <i class="conum" data-value="2"></i><b>(2)</b>
+  };
+
+  return render(
+    ENTRY, <i class="conum" data-value="3"></i><b>(3)</b>
+    props,
+    request,
+    { ssr }
+  );
+}</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -639,7 +661,7 @@ exports.get = function(request) {
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>This argument is slightly different compared to previously. <code>"MultiColor"</code> is a <a href="jsxpath.ahtml">jsxPath</a> to an entry, as you&#8217;d expect. But why does it look so&#8230;&#8203; naked? Where does it point to? As we&#8217;ll see <a href="#webpack_config">in a moment</a>, we&#8217;ll set up React4xp to look for entries below an <code>entryDir</code> in React4xp.config.js: <em>src/main/resources/react4xp/myEntries/</em>. Since a jsxPath is relative to the closest parent <code>entryDir</code> and we&#8217;ll put an entry <em>MultiColor.jsx</em> at the root of <em>entries/</em>, the jsxPath becomes just the clean file name.</td>
+<td>This argument is slightly different compared to previously. <code>"MultiColor"</code> is a <a href="jsxpath.ahtml">jsxPath</a> to an entry, as you&#8217;d expect. But why does it look so&#8230;&#8203; naked? Where does it point to? As we&#8217;ll see <a href="#webpack_config">in a moment</a>, we&#8217;ll set up React4xp to look for entries below an <code>entryDir</code> in React4xp.config.js: <em>src/main/resources/react4xp/myEntries/</em>. Since a jsxPath is relative to the closest parent <code>entryDir</code> and we&#8217;ll put an entry <em>MultiColor.tsx</em> at the root of <em>entries/</em>, the jsxPath becomes just the clean file name.</td>
 </tr>
 </table>
 </div>
@@ -667,9 +689,11 @@ exports.get = function(request) {
 <p>This is a <strong>stateful</strong> react component that not only <strong>imports and nests secondary react components</strong>, but also imports <strong>styling</strong> - both its own specific and shared general styling - and relies on webpack and React4xp to handle all the compilation and assets behind the scenes.</p>
 </div>
 <div class="listingblock">
-<div class="title">src/main/resources/react4xp/myEntries/MultiColor.jsx:</div>
+<div class="title">src/main/resources/react4xp/myEntries/MultiColor.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import type {MultiColorProps} from './MultiColor.d';
+
+import React from 'react';
 
 import Button from '../shared/Button';                  <i class="conum" data-value="1"></i><b>(1)</b>
 import ColorButtons from '../shared/ColorButtons';
@@ -678,58 +702,61 @@ import ActiveColorOval from '../shared/ActiveColorOval';
 import './MultiColor.scss';                             <i class="conum" data-value="2"></i><b>(2)</b>
 import '../shared/shared-styles.scss';                  <i class="conum" data-value="3"></i><b>(3)</b>
 
-class MultiColor extends React.Component {              <i class="conum" data-value="4"></i><b>(4)</b>
-    constructor(props) {
-        super(props);
-        this.state = {
-            selected: 0                                 <i class="conum" data-value="5"></i><b>(5)</b>
-        };
 
-        this.shiftUp = this.shiftUp.bind(this);         <i class="conum" data-value="6"></i><b>(6)</b>
-        this.shiftDown = this.shiftDown.bind(this);
-    }
+class MultiColor extends React.Component&lt;MultiColorProps&gt; { <i class="conum" data-value="4"></i><b>(4)</b>
+  state: { selected: number } = { selected: 0 };        <i class="conum" data-value="5"></i><b>(5)</b>
 
-    shiftUp() {                                         <i class="conum" data-value="7"></i><b>(7)</b>
-        this.setState({
-            selected: (this.state.selected + 1) % this.props.colors.length
-        });
-    };
-    shiftDown() {
-        this.setState({
-            selected: (this.props.colors.length + this.state.selected - 1) % this.props.colors.length
-        });
-    };
+  constructor(props: MultiColorProps) {
+      super(props);
+      // this.state = {
+      //     selected: 0                              <i class="conum" data-value="5"></i><b>(5)</b>
+      // };
 
-    render() {
-        const props =  this.props;
-        const state = this.state;
-        return props.colors.length ?                    <i class="conum" data-value="8"></i><b>(8)</b>
-            &lt;div className="multi-color"&gt;
+      this.shiftUp = this.shiftUp.bind(this);         <i class="conum" data-value="6"></i><b>(6)</b>
+      this.shiftDown = this.shiftDown.bind(this);
+  }
 
-                                                        <i class="conum" data-value="9"></i><b>(9)</b>
-                &lt;Button className="my-button" clickFunc={this.shiftDown}&gt;Previous color&lt;/Button&gt;
-                &lt;Button className="my-button" clickFunc={this.shiftUp}&gt;Next color&lt;/Button&gt;
+  shiftUp() {                                         <i class="conum" data-value="7"></i><b>(7)</b>
+      this.setState({
+          selected: (this.state.selected + 1) % this.props.colors.length
+      });
+  };
+  shiftDown() {
+      this.setState({
+          selected: (this.props.colors.length + this.state.selected - 1) % this.props.colors.length
+      });
+  };
 
-                                                        <i class="conum" data-value="10"></i><b>(10)</b>
-                &lt;ActiveColorOval color={props.colors[state.selected]} /&gt;
+  render() {
+      const props = this.props;
+      const state = this.state;
+      return props.colors.length ?                    <i class="conum" data-value="8"></i><b>(8)</b>
+          &lt;div className="multi-color"&gt;
 
-                                                        <i class="conum" data-value="11"></i><b>(11)</b>
-                &lt;ColorButtons colors={props.colors}
-                              selectedIndex={state.selected}
-                              clickFunc={ i =&gt; {
-                                  this.setState({selected: (i) % props.colors.length});
-                              }}
-                /&gt;
+                                                      {/* &lt;9&gt; */}
+              &lt;Button className="my-button" clickFunc={this.shiftDown}&gt;Previous color&lt;/Button&gt;
+              &lt;Button className="my-button" clickFunc={this.shiftUp}&gt;Next color&lt;/Button&gt;
 
-            &lt;/div&gt; :
+                                                      {/* &lt;10&gt; */}
+              &lt;ActiveColorOval color={props.colors[state.selected]} /&gt;
 
-                                                        <i class="conum" data-value="12"></i><b>(12)</b>
-            &lt;p&gt;Add some color!&lt;/p&gt;
-    }
+                                                      {/* &lt;11&gt; */}
+              &lt;ColorButtons colors={props.colors}
+                            selectedIndex={state.selected}
+                            clickFunc={ i =&gt; {
+                                this.setState({selected: (i) % props.colors.length});
+                            }}
+              /&gt;
+
+          &lt;/div&gt; :
+
+                                                      <i class="conum" data-value="12"></i><b>(12)</b>
+          &lt;p&gt;Add some color!&lt;/p&gt;
+  }
 }
 
-                                                        <i class="conum" data-value="13"></i><b>(13)</b>
-export default (props) =&gt; &lt;MultiColor {...props} /&gt;;</code></pre>
+                                                      <i class="conum" data-value="13"></i><b>(13)</b>
+export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -803,11 +830,11 @@ export default (props) =&gt; &lt;MultiColor {...props} /&gt;;</code></pre>
 <div class="title">src/main/resources/react4xp/myEntries/MultiColor.scss:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-sass" data-lang="sass">.my-button {
-    padding: 16px 35px;
-    border-radius: 5px;
-    border: 2px solid black;
-    font-weight: bold;
-    margin: 10px 40px;
+  padding: 16px 35px;
+  border-radius: 5px;
+  border: 2px solid black;
+  font-weight: bold;
+  margin: 10px 40px;
 }</code></pre>
 </div>
 </div>
@@ -859,20 +886,30 @@ It&#8217;s important that these react components are <strong>not <a href="entrie
 <p>There&#8217;s the generic <strong>Button</strong> component. This is used both by <em>MultiColor.jsx</em> and the secondary component <em>ColorButtons.jsx</em>. It gets custom onClick function, HTML class, inline styling (for single-button-specific attributes) and label (<code>children</code>) from <code>props</code> (the spread-out function parameters):</p>
 </div>
 <div class="listingblock">
-<div class="title">src/main/resources/react4xp/shared/Button.jsx:</div>
+<div class="title">src/main/resources/react4xp/shared/Button.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react';
 
-import './Button.scss';    <i class="conum" data-value="1"></i><b>(1)</b>
+import './Button.scss'; <i class="conum" data-value="1"></i><b>(1)</b>
 
-export default ({clickFunc, className, style, children}) =&gt;
-    &lt;button className={className}
-            type="button"
-            onClick={clickFunc}
-            style={style}
-    &gt;
-        {children}
-    &lt;/button&gt;;</code></pre>
+export default ({
+  clickFunc,
+  className,
+  style,
+  children
+}: {
+  clickFunc: () =&gt; void;
+  className: string;
+  style?: React.CSSProperties;
+  children: React.ReactNode;
+}) =&gt;
+  &lt;button className={className}
+          type="button"
+          onClick={clickFunc}
+          style={style}
+  &gt;
+    {children}
+  &lt;/button&gt;;</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -901,31 +938,33 @@ export default ({clickFunc, className, style, children}) =&gt;
 <p>Then there&#8217;s the <strong>ActiveColorOval</strong> component, which just displays <code>props.color</code> inside a circle/ellipse thing, filled with the same color:</p>
 </div>
 <div class="listingblock">
-<div class="title">src/main/resources/react4xp/shared/ActiveColorOval.jsx:</div>
+<div class="title">src/main/resources/react4xp/shared/ActiveColorOval.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react';
 
 import './ActiveColorOval.scss';
 
-export default ({color}) =&gt;
-    &lt;div className="active-color-oval"
-         style={{backgroundColor: color}}
-    &gt;
-        {color}
-    &lt;/div&gt;</code></pre>
+export default ({color}: {color: string}) =&gt;
+  &lt;div className="active-color-oval"
+        style={{backgroundColor: color}}
+  &gt;
+    {color}
+  &lt;/div&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/ActiveColorOval.scss:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">.active-color-oval {
-  margin: 10px 40px;
-  background-color: transparent;
-  padding: 20px;
-  border-radius: 50%;
-  float: right;
-  color: white;
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">import React from 'react';
+
+import './ActiveColorOval.scss';
+
+export default ({color}: {color: string}) =&gt;
+  &lt;div className="active-color-oval"
+        style={{backgroundColor: color}}
+  &gt;
+    {color}
+  &lt;/div&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -938,29 +977,37 @@ export default ({color}) =&gt;
 <p>And finally a <strong>ColorButtons</strong> component. It takes the list of <code>props.colors</code> (from the editorial data), and assigns each of them to a <code>Button</code> labeled with the color, each of them triggering the change-color-selection from <em>MultiColor.jsx</em> with its own specific color index <code>i</code> in the list of colors. In addition, the HTML class name(s) of the buttons is assigned dynamically: the buttons all have a <code>color-button</code> class, and each item checks if its own array index <code>i</code> matches the current <code>selectedIndex</code>. If it does, the class <code>selected</code> is added, making that button differently styled:</p>
 </div>
 <div class="listingblock">
-<div class="title">src/main/resources/react4xp/shared/ColorButtons.jsx:</div>
+<div class="title">src/main/resources/react4xp/shared/ColorButtons.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react';
 
 import Button from './Button';
 
 import './ColorButtons.scss';
 
-export default ({colors, selectedIndex, clickFunc}) =&gt;
-    &lt;ul className="color-list"&gt;
-        {colors.map( (color, i) =&gt;
+export default ({
+  colors,
+  selectedIndex,
+  clickFunc
+}: {
+  colors: string[];
+  selectedIndex: number;
+  clickFunc: (i: number) =&gt; void;
+}) =&gt;
+  &lt;ul className="color-list"&gt;
+    {colors.map( (color, i) =&gt;
 
-            &lt;li key={i} className="color"&gt;
-                &lt;Button className={`color-button${i === selectedIndex ? ' selected' : ''}`}
-                        clickFunc={ ()=&gt;clickFunc(i) }
-                        style={{backgroundColor: color, borderColor: color}}
-                &gt;
-                    {color}
-                &lt;/Button&gt;
-            &lt;/li&gt;
+      &lt;li key={i} className="color"&gt;
+        &lt;Button className={`color-button${i === selectedIndex ? ' selected' : ''}`}
+                clickFunc={ ()=&gt;clickFunc(i) }
+                style={{backgroundColor: color, borderColor: color}}
+        &gt;
+          {color}
+        &lt;/Button&gt;
+      &lt;/li&gt;
 
-        )}
-    &lt;/ul&gt;;</code></pre>
+    )}
+  &lt;/ul&gt;;</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -1082,49 +1129,48 @@ chunkDirs: 'shared'    <i class="conum" data-value="2"></i><b>(2)</b></code></pr
 <div class="listingblock">
 <div class="title">webpack.config.react4xp.js:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-module.exports = function(env, config) {                     <i class="conum" data-value="1"></i><b>(1)</b>
+module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>(1)</b>
 
-    // This makes 'npm link' symlinks in node_modules work:
-    config.resolve.symlinks = true;
+	// This makes 'npm link' symlinks in node_modules work:
+	config.resolve.symlinks = true;
 
-    // Compile .scss and friends:
-    config.module.rules = [                                  <i class="conum" data-value="2"></i><b>(2)</b>
-        ...(config.module.rules || []),
-        {
-            test: /\.((sa|sc|c))ss$/i,
-            use: [
-                MiniCssExtractPlugin.loader,
-                {
-                    loader: 'css-loader',
-                    options: {
-                        importLoaders: 1,
-                        modules: { auto: true },
-                    }
-                },
-                {
-                    loader: 'sass-loader',
-                    options: {
-                        sassOptions: {
-                            outputStyle: 'compressed',
-                        },
-                    },
-                }
-            ]
-        }
-    ];
+	config.module.rules = [ <i class="conum" data-value="2"></i><b>(2)</b>
+		...(config.module.rules || []),
+		{
+			test: /\.((sa|sc|c))ss$/i,
+			use: [
+				MiniCssExtractPlugin.loader,
+				{
+					loader: 'css-loader',
+					options: {
+						importLoaders: 1,
+						modules: { auto: true }
+					}
+				},
+				{
+					loader: 'sass-loader',
+					options: {
+						sassOptions: {
+							outputStyle: 'compressed'
+						}
+					}
+				}
+			]
+		}
+	]
 
-    // Set up how the compiled assets are exported:
-    config.plugins = [
-        ...(config.plugins || []),
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].[contenthash:9].css',
-        }),
-    ];
+	// Set up how the compiled assets are exported:
+	config.plugins = [
+		...(config.plugins || []),
+		new MiniCssExtractPlugin({
+			filename: '[name].css',
+			chunkFilename: '[id].[contenthash:9].css'
+		})
+	]
 
-    return config;                                           <i class="conum" data-value="3"></i><b>(3)</b>
+	return config; <i class="conum" data-value="3"></i><b>(3)</b>
 };</code></pre>
 </div>
 </div>
@@ -1219,12 +1265,19 @@ module.exports = function(env, config) {                     <i class="conum" da
         &lt;title&gt;MultColor&lt;/title&gt;
 
         <i class="conum" data-value="1"></i><b>(1)</b>
-        &lt;link href="(...your.app.service) /react4xp/shared.9fa09c20d.css"
-              rel="stylesheet"
-              type="text/css"/&gt;
-        &lt;link href="(...your.app.service) /react4xp/MultiColor.css"
-              rel="stylesheet"
-              type="text/css"/&gt;
+        &lt;link href="(...your.app.service) react4xp/shared.css" rel="stylesheet" type="text/css" /&gt;
+        &lt;link href="(...your.app.service) react4xp/MultiColor.css" rel="stylesheet" type="text/css" /&gt;
+
+        <i class="conum" data-value="2"></i><b>(2)</b>
+        &lt;script defer src="(...your.app.service) react4xp/globals.4427e5cbb5e9bb528fc6.js"&gt;&lt;/script&gt;
+        &lt;script defer src="(...your.app.service) react4xp/runtime.706073d99846f9d14ca4.js"&gt;&lt;/script&gt;
+        &lt;script defer src="(...your.app.service) react4xp/shared.14922ab45e4fcedcf48c.js"&gt;&lt;/script&gt;
+        &lt;script defer src="(...your.app.service) react4xp/MultiColor.9e3da441a88937e84fe3.js"&gt;&lt;/script&gt;
+        &lt;script defer src="(...your.app.service) react4xp/client-QZN5J5VC.global.js"&gt;&lt;/script&gt;
+
+        <i class="conum" data-value="3"></i><b>(3)</b>
+        &lt;script data-react4xp-app-name="com.enonic.app.samples_react4xp" data-react4xp-ref="r4x-ijmu1r1k" type="application/json"&gt;{"command":"render","devMode":false,"hasRegions":0,"isPage":0,"jsxPath":"MultiColor","props":{"colors":["Red","Khaki","#c0ffee","#5d0015"]}}&lt;/script&gt;&lt;/head&gt;
+
     &lt;/head&gt;
 
     &lt;body class="xp-page"&gt;
@@ -1232,19 +1285,14 @@ module.exports = function(env, config) {                     <i class="conum" da
             &lt;div class="default-page" data-reactroot=""&gt;
                 &lt;div data-portal-region="main" class="xp-region"&gt;
 
-                    <i class="conum" data-value="2"></i><b>(2)</b>
+                    <i class="conum" data-value="3"></i><b>(3)</b>
                     &lt;div data-portal-component-type="part" id="_67815286"&gt;&lt;/div&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
         &lt;/div&gt;
 
         <i class="conum" data-value="3"></i><b>(3)</b>
-        &lt;script src="(...your.app.service) /react4xp/shared.27a8a0669.js"&gt;&lt;/script&gt;
-        &lt;script src="(...your.app.service) /react4xp/globals.489d97cdf.js"&gt;&lt;/script&gt;
-        &lt;script src="(...your.app.service) /react4xp/client.5678abcd.js"&gt;&lt;/script&gt;
-        &lt;script src="(...your.app.service) /react4xp/MultiColor.12345678.js"&gt;&lt;/script&gt;
-
-        &lt;script src="(...your.app.service) /react4xp/dynamic.87654321.js"&gt;&lt;/script&gt;    <i class="conum" data-value="4"></i><b>(4)</b>
+        &lt;script defer src="(...your.app.service) react4xp/executor-BL4RRDZO.js"&gt;&lt;/script&gt;    <i class="conum" data-value="4"></i><b>(4)</b>
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
@@ -1257,11 +1305,11 @@ module.exports = function(env, config) {                     <i class="conum" da
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Again, since we didn&#8217;t check the "Server-side rendering" checkbox, the <code>ssr</code> flag became false and we got a clientside rendering. So this is just the target container element, filled in by the browser on <code>render</code>. Had we checked the checkbox, this would have contained the pre-rendered MultiColor entry, of course.</td>
+<td>Among the dependencies are still the globals, the client wrapper code and the code to the compiled MultiColor entry. And in addition, there&#8217;s the <code>shared.&lt;HASH&gt;.js</code> dependency chunk, containing the compiled code for all the TS/TSX/JS/JSX found under the <em>shared/</em> folder.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Among the dependencies are still the globals, the client wrapper code and the code to the compiled MultiColor entry. And in addition, there&#8217;s the <code>shared.&lt;HASH&gt;.js</code> dependency chunk, containing the compiled code for all the ES6/JS/JSX found under the <em>shared/</em> folder.</td>
+<td>Again, since we didn&#8217;t check the "Server-side rendering" checkbox, the <code>ssr</code> flag became false and we got a clientside rendering. So this is just the target container element, filled in by the browser on <code>render</code>. Had we checked the checkbox, this would have contained the pre-rendered MultiColor entry, of course.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
@@ -1315,7 +1363,7 @@ module.exports = function(env, config) {                     <i class="conum" da
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-20 08:22:35 UTC
+Last updated 2023-10-03 13:10:19 UTC
 </div>
 </div>
 </body>

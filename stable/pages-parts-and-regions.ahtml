@@ -476,7 +476,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>The key takeaways are:</strong></p>
 </div>
 <div class="paragraph">
-<p><strong>1.</strong> <code>React4xp.render</code> works the same way <strong>from any controller, and independently</strong>:
+<p><strong>1.</strong> <code>render</code> works the same way <strong>from any controller, and independently</strong>:
     - A Region in a React4xp-rendered Page can contain any kind of Component (React4xp-rendered or not).
     - And a React4xp-rendered Component can be placed inside the Region of any kind of Page (React4xp-rendered or not).</p>
 </div>
@@ -538,14 +538,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 site/pages/
   default/
     default.xml
-    default.es6
-    default.jsx
+    default.ts
+    default.tsx
 
 site/parts/
   color/
     color.xml
-    color.es6
-    color.jsx</code></pre>
+    color.ts
+    color.tsx</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -587,10 +587,10 @@ site/parts/
 <div class="title">my-content.xml:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;content-type&gt;
-    &lt;display-name&gt;My Content&lt;/display-name&gt;
-    &lt;description&gt;Just some content&lt;/description&gt;
-    &lt;super-type&gt;base:structured&lt;/super-type&gt;
-    &lt;form/&gt;
+  &lt;display-name&gt;My Content&lt;/display-name&gt;
+  &lt;description&gt;Just some content&lt;/description&gt;
+  &lt;super-type&gt;base:structured&lt;/super-type&gt;
+  &lt;form/&gt;
 &lt;/content-type&gt;</code></pre>
 </div>
 </div>
@@ -610,12 +610,12 @@ site/parts/
 <div class="title">default.xml:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;page&gt;
-    &lt;display-name&gt;Default page&lt;/display-name&gt;
-    &lt;description&gt;Default react-rendered Page controller&lt;/description&gt;
-    &lt;form/&gt;
-    &lt;regions&gt;
-        &lt;region name="main"/&gt;
-    &lt;/regions&gt;
+  &lt;display-name&gt;Default page&lt;/display-name&gt;
+  &lt;description&gt;Default react-rendered Page controller&lt;/description&gt;
+  &lt;form/&gt;
+  &lt;regions&gt;
+    &lt;region name="main"/&gt;
+  &lt;/regions&gt;
 &lt;/page&gt;</code></pre>
 </div>
 </div>
@@ -649,14 +649,15 @@ site/parts/
 </table>
 </div>
 <div class="listingblock">
-<div class="title">default.jsx</div>
+<div class="title">default.tsx</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react';
-import Regions from '@enonic/react-components/Regions';    <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react';
+import Regions from '@enonic/react-components/Regions'; <i class="conum" data-value="1"></i><b>(1)</b>
+
 
 export default (props) =&gt; (
     &lt;div className="default-page"&gt;
-        &lt;Regions {...props} /&gt;                     <i class="conum" data-value="2"></i><b>(2)</b>
+        &lt;Regions {...props} /&gt; {/* &lt;2&gt; */}
     &lt;/div&gt;
 );</code></pre>
 </div>
@@ -683,14 +684,14 @@ export default (props) =&gt; (
 <p>The <code>props</code> of course come from the <strong>Page controller</strong>. Still similar to the previous examples, we&#8217;re mainly just adding props that are needed by <code>&lt;Regions&gt;</code> in the react component.</p>
 </div>
 <div class="listingblock">
-<div class="title">default.es6:</div>
+<div class="title">default.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import {getContent} from '/lib/xp/portal';
+import {render} from '/lib/enonic/react4xp';
 
-exports.get = function(request) {
-    const content = portal.getContent();
-    const entry = portal.getComponent();
+export function get(request) {
+    const content = getContent();
+    const entry = content.page;
 
     const id = `react4xp_${content._id}`;   <i class="conum" data-value="1"></i><b>(1)</b>
 
@@ -700,7 +701,7 @@ exports.get = function(request) {
         tag: "main",                        <i class="conum" data-value="4"></i><b>(4)</b>
     };
 
-    return React4xp.render(
+    return render(
         entry,
         props,
         null,                               <i class="conum" data-value="5"></i><b>(5)</b>
@@ -741,14 +742,14 @@ exports.get = function(request) {
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>We&#8217;re setting the <code>request</code> argument of <code>React4xp.render</code> to <em>null</em> - switching off the auto-handling of how <em>this</em> particular rendering is done inside/outside Content Studio, and just forcing <code>React4xp.render</code> to <strong>always output a static, serverside rendered HTML body without page contributions</strong>. But why? Two reasons:
+<td>We&#8217;re setting the <code>request</code> argument of <code>render</code> to <em>null</em> - switching off the auto-handling of how <em>this</em> particular rendering is done inside/outside Content Studio, and just forcing <code>render</code> to <strong>always output a static, serverside rendered HTML body without page contributions</strong>. But why? Two reasons:
 <div class="ulist">
 <ul>
 <li>
-<p>The way it is now, <em>default.jsx</em> and the Regions in it has no need for page contributions. Only the static HTML is of interest; no client-side JS code needs to be activated/rendered in the client, and there&#8217;s no styling or anything else coming from it. So by skipping the page contributions rendering, performance is improved a little.</p>
+<p>The way it is now, <em>default.tsx</em> and the Regions in it has no need for page contributions. Only the static HTML is of interest; no client-side JS code needs to be activated/rendered in the client, and there&#8217;s no styling or anything else coming from it. So by skipping the page contributions rendering, performance is improved a little.</p>
 </li>
 <li>
-<p>There is a <strong>caveat</strong> when using React4xp to render Regions (like we do in in <em>default.jsx</em>): currently, page contributions don&#8217;t work for XP Parts/Layouts if they are dropped into a <em>clientside</em>-rendered Region. So <strong>Regions must be serverside rendered if they contain XP components that need their own page contributions to work</strong> (for example React4xp parts, which rely on page contributions to be activated in the client). So by forcing a static serverside Regions rendering, we prevent that corner case from failing, and make sure <em>any</em> XP element dropped inside the Region will work, even clientside-rendered React4xp parts.</p>
+<p>There is a <strong>caveat</strong> when using React4xp to render Regions (like we do in in <em>default.tsx</em>): currently, page contributions don&#8217;t work for XP Parts/Layouts if they are dropped into a <em>clientside</em>-rendered Region. So <strong>Regions must be serverside rendered if they contain XP components that need their own page contributions to work</strong> (for example React4xp parts, which rely on page contributions to be activated in the client). So by forcing a static serverside Regions rendering, we prevent that corner case from failing, and make sure <em>any</em> XP element dropped inside the Region will work, even clientside-rendered React4xp parts.</p>
 </li>
 </ul>
 </div></td>
@@ -865,9 +866,9 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 <p>The react component only displays the color name from the props and inline-styles it with that color (as long as the <code>props.color</code> value is HTML-compliant):</p>
 </div>
 <div id="color_jsx" class="listingblock">
-<div class="title">color.jsx</div>
+<div class="title">color.tsx</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react';
 
 export default (props) =&gt; (
     &lt;div style={{
@@ -891,28 +892,49 @@ export default (props) =&gt; (
 <p>Like before, the controller mainly hooks the XP editorial data into the props:</p>
 </div>
 <div id="color_part_controller" class="listingblock">
-<div class="title">color.es6:</div>
+<div class="title">color.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import type {PartComponent} from '@enonic-types/core';
 
-exports.get = function(request) {
 
-    const component = portal.getComponent();
+import {getComponent} from '/lib/xp/portal';
+import {render} from '/lib/enonic/react4xp';
 
-    const props = { color: component.config.color };
 
-    return React4xp.render(
-        component,
-        props,
-        request,
-        {                               <i class="conum" data-value="1"></i><b>(1)</b>
-            ssr: false,                 <i class="conum" data-value="2"></i><b>(2)</b>
-            pageContributions: {        <i class="conum" data-value="3"></i><b>(3)</b>
-                bodyEnd: `&lt;script&gt;console.log("The color of the thing is: ${component.config.color}");&lt;/script&gt;`
-            }
-        });
-};</code></pre>
+declare global {
+  interface XpPartMap {
+    ['com.enonic.app.samples-react4xp:color']: {
+      color: string
+    }
+  }
+}
+
+
+export function get(request) {
+
+  const component = getComponent&lt;PartComponent&lt;'com.enonic.app.samples-react4xp:color'&gt;&gt;();
+  const {color} = component.config;
+  const props = { color };
+
+  const response = render(
+    component,
+    props,
+    request,
+    {                               <i class="conum" data-value="1"></i><b>(1)</b>
+        ssr: false,                 <i class="conum" data-value="2"></i><b>(2)</b>
+        pageContributions: {        <i class="conum" data-value="3"></i><b>(3)</b>
+            bodyEnd: `&lt;script nonce="rAnd0m"&gt;console.log("The color of the thing is: ${color}");&lt;/script&gt;`
+        }
+    }
+  );
+
+  // Allow execturing the script tag we added above:
+  response.headers = {
+    'content-security-policy': `script-src 'self' 'nonce-rAnd0m'`
+  };
+
+  return response;
+}</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -927,7 +949,7 @@ exports.get = function(request) {
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>&#8230;&#8203;and adding a tiny color-logging script with the Part. This is done by using the <em>options</em> parameter to pass <code>pageContributions</code> through <code>.render</code>, the same way we&#8217;ve passed <code>body</code> through it so far.</td>
+<td>&#8230;&#8203;and adding a tiny color-logging script with the Part. This is done by using the <em>options</em> parameter to pass <code>pageContributions</code> through <code>render</code>, the same way we&#8217;ve passed <code>body</code> through it so far.</td>
 </tr>
 </table>
 </div>
@@ -1021,7 +1043,7 @@ exports.get = function(request) {
 <p>(*) Remember from the code explanation of <a href="#page_controller">our Page controller</a> that <code>React4xp.render</code> needs the <code>request</code> argument to generate page contributions. Omitting <code>request</code> forces a pure serverside rendering without hydration - so our page controller is not starting a separate react app in the client.</p>
 </div>
 <div class="paragraph">
-<p>(And just for the record, there is an alternative renderer: <code>.renderPageContributions</code>. It also starts a new react app, but never needs <code>request</code>. More on that in a <a href="custom-flow-syntax.ahtml">later lesson</a>)</p>
+<p>(And just for the record, there is an alternative renderer: <code>renderPageContributions</code>. It also starts a new react app, but never needs <code>request</code>. More on that in a <a href="custom-flow-syntax.ahtml">later lesson</a>)</p>
 </div>
 </td>
 </tr>
@@ -1045,7 +1067,7 @@ exports.get = function(request) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-20 08:22:35 UTC
+Last updated 2023-10-03 13:10:19 UTC
 </div>
 </div>
 </body>
