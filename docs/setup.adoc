@@ -78,6 +78,22 @@ To verify that your app started successfully, you should find an entry similar t
 `2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully`
 ====
 
+== Dev mode
+
+There's also the possibility to start your sandbox in detached dev mode and keep watching for changes as you develop using the react4xp starter.
+
+To work in dev mode, run this command from your shell:
+
+[source, bash]
+----
+enonic dev
+----
+
+[NOTE]
+====
+If you want to see XP logs while working with react4xp, make sure to follow enonic's cli https://developer.enonic.com/docs/enonic-cli/stable/dev#dev[docs] dev command section.
+====
+
 {zwsp} +
 
 Now you're ready to get started with the first lesson chapters.
