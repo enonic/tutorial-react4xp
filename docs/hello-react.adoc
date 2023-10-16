@@ -109,7 +109,7 @@ What's going on in the controller?
 
 If you've added those 3 files, let's get this rendered! If you've used XP and Content Studio before, this is all run-of-the mill:
 
-. Compile the project (`enonic project deploy` in a terminal from root) and start the sandbox (`enonic sandbox start`),
+. If you're not working in dev mode (`enonic dev`), then compile the project (`enonic project deploy` in a terminal from root) and start the sandbox (`enonic sandbox start`),
 . Navigate your browser to `localhost:8080/admin`. Log in to XP and open Content Studio (if you haven't already, you'll need to link:https://market.enonic.com/vendors/enonic/content-studio[install Content Studio] in XP).
 . Create a new Site content and Edit it in a new tab. Add your React4xp app (_"starter-react4xp"_?) on the upper left.
 . Select the new _Hello-react_ page controller in the preview panel on the right. Store that change (and refresh the page if needed).
