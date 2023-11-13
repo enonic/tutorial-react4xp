@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#create_project">Create project</a></li>
 <li><a href="#project_structure">Project structure</a></li>
 <li><a href="#build_and_deploy">Build and Deploy</a></li>
+<li><a href="#dev_mode">Dev mode</a></li>
 </ul>
 </div>
 </div>
@@ -589,6 +590,36 @@ src/
 </li>
 </ol>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dev_mode"><a class="link" href="#dev_mode">Dev mode</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There&#8217;s also the possibility to start your sandbox in detached dev mode and keep watching for changes as you develop using the react4xp starter.</p>
+</div>
+<div class="paragraph">
+<p>To work in dev mode, run this command from your shell:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">enonic dev</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you want to see XP logs while working with react4xp, make sure to follow enonic&#8217;s cli <a href="https://developer.enonic.com/docs/enonic-cli/stable/dev#dev">docs</a> dev command section.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>&#8203;<br></p>
 </div>
@@ -607,7 +638,7 @@ src/
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-03 13:10:19 UTC
+Last updated 2023-11-13 17:45:49 UTC
 </div>
 </div>
 </body>

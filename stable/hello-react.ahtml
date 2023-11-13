@@ -682,7 +682,7 @@ export function get(request) {               <i class="conum" data-value="2"></i
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Compile the project (<code>enonic project deploy</code> in a terminal from root) and start the sandbox (<code>enonic sandbox start</code>),</p>
+<p>If you&#8217;re not working in dev mode (<code>enonic dev</code>), then compile the project (<code>enonic project deploy</code> in a terminal from root) and start the sandbox (<code>enonic sandbox start</code>),</p>
 </li>
 <li>
 <p>Navigate your browser to <code>localhost:8080/admin</code>. Log in to XP and open Content Studio (if you haven&#8217;t already, you&#8217;ll need to <a href="https://market.enonic.com/vendors/enonic/content-studio">install Content Studio</a> in XP).</p>
@@ -984,7 +984,7 @@ In Content Studio edit mode, a yellow placeholder is used for client-side render
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-03 13:10:19 UTC
+Last updated 2023-11-13 17:45:49 UTC
 </div>
 </div>
 </body>
