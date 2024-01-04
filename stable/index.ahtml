@@ -440,10 +440,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#upgrade">Upgrade</a></li>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#tutorial_overview">Tutorial overview</a></li>
-<li><a href="#details">Details</a></li>
+<li><a href="#dive_deeper">Dive deeper</a></li>
 <li><a href="#issues">Issues?</a></li>
 </ul>
 </div>
@@ -452,7 +451,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This tutorial will show you step-by-step how to build XP sites and apps with React rendering, helping you kickstart a React4xp project of your own.</p>
+<p>Introduction to server side React rendering with the Enonic framework.</p>
 </div>
 <div class="paragraph">
 <p>&#8203;<br></p>
@@ -462,14 +461,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph">
 <p>&#8203;<br></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="upgrade"><a class="link" href="#upgrade">Upgrade</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>If you are upgrading to lib-react4xp 5.x.x, please read this <a href="upgrade/v5.ahtml">upgrade guide</a>.</p>
 </div>
 </div>
 </div>
@@ -484,14 +475,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 <td class="content">
 <div class="paragraph">
-<p>A little bare-bone knowledge of <a href="https://reactjs.org/tutorial/tutorial.html">React</a> and <a href="https://developer.enonic.com/start">Enonic XP</a> is recommended.</p>
+<p>A little bare-bone knowledge of <a href="https://reactjs.org/tutorial/tutorial.html">React</a> and <a href="https://developer.enonic.com/start">Enonic XP</a> is recommended before you dive into this tutorial.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>React4XP is a library (with a companion build structure) that facilitates advanced use of React in Enonic XP, and:</p>
+<p>React4XP facilitates advanced use of React when rendering with Enonic XP</p>
 </div>
 <div class="ulist">
 <ul>
@@ -509,16 +500,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="tutorial_overview"><a class="link" href="#tutorial_overview">Tutorial overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>After <a href="setup.ahtml">getting set up</a>, we&#8217;ll begin with <strong>3 basic lessons</strong> - just the minimum of what you need to get started:</p>
+<p>After <a href="setup.ahtml">getting set up</a>, you start with <strong>three basic lessons</strong>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -534,10 +522,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
-<p>The next 5 lessons present a few more <strong>advanced usages</strong>:</p>
+<p>The following five lessons present a more <strong>advanced use cases</strong>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -558,16 +543,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="details"><a class="link" href="#details">Details</a></h2>
+<h2 id="dive_deeper"><a class="link" href="#dive_deeper">Dive deeper</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you <strong>need to go deeper</strong> after going through the lessons, the most important concepts you&#8217;ll encounter along the way are explained on pages of their own:</p>
+<p>Have an urge for details beyond the basic tutorial, check out the following:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -580,23 +562,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li>
 <p><a href="chunks.ahtml">Optimizing dependency chunks</a></p>
 </li>
-</ul>
-</div>
-<div class="paragraph">
-<p>There&#8217;s also an <a href="api.ahtml">API reference</a> for the methods that the react4xp library (<a href="https://market.enonic.com/vendors/enonic/react4xp-lib"><em>lib-react4xp</em></a>) exposes to the XP controllers:</p>
-</div>
-<div class="ulist">
-<ul>
 <li>
-<p><a href="api.ahtml#react4xp_render">React4xp.render</a></p>
-</li>
-<li>
-<p><a href="api.ahtml#react4xp_object">React4xp data objects</a></p>
+<p><a href="api.ahtml">API reference</a> for the (<a href="https://market.enonic.com/vendors/enonic/react4xp-lib">React4XP library</a>).</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -624,7 +593,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-11-13 17:45:49 UTC
+Last updated 2024-01-04 13:30:10 UTC
 </div>
 </div>
 </body>
