@@ -1,15 +1,10 @@
-= Server side TSX/JSX with React4XP
+= React4XP - Server side React with the Enonic framework
 :toc: right
 :imagesdir: media/
 
-Introduction to server side React rendering with the Enonic framework.
-
-{zwsp} +
+Hands on tutorial for rendering Enonic sites and pages with JSX/TSX
 
 image:react4xp.svg[title="React4xp logo",width=256px]
-
-
-{zwsp} +
 
 == Introduction
 
