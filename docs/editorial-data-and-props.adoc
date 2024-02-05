@@ -18,13 +18,13 @@ site/pages/hello-react2/
   hello-react2.tsx
 ----
 
-{zwsp} +
+
 
 == Code
 
 Let's change the files some more so we can use Content Studio to input some data into the react rendering.
 
-{zwsp} +
+
 
 === Page definition
 We start with some standard XP procedure: defining the data in the page definition XML file. This file is the same as in <<hello-react#page_definition, example 1>>, but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`: `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component:
@@ -35,7 +35,7 @@ We start with some standard XP procedure: defining the data in the page definiti
 include::../src/main/resources/site/pages/hello-react2/hello-react2.xml[]
 ----
 
-{zwsp} +
+
 
 === Type declarations
 
@@ -46,7 +46,7 @@ Declare which inputs come from the XML, and what props we want to pass on into t
 ----
 include::../src/main/resources/site/pages/hello-react2/hello-react2.d.ts[]
 ----
-{zwsp} +
+
 
 === Page controller
 Next, we'll modify <<hello-react#page_controller, the controller>> to fetch the data we defined in XML, then use a `props` object to inject the data into the react component:
@@ -84,7 +84,7 @@ Although, if you think that the _makeObjectDropper_ closure thing is a strange w
 
 There it is, now let's take a look!
 
-{zwsp} +
+
 
 == Setup and rendering
 
@@ -95,14 +95,14 @@ You should still see it in the preview panel on the right (although, since you p
 [.thumb]
 image:hello_cs.png[title="Editing Hello World, same as before.", width=720px]
 
-{zwsp} +
+
 
 Now, when you click the preview panel, the page-config editing panel should open on the right, with the data fields containing the default text we defined. Once you click Apply/save, the preview panel to the left should update.
 
 [.thumb]
 image:hello_editorial.png[title="Editing Hello World in the page-config panel in Content Studio.", width=720px]
 
-{zwsp} +
+
 
 So now, it looks the same as before, but with editorial data instead of hardcoded text. Boring, and too similar to the previous example; just repeating "Hello World" might cause a little confusion. *Try adding your own data in the fields*, for example changing _"world"_ into _"link:https://montypython.fandom.com/wiki/Bruces_sketch[Bruce]"_ etc, to keep it clear.
 
@@ -111,7 +111,7 @@ So now, it looks the same as before, but with editorial data instead of hardcode
 [.thumb]
 image:gday_bruce.png[title="Rendering: G'day Bruce. This is turning into one big philosophers' joke, isn't it?", width=720px]
 
-{zwsp} +
+
 
 == Output
 
@@ -147,15 +147,15 @@ So did anything change in the rendered response, compared to <<hello-react#hello
 <2> The script that actually runs `hydrate` with the `props` on the clientside.
 <3> Since we removed the `ssr = false` flag again, the target container `react4xpApp` comes filled from the server. But now with a rendering with _your_ texts from `props` already inserted.
 
-{zwsp} +
+
 
 == Further reading
 
 Now might be a good time to take a closer look at <<api#react4xp_render, the API overview of the .render call>> from the ES6 controller in the example above.
 
-{zwsp} +
+
 
 Either way, you should be ready for the last of the three basic lesson chapters.
 
-{zwsp} +
-{zwsp} +
+
+

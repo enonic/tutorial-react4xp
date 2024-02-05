@@ -38,7 +38,7 @@ react4xp.config.js
 webpack.config.react4xp.js
 ----
 
-{zwsp} +
+
 
 As you can see, there are more moving parts than before to coordinate here, so we'll divide the code into *three sections*:
 
@@ -47,13 +47,13 @@ As you can see, there are more moving parts than before to coordinate here, so w
 - and adaptations to the React4xp config, which will enable webpack handling of styles and enable the Part controller to find and use the entry and its imports the way we want.
 
 
-{zwsp} +
+
 
 == The _multi-color_ Part
 
 Starting out with the _multi-color_ Part at the core of it all, everything in this section will probably be familiar by now.
 
-{zwsp} +
+
 
 === Part definition
 The Part definition enables two editorial configurations:
@@ -66,7 +66,7 @@ include::../src/main/resources/site/parts/multi-color/multi-color.xml[]
 <1> a checkbox for making the entry serverside or clientside rendered,
 <2> and an array of colors where a user in Content Studio can add any number of HTML-compliant color tags.
 
-{zwsp} +
+
 
 === Part controller
 
@@ -83,7 +83,7 @@ include::../src/main/resources/site/parts/multi-color/multi-color.ts[]
 
 
 
-{zwsp} +
+
 
 == The _MultiColor_ entry
 
@@ -91,7 +91,7 @@ Before we do the React4xp / webpack configuration, we'll make *the _MultiColor.j
 
 This is a more complex entry than before (and the most complex part of this example) - it's composed of main react code that *imports secondary dependencies*.
 
-{zwsp} +
+
 
 === React component
 
@@ -116,7 +116,7 @@ include::../src/main/resources/react4xp/myEntries/MultiColor.tsx[]
 <12> The fallback rendering if no colors have been added (5).`
 <13> Remember that <<entries#_how_to_make_an_entry, entries need to export a function>>: `(props?) => react component`. Since this component is written in the class syntax (4), it needs to be wrapped like this for export.
 
-{zwsp} +
+
 
 === Dependencies for the entry
 ==== Styling
@@ -128,7 +128,7 @@ Now, with the entry done, we can look at the *entry's styling* - a lot simpler, 
 include::../src/main/resources/react4xp/myEntries/MultiColor.scss[]
 ----
 
-{zwsp} +
+
 
 *Moving on to the _shared/_ folder*, this is where we find source files that will be compiled into common assets: dependency chunks with the _"shared"_ prefix and a content-dependent _"<HASH>"_ (reminder: this will happen because we later will mark _shared/_ as a `chunkDir` in _react4xp.properites_).
 
@@ -140,14 +140,14 @@ First, some *_shared-styles.scss_*, also imported by the entry _MultiColor.jsx_.
 include::../src/main/resources/react4xp/shared/shared-styles.scss[]
 ----
 
-{zwsp} +
+
 
 ==== Imported react components
 Next, _shared/_ also contains the *secondary react components* imported by  _MultiColor.jsx_. Note how each of them imports their own specific styling the same way as the entry _MultiColor.jsx_.
 
 NOTE: It's important that these react components are *not <<entries#, entries>>* themselves. They are only imported by the MultiColor entry - hence the folder name _shared/_.
 
-{zwsp} +
+
 
 ===== Button
 There's the generic *Button* component. This is used both by _MultiColor.jsx_ and the secondary component _ColorButtons.jsx_. It gets custom onClick function, HTML class, inline styling (for single-button-specific attributes) and label (`children`) from `props` (the spread-out function parameters):
@@ -166,7 +166,7 @@ include::../src/main/resources/react4xp/shared/Button.tsx[]
 include::../src/main/resources/react4xp/shared/Button.scss[]
 ----
 
-{zwsp} +
+
 
 ===== ActiveColorOval
 Then there's the *ActiveColorOval* component, which just displays `props.color` inside a circle/ellipse thing, filled with the same color:
@@ -183,7 +183,7 @@ include::../src/main/resources/react4xp/shared/ActiveColorOval.tsx[]
 include::../src/main/resources/react4xp/shared/ActiveColorOval.tsx[]
 ----
 
-{zwsp} +
+
 
 ===== ColorButtons
 And finally a *ColorButtons* component. It takes the list of `props.colors` (from the editorial data), and assigns each of them to a `Button` labeled with the color, each of them triggering the change-color-selection from _MultiColor.jsx_ with its own specific color index `i` in the list of colors. In addition, the HTML class name(s) of the buttons is assigned dynamically: the buttons all have a `color-button` class, and each item checks if its own array index `i` matches the current `selectedIndex`. If it does, the class `selected` is added, making that button differently styled:
@@ -200,9 +200,6 @@ include::../src/main/resources/react4xp/shared/ColorButtons.tsx[]
 include::../src/main/resources/react4xp/shared/ColorButtons.scss[]
 ----
 
-
-{zwsp} +
-
 [[webpack_config]]
 == Configuring React4xp and webpack
 
@@ -210,7 +207,7 @@ In this section we'll adjust some settings to make the code above work.
 
 TIP: If you need more details, some of this is covered in more depth under <<entries#, entries>> and <<jsxpath#, jsxPaths>>.
 
-{zwsp} +
+
 
 === Folders for entries and chunks
 
@@ -238,7 +235,6 @@ Both `entrydirs` and `chunkDirs` are *lists of relative paths*. They are relativ
 Adding paths like e.g. `foo/bar/baz` or `../../hey/ho/lets/go` is perfectly fine (_src/main/resource/react4xp/foo/bar/baz_ and _src/main/hey/ho/lets/go_, respectively).
 ====
 
-{zwsp} +
 
 [[webpack_rules]]
 === Adding webpack rules
@@ -253,7 +249,7 @@ include::../webpack.config.react4xp.js[]
 <2> That function may *mutate (or replace!) the React4xp webpack `config` object* (on this line and later: "take any incoming `config.module.rules` and add this style-compilation-rule object"). So previously existing attributes will be overwritten by the new ones from this file.
 <3> The function *must return the changed (or replaced) config object*.
 
-{zwsp} +
+
 
 ==== NPM dependencies
 Also, you'll probably need to add the required NPM packages for this example:
@@ -263,11 +259,9 @@ Also, you'll probably need to add the required NPM packages for this example:
 npm install -D css-loader@3 node-sass@4 mini-css-extract-plugin sass-loader@8
 ----
 
-{zwsp} +
 
 Now we're ready to look at it running!
 
-{zwsp} +
 
 == Setup and rendering
 
@@ -276,21 +270,21 @@ Build again and add the _multi-color_ Part in Content Studio, <<pages-parts-and-
 .Empty multicolor Part:
 image:multicolor-add.png[title="Empty MultiColor part in Content Studio", width=720px]
 
-{zwsp} +
+
 
 Click it in edit mode to edit the Part config. Here you can choose to render the part in serverside or clientside mode, as well as enter any number of colors. As long as they are link:https://en.wikipedia.org/wiki/Web_colors[standard web colors], they will create an array of colored buttons.
 
 .Multicolor Part with colors filled in:
 image:multicolor-added.png[title="MultiColor part in Content Studio, with four colors added", width=720px]
 
-{zwsp} +
+
 
 Outside of Content Studio, in the preview, the buttons are of course active and clickable. Each button selects itself, the Previous/Next buttons cycle through them, and the little elliptic label (the ActiveColorOval) is updated with both text and color:
 
 .Multicolor Part, active view:
 image:multicolor-preview.png[,title="MultiColor part outside of Content Studio, active view after clicking the #5d0015 button", width=720px]
 
-{zwsp} +
+
 
 
 == Output
@@ -342,9 +336,7 @@ Let's take a look at the rendered response from the controller and underline a f
 
 And that's all in this chapter!
 
-{zwsp} +
-{zwsp} +
-{zwsp} +
+
 
 == Further reading
 
@@ -356,7 +348,7 @@ If you haven't already, it's recommended to take a look at the additional explan
 
 -> <<chunks#, Dependency chunks>>
 
-{zwsp} +
+
 
 <<api#, API>> reference:
 
@@ -364,5 +356,5 @@ If you haven't already, it's recommended to take a look at the additional explan
 
 -> <<api#react4xp_object, React4xp data objects>>
 
-{zwsp} +
-{zwsp} +
+
+

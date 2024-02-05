@@ -59,7 +59,7 @@ site/parts/
 
 
 
-{zwsp} +
+
 
 [[template_with_react_page_controller]]
 == Template with React Page Controller
@@ -71,7 +71,7 @@ We'll make a generic XP content type, then make a Template in Content Studio and
 The Page controller _default_ can be made from scratch, or you can copy _site/pages/hello-react_ and change the copy (don't delete _hello-react.jsx_ just yet, we're going to re-use it <<custom-flow-syntax#, later>>). If you copy and modify, just remember this as usual: name the the *folder and file names* identically.
 ====
 
-{zwsp} +
+
 
 === Code
 
@@ -88,7 +88,7 @@ include::../src/main/resources/site/content-types/my-content/my-content.xml[]
 
 Again, this content type has nothing to do with React4xp, but it'll make the setup of this and the next examples easier.
 
-{zwsp} +
+
 
 ==== XP Page definition
 
@@ -100,7 +100,7 @@ The page definition is simple. We're now leaving the `<form>` node empty, but ad
 include::../src/main/resources/site/pages/default/default.xml[]
 ----
 
-{zwsp} +
+
 
 ==== React component
 
@@ -124,7 +124,7 @@ include::../src/main/resources/site/pages/default/default.tsx[]
 <1> Importing a Region template from an NPM package that comes with React4xp (link:https://www.npmjs.com/package/@enonic/react-components[@enonic/react-components]).
 <2> Nesting the Region in our component. To be precise: it uses `props.regionsData` and selects the Region name(s) in `props.names`, so it will render _all_ Regions given by `props` if more than one is defined and selected.
 
-{zwsp} +
+
 
 [[page_controller]]
 ==== Page controller
@@ -147,7 +147,7 @@ include::../src/main/resources/site/pages/default/default.ts[]
 
 TIP: Adding an XP Region to a Layout is the same, only easier: since it will be injected inside a Page, you don't need to add an outer `body` in the _options_ parameter, and therefore you don't need an `id` parameter either - same as in the XP Part controller below.
 
-{zwsp} +
+
 
 [[page_template_setup]]
 === Setting up the Template
@@ -162,7 +162,7 @@ This lays the foundation for this example and also the later ones. When this is 
 [.thumb]
 image:template_new.png[title="Creating a new Template content in Content Studio.", width=720px]
 
-{zwsp} +
+
 
 [start=3]
 . When editing your new Template, give it a display name, select your new content type _my-content_ in the _"Supports"_ drop-down menu on the left, and select the new Page controller _Default_ under the _"Template_" (or _"Page controller"_) drop-down menu on the right:
@@ -170,18 +170,18 @@ image:template_new.png[title="Creating a new Template content in Content Studio.
 [.thumb]
 image:template_edit.png[title="Using a Template to connect a content type to a page controller in Content Studio.", width=720px]
 
-{zwsp} +
+
 
 [start=4]
 . Apply/save and you're done. Now every new _myContent_ item in every site with this Template will be rendered with the _default_ page controller.
 
-{zwsp} +
+
 
 == XP Part
 
 Now we're ready to add a simple react-rendered Part to drop into the Region: _site/parts/color/_ .
 
-{zwsp} +
+
 
 === Code
 
@@ -195,7 +195,7 @@ The Part definition is still pretty unremarkable. There's just a `color` TextLin
 include::../src/main/resources/site/parts/color/color.xml[]
 ----
 
-{zwsp} +
+
 
 ==== React component
 The react component only displays the color name from the props and inline-styles it with that color (as long as the `props.color` value is HTML-compliant):
@@ -207,7 +207,7 @@ The react component only displays the color name from the props and inline-style
 include::../src/main/resources/site/parts/color/color.tsx[]
 ----
 
-{zwsp} +
+
 
 ==== Part controller
 Like before, the controller mainly hooks the XP editorial data into the props:
@@ -224,7 +224,7 @@ include::../src/main/resources/site/parts/color/color.ts[]
 <3> ...and adding a tiny color-logging script with the Part. This is done by using the _options_ parameter to pass `pageContributions` through `render`, the same way we've passed `body` through it so far.
 
 
-{zwsp} +
+
 
 [[adding_parts_to_new_content]]
 == Setup and render
@@ -239,7 +239,7 @@ image:content_new.png[title="Creating a new content item in Content Studio", wid
 [.thumb]
 image:content_my.png[title="Selecting the new my-content type in Content Studio", width=720px]
 
-{zwsp} +
+
 
 [start=2]
 . When you edit the new content, the preview panel with a dash-bordered *_"Drop here"_ area* should appear on the right. This is the _default_ Page controller rendering the initially empty *Region*. To the far right, there should be a config panel with the _"Insert"_ tab (if you can't see them, use the screen and cogwheel icons on the top right):
@@ -247,7 +247,7 @@ image:content_my.png[title="Selecting the new my-content type in Content Studio"
 [.thumb]
 image:page_with_ready_region.png[title="Editing new content in Content Studio, with Region ready to receive parts etc", width=720px]
 
-{zwsp} +
+
 
 [start=3]
 . Drag _"Part"_ from the config panel into the Region. In the dropdown menu (_"Type to search..."_) that appears in the Region (or the _"Part"_ dropdown menu now on the right), select your new _color_ Part. It should now appear correctly rendered in the preview panel (occasionally, you might need to _Save_ and refresh the page). And the config panel for editing the settings of that particular part should appear on the far right (if it doesn't, click the part itself: _"Hey, I'm pretty red"_):
@@ -255,13 +255,13 @@ image:page_with_ready_region.png[title="Editing new content in Content Studio, w
 [.thumb]
 image:content_with_red_part.png[title="Editing new content in Content Studio, with Region ready to receive parts etc", width=720px]
 
-{zwsp} +
+
 
 [start=4]
 . Try experimenting with dragging other XP components from the _"Insert"_ tab into the Region. Say, a Text component, and/or adding another instance of the same _color_ Part but with a different (HTML-compliant) color value in the Part config panel. You'll see that the react-rendered Region accepts all regular XP components, and that multiple instances of the same _color_ Part remain independent from each other.
 . As usual, clicking _Preview_ on the top will open a new Preview tab for your page.
 
-{zwsp} +
+
 
 == Output
 We won't go into the details about the HTML output anymore - it's structurally and conceptually *the same as in the previous examples*. Looking at the _Page Source_, it should all make sense to you by now: the Page controller and Part are *compiled to separate assets and downloaded exactly once* in the client before calling `render` and `hydrate` as needed (using a React4xp Part more than once does not make the client download the assets more than once - they're recycled for performance).
@@ -275,11 +275,11 @@ Each time the client calls `render` or `hydrate`, it will spawn a *separate root
 (And just for the record, there is an alternative renderer: `renderPageContributions`. It also starts a new react app, but never needs `request`. More on that in a <<custom-flow-syntax#, later lesson>>)
 ====
 
-{zwsp} +
+
 
 Now we've covered the basics of how to use React4xp. It'll be enough for most simple setups and use cases.
 
 Moving on from here, we'll take a look at more advanced ways to use React4xp, giving you more control.
 
-{zwsp} +
-{zwsp} +
+
+

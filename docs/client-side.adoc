@@ -1,26 +1,12 @@
-= Going Headless, part 1: Guillotine and graphQL
+= Client side rendering and the Guillotine api 
 :toc: right
 :imagesdir: media/
 
-{zwsp} +
-
-image:guillotine.jpg[title="React4xp goes headless", width=600px]
-
-{zwsp} +
-
-== Some background
-
-In the previous chapters we've looked at a "traditional CMS" way of using React4xp: as content directly presented (and augmented) by react components, served together by XP. This is fairly easy to set up and works fine for many use cases. But in other cases, we may not want such a tight connection between the content and the presentational components. There may be advantages of handling/serving them separately - or an approach where a content-exposing API works alongside a traditional CMS, as a supplement. These approaches are often called a link:https://enonic.com/blog/headless-or-decoupled-cms[headless] or link:https://enonic.com/blog/what-is-hybrid-cms[hybrid] CMS.
-
-In Enonic XP, project link:https://developer.enonic.com/docs/headless-cms/stable[guillotine] is a go-to solution for extending the existing CMS capabilities. It exposes a read-only link:https://graphql.org/[GraphQL] API, and provides the ability to *read pure content data* (the "body" in the analogy) from XP with great flexibility and high performance.
-
-Combining this with react as the presentational component (the "head") opens up a range of ways to use XP in headless/hybrid manners. This makes guillotine a neat and natural companion to React4xp, so the *guillotine library is included in the React4xp starter* along with two extra helper wrappers.
-
-We will now look at how to use React4xp with guillotine in different ways, for different levels of decoupling.
+We will now look at how to use React4xp in combination with XP's graphQL api.
 
 == Lesson overview
 
-This chapter will focus on setting up the guillotine API and the first usages:
+This chapter will focus on setting up the API and the first usages:
 
 - set up a content type and react visualization for single movie items,
 - making *a graphQL query* for content data in a regular XP controller,
@@ -28,7 +14,7 @@ This chapter will focus on setting up the guillotine API and the first usages:
 - letting the rendered components make *the same query from the frontend*,
 - and use react to dynamically render a visualization of the returned data, and this way fill in more content as we scroll down the page: an *"infinite scroller"* page.
 
-NOTE: The <<webapp#, next chapter>> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same React4xp components in a _standalone webapp_, to render content data from a guillotine API.
+NOTE: The <<standalone#, next chapter>> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same React4xp components in a _standalone webapp_, to render content data from a guillotine API.
 
 [[chapter_source_files]]
 === Source files
@@ -73,11 +59,6 @@ headless/                       // <6>
 <6> _guillotineApi.ts_ is the actual API to guillotine. It can run graphQL queries both from XP controllers and through received HTTP requests. And _guillotineRequest.ts_ simplifies making such a request from the browser. Both of these are general-purpose and come with the starter (since version 1.1.0). But _helpers/movieListRequests.ts_ contains helper functions specific to the lesson site we're building here: it helps with building a query for fetching movie-list data, and parsing the returned data into the `props` format that the _Movie_ component needs. These helpers are also used on both frontend and backend.
 
 
-{zwsp} +
-{zwsp} +
-{zwsp} +
-
-
 == Groundwork: movie items
 
 This first stage should be easy enough, almost entirely repeating steps you've been through in previous chapters. We'll make a _movie_ content type, set up React4xp to preview-render it with react components (but with <<#controller_mapping, a little twist>>), and add some movie items that will be listed when the site is done.
@@ -89,7 +70,6 @@ This entire chapter builds on the <<imports-and-dependency-chunks#webpack_config
 If you haven't completed that section already, better take a couple of minutes and do that before proceeding.
 ====
 
-{zwsp} +
 
 === Movie content type
 
@@ -100,8 +80,6 @@ When the setup is ready, we'll start by adding a _movie_ *content type*, with an
 ----
 include::../src/main/resources/site/content-types/movie/movie.xml[]
 ----
-
-{zwsp} +
 
 === React components
 
@@ -138,7 +116,7 @@ Moving on, _Movie.tsx_ also imports some *styling* that'll be handled by webpack
 include::../src/main/resources/react4xp/shared/Movie.scss[]
 ----
 
-{zwsp} +
+
 
 [[controller_mapping]]
 === Controller mapping
@@ -194,8 +172,6 @@ After the previous chapters, not much in this controller should come as a surpri
 <7> Workaround for a current link:https://github.com/enonic/lib-react4xp/issues/107[inconvenient bug].
 
 
-{zwsp} +
-
 === Make some Movies
 
 With all this in place, we're about to finish the groundwork stage: let's add some _movie_ content items to list.
@@ -207,31 +183,21 @@ Create a site content item and connect it to your app. Create some new Movie ite
 [.thumb]
 image:edit_movie.png[title="Create a new movie item in content studio", width=1024px]
 
-{zwsp} +
-
 [[movies_in_container_site]]
 It's important that *the new movies are inside/under _one common container item_ in the content hierarchy*. It's easiest for this lesson if the movie items are just directly under the site itself:
 
 [.thumb]
 image:add_movies.png[title="Create some movie items to list, under the site", width=1024px]
 
-{zwsp} +
-
 When you mark/preview the site itself, you'll see no visualization yet. But previewing each movie item should now work as in the image above.
 
 Now we're ready to move on to more interesting stuff, using the content and code we just made.
-
-
-{zwsp} +
-{zwsp} +
-{zwsp} +
-
 
 == Static movie list
 
 Next, we'll make a page controller for a site item that displays a static list of the _movie_ items below it. The controller will use a configurable guillotine query to fetch an array of movie data items.
 
-{zwsp} +
+
 
 [[guillotine_helpers]]
 === Guillotine helpers and usage
@@ -254,11 +220,7 @@ include::../src/main/resources/headless/guillotineApi.ts[]
 
 NOTE: This endpoint is *disabled by default* in the starter, to encourage developers to consider security aspects before using it. We'll get back to that, and activate it, <<#expose_api, later>>.
 
-{zwsp} +
-
 The second included helper, <<#guillotine_request_helper, guillotineRequest.ts>>, is a `fetch` wrapper to simplify guillotine requests at the frontend. We'll take a look at that later.
-
-{zwsp} +
 
 === Domain-specific helper for listing movies
 
@@ -288,11 +250,7 @@ For more about guillotine queries, see the link:https://developer.enonic.com/doc
 In <<#movies_in_container_site, the example above>>, the site _MovieSite_ is the item that contains the movies, and the content hierarchy in Content Studio shows us that _MovieSite_ has the content path `/moviesite`. So the sub-query that directs guillotine to only search for movies below that parent item, can be made like this: `buildParentPathQuery('/moviesite')`.
 <3> The function `extractMovieArray` takes the data object of a full guillotine search result and adapts it to the data structure that matches the props structure of our react components: an array of objects, where each object is a movie item.
 
-{zwsp} +
-
 NOTE: Remember that this query hardcodes qualified names to a content type, that contain the name of the app: `com.enonic.app.react4xp:movie` and `com_enonic_app_react4xp_Movie`. If your app name is not `com.enonic.app.react4xp`, you'll need to change these.
-
-{zwsp} +
 
 === Part controller
 
@@ -320,8 +278,6 @@ include::../src/main/resources/site/parts/movie-list/movie-list.ts[]
 <6> Extract `movies` props (an array of objects with the same signature as the props for _Movie.tsx_) from the result of the query,
 <7> Render a _MovieList_ entry with the `movies` props (as well as some additional props that we will need later for making the same guillotine query from the frontend. Especially note the `apiUrl` prop: this is basically just the URL to the site itself, with `/api/headless` appended to it. When we later <<#expose_api, expose the guillotine API>> to the frontend, this is the URL to the API - specifically, the POST method in _guillotineApi.ts_).
 
-{zwsp} +
-
 [[static_movielist]]
 === React components
 
@@ -345,8 +301,6 @@ Most of the styling is already handled at the single-movie level, so just a mini
 include::../src/main/resources/react4xp/myEntries/MovieList.scss[]
 ----
 
-{zwsp} +
-
 === Render the list
 
 We can now set up the parent site with the movies, with a _movie-list_ part. Rebuild the app, enter/refresh Content Studio, and make the _movie-list_ part handle the visualization of the _MovieSite_ item.
@@ -358,19 +312,12 @@ Correctly set up, you can now select the list in the edit panel, and a part conf
 [.thumb]
 image:movie-list-part-config.png[title="Edit the movie-list part configuration to control the guillotine query", width=1024px]
 
-{zwsp} +
 
 TIP: As usual, click Preview to see the rendering in a tab of its own. A preview browser tab, with the page inspector and server log open on the side, is also the best starting point to hunt down bugs in the visualization.
-
-{zwsp} +
-{zwsp} +
-{zwsp} +
 
 == Making the list dynamic
 
 In this next section we'll expose the API to the frontend and let the client send a request to it. The returned data will be merged into the component state of the _MovieList_ entry, and used to render the new movies into the page DOM. Finally, we'll add a scroll listener to trigger the process.
-
-{zwsp} +
 
 [[expose_api]]
 === Exposing the guillotine API
@@ -413,7 +360,6 @@ For the purpose of running this lesson on your localhost, though, it should be p
 
 After rebuilding, the API is now up and running at `<site-url>/api/headless` (e.g. `http://localhost:8080/admin/site/preview/default/draft/moviesite/api/headless`).
 
-{zwsp} +
 
 [[guillotine_request_helper]]
 === Included helper: guillotineRequest.ts
@@ -440,7 +386,6 @@ In short, run `doGuillotineRequest(params)` where `params` is an object that has
 <6> `handleDataFunc` (function, optional but makes little sense to omit): callback function that takes a data object (curated data from guillotine) and does something with it - *this callback is pretty much what `doGuillotineRequest` is all about*. Default: do-nothing.
 <7> `catchErrorsFunc` (function, optional): callback function that takes an error object and handles it. Default: console-error-logs the error message.
 
-{zwsp} +
 
 === Frontend guillotine request
 
@@ -472,13 +417,11 @@ The changes are:
 <11> And finally, when we the data has passed through `extractMovieArray` and we get some `newMovieItems`, we do a temporary action for now: console-log the data, and increase `nextOffset` with the initial number of movies, so it's ready for the next request.
 <12> We add `onClick={makeRequest}` to the movie list DOM container element. Now, when we click the list, `makeRequest` is triggered, and the resulting data from the guillotine API is displayed in the browser log.
 
-{zwsp} +
 
 Rebuilding this and running the moviesite in a preview window and with a console open, and the clicking somewhere on the list, say 3 times, the result might look something like this (note the console messages, how the returned movie IDs are not the same between responses, and that "`starting from index...`" keeps counting):
 
 image:click-data.png[title="Console logs different data items from 3 mouse clicks", width=1024px]
 
-{zwsp} +
 
 === Dynamic DOM updates
 
@@ -499,7 +442,6 @@ Changes:
 <4> We call `setState` to update the state, so that the incoming items from guillotine are added after the old ones.
 <5> Use `state.movies` instead of just the `movies` props: now react will watch the state and automatically re-render the component as soon as the state is updated.
 
-{zwsp} +
 
 [TIP]
 ====
@@ -513,13 +455,10 @@ So in the example, we use a callback function argument to work around this. Some
 _"Hey, React: whenever you're ready to actually do the state update, do it based on what things are like at *that* time"_.
 ====
 
-{zwsp} +
-
 Rebuild the app, update the moviesite preview tab and try clicking on the list. New movies should appear below the existing one, expanding the movie list as you click:
 
 image:click-fill-dom.png[title="Each click fetches new movies and renders them", width=1024px]
 
-{zwsp} +
 
 === Scroll listener
 
@@ -544,7 +483,6 @@ include::../src/main/resources/react4xp/myEntries/MovieList4.tsx[]
 <8> ...with one thing added: switch the scroll listener back on when data has been received and handled, OR after 500 ms after receiving empty data.
 <9> Removing the click listener and adding the unique ID `listContainerId` to the container element.
 
-{zwsp} +
 [[serverbrowserbreakage]]
 [NOTE]
 ====
@@ -555,17 +493,10 @@ The server-side rendering engine lacks most browser-specific JS functionality (e
 This is easily prevented by checking the global namespace for functionality that only exists in a browser, such as `window.navigator`.
 ====
 
-{zwsp} +
-{zwsp} +
-
 And there we have it: *our infinite scroller*!
 
 Rebuild, refresh the preview of _MovieSite_, and instead of clicking, just scroll down - the page should auto-refresh to add new content until the very end of time or the end of your added movies, whichever comes first.
 
-
-{zwsp} +
-{zwsp} +
-{zwsp} +
 
 == Other resources and tools
 

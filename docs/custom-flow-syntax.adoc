@@ -41,7 +41,7 @@ site/pages/
 <3> We're also reusing another existing entry <<editorial-data-and-props#hello_react_jsx_modified, _hello-react.tsx_>> (with props, not the first hardcoded one), located under _site/*pages*/hello-react/_. So even though what we're making here is a Part, an entry from a Page, or anywhere, is fine: when using jsxPaths, all entries are equal.
 
 
-{zwsp} +
+
 
 == Code
 
@@ -55,7 +55,7 @@ The Part definition again defines some base data for us to play with. This is ex
 include::../src/main/resources/site/parts/custom-flow/custom-flow.xml[]
 ----
 
-{zwsp} +
+
 
 === Thymeleaf view
 Next, we're adding a regular *thymeleaf view template file*.
@@ -70,7 +70,7 @@ The controller will render _two_ entries into this base HTML. To be clear: even 
 include::../src/main/resources/site/parts/custom-flow/custom-flow-view.html[]
 ----
 
-{zwsp} +
+
 
 [[part_controller]]
 === Part controller
@@ -142,7 +142,7 @@ This is on an entry-by-entry basis: there's no problem mixing multiple entries i
 
 And we're done, our new _custom-flow_ Part is now ready.
 
-{zwsp} +
+
 
 == Setup
 
@@ -154,6 +154,6 @@ Again, if you add more than one _custom-flow_ Part to a Region, you'll see that 
 
 The API behind the custom flow syntax: <<api#react4xp_object, React4xp data objects>>.
 
-{zwsp} +
-{zwsp} +
-{zwsp} +
+
+
+

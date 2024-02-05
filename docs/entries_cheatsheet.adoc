@@ -5,6 +5,6 @@
 image:entries_cheatsheet.png[title="Downloadable cheat sheet: React4xp entries"]
 
 ---
-{zwsp} +
+
 
 <<entries#mentalmodel, <- Back>>

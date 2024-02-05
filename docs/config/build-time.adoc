@@ -8,7 +8,7 @@ Several aspects of React4xp can be configured with a file _react4xp.config.js_.
 
 If you're using the <<setup#create_project, starter>> or your project is based on it, this is already set up and you can skip the following section:
 
-{zwsp} +
+
 
 === Including react4xp.config.js in your project
 
@@ -54,7 +54,7 @@ This will not only make sure _react4xp.config.js_ is handled, but also give a fu
 }
 ----
 
-{zwsp} +
+
 
 [[entryDirs]]
 === entryDirs
@@ -71,7 +71,7 @@ Adding comma separated values under `entryDirs` adds _more_ folder names/paths (
 
 
 
-{zwsp} +
+
 
 [[chunkDirs]]
 === chunkDirs
@@ -100,7 +100,7 @@ This example adds these folders as chunkDirs, and anything the entries import fr
 - _src/main/resources/react4xp/bundle2/_ ➔ `bundle2.*.js`
 - _src/main/resources/react4xp/other/stuff/_ ➔ `stuff.*.js`
 
-{zwsp} +
+
 
 [[webpack.config.react4xp.js]]
 == webpack.config.react4xp.js
@@ -173,9 +173,9 @@ module.exports = function(env, config) {
 
 Read more https://webpack.js.org/configuration/cache/
 
-{zwsp} +
-{zwsp} +
-{zwsp} +
+
+
+
 
 
 == Command line arguments
@@ -197,7 +197,7 @@ This switches between React4xp *build* modes (not to be confused with XP's link:
 
 Default value is `production`.
 
-{zwsp} +
+
 
 [[VERBOSE]]
 === Verbosity

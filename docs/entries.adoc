@@ -19,7 +19,7 @@ image:entries.png[title="React4xp Entries basic structure. Controllers can use e
 
 On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can *import* stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.
 
-{zwsp} +
+
 
 [[howto]]
 == How to make an entry
@@ -37,7 +37,7 @@ Entries are pretty much just standard TSX/JSX files, but they must follow *two r
 - If your entry uses react hooks or it's a react class component, read <<#classes-and-hooks, Classes and hooks in entries>> below.
 ====
 
-{zwsp} +
+
 
 [[assets_and_apps]]
 == Entries, assets and react apps
@@ -47,7 +47,7 @@ For example, early in this tutorial we've seen the entries _hello-react.jsx_ and
 
 When rendered (whether it's by using `.render` or a pair of `renderBody`/`renderPageContributions` in the <<custom-flow-syntax#, custom flow syntax>>), each entry will become not only assets of their own, but *independent root level react apps* in the browser memory! Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
 
-{zwsp} +
+
 
 [[classes-and-hooks]]
 == Classes and hooks in entries
@@ -119,5 +119,5 @@ The reason for this has to do with how the components are compiled, and that the
 In the examples above it would be equivalent to `Welcome(props);` and `HookButton(props);`. `Welcome` is not compiled to a function that can be called like this, and the pure `HookButtons` function is not really a _functional component_ (before it's called as a component, the way we do when it's wrapped), just a regular JS function - so the straight export link:https://reactjs.org/warnings/invalid-hook-call-warning.html[breaks the rules of hooks and you get an error].
 
 
-{zwsp} +
-{zwsp} +
+
+

@@ -9,7 +9,7 @@ React4xp is made to cover many ways of combining XP and react. Let's start with 
 
 We'll first do that in the serverside rendered way (this is the React4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
 
-{zwsp} +
+
 
 [[code]]
 == Code
@@ -37,7 +37,7 @@ First, we need a *page * XML file. Just XP boilerplate:
 include::../src/main/resources/site/pages/hello-react/hello-react.xml[]
 ----
 
-{zwsp} +
+
 
 [[react_component]]
 === React component
@@ -75,7 +75,7 @@ if (typeof window.navigator !== 'undefined') {
 Of course, this also applies to imported packages / nested components and so on. Importing them is usually safe, but consider wrapping the areas where they're called/used, like this.
 ====
 
-{zwsp} +
+
 
 [[page_controller]]
 === Page controller
@@ -102,7 +102,7 @@ What's going on in the controller?
 <6> We're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag.
 <7> On the server, a false `ssr` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular `render` call).
 
-{zwsp} +
+
 
 [[first_setup_render]]
 == Setup and first render
@@ -119,7 +119,7 @@ You should now see something like this:
 [.thumb]
 image:hello_cs.png[title="Editing in Content Studio: Hello World.", width=720px]
 
-{zwsp} +
+
 
 [start=5]
 . Click _Preview_ on the top to open a new tab and view the content outside of Content Studio:
@@ -127,17 +127,17 @@ image:hello_cs.png[title="Editing in Content Studio: Hello World.", width=720px]
 [.thumb]
 image:hello_bottles.png[title="Rendering: Hello World and some bottles on a wall somewhere. You didn't click this screenshot, did you?", width=720px]
 
-{zwsp} +
+
 
 Clicking somewhere on the rendered text in the preview window will trigger the `dropBottle` function from _hello-react.tsx_, and modify the DOM and output a message in the browser console. Look at those bottles go!
 
-{zwsp} +
+
 
 == About the rendering
 
 Two things are worth knowing about the rendering, before we move on:
 
-{zwsp} +
+
 
 [[static_cs_rendering]]
 === Content studio should only have static rendering
@@ -146,7 +146,7 @@ If you edit some content in _inside XP Content Studio_, you'd notice there was *
 
 NOTE: Later, we'll look at two other rendering functions: `renderBody` and `renderPageContributions`. These are intended for use cases where it's good to be more explicit than `render`. For that reason, they _don't automatically handle this for you_. Usually, you should still keep your components from being client-activated inside Content Studio, but you'll have to handle it yourself. The <<custom-flow-syntax#, custom flow>> chapter shows you how.
 
-{zwsp} +
+
 
 === First serverside render can be slow
 
@@ -154,7 +154,7 @@ You may also have noticed that it took a little time for the first server-side r
 
 *This delay only happens when your app is restarted*, i.e. you restart XP entirely, or redeploy the app.
 
-{zwsp} +
+
 
 [[hello_output]]
 == Output
@@ -199,7 +199,7 @@ We can see this whole output is actually the `body` HTML string we passed into t
 
 NOTE: The assets are served by lib-react4xp services. Most of them (_react4xp-client_ and the content-hashed assets) are optimized for client-side caching, to minimize repeated requests.
 
-{zwsp} +
+
 
 == Client-side rendering
 
@@ -252,9 +252,9 @@ You might get _serverside runtime errors_ in the react components that you write
 Often, switching over to _clientside rendering_ for that particular react component, will give you a better/sourcemapped error message in the browser console, making your debugging life easier.
 ====
 
-{zwsp} +
+
 
 Okay, ready for the next example lesson?
 
-{zwsp} +
-{zwsp} +
+
+

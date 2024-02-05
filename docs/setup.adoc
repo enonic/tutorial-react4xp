@@ -2,7 +2,7 @@
 :toc: right
 :imagesdir: media/
 
-{zwsp} +
+
 
 
 == Create project
@@ -23,7 +23,7 @@ Remember to create a *new XP sandbox* when completing the project wizard.
 *Only want to inject react4xp into your own XP project?* The https://github.com/enonic/lib-react4xp/blob/master/README.md#setup-option-2-using-react4xp-in-an-existing-project[lib-react4xp docs] have a section on how to do without the starter. But it's recommended to go through this introduction first.
 ====
 
-{zwsp} +
+
 
 == Project structure
 
@@ -56,9 +56,9 @@ src/
 <1> A set of gradle config files and _package.json_. These define the build process and project structure, and in particular, make sure that the *lib-react4xp library* and *@enonic/react4xp npm package* are installed.
 <2> _react4xp.config.js_: Place to add extra globals and tune the most common properties of the React4xp project.
 <3> The _react4xp/_ folder is opt-in: can be ignored for now, and doesn't need to contain anything. But when fine-tuning the build later in the tutorial, we'll get back to why you might find it handy to have a separate place for some of your react components (in ultra-short: the _entries/_ folder is for react components that can be used directly by React4xp, the _shared\_ folder is for common components imported by, and shared between, the entries).
-<4> Under _headless/_, the starter includes two wrappers that make it easier to use the optional guillotine api for using React4xp in a <<guillotine#, headless context>>.
+<4> Under _headless/_, the starter includes two wrappers that make it easier to use the optional guillotine api for using React4xp in a <<client-side#, headless context>>.
 
-{zwsp} +
+
 
 == Build and Deploy
 
@@ -94,12 +94,12 @@ enonic dev
 If you want to see XP logs while working with react4xp, make sure to follow enonic's cli https://developer.enonic.com/docs/enonic-cli/stable/dev#dev[docs] dev command section.
 ====
 
-{zwsp} +
+
 
 Now you're ready to get started with the first lesson chapters.
 
 [.right]
 -> <<hello-react#, Hello React>>
 
-{zwsp} +
-{zwsp} +
+
+

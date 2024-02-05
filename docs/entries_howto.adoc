@@ -5,6 +5,6 @@
 image:entries_howto.png[title="Downloadable cheat sheet: how to make a React4xp entry"]
 
 ---
-{zwsp} +
+
 
 <<entries#howto, <- Back>>

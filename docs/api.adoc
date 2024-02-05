@@ -7,9 +7,9 @@ The React4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib
 
 This chapter also covers the <<#ssr, SSR engine>>, compilation, and <<config/build-time#, configuration>> of those.
 
-{zwsp} +
-{zwsp} +
-{zwsp} +
+
+
+
 
 == Getting started
 
@@ -24,9 +24,9 @@ Instructions on how to install the library locally or insert it into your projec
 const React4xp = require('/lib/enonic/react4xp');
 ----
 
-{zwsp} +
-{zwsp} +
-{zwsp} +
+
+
+
 
 [[react4xp_render]]
 == React4xp.render
@@ -35,7 +35,7 @@ All-in-one shorthand function for a lot of use cases. Covers both client- and se
 
 Inserts a react component into an (optional) pre-existing HTML string and adds any necessary page contributions to make all work: links to assets, both shared and specific to the entry, and a client-side JS call (`render` or `hydrate` in the client wrapper) that activates the react component in the browser.
 
-{zwsp} +
+
 
 === Signature
 
@@ -46,7 +46,7 @@ The signature is analogous to thymeleaf's familiar `render(view, model)`. But th
 {body, pageContributions} = React4xp.render(entry, props, request, options);
 ----
 
-{zwsp} +
+
 
 [[react4xp_render_parameters]]
 === Parameters
@@ -93,7 +93,7 @@ This *only applies in live mode and previews*: inside _edit_ or _browse_ modes i
 
 |===
 
-{zwsp} +
+
 
 === Returns
 
@@ -112,15 +112,15 @@ Inside that matching-ID element, there will be a serverside rendering of the ent
 | `pageContributions`| object | Regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions]. Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating client-wrapper call. Urls point to React4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
 |===
 
-{zwsp} +
-{zwsp} +
+
+
 
 [[render_request]]
 === Request and automated behavior
 
 `.render` is intended to be convenient to work with and safely wrap around some common corner cases. It automates a little bit of behavior, depending on the `request` object argument (which stems from the XP controller):
 
-{zwsp} +
+
 
 ==== `render` with `request`:
 
@@ -138,7 +138,7 @@ If `request` is supplied, viewing context is detected from `request.mode`: is re
 
 Also, when `request` is used, `.render` will output **error messages from SSR** in error containers and browser consoles (except in live view mode, where error containers and browser log are more generic: shown without the specific messages).
 
-{zwsp} +
+
 
 ==== `render` without `request`:
 
@@ -156,15 +156,15 @@ However, it also means that `hydrate` and `ssr` options are ignored (you always 
 
 When `request` is omitted, `.render` will ** never output error messages from SSR** in error containers or browser console.
 
-{zwsp} +
+
 
 === Examples
 
 Most of the lessons in the guide use `React4xp.render` (except the "custom flow" ones). For example <<hello-react#first_helloreact_jsx, here>> or <<pages-parts-and-regions#color_part_controller, here>>.
 
-{zwsp} +
-{zwsp} +
-{zwsp}
+
+
+
 
 [[react4xp_object]]
 == React4xp object: custom flow
@@ -200,8 +200,8 @@ exports.get = function(request) => {
 
 See the <<custom-flow-syntax#, "custom flow syntax">> lesson to go more in depth.
 
-{zwsp} +
-{zwsp} +
+
+
 
 [[constructor]]
 === Object constructor
@@ -223,8 +223,8 @@ Creates an initial react4xp data object from an entry.
 
 *Constructs* a react4xp data object, which exposes the attributes and methods below:
 
-{zwsp} +
-{zwsp} +
+
+
 
 === Main object attributes
 
@@ -246,8 +246,8 @@ Extract from the object the data that has been generated or set in it.
 const targetElementId = myComponent.react4xpId;
 ----
 
-{zwsp} +
-{zwsp} +
+
+
 
 [[setter_methods]]
 === Setter methods
@@ -272,7 +272,7 @@ myComponent.thirdSetter("c");
 
 The order between the setters doesn't matter - except for `setId` and `uniqueId`, which affect each other.
 
-{zwsp} +
+
 
 ==== .setProps
 
@@ -291,7 +291,7 @@ Sets props for the entry.
 | `props` | object, mandatory | `props` passed into the react component for initial rendering. JS object must be serializable (no functions can be passed).
 |===
 
-{zwsp} +
+
 
 [[set_id]]
 ==== .setId
@@ -315,7 +315,7 @@ If the data object already has an ID, `.setId(id)` will overwrite it. If `id` is
 | `id` | string, optional |  ID of both the target HTML element and the data object itself.
 |===
 
-{zwsp} +
+
 
 ==== .uniqueId
 
@@ -328,7 +328,7 @@ Enforces a unique ID, either by itself or after running `.setId()`. If the objec
 
 No parameters.
 
-{zwsp} +
+
 
 ==== .setJsxPath
 
@@ -347,8 +347,8 @@ If you for some reason need to override the JsxPath that was set (or inferred fr
 | `jsxPath` | string, mandatory |  New <<jsxpath#, jsxPath>> to a different entry.
 |===
 
-{zwsp} +
-{zwsp} +
+
+
 
 
 === Rendering methods
@@ -357,8 +357,8 @@ These methods perform specific rendering tasks independently, using the data obj
 
 NOTE: Most of these rendering methods will lock down the jsxPath and ID if the react4xp data object, the first time one of them is run. After this, the setters will prevent these from being changed so that another conflicting rendering can't be performed from the same data object.
 
-{zwsp} +
-{zwsp} +
+
+
 
 [[render_body]]
 ==== .renderBody
@@ -381,7 +381,7 @@ Does _not_ render page contributions. Combine with a corresponding <<#render_pgc
 
 Just like `render` does, `renderBody` ensures that the output HTML will always contain a matching-ID target element for react-rendering/hydrating the entry into (in the browser). And if serverside rendering is switched on (that is, `ssr` is not false, or safe context-dependent rendering is enforced by adding `request` - <<#react4xp_object_request, see the summary>>), the target element will contain the static HTML rendering.
 
-{zwsp} +
+
 
 ===== Parameters
 
@@ -408,7 +408,7 @@ Other renderings are not affected, _even from the same data object_ (so you usua
 |===
 
 
-{zwsp} +
+
 
 ===== Returns
 
@@ -418,8 +418,8 @@ The root of the returned HTML is always a *surrounding container* HTML that will
 
 Inside that matching-ID element, there will be a serverside rendering of the entry (with the initial props from `.setProps`) if `options.ssr` is not false.
 
-{zwsp} +
-{zwsp} +
+
+
 
 [[render_pgcontr]]
 ==== .renderPageContributions
@@ -480,8 +480,8 @@ With a serverside rendering (`options.ssr` is not false), the client will expect
 
 
 
-{zwsp} +
-{zwsp} +
+
+
 
 [[react4xp_object_request]]
 === Request and automated behavior
@@ -492,7 +492,7 @@ However, lib-react4xp version 1.6.0 introduced support for a `request` option pa
 
 Omitting `request` will still work the same way as before, leaving more to developers.
 
-{zwsp} +
+
 
 ==== Custom flow with `request`
 
@@ -513,7 +513,7 @@ This will act <<#render_request, the same way as `render` used with a request>>:
 
 As with `render`, error message details are held back in live view mode.
 
-{zwsp} +
+
 
 ==== Custom flow without `request`:
 
@@ -534,8 +534,8 @@ NOTE: This risks a missing/empty visualization inside Content Studio, since `ssr
 +
 NOTE: Best case scenario: this might make a client-side rendered entry visible in Content Studio too. Worst case, it risks intervening with Content Studio's UX, or even break its functionality, depending on the code used/imported by the entry.
 
-{zwsp} +
-{zwsp} +
+
+
 
 === Custom flow examples
 
@@ -543,9 +543,9 @@ Custom flow usage in is demonstrated <<custom-flow-syntax#, here>>.
 
 
 
-{zwsp} +
-{zwsp} +
-{zwsp} +
+
+
+
 
 [[ssr]]
 == SSR engine
@@ -556,7 +556,7 @@ In a nutshell, source files like TSX and JSX are compiled into JS assets that li
 
 The aim of react4xp is link:https://medium.com/capital-one-tech/why-everyone-is-talking-about-isomorphic-universal-javascript-and-why-it-matters-38c07c87905[isomorphic rendering]: after the react component(s) are serverside rendered, they are activated (hydrated) in the browser, turning them into running, active react apps. It's _the same react code_ that runs at the server as in the browser: no need to write the same component twice - one for SSR and one for the browser (although occasionally, tweaks are needed to prevent browserspecific code from running on the server).
 
-{zwsp} +
+
 
 [[renderers]]
 === Renderers
@@ -567,7 +567,7 @@ The number of renderer workers is <<run_time#ssrMaxThreads, determined in java b
 
 When a renderer runs into an error during SSR, that renderer is torn down and a new one is initialized (see warmup time below). This happens as far as possible during idle time.
 
-{zwsp} +
+
 
 [[warmup]]
 === Warmup time
@@ -592,7 +592,7 @@ Since development can involve repeated app/server restarts, here is one way to i
 
 (Other optimizations and approaches are under consideration, to shorten the warmup time even more).
 
-{zwsp} +
+
 
 [[performance]]
 === SSR performance

@@ -11,7 +11,7 @@ It doesn't have to be that way. In this example, we'll take a look at which reac
 
 
 
-{zwsp} +
+
 
 == Entries and locations
 
@@ -19,7 +19,7 @@ For react components to be available to React4xp the way we've seen so far, thei
 
 When they are located where they should (and export a `props=>component` function), those react components are called *entries* (<<entries#, full reference>>).
 
-{zwsp} +
+
 
 === 1: Below _site/_
 
@@ -65,7 +65,7 @@ TIP: If you look at the rendered HTML output in page source, you can see React4x
 TIP: All the _entries_ in your project are listed with their _jsxPath_ after compilation, in _build/resources/main/r4xAssets/entries.json_.
 
 
-{zwsp} +
+
 
 === 2: Below _react4xp/_
 If you just want to keep your react components out of the regular XP file structure in _site/_ and be independent of the structure of Parts, Pages etc, the folder _src/main/resources/react4xp/_ is meant for that. Here's how (assuming you're using link:https://market.enonic.com/vendors/enonic/react4xp-starter[the starter] or generally following link:https://github.com/enonic/lib-react4xp/blob/master/README.md#setup-option-2-using-react4xp-in-an-existing-project[the recommended react4xp setup pattern]):
@@ -91,7 +91,7 @@ TIP: *Under the _site/_ folder, entry source files must have the extension _.tsx
 NOTE: React4xp doesn't currently separate between different _entryDirs_, they behave as one. So if `entryDirs = entries,moreEntries` then _react4xp/entries/foo/bar.tsx_ and  _react4xp/moreEntries/foo/bar.tsx_ will get the same _jsxPath_: `"foo/bar"`. Beware of *namespace collisions*; you won't be able to refer to both.
 
 
-{zwsp} +
+
 
 === 3: Anywhere else
 
@@ -108,15 +108,15 @@ entryDirs:['entries','../../../../../node_modules/externalComponents/comps']
 (Or replace _entries_ if you're not using it, of course)
 
 
-{zwsp} +
+
 
 == Further reading
 
 If you want a deeper dive into details before moving on, here's more about <<entries#, entries>> and the <<jsxpath#, jsxPaths>> that point React4xp to them.
 
-{zwsp} +
+
 
 Okay, next example lessons!
 
-{zwsp} +
-{zwsp} +
+
+
