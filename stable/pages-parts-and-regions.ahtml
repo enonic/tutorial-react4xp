@@ -548,9 +548,6 @@ site/parts/
     color.tsx</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -573,9 +570,6 @@ site/parts/
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="sect2">
 <h3 id="code"><a class="link" href="#code">Code</a></h3>
 <div class="sect3">
@@ -597,9 +591,6 @@ site/parts/
 <div class="paragraph">
 <p>Again, this content type has nothing to do with React4xp, but it&#8217;ll make the setup of this and the next examples easier.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="xp_page_definition"><a class="link" href="#xp_page_definition">XP Page definition</a></h4>
@@ -618,9 +609,6 @@ site/parts/
   &lt;/regions&gt;
 &lt;/page&gt;</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect3">
@@ -673,9 +661,6 @@ export default (props) =&gt; (
 <td>Nesting the Region in our component. To be precise: it uses <code>props.regionsData</code> and selects the Region name(s) in <code>props.names</code>, so it will render <em>all</em> Regions given by <code>props</code> if more than one is defined and selected.</td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect3">
@@ -768,9 +753,6 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -794,9 +776,6 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/template_new.png" alt="template new" width="720px" title="Creating a new Template content in Content Studio."></span></p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="olist arabic">
 <ol class="arabic" start="3">
 <li>
@@ -807,18 +786,12 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/template_edit.png" alt="template edit" width="720px" title="Using a Template to connect a content type to a page controller in Content Studio."></span></p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="olist arabic">
 <ol class="arabic" start="4">
 <li>
 <p>Apply/save and you&#8217;re done. Now every new <em>myContent</em> item in every site with this Template will be rendered with the <em>default</em> page controller.</p>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -828,9 +801,6 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 <div class="sectionbody">
 <div class="paragraph">
 <p>Now we&#8217;re ready to add a simple react-rendered Part to drop into the Region: <em>site/parts/color/</em> .</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect2">
 <h3 id="code_2"><a class="link" href="#code_2">Code</a></h3>
@@ -856,9 +826,6 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 &lt;/part&gt;</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="react_component_2"><a class="link" href="#react_component_2">React component</a></h4>
@@ -881,9 +848,6 @@ export default (props) =&gt; (
     &lt;/div&gt;
 );</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect3">
@@ -953,9 +917,6 @@ export function get(request) {
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -979,9 +940,6 @@ export function get(request) {
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/content_my.png" alt="content my" width="720px" title="Selecting the new my-content type in Content Studio"></span></p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="olist arabic">
 <ol class="arabic" start="2">
 <li>
@@ -991,9 +949,6 @@ export function get(request) {
 </div>
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/page_with_ready_region.png" alt="page with ready region" width="720px" title="Editing new content in Content Studio, with Region ready to receive parts etc"></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="3">
@@ -1005,9 +960,6 @@ export function get(request) {
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/content_with_red_part.png" alt="content with red part" width="720px" title="Editing new content in Content Studio, with Region ready to receive parts etc"></span></p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="olist arabic">
 <ol class="arabic" start="4">
 <li>
@@ -1017,9 +969,6 @@ export function get(request) {
 <p>As usual, clicking <em>Preview</em> on the top will open a new Preview tab for your page.</p>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -1050,24 +999,17 @@ export function get(request) {
 </table>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Now we&#8217;ve covered the basics of how to use React4xp. It&#8217;ll be enough for most simple setups and use cases.</p>
 </div>
 <div class="paragraph">
 <p>Moving on from here, we&#8217;ll take a look at more advanced ways to use React4xp, giving you more control.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

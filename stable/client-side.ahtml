@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.20">
-<title>Going Headless, part 1: Guillotine and graphQL</title>
+<title>Client side rendering and the Guillotine api</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,11 +436,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Going Headless, part 1: Guillotine and graphQL</h1>
+<h1>Client side rendering and the Guillotine api</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#some_background">Some background</a></li>
 <li><a href="#lesson_overview">Lesson overview</a>
 <ul class="sectlevel2">
 <li><a href="#chapter_source_files">Source files</a></li>
@@ -481,30 +480,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/guillotine.jpg" alt="guillotine" width="600px" title="React4xp goes headless"></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="some_background"><a class="link" href="#some_background">Some background</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>In the previous chapters we&#8217;ve looked at a "traditional CMS" way of using React4xp: as content directly presented (and augmented) by react components, served together by XP. This is fairly easy to set up and works fine for many use cases. But in other cases, we may not want such a tight connection between the content and the presentational components. There may be advantages of handling/serving them separately - or an approach where a content-exposing API works alongside a traditional CMS, as a supplement. These approaches are often called a <a href="https://enonic.com/blog/headless-or-decoupled-cms">headless</a> or <a href="https://enonic.com/blog/what-is-hybrid-cms">hybrid</a> CMS.</p>
-</div>
-<div class="paragraph">
-<p>In Enonic XP, project <a href="https://developer.enonic.com/docs/headless-cms/stable">guillotine</a> is a go-to solution for extending the existing CMS capabilities. It exposes a read-only <a href="https://graphql.org/">GraphQL</a> API, and provides the ability to <strong>read pure content data</strong> (the "body" in the analogy) from XP with great flexibility and high performance.</p>
-</div>
-<div class="paragraph">
-<p>Combining this with react as the presentational component (the "head") opens up a range of ways to use XP in headless/hybrid manners. This makes guillotine a neat and natural companion to React4xp, so the <strong>guillotine library is included in the React4xp starter</strong> along with two extra helper wrappers.</p>
-</div>
-<div class="paragraph">
-<p>We will now look at how to use React4xp with guillotine in different ways, for different levels of decoupling.</p>
+<p>We will now look at how to use React4xp in combination with XP&#8217;s graphQL api.</p>
 </div>
 </div>
 </div>
@@ -512,7 +488,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This chapter will focus on setting up the guillotine API and the first usages:</p>
+<p>This chapter will focus on setting up the API and the first usages:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -540,7 +516,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The <a href="webapp.ahtml">next chapter</a> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same React4xp components in a <em>standalone webapp</em>, to render content data from a guillotine API.
+The <a href="standalone.ahtml">next chapter</a> will expand on this lesson. It demonstrates more decoupled (and less XP-centric) ways to use these same React4xp components in a <em>standalone webapp</em>, to render content data from a guillotine API.
 </td>
 </tr>
 </table>
@@ -607,11 +583,6 @@ headless/                       <i class="conum" data-value="6"></i><b>(6)</b>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -637,9 +608,6 @@ headless/                       <i class="conum" data-value="6"></i><b>(6)</b>
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect2">
 <h3 id="movie_content_type"><a class="link" href="#movie_content_type">Movie content type</a></h3>
@@ -676,9 +644,6 @@ headless/                       <i class="conum" data-value="6"></i><b>(6)</b>
   &lt;/form&gt;
 &lt;/content-type&gt;</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -823,9 +788,6 @@ export default Movie;</code></pre>
   }
 }</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -975,9 +937,6 @@ export function get(request) {
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="make_some_movies"><a class="link" href="#make_some_movies">Make some Movies</a></h3>
@@ -993,9 +952,6 @@ export function get(request) {
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/edit_movie.png" alt="edit movie" width="1024px" title="Create a new movie item in content studio"></span></p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div id="movies_in_container_site" class="paragraph">
 <p>It&#8217;s important that <strong>the new movies are inside/under <em>one common container item</em> in the content hierarchy</strong>. It&#8217;s easiest for this lesson if the movie items are just directly under the site itself:</p>
 </div>
@@ -1003,18 +959,10 @@ export function get(request) {
 <p><span class="image"><img src="media/add_movies.png" alt="add movies" width="1024px" title="Create some movie items to list, under the site"></span></p>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>When you mark/preview the site itself, you&#8217;ll see no visualization yet. But previewing each movie item should now work as in the image above.</p>
 </div>
 <div class="paragraph">
 <p>Now we&#8217;re ready to move on to more interesting stuff, using the content and code we just made.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -1024,9 +972,6 @@ export function get(request) {
 <div class="sectionbody">
 <div class="paragraph">
 <p>Next, we&#8217;ll make a page controller for a site item that displays a static list of the <em>movie</em> items below it. The controller will use a configurable guillotine query to fetch an array of movie data items.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect2">
 <h3 id="guillotine_helpers"><a class="link" href="#guillotine_helpers">Guillotine helpers and usage</a></h3>
@@ -1101,13 +1046,7 @@ This endpoint is <strong>disabled by default</strong> in the starter, to encoura
 </table>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>The second included helper, <a href="#guillotine_request_helper">guillotineRequest.ts</a>, is a <code>fetch</code> wrapper to simplify guillotine requests at the frontend. We&#8217;ll take a look at that later.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -1229,9 +1168,6 @@ export default {};</code></pre>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1243,9 +1179,6 @@ Remember that this query hardcodes qualified names to a content type, that conta
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -1402,9 +1335,6 @@ export function get(request) {
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="static_movielist"><a class="link" href="#static_movielist">React components</a></h3>
@@ -1466,9 +1396,6 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="render_the_list"><a class="link" href="#render_the_list">Render the list</a></h3>
@@ -1493,9 +1420,6 @@ You can either do that <a href="pages-parts-and-regions.ahtml#adding_parts_to_ne
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/movie-list-part-config.png" alt="movie list part config" width="1024px" title="Edit the movie-list part configuration to control the guillotine query"></span></p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -1508,11 +1432,6 @@ As usual, click Preview to see the rendering in a tab of its own. A preview brow
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -1521,9 +1440,6 @@ As usual, click Preview to see the rendering in a tab of its own. A preview brow
 <div class="sectionbody">
 <div class="paragraph">
 <p>In this next section we&#8217;ll expose the API to the frontend and let the client send a request to it. The returned data will be merged into the component state of the <em>MovieList</em> entry, and used to render the new movies into the page DOM. Finally, we&#8217;ll add a scroll listener to trigger the process.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect2">
 <h3 id="expose_api"><a class="link" href="#expose_api">Exposing the guillotine API</a></h3>
@@ -1579,9 +1495,6 @@ As usual, click Preview to see the rendering in a tab of its own. A preview brow
 </div>
 <div class="paragraph">
 <p>After rebuilding, the API is now up and running at <code>&lt;site-url&gt;/api/headless</code> (e.g. <code><a href="http://localhost:8080/admin/site/preview/default/draft/moviesite/api/headless" class="bare">http://localhost:8080/admin/site/preview/default/draft/moviesite/api/headless</a></code>).</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -1664,9 +1577,6 @@ export default doGuillotineRequest;</code></pre>
 <td><code>catchErrorsFunc</code> (function, optional): callback function that takes an error object and handles it. Default: console-error-logs the error message.</td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -1828,16 +1738,10 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </table>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Rebuilding this and running the moviesite in a preview window and with a console open, and the clicking somewhere on the list, say 3 times, the result might look something like this (note the console messages, how the returned movie IDs are not the same between responses, and that &#8220;starting from index&#8230;&#8203;&#8221; keeps counting):</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="media/click-data.png" alt="click data" width="1024px" title="Console logs different data items from 3 mouse clicks"></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -1973,9 +1877,6 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -2001,16 +1902,10 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </table>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Rebuild the app, update the moviesite preview tab and try clicking on the list. New movies should appear below the existing one, expanding the movie list as you click:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="media/click-fill-dom.png" alt="click fill dom" width="1024px" title="Each click fetches new movies and renders them"></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -2204,9 +2099,6 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div id="serverbrowserbreakage" class="admonitionblock note">
 <table>
 <tr>
@@ -2228,19 +2120,10 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 </table>
 </div>
 <div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>And there we have it: <strong>our infinite scroller</strong>!</p>
 </div>
 <div class="paragraph">
 <p>Rebuild, refresh the preview of <em>MovieSite</em>, and instead of clicking, just scroll down - the page should auto-refresh to add new content until the very end of time or the end of your added movies, whichever comes first.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -2268,7 +2151,7 @@ This section is not a vital part of the rest of this or the next chapter. Feel f
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

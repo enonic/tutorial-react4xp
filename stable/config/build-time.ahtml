@@ -471,9 +471,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>If you&#8217;re using the <a href="setup.ahtml#create_project">starter</a> or your project is based on it, this is already set up and you can skip the following section:</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="sect2">
 <h3 id="including_react4xp_config_js_in_your_project"><a class="link" href="#including_react4xp_config_js_in_your_project">Including react4xp.config.js in your project</a></h3>
 <div class="paragraph">
@@ -527,9 +524,6 @@ jar.dependsOn 'react4xp'</code></pre>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="entryDirs"><a class="link" href="#entryDirs">entryDirs</a></h3>
@@ -544,9 +538,6 @@ jar.dependsOn 'react4xp'</code></pre>
 </div>
 <div class="paragraph">
 <p>Adding comma separated values under <code>entryDirs</code> adds <em>more</em> folder names/paths (relative to <em>src/main/resources/react4xp/</em>) where TSX/JSX files will also become entries.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -597,9 +588,6 @@ jar.dependsOn 'react4xp'</code></pre>
 <p><em>src/main/resources/react4xp/other/stuff/</em> ➔ <code>stuff.*.js</code></p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -699,11 +687,6 @@ first build after clean, may be slower, but the subsequent (incremental) builds
 <div class="paragraph">
 <p>Read more <a href="https://webpack.js.org/configuration/cache/" class="bare">https://webpack.js.org/configuration/cache/</a></p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -736,9 +719,6 @@ first build after clean, may be slower, but the subsequent (incremental) builds
 <div class="paragraph">
 <p>Default value is <code>production</code>.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="VERBOSE"><a class="link" href="#VERBOSE">Verbosity</a></h3>
@@ -751,7 +731,7 @@ first build after clean, may be slower, but the subsequent (incremental) builds
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

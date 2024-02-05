@@ -484,11 +484,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>This chapter also covers the <a href="#ssr">SSR engine</a>, compilation, and <a href="config/build-time.ahtml">configuration</a> of those.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -508,11 +503,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const React4xp = require('/lib/enonic/react4xp');</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -525,9 +515,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Inserts a react component into an (optional) pre-existing HTML string and adds any necessary page contributions to make all work: links to assets, both shared and specific to the entry, and a client-side JS call (<code>render</code> or <code>hydrate</code> in the client wrapper) that activates the react component in the browser.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="sect2">
 <h3 id="signature"><a class="link" href="#signature">Signature</a></h3>
 <div class="paragraph">
@@ -537,9 +524,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">{body, pageContributions} = React4xp.render(entry, props, request, options);</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -673,9 +657,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="returns"><a class="link" href="#returns">Returns</a></h3>
@@ -718,18 +699,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="render_request"><a class="link" href="#render_request">Request and automated behavior</a></h3>
 <div class="paragraph">
 <p><code>.render</code> is intended to be convenient to work with and safely wrap around some common corner cases. It automates a little bit of behavior, depending on the <code>request</code> object argument (which stems from the XP controller):</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect3">
 <h4 id="render_with_request"><a class="link" href="#render_with_request"><code>render</code> with <code>request</code>:</a></h4>
@@ -755,9 +729,6 @@ React4xp.render(entry, props, request, options); // ...etc etc</code></pre>
 <div class="paragraph">
 <p>Also, when <code>request</code> is used, <code>.render</code> will output <strong>error messages from SSR</strong> in error containers and browser consoles (except in live view mode, where error containers and browser log are more generic: shown without the specific messages).</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="render_without_request"><a class="link" href="#render_without_request"><code>render</code> without <code>request</code>:</a></h4>
@@ -777,20 +748,12 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 <div class="paragraph">
 <p>When <code>request</code> is omitted, <code>.render</code> will <strong> never output error messages from SSR</strong> in error containers or browser console.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="examples"><a class="link" href="#examples">Examples</a></h3>
 <div class="paragraph">
 <p>Most of the lessons in the guide use <code>React4xp.render</code> (except the "custom flow" ones). For example <a href="hello-react.ahtml#first_helloreact_jsx">here</a> or <a href="pages-parts-and-regions.ahtml#color_part_controller">here</a>.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;</p>
 </div>
 </div>
 </div>
@@ -832,10 +795,6 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 <div class="paragraph">
 <p>See the <a href="custom-flow-syntax.ahtml">"custom flow syntax"</a> lesson to go more in depth.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
-</div>
 <div class="sect2">
 <h3 id="constructor"><a class="link" href="#constructor">Object constructor</a></h3>
 <div class="listingblock">
@@ -871,10 +830,6 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </table>
 <div class="paragraph">
 <p><strong>Constructs</strong> a react4xp data object, which exposes the attributes and methods below:</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -925,10 +880,6 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 <pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const targetElementId = myComponent.react4xpId;</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="setter_methods"><a class="link" href="#setter_methods">Setter methods</a></h3>
@@ -955,9 +906,6 @@ myComponent.thirdSetter("c");</code></pre>
 </div>
 <div class="paragraph">
 <p>The order between the setters doesn&#8217;t matter - except for <code>setId</code> and <code>uniqueId</code>, which affect each other.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect3">
 <h4 id="setprops"><a class="link" href="#setprops">.setProps</a></h4>
@@ -992,9 +940,6 @@ myComponent.thirdSetter("c");</code></pre>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="set_id"><a class="link" href="#set_id">.setId</a></h4>
@@ -1044,9 +989,6 @@ If <code>render</code> or <code>renderBody</code> are called without an ID havin
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="uniqueid"><a class="link" href="#uniqueid">.uniqueId</a></h4>
@@ -1060,9 +1002,6 @@ If <code>render</code> or <code>renderBody</code> are called without an ID havin
 </div>
 <div class="paragraph">
 <p>No parameters.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect3">
@@ -1098,10 +1037,6 @@ If <code>render</code> or <code>renderBody</code> are called without an ID havin
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -1120,10 +1055,6 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
 </div>
 <div class="sect3">
 <h4 id="render_body"><a class="link" href="#render_body">.renderBody</a></h4>
@@ -1157,9 +1088,6 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 </div>
 <div class="paragraph">
 <p>Just like <code>render</code> does, <code>renderBody</code> ensures that the output HTML will always contain a matching-ID target element for react-rendering/hydrating the entry into (in the browser). And if serverside rendering is switched on (that is, <code>ssr</code> is not false, or safe context-dependent rendering is enforced by adding <code>request</code> - <a href="#react4xp_object_request">see the summary</a>), the target element will contain the static HTML rendering.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect4">
 <h5 id="parameters"><a class="link" href="#parameters">Parameters</a></h5>
@@ -1232,9 +1160,6 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect4">
 <h5 id="returns_2"><a class="link" href="#returns_2">Returns</a></h5>
@@ -1246,10 +1171,6 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 </div>
 <div class="paragraph">
 <p>Inside that matching-ID element, there will be a serverside rendering of the entry (with the initial props from <code>.setProps</code>) if <code>options.ssr</code> is not false.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -1388,10 +1309,6 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <div class="paragraph">
 <p>With a serverside rendering (<code>options.ssr</code> is not false), the client will expect an existing target element with a pre-rendered entry in the response <code>body</code>, and call <code>hydrate</code>. If <code>options.ssr</code> is false, an empty target element is expected in the response <code>body</code>, and the rendering is left to the client with <code>render</code>.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -1404,9 +1321,6 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 </div>
 <div class="paragraph">
 <p>Omitting <code>request</code> will still work the same way as before, leaving more to developers.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect3">
 <h4 id="custom_flow_with_request"><a class="link" href="#custom_flow_with_request">Custom flow with <code>request</code></a></h4>
@@ -1428,9 +1342,6 @@ const pageContributions = myComponent.renderPageContributions({
 </div>
 <div class="paragraph">
 <p>As with <code>render</code>, error message details are held back in live view mode.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect3">
@@ -1479,21 +1390,12 @@ Best case scenario: this might make a client-side rendered entry visible in Cont
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="custom_flow_examples"><a class="link" href="#custom_flow_examples">Custom flow examples</a></h3>
 <div class="paragraph">
 <p>Custom flow usage in is demonstrated <a href="custom-flow-syntax.ahtml">here</a>.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -1510,9 +1412,6 @@ Best case scenario: this might make a client-side rendered entry visible in Cont
 <div class="paragraph">
 <p>The aim of react4xp is <a href="https://medium.com/capital-one-tech/why-everyone-is-talking-about-isomorphic-universal-javascript-and-why-it-matters-38c07c87905">isomorphic rendering</a>: after the react component(s) are serverside rendered, they are activated (hydrated) in the browser, turning them into running, active react apps. It&#8217;s <em>the same react code</em> that runs at the server as in the browser: no need to write the same component twice - one for SSR and one for the browser (although occasionally, tweaks are needed to prevent browserspecific code from running on the server).</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="sect2">
 <h3 id="renderers"><a class="link" href="#renderers">Renderers</a></h3>
 <div class="paragraph">
@@ -1523,9 +1422,6 @@ Best case scenario: this might make a client-side rendered entry visible in Cont
 </div>
 <div class="paragraph">
 <p>When a renderer runs into an error during SSR, that renderer is torn down and a new one is initialized (see warmup time below). This happens as far as possible during idle time.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -1569,9 +1465,6 @@ Best case scenario: this might make a client-side rendered entry visible in Cont
 </div>
 <div class="paragraph">
 <p>(Other optimizations and approaches are under consideration, to shorten the warmup time even more).</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -1632,7 +1525,7 @@ exports.get = request =&gt; {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

@@ -474,9 +474,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   hello-react2.tsx</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -484,9 +481,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="paragraph">
 <p>Let&#8217;s change the files some more so we can use Content Studio to input some data into the react rendering.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect2">
 <h3 id="page_definition"><a class="link" href="#page_definition">Page definition</a></h3>
@@ -528,9 +522,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 &lt;/page&gt;</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="type_declarations"><a class="link" href="#type_declarations">Type declarations</a></h3>
@@ -561,9 +552,6 @@ declare global {
   }
 }</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -735,9 +723,6 @@ export default (props: HelloProps) =&gt; &lt;HelloReact {...props}/&gt;;</code><
 <div class="paragraph">
 <p>There it is, now let&#8217;s take a look!</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -754,16 +739,10 @@ export default (props: HelloProps) =&gt; &lt;HelloReact {...props}/&gt;;</code><
 <p><span class="image"><img src="media/hello_cs.png" alt="hello cs" width="720px" title="Editing Hello World, same as before."></span></p>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Now, when you click the preview panel, the page-config editing panel should open on the right, with the data fields containing the default text we defined. Once you click Apply/save, the preview panel to the left should update.</p>
 </div>
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/hello_editorial.png" alt="hello editorial" width="720px" title="Editing Hello World in the page-config panel in Content Studio."></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="paragraph">
 <p>So now, it looks the same as before, but with editorial data instead of hardcoded text. Boring, and too similar to the previous example; just repeating "Hello World" might cause a little confusion. <strong>Try adding your own data in the fields</strong>, for example changing <em>"world"</em> into <em>"<a href="https://montypython.fandom.com/wiki/Bruces_sketch">Bruce</a>"</em> etc, to keep it clear.</p>
@@ -773,9 +752,6 @@ export default (props: HelloProps) =&gt; &lt;HelloReact {...props}/&gt;;</code><
 </div>
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/gday_bruce.png" alt="gday bruce" width="720px" title="Rendering: G&#8217;day Bruce. This is turning into one big philosophers' joke, isn&#8217;t it?"></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -827,9 +803,6 @@ export default (props: HelloProps) =&gt; &lt;HelloReact {...props}/&gt;;</code><
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -839,21 +812,14 @@ export default (props: HelloProps) =&gt; &lt;HelloReact {...props}/&gt;;</code><
 <p>Now might be a good time to take a closer look at <a href="api.ahtml#react4xp_render">the API overview of the .render call</a> from the ES6 controller in the example above.</p>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Either way, you should be ready for the last of the three basic lesson chapters.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

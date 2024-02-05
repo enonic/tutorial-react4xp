@@ -470,9 +470,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>We&#8217;ll first do that in the serverside rendered way (this is the React4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -505,9 +502,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   &lt;regions /&gt;
 &lt;/page&gt;</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -583,9 +577,6 @@ export default () =&gt; &lt;HelloReact/&gt;;</code></pre>
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -667,9 +658,6 @@ export function get(request) {               <i class="conum" data-value="2"></i
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -701,9 +689,6 @@ export function get(request) {               <i class="conum" data-value="2"></i
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/hello_cs.png" alt="hello cs" width="720px" title="Editing in Content Studio: Hello World."></span></p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="olist arabic">
 <ol class="arabic" start="5">
 <li>
@@ -715,13 +700,7 @@ export function get(request) {               <i class="conum" data-value="2"></i
 <p><span class="image"><img src="media/hello_bottles.png" alt="hello bottles" width="720px" title="Rendering: Hello World and some bottles on a wall somewhere. You didn&#8217;t click this screenshot, did you?"></span></p>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Clicking somewhere on the rendered text in the preview window will trigger the <code>dropBottle</code> function from <em>hello-react.tsx</em>, and modify the DOM and output a message in the browser console. Look at those bottles go!</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -730,9 +709,6 @@ export function get(request) {               <i class="conum" data-value="2"></i
 <div class="sectionbody">
 <div class="paragraph">
 <p>Two things are worth knowing about the rendering, before we move on:</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect2">
 <h3 id="static_cs_rendering"><a class="link" href="#static_cs_rendering">Content studio should only have static rendering</a></h3>
@@ -751,9 +727,6 @@ Later, we&#8217;ll look at two other rendering functions: <code>renderBody</code
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="first_serverside_render_can_be_slow"><a class="link" href="#first_serverside_render_can_be_slow">First serverside render can be slow</a></h3>
@@ -762,9 +735,6 @@ Later, we&#8217;ll look at two other rendering functions: <code>renderBody</code
 </div>
 <div class="paragraph">
 <p><strong>This delay only happens when your app is restarted</strong>, i.e. you restart XP entirely, or redeploy the app.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -849,9 +819,6 @@ The assets are served by lib-react4xp services. Most of them (<em>react4xp-clien
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -970,21 +937,14 @@ In Content Studio edit mode, a yellow placeholder is used for client-side render
 </table>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Okay, ready for the next example lesson?</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

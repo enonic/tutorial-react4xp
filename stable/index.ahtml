@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.20">
-<title>React4XP - Server side React with the Enonic framework</title>
+<title>Server side React with the Enonic framework - React4XP</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,7 +436,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>React4XP - Server side React with the Enonic framework</h1>
+<h1>Server side React with the Enonic framework - React4XP</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -530,10 +530,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><a href="imports-and-dependency-chunks.ahtml">Imports, chunks, config, webpack</a>: Importing things into your entries, and controlling the compilation rules and output.</p>
 </li>
 <li>
-<p><a href="guillotine.ahtml">Headless, part 1</a>: Introduction of how to use React4xp in a headless-CMS context: set up a data endpoint that serves XP content as pure data, and have the already-rendered React4xp components add more content asynchronously with that content data.</p>
+<p><a href="client-side.ahtml">Client-side rendering, part 1</a>: Introduction of how to use React4xp client-side, set up a data endpoint that serves XP content as pure data, and have the already-rendered React4xp components add more content asynchronously with that content data.</p>
 </li>
 <li>
-<p><a href="webapp.ahtml">Headless, part 2</a>: "pure headless" with preview - standalone webapps that take the same React4xp components out of Content Studio, and render the content with assets and data served from anywhere.</p>
+<p><a href="standalone.ahtml">Standalone mode</a>: Here we build a webapp that take the same React4xp components out of Content Studio, and render the content with assets and data served from anywhere.</p>
 </li>
 </ul>
 </div>
@@ -587,7 +587,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

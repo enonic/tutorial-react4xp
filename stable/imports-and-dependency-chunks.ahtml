@@ -523,9 +523,6 @@ webpack.config.react4xp.js</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>As you can see, there are more moving parts than before to coordinate here, so we&#8217;ll divide the code into <strong>three sections</strong>:</p>
 </div>
 <div class="ulist">
@@ -541,9 +538,6 @@ webpack.config.react4xp.js</code></pre>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -551,9 +545,6 @@ webpack.config.react4xp.js</code></pre>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Starting out with the <em>multi-color</em> Part at the core of it all, everything in this section will probably be familiar by now.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect2">
 <h3 id="part_definition"><a class="link" href="#part_definition">Part definition</a></h3>
@@ -593,9 +584,6 @@ webpack.config.react4xp.js</code></pre>
 <td>and an array of colors where a user in Content Studio can add any number of HTML-compliant color tags.</td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -665,9 +653,6 @@ export function get(request) {
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -679,9 +664,6 @@ export function get(request) {
 </div>
 <div class="paragraph">
 <p>This is a more complex entry than before (and the most complex part of this example) - it&#8217;s composed of main react code that <strong>imports secondary dependencies</strong>.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect2">
 <h3 id="react_component"><a class="link" href="#react_component">React component</a></h3>
@@ -815,9 +797,6 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="dependencies_for_the_entry"><a class="link" href="#dependencies_for_the_entry">Dependencies for the entry</a></h3>
@@ -839,9 +818,6 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 </div>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p><strong>Moving on to the <em>shared/</em> folder</strong>, this is where we find source files that will be compiled into common assets: dependency chunks with the <em>"shared"</em> prefix and a content-dependent <em>"&lt;HASH&gt;"</em> (reminder: this will happen because we later will mark <em>shared/</em> as a <code>chunkDir</code> in <em>react4xp.properites</em>).</p>
 </div>
 <div class="paragraph">
@@ -855,9 +831,6 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
   font-size: 15pt;
 }</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect3">
@@ -876,9 +849,6 @@ It&#8217;s important that these react components are <strong>not <a href="entrie
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect4">
 <h5 id="button"><a class="link" href="#button">Button</a></h5>
@@ -928,9 +898,6 @@ export default ({
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect4">
 <h5 id="activecoloroval"><a class="link" href="#activecoloroval">ActiveColorOval</a></h5>
@@ -966,9 +933,6 @@ export default ({color}: {color: string}) =&gt;
     {color}
   &lt;/div&gt;</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect4">
@@ -1040,9 +1004,6 @@ export default ({
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -1065,9 +1026,6 @@ If you need more details, some of this is covered in more depth under <a href="e
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect2">
 <h3 id="folders_for_entries_and_chunks"><a class="link" href="#folders_for_entries_and_chunks">Folders for entries and chunks</a></h3>
@@ -1116,9 +1074,6 @@ chunkDirs: 'shared'    <i class="conum" data-value="2"></i><b>(2)</b></code></pr
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -1190,9 +1145,6 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="sect3">
 <h4 id="npm_dependencies"><a class="link" href="#npm_dependencies">NPM dependencies</a></h4>
 <div class="paragraph">
@@ -1204,13 +1156,7 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 </div>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Now we&#8217;re ready to look at it running!</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -1227,9 +1173,6 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 <p><span class="image"><img src="media/multicolor-add.png" alt="multicolor add" width="720px" title="Empty MultiColor part in Content Studio"></span></p>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Click it in edit mode to edit the Part config. Here you can choose to render the part in serverside or clientside mode, as well as enter any number of colors. As long as they are <a href="https://en.wikipedia.org/wiki/Web_colors">standard web colors</a>, they will create an array of colored buttons.</p>
 </div>
 <div class="paragraph">
@@ -1237,17 +1180,11 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 <p><span class="image"><img src="media/multicolor-added.png" alt="multicolor added" width="720px" title="MultiColor part in Content Studio, with four colors added"></span></p>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Outside of Content Studio, in the preview, the buttons are of course active and clickable. Each button selects itself, the Previous/Next buttons cycle through them, and the little elliptic label (the ActiveColorOval) is updated with both text and color:</p>
 </div>
 <div class="paragraph">
 <div class="title">Multicolor Part, active view:</div>
 <p><span class="image"><img src="media/multicolor-preview.png" alt="multicolor preview" width="720px" title="MultiColor part outside of Content Studio, active view after clicking the #5d0015 button"></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -1320,11 +1257,6 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 <div class="paragraph">
 <p>And that&#8217;s all in this chapter!</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -1343,9 +1275,6 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 <p>&#8594; <a href="chunks.ahtml">Dependency chunks</a></p>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p><a href="api.ahtml">API</a> reference:</p>
 </div>
 <div class="paragraph">
@@ -1354,16 +1283,12 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 <div class="paragraph">
 <p>&#8594; <a href="api.ahtml#react4xp_object">React4xp data objects</a></p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

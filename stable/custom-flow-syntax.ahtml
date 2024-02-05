@@ -536,9 +536,6 @@ site/pages/
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -590,9 +587,6 @@ site/pages/
 &lt;/part&gt;</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="thymeleaf_view"><a class="link" href="#thymeleaf_view">Thymeleaf view</a></h3>
@@ -616,9 +610,6 @@ site/pages/
   &lt;/section&gt;
 &lt;/div&gt;</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -881,9 +872,6 @@ colorObj.uniqueId();`.</pre>
 <div class="paragraph">
 <p>And we&#8217;re done, our new <em>custom-flow</em> Part is now ready.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
@@ -904,17 +892,12 @@ colorObj.uniqueId();`.</pre>
 <div class="paragraph">
 <p>The API behind the custom flow syntax: <a href="api.ahtml#react4xp_object">React4xp data objects</a>.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

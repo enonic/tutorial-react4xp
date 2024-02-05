@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.20">
-<title>Going Headless, part 2: standalone webapp</title>
+<title>R4XP webapps</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,7 +436,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Going Headless, part 2: standalone webapp</h1>
+<h1>R4XP webapps</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -472,10 +472,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
-</div>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -484,7 +480,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 <td class="content">
 <div class="paragraph">
-<p>This chapter builds on the source code from <a href="guillotine.ahtml">the previous chapter</a>, especially the entry and dependencies, and the assets that they&#8217;re compiled into.</p>
+<p>This chapter builds on the source code from <a href="client-side.ahtml">the client side rendering chapter</a>, especially the entry and dependencies, and the assets that they&#8217;re compiled into.</p>
 </div>
 <div class="paragraph">
 <p>If you&#8217;ve completed that lesson, nice. But that code is not in focus here and we won&#8217;t look at it much - what we&#8217;ll build in this chapter is <em>around</em> the compiled assets from entries and dependencies, just referring to them.</p>
@@ -495,9 +491,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -510,13 +503,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Until now in all the previous examples, the XP controllers have still been at the center of the rendering.</p>
 </div>
 <div class="paragraph">
-<p>Even in the <a href="guillotine.ahtml">previous chapter</a>, which demonstrated how to make the frontend react components render with data fetched from an API, the response from the initial request to the page still came from an XP controller.</p>
+<p>Even in the <a href="client-side.ahtml">previous chapter</a>, which demonstrated how to make the frontend react components render with data fetched from an API, the response from the initial request to the page still came from an XP controller.</p>
 </div>
 <div class="paragraph">
 <p>In that response there was a serverside-rendered initial HTML rendering of the entry, references to dependency and entry assets (in the right order), and a client-side wrapper (fetched from a referred XP service) that handles the react rendering/hydration trigger in the browser. All of this was automatically generated and included from the <code>React4xp.render</code> call in the XP controller.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -529,11 +519,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph">
 <p>Now that we&#8217;ve seen how to set up an API that serves XP content data, and that using that data to render something with react in the browser boils down to passing props and handling a component state, this opens up for <strong>headless approaches!</strong></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -556,7 +541,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Load all <a href="entries.ahtml">entry assets</a>. This will make each entry available in the browser&#8217;s JS namespace as a react-component-creating function, at <code>React4xp[jsxPath].default</code>, for each entry&#8217;s <a href="jsxPath.ahtml">jsxPath</a>.</p>
 </li>
 <li>
-<p>Construct a props object for each entry that uses props. This is where we&#8217;ll contact the <a href="guillotine.ahtml#expose_api">guillotine endpoint</a> in this lesson, for fetching the data from XP.</p>
+<p>Construct a props object for each entry that uses props. This is where we&#8217;ll contact the <a href="client-side.ahtml#expose_api">graphQL endpoint</a> in this lesson, for fetching the data from XP.</p>
 </li>
 <li>
 <p>Use the props with each entry&#8217;s component-creating function to create a react-renderable component:</p>
@@ -577,13 +562,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ol>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
-<p>If you&#8217;ve used react before, this is the same flow.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
+<p>If you&#8217;ve used React before, this is the same flow.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -597,11 +576,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -610,16 +584,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>We&#8217;ll take a look at <strong>two variations</strong> of how to use React4xp-compiled components without rendering them from XP controllers. Both of them do <a href="#nutshell">the same steps above</a>, in slightly different ways:</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p><strong>Completely standalone:</strong> this first variation is the manual, hardcoded, vanilla-js-and-react webapp approach. The HTML and script do everything explicitly: asset URLs and initial values are <strong>handled and organized manually in the HTML itself</strong>, and the script at the end fetches data from guillotine, organizes them into props and makes a <strong>regular <code>ReactDOM.render</code> call</strong>. In this approach, XP&#8217;s role is mainly to serve content data through the guillotine API. Pretty independent but there are no helpers; so getting things right is up to you.</p>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </li>
 <li>
 <p><strong>Webapp with XP helpers:</strong> this second variation is "slightly standalone": we use XP to wrap a little boilerplate for convenience: <strong>XP and thymeleaf provides some initial values</strong>. The script at the end is still loaded and used to fetch data and create props, but instead of having the HTML load all the entry and dependency assets and call <code>React4xp.render</code>, the React4xp client wrapper is loaded in order to use a <strong>React4xp helper function:</strong> <code>.renderWithDependencies</code>. This is an all-in-one rendering trigger that takes one or more <a href="jsxPath.ahtml">entry jsxPaths</a> with props and target container ID&#8217;s, and uses <strong>XP services</strong> for auto-tracking and loading all the assets needed (including dependency chunks) before rendering them.</p>
@@ -627,21 +595,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ol>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Keep in mind that except for the XP services in the second variation, <strong>no running XP is strictly necessary for this to work</strong>. The data-serving endpoint could be any API (e.g. REST) instead of guillotine, and the initial HTML and JS/CSS assets are static and could be served from anywhere. Use whatever approach suits your project.</p>
 </div>
 <div class="paragraph">
 <p>But we&#8217;ll use XP anyway in this chapter: we already have it up and running from the previous chapters. So we&#8217;ll use <a href="https://developer.enonic.com/guides/my-first-webapp">the XP webapp functionality</a> (see <a href="https://developer.enonic.com/docs/xp/stable/runtime/engines/webapp-engine">here</a> for more documentation) to serve the initial HTML, and the <a href="https://developer.enonic.com/docs/xp/stable/runtime/engines/asset-service">regular XP asset functionality</a> for serving the assets for the entries and dependencies.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 <div class="sect2">
 <h3 id="source_files"><a class="link" href="#source_files">Source files</a></h3>
 <div class="listingblock">
-<div class="title">Files involved (src/main/resources/&#8230;&#8203;) - in addition to <a href="guillotine.ahtml#chapter_source_files">the ones from chapter 8</a>:</div>
+<div class="title">Files involved (src/main/resources/&#8230;&#8203;) - in addition to <a href="client-side.ahtml#chapter_source_files">the ones from chapter 8</a>:</div>
 <div class="content">
 <pre class="highlight"><code class="language-files" data-lang="files">webapp/
     webapp.ts
@@ -654,11 +616,6 @@ assets/webapp/
 </div>
 <div class="paragraph">
 <p>XP uses <em>standalone.ts</em> and <em>standalone.html</em> to generate an initial HTML that directly makes the browser run most of <a href="#nutshell">the steps above</a>, fetching assets and setting up initial values, and then calling the final <em>script.js</em> asset, which handles the rest.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -739,16 +696,13 @@ assets/webapp/
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Variables used by our particular script later, just wrapped in a <code>MOVIE_LIST_PARAMS</code> object to encapsulate them in the global namespace. These are the same values as in in the previous chapter, and the script at the end will use these in a <code>props</code> object, to create the renderable react app from the <em>MovieList</em> entry. Also note that we just hardcoded the values of <code>parentPath</code>, <code>apiUrl</code> and <code>movieType</code> here - they may be different in your setup. As <a href="guillotine.ahtml">before</a>: <code>parentPath</code> is the content path of the site item under which the movie items will be found, <code>apiUrl</code> is the full path to <code>/api/headless</code> <em>below that site</em> (recall that the URL to the guillotine API depends on the URL of a site item like this, because of the way we set the API up with a controller mapping <a href="guillotine.ahtml#expose_api">earlier</a>), and <code>movietype</code> is the full, appname-dependent content type of the movie items to look for.</td>
+<td>Variables used by our particular script later, just wrapped in a <code>MOVIE_LIST_PARAMS</code> object to encapsulate them in the global namespace. These are the same values as in in the previous chapter, and the script at the end will use these in a <code>props</code> object, to create the renderable react app from the <em>MovieList</em> entry. Also note that we just hardcoded the values of <code>parentPath</code>, <code>apiUrl</code> and <code>movieType</code> here - they may be different in your setup. As <a href="client-side.ahtml">before</a>: <code>parentPath</code> is the content path of the site item under which the movie items will be found, <code>apiUrl</code> is the full path to <code>/api/headless</code> <em>below that site</em> (recall that the URL to the guillotine API depends on the URL of a site item like this, because of the way we set the API up with a controller mapping <a href="client-side.ahtml#expose_api">earlier</a>), and <code>movietype</code> is the full, appname-dependent content type of the movie items to look for.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Finally, loading the compiled script from <em>script.ts</em>, see <a href="#script">below</a>.</td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div id="assetpaths" class="admonitionblock note">
 <table>
@@ -782,9 +736,6 @@ assets/webapp/
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="paragraph">
 <p>Okay, moving on, a <strong>webapp controller</strong> is needed for XP to serve this HTML, and it&#8217;s about as minimal as an XP controller can be:</p>
@@ -846,9 +797,6 @@ export function get() {
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="script"><a class="link" href="#script">The script</a></h3>
@@ -862,13 +810,10 @@ export function get() {
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you&#8217;ve been through the lesson in the previous chapter, you might recognize that <strong>the logic in is script is the same</strong> - the functions here are just copied or slightly modified from <a href="guillotine.ahtml#movielistrequests"><em>movieListRequests.ts</em></a> and <a href="guillotine.ahtml#guillotine_request_helper"><em>guillotineRequest.ts</em></a> - see those for more reference.
+If you&#8217;ve been through the lesson in the previous chapter, you might recognize that <strong>the logic in is script is the same</strong> - the functions here are just copied or slightly modified from <a href="client-side.ahtml#movielistrequests"><em>movieListRequests.ts</em></a> and <a href="client-side.ahtml#guillotine_request_helper"><em>guillotineRequest.ts</em></a> - see those for more reference.
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 <div class="sect3">
 <h4 id="quick_overview_of_the_script"><a class="link" href="#quick_overview_of_the_script">Quick overview of the script:</a></h4>
@@ -907,9 +852,6 @@ If you&#8217;ve been through the lesson in the previous chapter, you might recog
 <p>&#8230;&#8203;that is rendered into the target <code>movieListContainer</code> element in the DOM with <code>ReactDOM.render</code>, now as a top-level react app.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect3">
@@ -1052,21 +994,15 @@ const renderMovies = (movies) =&gt; {
 requestAndRenderMovies();</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="output1"><a class="link" href="#output1">Output</a></h3>
 <div class="paragraph">
-<p>Assuming you&#8217;ve been through the <a href="guillotine.ahtml">previous lesson</a>, you can now rebuild the project. But instead of opening Content Studio, open the XP main menu in the top right corner, choose <em>Applications</em>, and in the Applications viewer, select your app:</p>
+<p>Assuming you&#8217;ve been through the <a href="client-side.ahtml">previous lesson</a>, you can now rebuild the project. But instead of opening Content Studio, open the XP main menu in the top right corner, choose <em>Applications</em>, and in the Applications viewer, select your app:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="media/webapp_applications.png" alt="webapp applications" width="1024px" title="Select your app in the Applications viewer"></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;</p>
 </div>
 <div class="paragraph">
 <p>At the bottom of the app info panel, you&#8217;ll see a URL where you can preview the webapp we just built:</p>
@@ -1075,15 +1011,7 @@ requestAndRenderMovies();</code></pre>
 <p><span class="image"><img src="media/webapp_url.png" alt="webapp url" width="1024px" title="URL to preview the webapp."></span></p>
 </div>
 <div class="paragraph">
-<p>&#8203;</p>
-</div>
-<div class="paragraph">
 <p>Clicking this link should now show you the working webapp - listing 3 initial movies and filling in more as you scroll down, just like in the preview at the end of the previous chapter.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -1168,9 +1096,6 @@ requestAndRenderMovies();</code></pre>
 </table>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>The <strong>webapp controller</strong> needs to provide that extra little info to the values in <code>MOVIE_LIST_PARAMS</code>, in the thymeleaf <code>model</code> now:</p>
 </div>
 <div class="listingblock">
@@ -1204,9 +1129,6 @@ export function get(req) {
   };
 }</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 <div class="sect2">
@@ -1362,18 +1284,11 @@ requestAndRenderMovies();</code></pre>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="output"><a class="link" href="#output">Output</a></h3>
 <div class="paragraph">
 <p>The output when you preview it should be the same as <a href="#output1">the previous example</a>.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
 </div>
 <div class="paragraph">
 <p><strong>That concludes the last of these lessons.</strong></p>
@@ -1400,7 +1315,7 @@ requestAndRenderMovies();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

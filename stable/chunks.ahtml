@@ -463,9 +463,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Dependency chunks are served by React4xp to the client and used there. They may contain JS, or other types of code.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -479,13 +476,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><span class="image"><img src="media/entries_and_chunks.png" alt="entries and chunks" width="800px" title="Controllers, entries and chunks visualized together."></span></p>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>See also: <a href="entries.ahtml">entries</a> and <a href="jsxpath.ahtml">jsxPath</a>.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -505,9 +496,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -525,9 +513,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>For example, adding <code>chunkDirs: ['foo/bar']</code> under <em>react4xp.config.js</em>, adding <em>hey.js</em> and <em>baz/ho.js</em> and importing stuff from <em>hey</em> and <em>ho</em> in an entry, will create the dependency chunk <em>bar.&lt;hash&gt;.js</em> - which contains both <em>hey</em> and <em>ho</em>.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -559,9 +544,6 @@ Do not import from entries! It causes random SSR errors. Place shared code in se
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -575,9 +557,6 @@ Do not import from entries! It causes random SSR errors. Place shared code in se
 </div>
 <div class="paragraph">
 <p>Only entries are runtime-available to React4xp.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -607,24 +586,17 @@ Do not import from entries! It causes random SSR errors. Place shared code in se
 </ul>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p><strong>Recommended usage:</strong> chunks are made to be <strong>fire-and-forget</strong>. Define the chunkDir, some webpack rules if necessary, and import it from your entry (or your secondary components inside chunks) - the React4xp build setup and runtime will handle the rest. Dependencies are tracked, so <code>React4xp.render</code> (and <code>.renderPageContributions</code>) automatically adds extra client-side links to necessary chunks.</p>
 </div>
 <div class="paragraph">
 <p>Since chunks are most optimized for repeated usage, it&#8217;s best to put your heavy components and resources in chunks, and <strong>let the entries stay slim and lightweight</strong>.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>

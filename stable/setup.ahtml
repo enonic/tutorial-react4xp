@@ -448,13 +448,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-</div>
-</div>
 <div class="sect1">
 <h2 id="create_project"><a class="link" href="#create_project">Create project</a></h2>
 <div class="sectionbody">
@@ -485,9 +478,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -546,12 +536,9 @@ src/
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Under <em>headless/</em>, the starter includes two wrappers that make it easier to use the optional guillotine api for using React4xp in a <a href="guillotine.ahtml">headless context</a>.</td>
+<td>Under <em>headless/</em>, the starter includes two wrappers that make it easier to use the optional guillotine api for using React4xp in a <a href="client-side.ahtml">headless context</a>.</td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -621,24 +608,17 @@ src/
 </table>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
 <p>Now you&#8217;re ready to get started with the first lesson chapters.</p>
 </div>
 <div class="paragraph right">
 <p>&#8594; <a href="hello-react.ahtml">Hello React</a></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 13:36:42 UTC
+Last updated 2024-02-05 12:50:52 UTC
 </div>
 </div>
 </body>
