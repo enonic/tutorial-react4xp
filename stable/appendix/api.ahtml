@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
-<title>React4XP - API reference</title>
+<meta name="generator" content="Asciidoctor 2.0.21">
+<title>API reference</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -436,7 +437,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>React4XP - API reference</h1>
+<h1>API reference</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -482,7 +483,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>The React4xp library (<a href="https://market.enonic.com/vendors/enonic/react4xp-lib">Enonic Market</a>) exposes a couple of methods that can be run from XP controllers.</p>
 </div>
 <div class="paragraph">
-<p>This chapter also covers the <a href="#ssr">SSR engine</a>, compilation, and <a href="config/build-time.ahtml">configuration</a> of those.</p>
+<p>This chapter also covers the <a href="#ssr">SSR engine</a>, compilation, and <a href="config.ahtml">configuration</a> of those.</p>
 </div>
 </div>
 </div>
@@ -500,7 +501,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">In an XP controller:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const React4xp = require('/lib/enonic/react4xp');</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">const React4xp = require('/lib/enonic/react4xp');</code></pre>
 </div>
 </div>
 </div>
@@ -522,7 +523,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">{body, pageContributions} = React4xp.render(entry, props, request, options);</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">{body, pageContributions} = React4xp.render(entry, props, request, options);</code></pre>
 </div>
 </div>
 </div>
@@ -709,7 +710,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="render_with_request"><a class="link" href="#render_with_request"><code>render</code> with <code>request</code>:</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">React4xp.render(entry, props, request);
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">React4xp.render(entry, props, request);
 React4xp.render(entry, props, request, options); // ...etc etc</code></pre>
 </div>
 </div>
@@ -734,7 +735,7 @@ React4xp.render(entry, props, request, options); // ...etc etc</code></pre>
 <h4 id="render_without_request"><a class="link" href="#render_without_request"><code>render</code> without <code>request</code>:</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">React4xp.render(entry, props);
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">React4xp.render(entry, props);
 React4xp.render(entry, props, null);
 React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </div>
@@ -769,7 +770,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">exports.get = function(request) =&gt; {
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">exports.get = function(request) =&gt; {
 
     // Object constructor:
     const myComponent = new React4xp('my-entry');
@@ -799,7 +800,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 <h3 id="constructor"><a class="link" href="#constructor">Object constructor</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const myComponent = new React4xp(entry);</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">const myComponent = new React4xp(entry);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -877,7 +878,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 <div class="listingblock">
 <div class="title">Example:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const targetElementId = myComponent.react4xpId;</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">const targetElementId = myComponent.react4xpId;</code></pre>
 </div>
 </div>
 </div>
@@ -891,7 +892,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">myComponent.firstSetter("a").secondSetter("b").thirdSetter("c");</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">myComponent.firstSetter("a").secondSetter("b").thirdSetter("c");</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -899,7 +900,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">myComponent.firstSetter("a");
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">myComponent.firstSetter("a");
 myComponent.secondSetter("b");
 myComponent.thirdSetter("c");</code></pre>
 </div>
@@ -911,7 +912,7 @@ myComponent.thirdSetter("c");</code></pre>
 <h4 id="setprops"><a class="link" href="#setprops">.setProps</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">myComponent.setProps(props);</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">myComponent.setProps(props);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -945,7 +946,7 @@ myComponent.thirdSetter("c");</code></pre>
 <h4 id="set_id"><a class="link" href="#set_id">.setId</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">myComponent.setId(id);</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">myComponent.setId(id);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -994,7 +995,7 @@ If <code>render</code> or <code>renderBody</code> are called without an ID havin
 <h4 id="uniqueid"><a class="link" href="#uniqueid">.uniqueId</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">myComponent.uniqueId();</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">myComponent.uniqueId();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1008,7 +1009,7 @@ If <code>render</code> or <code>renderBody</code> are called without an ID havin
 <h4 id="setjsxpath"><a class="link" href="#setjsxpath">.setJsxPath</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">myComponent.setJsxPath(jsxPath);</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">myComponent.setJsxPath(jsxPath);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1060,7 +1061,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <h4 id="render_body"><a class="link" href="#render_body">.renderBody</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const responseBody = myComponent.renderBody(options);</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">const responseBody = myComponent.renderBody(options);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1178,7 +1179,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <h4 id="render_pgcontr"><a class="link" href="#render_pgcontr">.renderPageContributions</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const outputPageContributions = myComponent.renderPageContributions(options);</code></pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">const outputPageContributions = myComponent.renderPageContributions(options);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1326,7 +1327,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <h4 id="custom_flow_with_request"><a class="link" href="#custom_flow_with_request">Custom flow with <code>request</code></a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const body = myComponent.renderBody({
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">const body = myComponent.renderBody({
     // ssr, etc
     request
 });
@@ -1348,7 +1349,7 @@ const pageContributions = myComponent.renderPageContributions({
 <h4 id="custom_flow_without_request"><a class="link" href="#custom_flow_without_request">Custom flow without <code>request</code>:</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const body = myComponent.renderBody({ /* ssr, etc */ });
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">const body = myComponent.renderBody({ /* ssr, etc */ });
 const pageContributions = myComponent.renderPageContributions({ /* hydrate, ssr, etc */ });
 // ...etc, etc</code></pre>
 </div>
@@ -1459,7 +1460,7 @@ Best case scenario: this might make a client-side rendered entry visible in Cont
 <div class="ulist">
 <ul>
 <li>
-<p>Don&#8217;t build React4xp components with <code>NODE_ENV = development</code>, but use <code>production</code> (which is the default - see <a href="config/build-time.ahtml#NODE_ENV">Build environment</a>). Assets built with <code>development</code> are much more verbose, and this size difference - although functionally equal - actually makes a difference.</p>
+<p>Don&#8217;t build React4xp components with <code>NODE_ENV = development</code>, but use <code>production</code> (which is the default - see <a href="build.ahtml#NODE_ENV">Build environment</a>). Assets built with <code>development</code> are much more verbose, and this size difference - although functionally equal - actually makes a difference.</p>
 </li>
 </ul>
 </div>
@@ -1481,7 +1482,7 @@ Best case scenario: this might make a client-side rendered entry visible in Cont
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const cacheLib = require('/lib/cache');
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">const cacheLib = require('/lib/cache');
 
 // Set the cache up with a size that's reasonable
 // for the most used props combinations
@@ -1525,7 +1526,7 @@ exports.get = request =&gt; {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-05 12:50:52 UTC
+Last updated 2024-03-20 13:16:24 UTC
 </div>
 </div>
 </body>

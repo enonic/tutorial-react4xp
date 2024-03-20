@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.21">
 <title>R4XP webapps</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -535,10 +536,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Load React and ReactDOM from somewhere. For example a CDN,</p>
 </li>
 <li>
-<p>Load all the <a href="chunks.ahtml">dependency chunks</a> that the entries need (before loading the entry assets!),</p>
+<p>Load all the <a href="appendix/chunks.ahtml">dependency chunks</a> that the entries need (before loading the entry assets!),</p>
 </li>
 <li>
-<p>Load all <a href="entries.ahtml">entry assets</a>. This will make each entry available in the browser&#8217;s JS namespace as a react-component-creating function, at <code>React4xp[jsxPath].default</code>, for each entry&#8217;s <a href="jsxPath.ahtml">jsxPath</a>.</p>
+<p>Load all <a href="appendix/entries.ahtml">entry assets</a>. This will make each entry available in the browser&#8217;s JS namespace as a react-component-creating function, at <code>React4xp[jsxPath].default</code>, for each entry&#8217;s <a href="appendix/jsxPath.ahtml">jsxPath</a>.</p>
 </li>
 <li>
 <p>Construct a props object for each entry that uses props. This is where we&#8217;ll contact the <a href="client-side.ahtml#expose_api">graphQL endpoint</a> in this lesson, for fetching the data from XP.</p>
@@ -590,7 +591,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>Completely standalone:</strong> this first variation is the manual, hardcoded, vanilla-js-and-react webapp approach. The HTML and script do everything explicitly: asset URLs and initial values are <strong>handled and organized manually in the HTML itself</strong>, and the script at the end fetches data from guillotine, organizes them into props and makes a <strong>regular <code>ReactDOM.render</code> call</strong>. In this approach, XP&#8217;s role is mainly to serve content data through the guillotine API. Pretty independent but there are no helpers; so getting things right is up to you.</p>
 </li>
 <li>
-<p><strong>Webapp with XP helpers:</strong> this second variation is "slightly standalone": we use XP to wrap a little boilerplate for convenience: <strong>XP and thymeleaf provides some initial values</strong>. The script at the end is still loaded and used to fetch data and create props, but instead of having the HTML load all the entry and dependency assets and call <code>React4xp.render</code>, the React4xp client wrapper is loaded in order to use a <strong>React4xp helper function:</strong> <code>.renderWithDependencies</code>. This is an all-in-one rendering trigger that takes one or more <a href="jsxPath.ahtml">entry jsxPaths</a> with props and target container ID&#8217;s, and uses <strong>XP services</strong> for auto-tracking and loading all the assets needed (including dependency chunks) before rendering them.</p>
+<p><strong>Webapp with XP helpers:</strong> this second variation is "slightly standalone": we use XP to wrap a little boilerplate for convenience: <strong>XP and thymeleaf provides some initial values</strong>. The script at the end is still loaded and used to fetch data and create props, but instead of having the HTML load all the entry and dependency assets and call <code>React4xp.render</code>, the React4xp client wrapper is loaded in order to use a <strong>React4xp helper function:</strong> <code>.renderWithDependencies</code>. This is an all-in-one rendering trigger that takes one or more <a href="appendix/jsxPath.ahtml">entry jsxPaths</a> with props and target container ID&#8217;s, and uses <strong>XP services</strong> for auto-tracking and loading all the assets needed (including dependency chunks) before rendering them.</p>
 </li>
 </ol>
 </div>
@@ -1315,7 +1316,7 @@ requestAndRenderMovies();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-05 12:50:52 UTC
+Last updated 2024-03-20 13:16:24 UTC
 </div>
 </div>
 </body>

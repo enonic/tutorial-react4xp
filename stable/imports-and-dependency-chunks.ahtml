@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.21">
 <title>Imports, chunks, config, webpack</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -649,7 +650,7 @@ export function get(request) {
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>This argument is slightly different compared to previously. <code>"MultiColor"</code> is a <a href="jsxpath.ahtml">jsxPath</a> to an entry, as you&#8217;d expect. But why does it look so&#8230;&#8203; naked? Where does it point to? As we&#8217;ll see <a href="#webpack_config">in a moment</a>, we&#8217;ll set up React4xp to look for entries below an <code>entryDir</code> in React4xp.config.js: <em>src/main/resources/react4xp/myEntries/</em>. Since a jsxPath is relative to the closest parent <code>entryDir</code> and we&#8217;ll put an entry <em>MultiColor.tsx</em> at the root of <em>entries/</em>, the jsxPath becomes just the clean file name.</td>
+<td>This argument is slightly different compared to previously. <code>"MultiColor"</code> is a <a href="appendix/jsxpath.ahtml">jsxPath</a> to an entry, as you&#8217;d expect. But why does it look so&#8230;&#8203; naked? Where does it point to? As we&#8217;ll see <a href="#webpack_config">in a moment</a>, we&#8217;ll set up React4xp to look for entries below an <code>entryDir</code> in React4xp.config.js: <em>src/main/resources/react4xp/myEntries/</em>. Since a jsxPath is relative to the closest parent <code>entryDir</code> and we&#8217;ll put an entry <em>MultiColor.tsx</em> at the root of <em>entries/</em>, the jsxPath becomes just the clean file name.</td>
 </tr>
 </table>
 </div>
@@ -745,7 +746,7 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The entry imports some secondary react components for nesting later. These imports have nothing to do with React4xp&#8217;s <a href="jsxPath.ahtml">jsxPaths</a>, this is <strong>regular ES6 module importing</strong> and will be handled by webpack at compile time and served to the client at runtime. Basically any react component can be imported from anywhere here, including other entries. In this case we&#8217;re referring to components below a different folder, <em>shared/</em>, which we will <a href="#webpack_config">later</a> mark as a <strong>chunk directory</strong> instead of an entry directory. <em>Shared/</em> is not below <em>entries/</em> (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with <code>React4xp.render</code>. As you will see, this <strong>folder separation</strong> is also important for the compiled outcome: the entry, <em>MultiColor.jsx</em>, will be compiled into <em>r4xAssets/MultiColor.js</em>, but <strong>imported components</strong> like this will be collected inside a common <strong>dependency chunk</strong>: <em>r4xAssets/shared.&lt;HASH&gt;.js</em>. React4xp and webpack track the dependency connections between an entry and all its required chunks - so <code>React4xp.render</code> automatically generates asset-loading page contributions from the controller. The outcome: when the webpack rules are set up correctly later, <strong>imports like this in entries rendered by React4xp are all that&#8217;s needed to connect the entries to the additional assets they might need</strong>: no manual url handling in the controller or thymeleaf views etc. Dependency chunks are also  optimized for repeated use (more details on <a href="chunks.ahtml">dependency chunks</a>).</td>
+<td>The entry imports some secondary react components for nesting later. These imports have nothing to do with React4xp&#8217;s <a href="jsxPath.ahtml">jsxPaths</a>, this is <strong>regular ES6 module importing</strong> and will be handled by webpack at compile time and served to the client at runtime. Basically any react component can be imported from anywhere here, including other entries. In this case we&#8217;re referring to components below a different folder, <em>shared/</em>, which we will <a href="#webpack_config">later</a> mark as a <strong>chunk directory</strong> instead of an entry directory. <em>Shared/</em> is not below <em>entries/</em> (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with <code>React4xp.render</code>. As you will see, this <strong>folder separation</strong> is also important for the compiled outcome: the entry, <em>MultiColor.jsx</em>, will be compiled into <em>r4xAssets/MultiColor.js</em>, but <strong>imported components</strong> like this will be collected inside a common <strong>dependency chunk</strong>: <em>r4xAssets/shared.&lt;HASH&gt;.js</em>. React4xp and webpack track the dependency connections between an entry and all its required chunks - so <code>React4xp.render</code> automatically generates asset-loading page contributions from the controller. The outcome: when the webpack rules are set up correctly later, <strong>imports like this in entries rendered by React4xp are all that&#8217;s needed to connect the entries to the additional assets they might need</strong>: no manual url handling in the controller or thymeleaf views etc. Dependency chunks are also  optimized for repeated use (more details on <a href="appendix/chunks.ahtml">dependency chunks</a>).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -793,7 +794,7 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 </tr>
 <tr>
 <td><i class="conum" data-value="13"></i><b>13</b></td>
-<td>Remember that <a href="entries.ahtml#_how_to_make_an_entry">entries need to export a function</a>: <code>(props?) &#8658; react component</code>. Since this component is written in the class syntax (4), it needs to be wrapped like this for export.</td>
+<td>Remember that <a href="appendix/entries.ahtml#_how_to_make_an_entry">entries need to export a function</a>: <code>(props?) &#8658; react component</code>. Since this component is written in the class syntax (4), it needs to be wrapped like this for export.</td>
 </tr>
 </table>
 </div>
@@ -845,7 +846,7 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-It&#8217;s important that these react components are <strong>not <a href="entries.ahtml">entries</a></strong> themselves. They are only imported by the MultiColor entry - hence the folder name <em>shared/</em>.
+It&#8217;s important that these react components are <strong>not <a href="appendix/entries.ahtml">entries</a></strong> themselves. They are only imported by the MultiColor entry - hence the folder name <em>shared/</em>.
 </td>
 </tr>
 </table>
@@ -1022,7 +1023,7 @@ export default ({
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you need more details, some of this is covered in more depth under <a href="entries.ahtml">entries</a> and <a href="jsxpath.ahtml">jsxPaths</a>.
+If you need more details, some of this is covered in more depth under <a href="appendix/entries.ahtml">entries</a> and <a href="appendix/jsxpath.ahtml">jsxPaths</a>.
 </td>
 </tr>
 </table>
@@ -1266,29 +1267,29 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 <p>If you haven&#8217;t already, it&#8217;s recommended to take a look at the additional explanations of central concepts and API, in the documentation below - especially the dependency chunks which are used for optimization, as we touched upon in this chapter:</p>
 </div>
 <div class="paragraph">
-<p>&#8594; <a href="entries.ahtml">Entries</a></p>
+<p>&#8594; <a href="appendix/entries.ahtml">Entries</a></p>
 </div>
 <div class="paragraph">
-<p>&#8594; <a href="jsxpath.ahtml">JsxPath</a></p>
+<p>&#8594; <a href="appendix/jsxpath.ahtml">JsxPath</a></p>
 </div>
 <div class="paragraph">
-<p>&#8594; <a href="chunks.ahtml">Dependency chunks</a></p>
+<p>&#8594; <a href="appendix/chunks.ahtml">Dependency chunks</a></p>
 </div>
 <div class="paragraph">
-<p><a href="api.ahtml">API</a> reference:</p>
+<p><a href="appendix/api.ahtml">API</a> reference:</p>
 </div>
 <div class="paragraph">
-<p>&#8594; <a href="api.ahtml#react4xp_render">React4xp.render</a></p>
+<p>&#8594; <a href="appendix/api.ahtml#react4xp_render">React4xp.render</a></p>
 </div>
 <div class="paragraph">
-<p>&#8594; <a href="api.ahtml#react4xp_object">React4xp data objects</a></p>
+<p>&#8594; <a href="appendix/api.ahtml#react4xp_object">React4xp data objects</a></p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-05 12:50:52 UTC
+Last updated 2024-03-20 13:16:24 UTC
 </div>
 </div>
 </body>

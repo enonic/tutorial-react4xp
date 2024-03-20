@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.21">
 <title>Custom flow syntax</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -471,10 +472,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="olist loweralpha">
 <ol class="loweralpha">
 <li>
-<p>It constructs one or more <strong>data-holding React4xp objects</strong>. This gives you better control and opportunities for logic steps when you handle your <a href="entries.ahtml">entry</a>; you can manipulate the object(s) or extract data from them <em>before</em> rendering.</p>
+<p>It constructs one or more <strong>data-holding React4xp objects</strong>. This gives you better control and opportunities for logic steps when you handle your <a href="appendix/entries.ahtml">entry</a>; you can manipulate the object(s) or extract data from them <em>before</em> rendering.</p>
 </li>
 <li>
-<p>Here, each entry is rendered in <strong>two separate methods</strong>: <code>renderBody</code> and <code>renderPageContributions</code> (full details: <a href="api.ahtml#react4xp_object">React4xp data object API</a>)</p>
+<p>Here, each entry is rendered in <strong>two separate methods</strong>: <code>renderBody</code> and <code>renderPageContributions</code> (full details: <a href="appendix/api.ahtml#react4xp_object">React4xp data object API</a>)</p>
 </li>
 <li>
 <p>You can pretty easily render <strong>multiple entries</strong> from the same controller, by chaining together their rendering.</p>
@@ -485,7 +486,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Rendering multiple entries like we do here will create multiple <a href="entries.ahtml#assets_and_apps">independent react apps</a> in the browser.
+Rendering multiple entries like we do here will create multiple <a href="appendix/entries.ahtml#assets_and_apps">independent react apps</a> in the browser.
 </td>
 </tr>
 </table>
@@ -498,7 +499,7 @@ Rendering multiple entries like we do here will create multiple <a href="entries
 <p>We will also use a <strong>thymeleaf</strong> template for one of the entries - and take advantage of the React4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.</p>
 </li>
 <li>
-<p>In addition to chain-rendering more than one entry, we will use <a href="jsxpath.ahtml">jsxPaths</a> to point to entries in a different location. Actually, let&#8217;s just recycle the same entries we used before:</p>
+<p>In addition to chain-rendering more than one entry, we will use <a href="appendix/jsxpath.ahtml">jsxPaths</a> to point to entries in a different location. Actually, let&#8217;s just recycle the same entries we used before:</p>
 </li>
 </ul>
 </div>
@@ -760,9 +761,9 @@ export function get(request) {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Constructing the data-holding React4xp object <code>helloObj</code> from the same <em>hello-react.jsx</em> entry we made <a href="editorial-data-and-props.ahtml#hello_react_jsx_modified">before</a>. The constructor takes one argument, which is mandatory: an <a href="entries.ahtml">entry reference</a>. This can be an XP <code>component</code> object like before, OR like we&#8217;re doing here: a <a href="jsxpath.ahtml">jsxPath</a>.
+<td>Constructing the data-holding React4xp object <code>helloObj</code> from the same <em>hello-react.jsx</em> entry we made <a href="editorial-data-and-props.ahtml#hello_react_jsx_modified">before</a>. The constructor takes one argument, which is mandatory: an <a href="appendix/entries.ahtml">entry reference</a>. This can be an XP <code>component</code> object like before, OR like we&#8217;re doing here: a <a href="appendix/jsxpath.ahtml">jsxPath</a>.
 <div class="paragraph">
-<p>This entry reference is used the same way as the first argument, <em>entry</em>, in <a href="api.ahtml#react4xp_render"><code>React.render</code></a> (so just to be clear: a jsxPath reference string like this also works fine there).</p>
+<p>This entry reference is used the same way as the first argument, <em>entry</em>, in <a href="appendix/api.ahtml#react4xp_render"><code>React.render</code></a> (so just to be clear: a jsxPath reference string like this also works fine there).</p>
 </div></td>
 </tr>
 <tr>
@@ -808,7 +809,7 @@ colorObj.uniqueId();`.</pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
-<td>A best practice is to add <code>request</code> to options in <em>both</em> <code>renderBody</code> and <code>renderPageContributions</code>. This is the easiest way to automatically <a href="api.ahtml#react4xp_object_request">take care of a couple of corner cases</a>. Using it makes the output clearer in cases of errors.</td>
+<td>A best practice is to add <code>request</code> to options in <em>both</em> <code>renderBody</code> and <code>renderPageContributions</code>. This is the easiest way to automatically <a href="appendix/api.ahtml#react4xp_object_request">take care of a couple of corner cases</a>. Using it makes the output clearer in cases of errors.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="10"></i><b>10</b></td>
@@ -822,7 +823,7 @@ colorObj.uniqueId();`.</pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="11"></i><b>11</b></td>
-<td>This entry will be clientside rendered (even though <em>color.jsx</em> is serverside rendered - this is not a problem for the chain), but we&#8217;re adding <code>request</code> to let React4xp <a href="api.ahtml#react4xp_object_request">keep it serverside-rendered and static</a> inside Content Studio.
+<td>This entry will be clientside rendered (even though <em>color.jsx</em> is serverside rendered - this is not a problem for the chain), but we&#8217;re adding <code>request</code> to let React4xp <a href="appendix/api.ahtml#react4xp_object_request">keep it serverside-rendered and static</a> inside Content Studio.
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -890,14 +891,14 @@ colorObj.uniqueId();`.</pre>
 <h2 id="further_reading"><a class="link" href="#further_reading">Further reading</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The API behind the custom flow syntax: <a href="api.ahtml#react4xp_object">React4xp data objects</a>.</p>
+<p>The API behind the custom flow syntax: <a href="appendix/api.ahtml#react4xp_object">React4xp data objects</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-05 12:50:52 UTC
+Last updated 2024-03-20 13:16:24 UTC
 </div>
 </div>
 </body>

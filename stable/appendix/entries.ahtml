@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
-<title>React4XP - Dependency chunks</title>
+<meta name="generator" content="Asciidoctor 2.0.21">
+<title>Entries</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -436,110 +437,83 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>React4XP - Dependency chunks</h1>
+<h1>Entries</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#what_is_a_chunk">What is a chunk?</a></li>
-<li><a href="#importing">Importing</a></li>
-<li><a href="#standard_chunks">Standard chunks</a></li>
-<li><a href="#defining_chunk_structure">Defining chunk structure</a></li>
-<li><a href="#importing_from_outside_of_chunkdirs">Importing from outside of chunkDirs</a></li>
-<li><a href="#entries_vs_chunks">Entries vs chunks</a></li>
-<li><a href="#why_for_optimization">Why? For optimization!</a></li>
+<li><a href="#entries">What is an entry?</a></li>
+<li><a href="#howto">How to make an entry</a></li>
+<li><a href="#assets_and_apps">Entries, assets and react apps</a></li>
+<li><a href="#classes-and-hooks">Classes and hooks in entries</a>
+<ul class="sectlevel2">
+<li><a href="#jsx_entry_examples">JSX entry examples</a></li>
+<li><a href="#why">Why?</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="what_is_a_chunk"><a class="link" href="#what_is_a_chunk">What is a chunk?</a></h2>
+<h2 id="entries"><a class="link" href="#entries">What is an entry?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A dependency chunk is <strong>a compiled asset that can contain multiple components</strong> that are used at runtime.</p>
+<p>React4xp is structured around <em>entries</em>.</p>
 </div>
 <div class="paragraph">
-<p>Think of it as a <strong>library</strong> of secondary resources that can be used by <a href="entries.ahtml">entries</a> (or by other chunks).</p>
+<p>It&#8217;s actually a webpack term, but in React4xp we use the word entry for <strong>a React component that can be accessed by React4xp</strong> in an XP controller. They are the <em>only</em> react files that React4xp can use directly.</p>
+</div>
+<div id="mentalmodel" class="paragraph">
+<p>Think of entries as <strong>"bridge elements"</strong>:</p>
 </div>
 <div class="paragraph">
-<p>Dependency chunks are served by React4xp to the client and used there. They may contain JS, or other types of code.</p>
+<div class="title">A mental model:</div>
+<p><span class="image"><img src="media/entries.png" alt="entries" width="720px" title="React4xp Entries basic structure. Controllers can use entries, entries can import anything"></span></p>
+</div>
+<div class="paragraph">
+<p>(Here&#8217;s a <a href="entries_cheatsheet.ahtml">cheat sheet</a>. See also chunks, for a <a href="chunks.ahtml#entries_and_chunks">complete picture</a>)</p>
+</div>
+<div class="paragraph">
+<p>On the XP/server side, you have the controllers with their backend XP flow, logic and XP lib imports. Entries are the beginning of the frontend side (although the same code is also used for serverside-rendering): they do regular frontend-style ES6 logic and can <strong>import</strong> stuff from NPM/node_modules, your own logic, nested react components, whatever - even other entries.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="importing"><a class="link" href="#importing">Importing</a></h2>
+<h2 id="howto"><a class="link" href="#howto">How to make an entry</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Entries and other chunks can import resources from chunks, as long as the necessary webpack rules are added. Compilation rules for regular TSX, JSX, TS, JS and ES6 are included with React4xp. Other rules (loaders etc) you must add yourself - see <a href="imports-and-dependency-chunks.ahtml#_adding_webpack_rules">lesson 6</a>.</p>
+<p>Entries are pretty much just standard TSX/JSX files, but they must follow <strong>two requirements</strong> (another <a href="entries_howto.ahtml">cheat sheet</a>):</p>
 </div>
-<div id="entries_and_chunks" class="paragraph">
-<div class="title">Entries and chunks - the full picture:</div>
-<p><span class="image"><img src="media/entries_and_chunks.png" alt="entries and chunks" width="800px" title="Controllers, entries and chunks visualized together."></span></p>
-</div>
-<div class="paragraph">
-<p>See also: <a href="entries.ahtml">entries</a> and <a href="jsxpath.ahtml">jsxPath</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="standard_chunks"><a class="link" href="#standard_chunks">Standard chunks</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>In the standard React4xp setup, two chunks are likely to appear without any further setup: <strong>globals and vendors</strong>. That is, their names are hashed and will appear as <code>globals.&lt;hash&gt;.js</code> and <code>vendors.&lt;hash&gt;.js</code>.</p>
-</div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>Globals usually contains react and react-dom, ensuring that the same react version is used when rendering on the client and server.</p>
+<p>is located either in a folder either below <strong><em>/site/</em></strong> or below one of the <strong>entryDirs</strong> folders listed in <em>react4xp.config.js</em> (see also <a href="jsxpath.ahtml">jsxPath</a>),</p>
 </li>
 <li>
-<p>Vendors is the chunk for anything else imported from <em>node_modules</em>.</p>
+<p>and <strong>default-exports a function</strong>: <code>props?&#8658;reactComponent</code> - a function that <em>may</em> take a <code>props</code> argument (serializable JS object: no functions) and <em>must</em> return a react component.</p>
 </li>
-</ul>
+</ol>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="defining_chunk_structure"><a class="link" href="#defining_chunk_structure">Defining chunk structure</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>You can also <strong>define your own dependency chunk structure</strong>. Additional folders (relative to <em>src/main/resources/react4xp/</em>) can be defined with <code>chunkDirs</code> in <em>react4xp.config.js</em>. This will cause all source files under each chunkDir to be compiled into one common dependency chunk (or to be precise: one chunk for each codetype defined by webpack rules, e.g. separate JS and CSS chunks).</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The asset&#8217;s name will be the name of the parent folder, with a content hash: &lt;chunkName&gt;.&lt;hash&gt;.&lt;extension&gt;.</p>
-</li>
-<li>
-<p>For example, adding <code>chunkDirs: ['foo/bar']</code> under <em>react4xp.config.js</em>, adding <em>hey.js</em> and <em>baz/ho.js</em> and importing stuff from <em>hey</em> and <em>ho</em> in an entry, will create the dependency chunk <em>bar.&lt;hash&gt;.js</em> - which contains both <em>hey</em> and <em>ho</em>.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="importing_from_outside_of_chunkdirs"><a class="link" href="#importing_from_outside_of_chunkdirs">Importing from outside of chunkDirs</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>What happens if an entry imports something from folders <strong>not marked as chunkDirs</strong>?</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Imported JS (react components etc) from non-entry folders will be <strong>compiled into the entry asset</strong> itself. Try to avoid this, since the entries can become bloated, and code can become repeated if it&#8217;s imported into more than entry. The entry assets are also less performance optimized.</p>
-</li>
-<li>
-<p>Non-JS imports (CSS etc), are compiled to separate assets under their own name, the same way as entries (but are not given a <em>jsxPath</em>, of course).</p>
-</li>
-</ul>
-</div>
-<div class="admonitionblock warning">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Do not import from entries! It causes random SSR errors. Place shared code in separate React components.
+<div class="paragraph">
+<p><strong>Important:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>There should be no call to <code>React.render</code> or <code>ReactDOM.render</code> in an entry (or a compiled entry or dependency bundle - keep an eye on your imports). React4xp will handle that call in the right context.</p>
+</li>
+<li>
+<p>If your entry uses react hooks or it&#8217;s a react class component, read <a href="#classes-and-hooks">Classes and hooks in entries</a> below.</p>
+</li>
+</ul>
+</div>
 </td>
 </tr>
 </table>
@@ -547,56 +521,107 @@ Do not import from entries! It causes random SSR errors. Place shared code in se
 </div>
 </div>
 <div class="sect1">
-<h2 id="entries_vs_chunks"><a class="link" href="#entries_vs_chunks">Entries vs chunks</a></h2>
+<h2 id="assets_and_apps"><a class="link" href="#assets_and_apps">Entries, assets and react apps</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Dependency chunks never contain <a href="entries.ahtml">entries</a>; each entry is an asset file of its own. Consequently, nothing inside a dependency chunk will have a jsxPath.</p>
+<p>React4xp handles them in build-time and runtime: locates entries, compiles each entry into its own <strong>entry asset</strong> (under <em>/build/resources/main/r4xAssets</em>). React4xp&#8217;s render methods also generate page contributions that make sure these assets are served to the client.</p>
 </div>
 <div class="paragraph">
-<p>This is why entries are used as a separate word from react components: all entries are react components, but all react components are not necessarily entries: react components can also be secondary imports from chunks / chunkDirs.</p>
+<p>For example, early in this tutorial we&#8217;ve seen the entries <em>hello-react.jsx</em> and <em>color.jsx</em>, they are compiled into the assets <em>hello-react.js</em> and <em>color.js</em>.</p>
 </div>
 <div class="paragraph">
-<p>Only entries are runtime-available to React4xp.</p>
+<p>When rendered (whether it&#8217;s by using <code>.render</code> or a pair of <code>renderBody</code>/<code>renderPageContributions</code> in the <a href="custom-flow-syntax.ahtml">custom flow syntax</a>), each entry will become not only assets of their own, but <strong>independent root level react apps</strong> in the browser memory! Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="why_for_optimization"><a class="link" href="#why_for_optimization">Why? For optimization!</a></h2>
+<h2 id="classes-and-hooks"><a class="link" href="#classes-and-hooks">Classes and hooks in entries</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Why use chunks?</p>
+<p>If your entry is a <a href="https://reactjs.org/docs/react-component.html">react class component</a> or a functional component that uses <a href="https://reactjs.org/docs/hooks-intro.html">react hooks</a> (and possibly other specific react features?), the default-export must be correctly wrapped.</p>
 </div>
-<div class="paragraph">
-<p>They are handy for collecting related secondary resources (that may be frequently used together in one part of a site but not others, for instance - making it possible to minimize the necessary client downloads).</p>
-</div>
-<div class="paragraph">
-<p>But most importantly, they are <strong>automatically optimized for performance</strong>:</p>
-</div>
+<div class="sect2">
+<h3 id="jsx_entry_examples"><a class="link" href="#jsx_entry_examples">JSX entry examples</a></h3>
 <div class="ulist">
 <ul>
 <li>
-<p>They are both cached on the server side as well as in the client - preventing repeated generation and minimizing downloads, speeding up the site.</p>
+<p><strong>Straight functional component entry:</strong> straight export is okay.</p>
+<div class="listingblock">
+<div class="title">Header.jsx</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">function Header(props) {
+    return &lt;h1&gt;{props.text}&lt;/h1&gt;;
+};
+
+// This is fine:
+export default Header;
+
+// An extra wrapped layer would work too. But it's usually not necessary:
+//
+// export default (props) =&gt; &lt;Header {...props} /&gt;;</code></pre>
+</div>
+</div>
 </li>
 <li>
-<p>The hash is updated by content, for effective cache busting.</p>
+<p><strong>Class component entry:</strong> needs a JSX-wrapped export.</p>
+<div class="listingblock">
+<div class="title">Welcome.jsx</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">class Welcome extends React.Component {
+  render() {
+    return &lt;p&gt;Hello, {this.props.name}&lt;/p&gt;;
+  }
+}
+
+// Bad:
+// export default Welcome;
+
+// Good:
+export default props =&gt; &lt;Welcome {...props} /&gt;;</code></pre>
+</div>
+</div>
 </li>
 <li>
-<p>Even if the resources in a chunk are used more than once on a page, the chunk is only downloaded once.</p>
+<p><strong>Functional component that uses hooks:</strong> needs a JSX-wrapped export.</p>
+<div class="listingblock">
+<div class="title">HookButton.jsx</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">function HookButton() {
+  const [count, setCount] = useState(0);
+
+  return (
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
+        You clicked {count} times
+      &lt;/button&gt;
+  );
+}
+
+// Bad:
+// export default HookButton;
+
+// Good:
+export default props =&gt; &lt;HookButton {...props} /&gt;;</code></pre>
+</div>
+</div>
 </li>
 </ul>
 </div>
+</div>
+<div class="sect2">
+<h3 id="why"><a class="link" href="#why">Why?</a></h3>
 <div class="paragraph">
-<p><strong>Recommended usage:</strong> chunks are made to be <strong>fire-and-forget</strong>. Define the chunkDir, some webpack rules if necessary, and import it from your entry (or your secondary components inside chunks) - the React4xp build setup and runtime will handle the rest. Dependencies are tracked, so <code>React4xp.render</code> (and <code>.renderPageContributions</code>) automatically adds extra client-side links to necessary chunks.</p>
+<p>The reason for this has to do with how the components are compiled, and that the runtime-client trigger call in the browser <em>uses the default-export directly, in vanilla JS</em> - so everything that&#8217;s exported from an entry must be ready and compiled for vanilla-JS usage.</p>
 </div>
 <div class="paragraph">
-<p>Since chunks are most optimized for repeated usage, it&#8217;s best to put your heavy components and resources in chunks, and <strong>let the entries stay slim and lightweight</strong>.</p>
+<p>In the examples above it would be equivalent to <code>Welcome(props);</code> and <code>HookButton(props);</code>. <code>Welcome</code> is not compiled to a function that can be called like this, and the pure <code>HookButtons</code> function is not really a <em>functional component</em> (before it&#8217;s called as a component, the way we do when it&#8217;s wrapped), just a regular JS function - so the straight export <a href="https://reactjs.org/warnings/invalid-hook-call-warning.html">breaks the rules of hooks and you get an error</a>.</p>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-05 12:50:52 UTC
+Last updated 2024-03-20 13:16:24 UTC
 </div>
 </div>
 </body>

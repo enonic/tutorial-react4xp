@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
-<title>React4XP - Upgrade to v3</title>
+<meta name="generator" content="Asciidoctor 2.0.21">
+<title>Dependency chunks</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -436,274 +437,167 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>React4XP - Upgrade to v3</h1>
+<h1>Dependency chunks</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#what">What</a>
-<ul class="sectlevel2">
-<li><a href="#npm_packages">Npm packages</a></li>
-<li><a href="#development_mode">Development Mode</a></li>
-<li><a href="#verbosity">Verbosity</a></li>
-<li><a href="#react4xp_properties">react4xp.properties</a></li>
-<li><a href="#react4xp_config_js">react4xp.config.js</a></li>
-<li><a href="#nashornpolyfills">NashornPolyfills</a></li>
-<li><a href="#webpack_overrides_only_used_when_building_components">Webpack overrides (only used when building components)</a></li>
-<li><a href="#application_configuration_file_runtime_settings">Application configuration file (runtime settings)</a></li>
-</ul>
-</li>
-<li><a href="#how">How</a>
-<ul class="sectlevel2">
-<li><a href="#package_json">package.json</a></li>
-<li><a href="#build_gradle">build.gradle</a></li>
-<li><a href="#if_you_have_extra_externals_chunkdirs_entrydirs_or_entryextensions">If you have extra externals, chunkDirs, entryDirs or entryExtensions</a></li>
-<li><a href="#if_you_have_extra_nashorn_polyfills">If you have extra nashorn polyfills</a></li>
-<li><a href="#if_you_have_webpack_overrides">If you have webpack overrides</a></li>
-<li><a href="#if_you_are_using_react_components_from_the_react4xp_regions_package">If you are using react components from the react4xp-regions package</a></li>
-</ul>
-</li>
+<li><a href="#what_is_a_chunk">What is a chunk?</a></li>
+<li><a href="#importing">Importing</a></li>
+<li><a href="#standard_chunks">Standard chunks</a></li>
+<li><a href="#defining_chunk_structure">Defining chunk structure</a></li>
+<li><a href="#importing_from_outside_of_chunkdirs">Importing from outside of chunkDirs</a></li>
+<li><a href="#entries_vs_chunks">Entries vs chunks</a></li>
+<li><a href="#why_for_optimization">Why? For optimization!</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="what_is_a_chunk"><a class="link" href="#what_is_a_chunk">What is a chunk?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We have tried to simplify the build system and limit the number of options.</p>
+<p>A dependency chunk is <strong>a compiled asset that can contain multiple components</strong> that are used at runtime.</p>
+</div>
+<div class="paragraph">
+<p>Think of it as a <strong>library</strong> of secondary resources that can be used by <a href="entries.ahtml">entries</a> (or by other chunks).</p>
+</div>
+<div class="paragraph">
+<p>Dependency chunks are served by React4xp to the client and used there. They may contain JS, or other types of code.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="what"><a class="link" href="#what">What</a></h2>
+<h2 id="importing"><a class="link" href="#importing">Importing</a></h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="npm_packages"><a class="link" href="#npm_packages">Npm packages</a></h3>
 <div class="paragraph">
-<p>There used to be 7 npm packages, now there are only two:</p>
+<p>Entries and other chunks can import resources from chunks, as long as the necessary webpack rules are added. Compilation rules for regular TSX, JSX, TS, JS and ES6 are included with React4xp. Other rules (loaders etc) you must add yourself - see <a href="imports-and-dependency-chunks.ahtml#_adding_webpack_rules">lesson 6</a>.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>@enonic/react4xp - The build system.</p>
-</li>
-<li>
-<p>@enonic/react-components - Optional pure react components.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="development_mode"><a class="link" href="#development_mode">Development Mode</a></h3>
-<div class="paragraph">
-<p>In order to make a development build you can add -Pdev or -Pdevelopment to the gradle commandline.</p>
+<div id="entries_and_chunks" class="paragraph">
+<div class="title">Entries and chunks - the full picture:</div>
+<p><span class="image"><img src="media/entries_and_chunks.png" alt="entries and chunks" width="800px" title="Controllers, entries and chunks visualized together."></span></p>
 </div>
 <div class="paragraph">
-<p>This will also set Node environment variable BUILD_ENV='development'</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="verbosity"><a class="link" href="#verbosity">Verbosity</a></h3>
-<div class="paragraph">
-<p>In order to increase verbosity you can add -i or --info to the gradle commandline.</p>
-</div>
-<div class="paragraph">
-<p>This will also set Node environment variable VERBOSE='true'</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="react4xp_properties"><a class="link" href="#react4xp_properties">react4xp.properties</a></h3>
-<div class="paragraph">
-<p>This file has been dropped in favour of react4xp.config.js</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="react4xp_config_js"><a class="link" href="#react4xp_config_js">react4xp.config.js</a></h3>
-<div class="paragraph">
-<p>This is where you can add extra globals, or override some defaults.
-There should be an updated example file in the @enonic/react4xp package under examples/react4xp.config.js</p>
-</div>
-<div class="paragraph">
-<p>See &lt;<a href="https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js&gt;" class="bare">https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js&gt;</a></p>
-</div>
-<div class="paragraph">
-<p>Example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">module.exports = {
-  chunkDirs: ['aChunkDir', 'anotherChunkDir'],
-  entryDirs: ['anEntryDir', 'anotherEntryDir'],
-  entryExtensions: ['jsx', 'tsx', 'ts', 'es6', 'es', 'js'],
-  externals: {
-    lodash: '_'
-  }
-};</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="nashornpolyfills"><a class="link" href="#nashornpolyfills">NashornPolyfills</a></h3>
-<div class="paragraph">
-<p>The path for the entry file for extra nashorn polyfills is now hardcoded to</p>
-</div>
-<div class="paragraph">
-<p>&lt;Project.Dir&gt;/src/main/resources/react4xpNashornPolyfills.es6</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="webpack_overrides_only_used_when_building_components"><a class="link" href="#webpack_overrides_only_used_when_building_components">Webpack overrides (only used when building components)</a></h3>
-<div class="paragraph">
-<p>The path for the webpack overrides file is now hardcoded to
-&lt;Project.Dir&gt;/webpack.config.react4xp.js</p>
-</div>
-<div class="paragraph">
-<p>There should be an updated example file in the @enonic/react4xp package under examples/webpack.config.react4xp.js</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="application_configuration_file_runtime_settings"><a class="link" href="#application_configuration_file_runtime_settings">Application configuration file (runtime settings)</a></h3>
-<div class="paragraph">
-<p>You can now set some runtime options in $XP_HOME/config/&lt;app.name&gt;.cfg
-There should be an updated example file in the @enonic/react4xp package under examples/app.cfg</p>
-</div>
-<div class="paragraph">
-<p>Starting from 3.2.0 <code>react4xp.ssr.settings</code> can only be a string. Number value is no longer supported and will cause an error.</p>
-</div>
-<div class="paragraph">
-<p>See &lt;<a href="https://github.com/enonic/enonic-react4xp/blob/master/examples/app.cfg&gt;" class="bare">https://github.com/enonic/enonic-react4xp/blob/master/examples/app.cfg&gt;</a></p>
-</div>
-<div class="paragraph">
-<p>Example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cfg" data-lang="cfg">react4xp.ssr.lazyLoad = false
-react4xp.ssr.maxThreads = 0
-react4xp.ssr.settings = --optimistic-types=false</code></pre>
-</div>
-</div>
+<p>See also: <a href="entries.ahtml">entries</a> and <a href="jsxpath.ahtml">jsxPath</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="how"><a class="link" href="#how">How</a></h2>
+<h2 id="standard_chunks"><a class="link" href="#standard_chunks">Standard chunks</a></h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="package_json"><a class="link" href="#package_json">package.json</a></h3>
-<div class="sect3">
-<h4 id="uninstall_the_react4xp_npm_package"><a class="link" href="#uninstall_the_react4xp_npm_package">Uninstall the react4xp npm package</a></h4>
 <div class="paragraph">
-<p><code>npm uninstall react4xp</code></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="install_the_enonicreact4xp_npm_package"><a class="link" href="#install_the_enonicreact4xp_npm_package">Install the @enonic/react4xp npm package</a></h4>
-<div class="paragraph">
-<p><code>npm install --save-dev @enonic/react4xp</code></p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="build_gradle"><a class="link" href="#build_gradle">build.gradle</a></h3>
-<div class="sect3">
-<h4 id="upgrade_lib_react4xp_to_3_x_x_in_build_gradle"><a class="link" href="#upgrade_lib_react4xp_to_3_x_x_in_build_gradle">Upgrade lib-react4xp to 3.x.x in build.gradle</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-build.gradle" data-lang="build.gradle">rootProject.ext.LIB_REACT4XP_VERSION = "3.2.0"</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="update_paths_to_gradle_files_imported_from_node_modulesenonicreact4xp"><a class="link" href="#update_paths_to_gradle_files_imported_from_node_modulesenonicreact4xp">Update paths to gradle files imported from node_modules/@enonic/react4xp</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-build.gradle" data-lang="build.gradle">def react4xpGradlePath = 'node_modules/@enonic/react4xp/react4xp.gradle'
-apply from: 'node_modules/@enonic/react4xp/npmInstall.gradle'
-apply from: 'node_modules/@enonic/react4xp/updaters.gradle'</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="if_you_have_extra_externals_chunkdirs_entrydirs_or_entryextensions"><a class="link" href="#if_you_have_extra_externals_chunkdirs_entrydirs_or_entryextensions">If you have extra externals, chunkDirs, entryDirs or entryExtensions</a></h3>
-<div class="sect3">
-<h4 id="copy_node_modulesenonicreact4xpexamplesreact4xp_config_js_into_you_project"><a class="link" href="#copy_node_modulesenonicreact4xpexamplesreact4xp_config_js_into_you_project">Copy node_modules/@enonic/react4xp/examples/react4xp.config.js into you project.</a></h4>
-<div class="paragraph">
-<p><code>cp node_modules/@enonic/react4xp/examples/react4xp.config.js .</code></p>
+<p>In the standard React4xp setup, two chunks are likely to appear without any further setup: <strong>globals and vendors</strong>. That is, their names are hashed and will appear as <code>globals.&lt;hash&gt;.js</code> and <code>vendors.&lt;hash&gt;.js</code>.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Move externals, chunkDirs, entryDirs or entryExtensions from react4xp.properties into react4xp.config.js</p>
+<p>Globals usually contains react and react-dom, ensuring that the same react version is used when rendering on the client and server.</p>
+</li>
+<li>
+<p>Vendors is the chunk for anything else imported from <em>node_modules</em>.</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="if_you_have_extra_nashorn_polyfills"><a class="link" href="#if_you_have_extra_nashorn_polyfills">If you have extra nashorn polyfills</a></h3>
+<div class="sect1">
+<h2 id="defining_chunk_structure"><a class="link" href="#defining_chunk_structure">Defining chunk structure</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can also <strong>define your own dependency chunk structure</strong>. Additional folders (relative to <em>src/main/resources/react4xp/</em>) can be defined with <code>chunkDirs</code> in <em>react4xp.config.js</em>. This will cause all source files under each chunkDir to be compiled into one common dependency chunk (or to be precise: one chunk for each codetype defined by webpack rules, e.g. separate JS and CSS chunks).</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Make sure they are placed in &lt;Project.Dir&gt;/src/main/resources/react4xpNashornPolyfills.es6</p>
+<p>The asset&#8217;s name will be the name of the parent folder, with a content hash: &lt;chunkName&gt;.&lt;hash&gt;.&lt;extension&gt;.</p>
+</li>
+<li>
+<p>For example, adding <code>chunkDirs: ['foo/bar']</code> under <em>react4xp.config.js</em>, adding <em>hey.js</em> and <em>baz/ho.js</em> and importing stuff from <em>hey</em> and <em>ho</em> in an entry, will create the dependency chunk <em>bar.&lt;hash&gt;.js</em> - which contains both <em>hey</em> and <em>ho</em>.</p>
 </li>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="if_you_have_webpack_overrides"><a class="link" href="#if_you_have_webpack_overrides">If you have webpack overrides</a></h3>
+</div>
+<div class="sect1">
+<h2 id="importing_from_outside_of_chunkdirs"><a class="link" href="#importing_from_outside_of_chunkdirs">Importing from outside of chunkDirs</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>What happens if an entry imports something from folders <strong>not marked as chunkDirs</strong>?</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Make sure they are placed in &lt;Project.Dir&gt;/webpack.config.react4xp.js</p>
+<p>Imported JS (react components etc) from non-entry folders will be <strong>compiled into the entry asset</strong> itself. Try to avoid this, since the entries can become bloated, and code can become repeated if it&#8217;s imported into more than entry. The entry assets are also less performance optimized.</p>
+</li>
+<li>
+<p>Non-JS imports (CSS etc), are compiled to separate assets under their own name, the same way as entries (but are not given a <em>jsxPath</em>, of course).</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Do not import from entries! It causes random SSR errors. Place shared code in separate React components.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="entries_vs_chunks"><a class="link" href="#entries_vs_chunks">Entries vs chunks</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Dependency chunks never contain <a href="entries.ahtml">entries</a>; each entry is an asset file of its own. Consequently, nothing inside a dependency chunk will have a jsxPath.</p>
+</div>
+<div class="paragraph">
+<p>This is why entries are used as a separate word from react components: all entries are react components, but all react components are not necessarily entries: react components can also be secondary imports from chunks / chunkDirs.</p>
+</div>
+<div class="paragraph">
+<p>Only entries are runtime-available to React4xp.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="why_for_optimization"><a class="link" href="#why_for_optimization">Why? For optimization!</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Why use chunks?</p>
+</div>
+<div class="paragraph">
+<p>They are handy for collecting related secondary resources (that may be frequently used together in one part of a site but not others, for instance - making it possible to minimize the necessary client downloads).</p>
+</div>
+<div class="paragraph">
+<p>But most importantly, they are <strong>automatically optimized for performance</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>They are both cached on the server side as well as in the client - preventing repeated generation and minimizing downloads, speeding up the site.</p>
+</li>
+<li>
+<p>The hash is updated by content, for effective cache busting.</p>
+</li>
+<li>
+<p>Even if the resources in a chunk are used more than once on a page, the chunk is only downloaded once.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>There should be an updated example file in the @enonic/react4xp package under examples/webpack.config.react4xp.js</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="if_you_are_using_react_components_from_the_react4xp_regions_package"><a class="link" href="#if_you_are_using_react_components_from_the_react4xp_regions_package">If you are using react components from the react4xp-regions package</a></h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Uninstall the react4xp-regions npm package (might already be gone, was dependency of the react4xp npm package)</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="install_the_enonicreact_components_npm_package"><a class="link" href="#install_the_enonicreact_components_npm_package">Install the @enonic/react-components npm package</a></h4>
-<div class="paragraph">
-<p><code>npm install --save-dev @enonic/react-components</code></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="jsx_files"><a class="link" href="#jsx_files">Jsx files</a></h4>
-<div class="paragraph">
-<p>Edit your jsx files and change import path from:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">import Regions from 'react4xp-regions/Regions';</code></pre>
-</div>
+<p><strong>Recommended usage:</strong> chunks are made to be <strong>fire-and-forget</strong>. Define the chunkDir, some webpack rules if necessary, and import it from your entry (or your secondary components inside chunks) - the React4xp build setup and runtime will handle the rest. Dependencies are tracked, so <code>React4xp.render</code> (and <code>.renderPageContributions</code>) automatically adds extra client-side links to necessary chunks.</p>
 </div>
 <div class="paragraph">
-<p>to:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">import Regions from '@enonic/react-components/Regions';</code></pre>
-</div>
-</div>
-</div>
+<p>Since chunks are most optimized for repeated usage, it&#8217;s best to put your heavy components and resources in chunks, and <strong>let the entries stay slim and lightweight</strong>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-05 12:50:52 UTC
+Last updated 2024-03-20 13:16:24 UTC
 </div>
 </div>
 </body>

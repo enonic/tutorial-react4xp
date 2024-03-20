@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
-<title>Upgrade to v4</title>
+<meta name="generator" content="Asciidoctor 2.0.21">
+<title>Build configuration</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -436,40 +437,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Upgrade to v4</h1>
+<h1>Build configuration</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#what">What</a>
+<li><a href="#build_arguments">Build arguments</a>
 <ul class="sectlevel2">
-<li><a href="#graal_js">Graal.JS</a></li>
-<li><a href="#typescript">TypeScript</a></li>
-<li><a href="#react_18">React 18</a></li>
-<li><a href="#target_folder_browser_cache">Target folder (browser cache)</a></li>
-<li><a href="#named_exports">Named exports</a></li>
-<li><a href="#clientrender_hydrate_ssr">clientRender (hydrate &amp; ssr)</a></li>
-<li><a href="#globals_vs_externals">Globals vs Externals</a></li>
-<li><a href="#lazy_loading_eager_removed">Lazy loading (eager removed)</a></li>
-<li><a href="#application_configuration">Application configuration</a></li>
-<li><a href="#multiple_react4xp_apps">Multiple React4xp apps</a></li>
-<li><a href="#content_studio">Content Studio</a></li>
-<li><a href="#gradle">Gradle</a></li>
-<li><a href="#enonic_xp_dev_mode">Enonic XP dev mode</a></li>
-<li><a href="#system_environment_variables">System environment variables</a></li>
-<li><a href="#component_props_react4xpid">Component props (react4xpId)</a></li>
-<li><a href="#document_polyfill">document polyfill</a></li>
+<li><a href="#NODE_ENV">Development mode</a></li>
+<li><a href="#VERBOSE">Verbosity</a></li>
 </ul>
 </li>
-<li><a href="#how">How</a>
+<li><a href="#react4xp.config.js">react4xp.config.js</a>
 <ul class="sectlevel2">
-<li><a href="#gradle_properties">gradle.properties</a></li>
-<li><a href="#build_gradle">build.gradle</a></li>
-<li><a href="#package_json">package.json</a></li>
-<li><a href="#react4xp_config_js">react4xp.config.js</a></li>
-<li><a href="#app_cfg">app.cfg</a></li>
-<li><a href="#import">import/require in controllers</a></li>
-<li><a href="#tsconfig_json">tsconfig.json</a></li>
-<li><a href="#react4xp_components">React4xp components</a></li>
+<li><a href="#adding_react4xp_config_js">Adding react4xp.config.js</a></li>
+<li><a href="#entryDirs">entryDirs</a></li>
+<li><a href="#chunkDirs">chunkDirs</a></li>
+</ul>
+</li>
+<li><a href="#webpack.config.react4xp.js">webpack.config.react4xp.js</a>
+<ul class="sectlevel2">
+<li><a href="#webpack_caching">Webpack caching</a></li>
 </ul>
 </li>
 </ul>
@@ -477,484 +464,81 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="what"><a class="link" href="#what">What</a></h2>
+<h2 id="build_arguments"><a class="link" href="#build_arguments">Build arguments</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="graal_js"><a class="link" href="#graal_js">Graal.JS</a></h3>
+<h3 id="NODE_ENV"><a class="link" href="#NODE_ENV">Development mode</a></h3>
 <div class="paragraph">
-<p>We have dropped support for Nashorn in favour of Graal.JS.</p>
+<p>Use the gradle commandline flag <code>-Pdev</code> or <code>-Pdevelopment</code> to enable building in development mode.</p>
 </div>
-<div class="paragraph">
-<p>This means we had to upgrade the Enonic XP version requirement to 7.12 (<a href="#gradle_properties">gradle.properties</a>)</p>
-</div>
-<div class="paragraph">
-<p>Since the Application Configuration setting <code>react4xp.ssr.settings</code> was only relevant for Nashorn, it has been removed.</p>
-</div>
-<div class="paragraph">
-<p>And since React4xp now only supports Graal.JS: the Application Configuration setting <code>react4xp.ssr.engineName</code> is no longer relevant.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">enonic project gradle build deploy -Pdev</code></pre>
 </div>
 </div>
-<div class="sect2">
-<h3 id="typescript"><a class="link" href="#typescript">TypeScript</a></h3>
 <div class="paragraph">
-<p>React4xp version 4 introduces support for TypeScript</p>
-</div>
-<div class="paragraph">
-<p>The types for lib-react4xp are available via npm:</p>
+<p>This switches between React4xp <strong>build</strong> modes (not to be confused with XP&#8217;s <a href="https://developer.enonic.com/docs/enonic-cli/master/dev#start">run modes</a>).</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://www.npmjs.com/package/@enonic-types/lib-react4xp" class="bare">https://www.npmjs.com/package/@enonic-types/lib-react4xp</a></p>
+<p><code>production</code>: assets are compiled more compact (and faster), with source maps</p>
+</li>
+<li>
+<p><code>development</code>: assets are compiled for more human-readability, without minification, making errors easier to track down.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>See the <a href="#tsconfig_json">tsconfig.json</a> section below on how to set it up.</p>
+<p>Default value is <code>production</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="react_18"><a class="link" href="#react_18">React 18</a></h3>
+<h3 id="VERBOSE"><a class="link" href="#VERBOSE">Verbosity</a></h3>
 <div class="paragraph">
-<p>React4xp will now use the new React 18 functions like createRoot() and hydrateRoot() if they are available.</p>
-</div>
-<div class="paragraph">
-<p>If they are not, it will use the React 17 functions like render() and hydrate().</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="target_folder_browser_cache"><a class="link" href="#target_folder_browser_cache">Target folder (browser cache)</a></h3>
-<div class="paragraph">
-<p>We have changed target folder from <code>build/resources/main/assets/react4xp</code> to
-<code>build/resources/main/r4xAssets</code>. The React4xp assets are currently provided by
-a service on top of lib-static and should not be available via assetUrl. When
-building in production mode: the asset filenames contain contenthashes, so they
-can be served as static assets with "infinite" browser caching. When building in
-development mode, React4xp uses ETag.</p>
-</div>
-<div class="paragraph">
-<p>We have not changed the source folder <code>src/main/resources/react4xp</code>, so you
-don&#8217;t have to move any files.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="named_exports"><a class="link" href="#named_exports">Named exports</a></h3>
-<div class="paragraph">
-<p>The default export from '/lib/enonic/react4xp' used to be a class.
-Now we are using named exports.
-You can still import the class exported under the name React4xp.</p>
-</div>
-<div class="paragraph">
-<p>See <a href="#import">import/require in controllers</a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="clientrender_hydrate_ssr"><a class="link" href="#clientrender_hydrate_ssr">clientRender (hydrate &amp; ssr)</a></h3>
-<div class="paragraph">
-<p>The clientRender option/parameter has been removed in favour of hydrate and ssr.</p>
-</div>
-<div class="paragraph">
-<p>Read more under <a href="#application_configuration">Application configuration</a> and <a href="#react4xp_components">React4xp components</a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="globals_vs_externals"><a class="link" href="#globals_vs_externals">Globals vs Externals</a></h3>
-<div class="paragraph">
-<p>We have added a new configuration option to PROJECT_DIR/react4xp.config.js
-called <code>globals</code>. Whatever you had in <code>externals</code> should probably be moved to
-<code>globals</code>.</p>
-</div>
-<div class="paragraph">
-<p>React4xp builds a globals bundle, which MUST contain all assets NEEDED to render
-server-side. By default it contains react and react-dom, but more assets can be
-added.</p>
-</div>
-<div class="paragraph">
-<p>By default the globals bundle is also used on the client-side, but you can
-disable the serving of the globals bundle to the client-side in the Application
-configuration and provide the REQUIRED assets on your own, for example via CDN.</p>
-</div>
-<div class="paragraph">
-<p>It is possible to have pure client-side rendered components in React4xp.
-If these components use assets which are NOT needed to render server-side you
-should add them to <code>externals</code> and not <code>globals</code>. This way those assets will not
-be bundled and must be provided by other means, for example via CDN.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 40%;">
-<col style="width: 40%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top"></th>
-<th class="tableblock halign-left valign-top">Globals</th>
-<th class="tableblock halign-left valign-top">Externals</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">What is it?</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">A javascript bundle of commonly required imports.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">A list of imports to be excluded.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Where is it used?</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Always server-side, and sometimes client-side.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Build-time to exclude files.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">How it works?</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Instead of bundling a copy of the global imports into every target file, they are put in a separate bundle, and the target files will only contain a require statement to the globals bundle. During runtime the globals bundle is loaded first so the imports can be accessed directly on the global namespace.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Your code will assume these imports are available in the global namespace, but unless you also load the imports first, your code will throw errors.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="lazy_loading_eager_removed"><a class="link" href="#lazy_loading_eager_removed">Lazy loading (eager removed)</a></h3>
-<div class="paragraph">
-<p>React4xp now supports pure clientSide rendered components. Such components may
-include code that doesn&#8217;t run on the server. Since eager loading would load all
-components, it would cause errors on the server (sometimes severe). Lazy loading
-only loads the components needed for the current serverSide rendering, not
-wasting cpu cycles on loading code it may never run.</p>
-</div>
-<div class="paragraph">
-<p>Since lazy loading is now the default, and there is no eager loading anymore we
-have also removed the <code>react4xp.ssrLazyload</code> setting from the application
-configuration file (app.cfg)</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="application_configuration"><a class="link" href="#application_configuration">Application configuration</a></h3>
-<div class="paragraph">
-<p>We have added three new application configurations (hydrate, serveGlobals and
-ssr), and removed a few ones too (ssr.engineName, ssr.lazyLoad and
-ssr.settings).</p>
-</div>
-<div class="sect3">
-<h4 id="react4xp_hydrate"><a class="link" href="#react4xp_hydrate">react4xp.hydrate</a></h4>
-<div class="paragraph">
-<p>Add this to to your application configuration file:</p>
-</div>
-<div class="listingblock">
-<div class="title">${XP_HOME}/config/${app}.cfg</div>
-<div class="content">
-<pre class="highlight"><code>react4xp.hydrate = false</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To disable client-side hydration for all React4xp components (page, layout, parts, etc)</p>
-</div>
-<div class="paragraph">
-<p>You can still override the application configuration in specific controllers.</p>
-</div>
-<div class="listingblock">
-<div class="title">someController.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript">  render(compnent, props, request, {
-      // Default is to use application configuration
-      // SSR without hydration will always be enforced when request.mode === 'edit'
-      // hydrate: true // Hydration when ssr = true
-      // hydrate: false // No hydration even when ssr = true
-  })</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="react4xp_serveglobals"><a class="link" href="#react4xp_serveglobals">react4xp.serveGlobals</a></h4>
-<div class="paragraph">
-<p>To disable serving the globals bundle to the client-side add the line below to
-your application configuration file:</p>
-</div>
-<div class="listingblock">
-<div class="title">${XP_HOME}/config/${app}.cfg</div>
-<div class="content">
-<pre class="highlight"><code>react4xp.serveGlobals = false</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="react4xp_ssr"><a class="link" href="#react4xp_ssr">react4xp.ssr</a></h4>
-<div class="paragraph">
-<p>Add this to your application configuration file:</p>
-</div>
-<div class="listingblock">
-<div class="title">${XP_HOME}/config/${app}.cfg</div>
-<div class="content">
-<pre class="highlight"><code>react4xp.ssr = false</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To disable server-side rendering for all parts (doesn&#8217;t affect page and layouts)</p>
-</div>
-<div class="paragraph">
-<p>You can still override the application configuration in specific part controllers.</p>
-</div>
-<div class="listingblock">
-<div class="title">partController.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript">  render(compnent, props, request, {
-      // Default is to use application configuration
-      // SSR without hydration will always be enforced when request.mode === 'edit'
-      // ssr: true // "Always" SSR
-      // ssr: false // "Always" client-side rendering
-  })</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="react4xp_ssr_lazyload"><a class="link" href="#react4xp_ssr_lazyload">react4xp.ssr.lazyLoad</a></h4>
-<div class="paragraph">
-<p>Lazyloading is now always enabled.</p>
-</div>
-<div class="paragraph">
-<p>Therefore this setting has been removed.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="multiple_react4xp_apps"><a class="link" href="#multiple_react4xp_apps">Multiple React4xp apps</a></h3>
-<div class="paragraph">
-<p>You can now use components from multiple React4xp apps on the same webpage.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>By default React4xp apps serve a globals bundle to the browser.
-This globals bundle contain react (and more).
-If multiple copies of react are loaded in the browser, you will probably run into problems:</p>
-</div>
-<div class="paragraph">
-<p><a href="https://legacy.reactjs.org/docs/error-decoder.html/?invariant=321" class="bare">https://legacy.reactjs.org/docs/error-decoder.html/?invariant=321</a>
-<a href="https://react.dev/warnings/invalid-hook-call-warning#duplicate-react" class="bare">https://react.dev/warnings/invalid-hook-call-warning#duplicate-react</a></p>
-</div>
-<div class="paragraph">
-<p>Luckily there is a workaround:</p>
-</div>
-<div class="paragraph">
-<p>You can use Application Configuration to disable the serving of the globals bundle.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-${XP_HOME}/config/${app}.cfg" data-lang="${XP_HOME}/config/${app}.cfg">react4xp.serveGlobals = false</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The challenge then is that you have to provide globals (including react and react-dom) manually. Either using the assets folder, lib-static or from CDN.</p>
-</div>
-<div class="paragraph">
-<p>You could let one of the apps keep react4xp.serveGlobals = true, but then you would have to use a component from that app on any page that uses components from any of the react4xp apps.</p>
-</div>
-<div class="paragraph">
-<p>We are working on a better solution for this complexity.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="sect3">
-<h4 id="client_executor"><a class="link" href="#client_executor">Client &amp; Executor</a></h4>
-<div class="paragraph">
-<p>To enable multiple React4xp applications on the same page global variables has
-been prefixed with the application name. Obviously the application name is not
-available when bulding lib-react4xp, so the building of the client and executor
-has been moved from lib-react4xp to @enonic/react4xp.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="content_studio"><a class="link" href="#content_studio">Content Studio</a></h3>
-<div class="paragraph">
-<p>SSR without hydration used to be enforced for both <code>edit</code> and <code>inline</code> mode in Content Studio.</p>
-</div>
-<div class="paragraph">
-<p>Now React4xp will only enforce SSR without hydration in Content Studio <code>edit</code> mode.</p>
-</div>
-<div class="paragraph">
-<p><code>inline</code> mode will use normal React4xp rendering, just as <code>preview</code> and <code>live</code> mode.</p>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-If you don&#8217;t pass on the request to the render functions React4xp will assume <code>edit</code> mode.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="gradle"><a class="link" href="#gradle">Gradle</a></h3>
-<div class="paragraph">
-<p>We have simplified the gradle setup a lot.</p>
-</div>
-<div class="paragraph">
-<p>All old references to React4xp in the build.gradle file, must be removed.</p>
-</div>
-<div class="paragraph">
-<p>These files no longer exist:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>node_modules/@enonic/react4xp/react4xp.gradle</p>
-</li>
-<li>
-<p>node_modules/@enonic/react4xp/npmInstall.gradle</p>
-</li>
-<li>
-<p>node_modules/@enonic/react4xp/updaters.gradle</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>See more under the <a href="#_build_gradle">build.gradle</a> section below.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="enonic_xp_dev_mode"><a class="link" href="#enonic_xp_dev_mode">Enonic XP dev mode</a></h3>
-<div class="paragraph">
-<p>When running Enonic XP in dev mode, it may be faster to build without using gradle at all.</p>
-</div>
-<div class="paragraph">
-<p>See the required changes to the build.gradle and package.json files in the How section below.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="system_environment_variables"><a class="link" href="#system_environment_variables">System environment variables</a></h3>
-<div class="paragraph">
-<p>When building with gradle, it will automatically set some system environment variables for you.</p>
-</div>
-<div class="paragraph">
-<p>However if you want to build without using gradle you have to set them up on your own.</p>
-</div>
-<div class="paragraph">
-<p>These two are required:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>R4X_APP_NAME (find the appName in gradle.properties)</p>
-</li>
-<li>
-<p>R4X_DIR_PATH_ABSOLUTE_PROJECT (cwd/pwd)</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>These two are optional:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>R4X_BUILD_LOG_LEVEL (use INFO to get some extra logging when building)</p>
-</li>
-<li>
-<p>NODE_ENV (the default is production, set it to development for no hashing, nor minification, etc&#8230;&#8203;)</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="component_props_react4xpid"><a class="link" href="#component_props_react4xpid">Component props (react4xpId)</a></h3>
-<div class="paragraph">
-<p>React4xp used to add an extra prop called react4xpId, which was used during
-clientSide hydration and rendering. This prop is no longer needed as it is
-provided by other means (<code>script[data-react4xp-ref]</code>).</p>
-</div>
-<div class="paragraph">
-<p>So now: React component props are just normal React component props :)</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="document_polyfill"><a class="link" href="#document_polyfill">document polyfill</a></h3>
-<div class="paragraph">
-<p>Several frameworks and node modules uses <code>document</code> to determine whether it&#8217;s code
-is running on the server, or in the browser. By polyfilling <code>document</code> that
-logic is broken. So React4xp is no longer polyfilling <code>document</code>.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-If your code is using <code>document</code>, and is not a pure client-side component:
-you should wrap the code with an if block to avoid that code being run on the
-server.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-If you are importing some "broken" module that uses <code>document</code> without
-checking for client or server, you may polyfill <code>document</code> on your own, but it
-might break other modules which now thinks the server is the client&#8230;&#8203;
-</td>
-</tr>
-</table>
+<p>Use the gradle commandline flag -i or --info to enable a more verbose output when compiling React4xp components and globals.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="how"><a class="link" href="#how">How</a></h2>
+<h2 id="react4xp.config.js"><a class="link" href="#react4xp.config.js">react4xp.config.js</a></h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="gradle_properties"><a class="link" href="#gradle_properties">gradle.properties</a></h3>
 <div class="paragraph">
-<p>Set xpVersion to 7.12.0 or higher:</p>
-</div>
-<div class="listingblock">
-<div class="title">gradle.properties</div>
-<div class="content">
-<pre class="highlight"><code class="language-properties" data-lang="properties">xpVersion = 7.12.0</code></pre>
-</div>
-</div>
+<p>Several aspects of React4xp can be configured with a file <em>react4xp.config.js</em>. When using the React4XP starter this should automatically be available in your project.</p>
 </div>
 <div class="sect2">
-<h3 id="build_gradle"><a class="link" href="#build_gradle">build.gradle</a></h3>
-<div class="listingblock">
-<div class="title">build.gradle</div>
-<div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
-    include "com.enonic.lib:lib-react4xp:4.x.x"
-}</code></pre>
-</div>
+<h3 id="adding_react4xp_config_js"><a class="link" href="#adding_react4xp_config_js">Adding react4xp.config.js</a></h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you&#8217;re using the <a href="setup.ahtml#create_project">React4XP starter</a> or your project is based on it, you may skip this section:
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Remove all the old react4xp* tasks from your build.gradle file.</p>
+<p>Put <em>react4xp.config.js</em> at the root of your XP project. A template can be copied from <a href="https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js">here</a>, or from <em>node_modules/@enonic/react4xp/examples/react4xp.config.js</em> after installing the React4xp NPM package.</p>
 </div>
 <div class="paragraph">
-<p>Add this one task instead:</p>
+<p><strong>In order to take effect, it must be handled by gradle during the build:</strong></p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add this to your <em>build.gradle</em>:</p>
 <div class="listingblock">
-<div class="title">build.gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">task react4xp(type: NpmTask, dependsOn: npmInstall) {
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">task react4xp(type: NpmTask, dependsOn: npmInstall) {
   args = [
     'run',
     'build:react4xp' // This script must exist in the package.json file
   ]
-  description 'Compile React4xp resources'
+  description 'Compile react4xp resources'
   environment = [
     'R4X_APP_NAME': "${appName}",
     'R4X_BUILD_LOG_LEVEL': gradle.startParameter.logLevel.toString(),
@@ -971,30 +555,12 @@ jar.dependsOn 'react4xp'</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If your project is based on an earlier version of the starter-react4xp also remove the <code>react4xp</code> plugin:</p>
+<p>This will not only make sure <em>react4xp.config.js</em> is handled, but also give a full react4xp build setup.</p>
 </div>
+</li>
+<li>
+<p>Add this to your <em>package.json</em>:</p>
 <div class="listingblock">
-<div class="title">build.gradle</div>
-<div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">plugins {
-  id 'react4xp' // Delete this line
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can probably also delete the entire buildSrc folder from your project.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="package_json"><a class="link" href="#package_json">package.json</a></h3>
-<div class="paragraph">
-<p>When runnning Enonic XP in dev mode, it&#8217;s possible to build without using gradle.</p>
-</div>
-<div class="paragraph">
-<p>In order to build without gradle we had to move npm explore command from build.gradle to the package.json file:</p>
-</div>
-<div class="listingblock">
-<div class="title">package.json</div>
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
   "scripts": {
@@ -1003,298 +569,169 @@ jar.dependsOn 'react4xp'</code></pre>
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Install or upgrade the React4xp build system:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">npm install --save-dev @enonic/react4xp</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">npm upgrade @enonic/react4xp</code></pre>
-</div>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="react4xp_config_js"><a class="link" href="#react4xp_config_js">react4xp.config.js</a></h3>
+<h3 id="entryDirs"><a class="link" href="#entryDirs">entryDirs</a></h3>
 <div class="listingblock">
-<div class="title">react4xp.config.js</div>
+<div class="title">react4xp.config.js:</div>
 <div class="content">
-<pre class="highlight"><code class="language-javacript" data-lang="javacript">  // Used in ssr component(s)
-  globals: {
-    lodash: '_'
-  },
-  // Used in pure clientSide component(s).
-  // Must be provided by other means, for example CDN.
-  externals: {
-    jquery: 'jQuery'
-  },</code></pre>
+<pre class="highlight"><code class="language-js" data-lang="js">entryDirs: ['myComponents', '../otherComponents']</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>By default, React4xp will look for (ie. sets up webpack to look for) .TSX/.JSX files to turn into <a href="entries.ahtml">entries</a> below <em>src/main/resources/site/</em>.</p>
+</div>
+<div class="paragraph">
+<p>Adding comma separated values under <code>entryDirs</code> adds <em>more</em> folder names/paths (relative to <em>src/main/resources/react4xp/</em>) where TSX/JSX files will also become entries.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="app_cfg"><a class="link" href="#app_cfg">app.cfg</a></h3>
+<h3 id="chunkDirs"><a class="link" href="#chunkDirs">chunkDirs</a></h3>
 <div class="paragraph">
-<p>Hydration is enabled by default, to change the default to disabled add the line
-below to ${XP_HOME}/config/${app}.cfg. One can still enable hydration in
-specific components.</p>
+<p>By default, React4xp will look for (ie. sets up webpack to look for) resources <em>imported by</em> the entries. These are <a href="https://webpack.js.org/concepts/">bundled</a> into separate assets that React4xp automatically loads at both server- and clientside rendering: <a href="chunks.ahtml">chunks</a>, by this pattern:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If they are react and reactDOM, they are bundled separately into <code>globals.*.js</code> (where the * is a content-dependent hash).</p>
+</li>
+<li>
+<p><em>node_modules/@enonic/react-components/</em> is bundled into <code>templates.*.js</code></p>
+</li>
+<li>
+<p>Other packages under <em>node_modules</em> are bundled into <code>vendors.*.js</code></p>
+</li>
+<li>
+<p>And everything else that&#8217;s <em>not under a <code>chunkDir</code> marked here</em> is bundled into <code>react4xp.*.js</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>(Of course, non-JS bundles split out by webpack will have different extensions, such as .css)</p>
+</div>
+<div class="paragraph">
+<p>The idea is to use <code>chunkDirs</code> to add a comma-separated list of names/paths of directories (relative to <em>src/main/resources/react4xp/</em>) that will be bundled into chunks of their own. The chunk name will be the name of the last directory in the path:</p>
 </div>
 <div class="listingblock">
+<div class="title">react4xp.config.js:</div>
 <div class="content">
-<pre class="highlight"><code class="language-${XP_HOME}/config/${app}.cfg" data-lang="${XP_HOME}/config/${app}.cfg">react4xp.hydrate = false</code></pre>
+<pre class="highlight"><code class="language-js" data-lang="js">chunkDirs: ['chunk1', 'bundle2', 'other/stuff']</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>SSR is enabled by default, to change the default to disabled add the line below
-to ${XP_HOME}/config/${app}.cfg. One can still enable ssr in specific
-components.</p>
+<p>This example adds these folders as chunkDirs, and anything the entries import from below them is bundled separately into:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-${XP_HOME}/config/${app}.cfg" data-lang="${XP_HOME}/config/${app}.cfg">react4xp.ssr = false</code></pre>
+<div class="ulist">
+<ul>
+<li>
+<p><em>src/main/resources/react4xp/chunk1/</em> ➔ <code>chunk1.*.js</code></p>
+</li>
+<li>
+<p><em>src/main/resources/react4xp/bundle2/</em> ➔ <code>bundle2.*.js</code></p>
+</li>
+<li>
+<p><em>src/main/resources/react4xp/other/stuff/</em> ➔ <code>stuff.*.js</code></p>
+</li>
+</ul>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="webpack.config.react4xp.js"><a class="link" href="#webpack.config.react4xp.js">webpack.config.react4xp.js</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>React4xp uses Webpack to build. The starter comes with a minimal set of webpack rules built-in, for compiling react components in TSX/JSX files into vanilla JS.</p>
 </div>
 <div class="paragraph">
-<p>To disable serving the globals bundle to the client-side add the line below to
-${XP_HOME}/config/${app}.cfg.</p>
+<p>If you need to change/expand this setup, simply place a custom <code>webpack.config.react4xp.js</code> in your project folder.</p>
+</div>
+<div class="paragraph">
+<p>Possible reasons to change the webpack config:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Most commonly, the built-in webpack setup is pretty minimal, only adding <a href="https://webpack.js.org/loaders/">loaders</a> for compiling react from TSX/JSX. It&#8217;s likely you will need to add loaders of your own, maybe use additional plugins etc</p>
+</li>
+<li>
+<p>You may want to adjust other aspects of the compilation rules, or even replace the built-in rules entirely</p>
+</li>
+<li>
+<p>The assets that are built during the compilation are the same ones that are run on the server and in the browser. It&#8217;s possible you may need adjustments here to account for corner cases - if the problem is missing feature support in the server, perhaps you can polyfill them.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Config file shape: syntax variation!</strong></p>
+</div>
+<div class="paragraph">
+<p>Usually, <em>webpack.config.js</em> files tend to have a certain shape, something like:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-${XP_HOME}/config/${app}.cfg" data-lang="${XP_HOME}/config/${app}.cfg">react4xp.serveGlobals = false</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="import"><a class="link" href="#import">import/require in controllers</a></h3>
-<div class="sect3">
-<h4 id="typescript_named_function"><a class="link" href="#typescript_named_function">TypeScript named function</a></h4>
-<div class="listingblock">
-<div class="title">examplePart.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-typecript" data-lang="typecript">import {render} from '/lib/enonic/react4xp';
-
-export function get(request) {
-    return render(component, props, request, {
-      // Optional
-      // hydrate: false,
-      // ssr: false
-    });
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="typescript_class"><a class="link" href="#typescript_class">TypeScript class</a></h4>
-<div class="listingblock">
-<div class="title">examplePart.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript">import {React4xp} from '/lib/enonic/react4xp';
-
-export function get(request) {
-  const r4x = new React4xp(jsxPath);
-  r4x.setId(id);
-  r4x.setProps(props);
-  return {
-    body: r4x.renderBody({
-      body,
-      request,
-      // ssr, // Optional
-    }),
-    pageContributions: r4x.renderPageContributions({
-      // hydrate, // Optional
-      pageContributions,
-      request,
-      // ssr, // Optional
-    })
-  };
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="common_js_named_function"><a class="link" href="#common_js_named_function">Common.JS "named" function</a></h4>
-<div class="listingblock">
-<div class="title">examplePart.js</div>
-<div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript">const libReact4xp = require('/lib/enonic/react4xp');
-
-exports.get = function (request) {
-    return libReact4xp.render(component, props, request, {
-      // Optional
-      // hydrate: false,
-      // ssr: false
-    });
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="common_js_class"><a class="link" href="#common_js_class">Common.JS class</a></h4>
-<div class="listingblock">
-<div class="title">examplePart.js</div>
-<div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript">const libReact4xp = require('/lib/enonic/react4xp');
-
-exports.get = function (request) {
-    const r4x = new libReact4xp.React4xp(jsxPath);
-    r4x.setId(id);
-    r4x.setProps(props);
-    return {
-      body: r4x.renderBody({
-        body: body,
-        request: request,
-        // ssr: ssr, // Optional
-      }),
-      pageContributions: r4x.renderPageContributions({
-        // hydrate: hydrate, // Optional
-        pageContributions: pageContributions,
-        request: request,
-        // ssr: ssr, // Optional
-      })
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">module.exports = function(env) {
+    var config = {
+        entry: (...)
+        output: (...)
+        resolve: (...)
+        module: {
+            rules: (...)
+        }
     };
-}</code></pre>
+
+    return config;
+};
+// ...etc, etc</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p><code>webpack.config.react4xp.js</code> can follow the same shape, but the exported function can also take <strong>a second <code>config</code> argument:</strong></p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">module.exports = function(env, config) {
+    // ...
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The extra incoming <code>config</code> object contains the built-in rules from React4xp. This enables you to both manipulate those rules and/or add your own, or entirely replace them by returning a different object.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
-<h3 id="tsconfig_json"><a class="link" href="#tsconfig_json">tsconfig.json</a></h3>
-<div class="sect3">
-<h4 id="typechecking_for_your_code_editor_tsconfig_json"><a class="link" href="#typechecking_for_your_code_editor_tsconfig_json">TypeChecking for your code editor (tsconfig.json)</a></h4>
+<h3 id="webpack_caching"><a class="link" href="#webpack_caching">Webpack caching</a></h3>
 <div class="paragraph">
-<p>Install some types:</p>
+<p>To improve the speed of incremental builds, you may also enable webpack caching.</p>
 </div>
 <div class="listingblock">
+<div class="title">webpack.config.react4xp.js</div>
 <div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">npm install --save-dev @enonic-types/lib-react4xp @types/react</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You probably also want some of these:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">npm install --save-dev @enonic-types/lib-admin @enonic-types/lib-app @enonic-types/lib-auditlog @enonic-types/lib-auth @enonic-types/lib-cluster @enonic-types/lib-common @enonic-types/lib-content @enonic-types/lib-context @enonic-types/lib-event @enonic-types/lib-export @enonic-types/lib-grid @enonic-types/lib-i18n @enonic-types/lib-io @enonic-types/lib-mail @enonic-types/lib-node @enonic-types/lib-portal @enonic-types/lib-project @enonic-types/lib-repo @enonic-types/lib-scheduler @enonic-types/lib-schema @enonic-types/lib-task @enonic-types/lib-value @enonic-types/lib-vhost @enonic-types/lib-websocket</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Then create or edit a tsconfig.json file:</p>
-</div>
-<div class="listingblock">
-<div class="title">tsconfig.json</div>
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-    "compilerOptions": {
-        "jsx": "react",
-        "lib": [
-            "DOM", // The server doesn't supports DOM, beeing permissive
-            "ES2015",
-        ],
-        "moduleResolution": "node",
-        "paths": {
-          "/lib/enonic/react4xp": ["node_modules/@enonic-types/lib-react4xp"],
-          "/lib/xp/*": ["node_modules/@enonic-types/lib-*"],
-          "/*": ["src/main/resources/*"],
-        },
-        "skipLibCheck": true,
-        "target": "ES2015",
-        "typeRoots": [
-          "node_modules/@types",
-          "node_modules/@enonic-types"
-        ]
-    },
-    "include": [
-        "./src/main/resources/**/*.ts",
-        "./src/main/resources/**/*.tsx"
-    ],
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="typechecking_for_react4xp_code_tsconfig_react4xp_json"><a class="link" href="#typechecking_for_react4xp_code_tsconfig_react4xp_json">TypeChecking for React4xp code (tsconfig.react4xp.json)</a></h4>
-<div class="paragraph">
-<p>First install the typescript compiler, needed to run typecheking:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">npm install --save-dev typescript</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Then created a tsconfig.react4xp.json file:</p>
-</div>
-<div class="listingblock">
-<div class="title">tsconfig.react4xp.json</div>
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-    "compilerOptions": {
-        "jsx": "react",
-        "lib": [
-            "DOM",
-            "ES2015",
-        ],
-        "moduleResolution": "node",
-        "paths": {
-          "/lib/enonic/react4xp": ["node_modules/@enonic-types/lib-react4xp"],
-          "/*": ["src/main/resources/*"],
-        },
-        "skipLibCheck": true,
-        "target": "ES2015",
-        "typeRoots": [
-          "node_modules/@types",
-          "node_modules/@enonic-types"
-        ]
-    },
-    "include": [
-        "./src/main/resources/**/*.tsx"
-    ],
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">module.exports = function(env, config) {
+		if (process.env.NODE_ENV === 'development') {
+		config.cache = {
+			type: 'filesystem'
+		}
+	}
+  return config;
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>And finally add a script to your package.json file:</p>
-</div>
-<div class="listingblock">
-<div class="title">package.json</div>
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">  "scripts": {
-    "verify:types:react4xp": "npx tsc --noEmit -p tsconfig.react4xp.json"
-  }</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can now check the types of your React4xp files with this command:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">npm run verify:types:react4xp</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="react4xp_components"><a class="link" href="#react4xp_components">React4xp components</a></h3>
-<div class="paragraph">
-<p>You may want to convert your React components from EcmaScript to TypeScript.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">git mv Component.jsx Component.tsx</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>On mac this should rename all jsx files under src/main/resources</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">for filePath in $(find src/main/resources -iname "*.jsx"); do git mv $filePath "$(echo $filePath | rev | cut -d '.' -f 2- | rev).tsx"; done</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Start adding types for parameters, etc.</p>
+<p>Read more <a href="https://webpack.js.org/configuration/cache/" class="bare">https://webpack.js.org/configuration/cache/</a></p>
 </div>
 </div>
 </div>
@@ -1302,7 +739,7 @@ exports.get = function (request) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-05 12:50:52 UTC
+Last updated 2024-03-20 13:16:24 UTC
 </div>
 </div>
 </body>
