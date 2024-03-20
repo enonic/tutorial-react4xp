@@ -1,4 +1,4 @@
-= React4XP - JsxPath
+= JsxPath
 :toc: right
 :imagesdir: media/
 
@@ -13,7 +13,7 @@ Short and brutal: the jsxPath is a name string generated from the path and filen
 == From source file location to jsxPath
 During development though, these 3 rules are probably easier:
 
-. If you use `portal.getComponent()` to insert a component object (like `entry` in <<hello-react#first_helloreact_jsx, the first example>>), you can ignore the jsxPath and let the component object do the job: `React4xp.render` will use it to look for an entry with *the same name, in the same folder*, as a part/page/layout controller.
+. If you use `portal.getComponent()` to insert a component object (like `entry` in <<../hello-react#first_helloreact_jsx, the first example>>), you can ignore the jsxPath and let the component object do the job: `React4xp.render` will use it to look for an entry with *the same name, in the same folder*, as a part/page/layout controller.
 
 But if you need to access an entry with a particular name or from a different folder (from anywhere in the compiled JAR, actually), here's *how to find the jsxPath of an entry*:
 

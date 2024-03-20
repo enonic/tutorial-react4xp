@@ -1,4 +1,4 @@
-= Cheat sheet: how to make a React4xp entry
+= Cheat sheet: Making a React4xp entry
 :toclevels: 0
 :imagesdir: media/
 
@@ -7,4 +7,4 @@ image:entries_howto.png[title="Downloadable cheat sheet: how to make a React4xp 
 ---
 
 
-<<entries#howto, <- Back>>
+<<appendix/entries#howto, <- Back>>

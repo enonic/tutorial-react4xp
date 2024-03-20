@@ -1,4 +1,4 @@
-= Client side rendering and the Guillotine api 
+= Client side rendering 
 :toc: right
 :imagesdir: media/
 
@@ -167,7 +167,7 @@ After the previous chapters, not much in this controller should come as a surpri
 <2> `image` comes from an ImageSelector and is just an image item ID, so we use `imageUrl` to get the URL that the prop signature expects.
 <3> Normalizing the `actor` data to guarantee that it's an array.
 <4> `React4xp.render` needs a unique ID to target a container in the surrounding `body`.
-<5> `"Movie"` is of course the <<jsxpath#, jsxPath>> reference to the entry, _react4xp/myEntries/Movie.tsx_.
+<5> `"Movie"` is of course the <<appendix/jsxpath#, jsxPath>> reference to the entry, _react4xp/myEntries/Movie.tsx_.
 <6> This controller is the only one triggered for rendering _movie_ items. That means that the `body` that the rendering is inserted into, has to be a *full root HTML document* including a `<head>` section (or otherwise React4xp won't know where to put the rendered page contributions, and the component won't work properly).
 <7> Workaround for a current link:https://github.com/enonic/lib-react4xp/issues/107[inconvenient bug].
 

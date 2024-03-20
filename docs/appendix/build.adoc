@@ -1,16 +1,42 @@
-= React4XP - Configuration - Build time
+= Build configuration
 :toc: right
+
+
+
+== Build arguments
+
+[[NODE_ENV]]
+=== Development mode
+
+Use the gradle commandline flag `-Pdev` or `-Pdevelopment` to enable building in development mode.
+
+[source,bash]
+----
+enonic project gradle build deploy -Pdev
+----
+
+This switches between React4xp *build* modes (not to be confused with XP's link:https://developer.enonic.com/docs/enonic-cli/master/dev#start[run modes]).
+
+- `production`: assets are compiled more compact (and faster), with source maps
+- `development`: assets are compiled for more human-readability, without minification, making errors easier to track down.
+
+Default value is `production`.
+
+[[VERBOSE]]
+=== Verbosity
+
+Use the gradle commandline flag -i or --info to enable a more verbose output when compiling React4xp components and globals.
+
 
 [[react4xp.config.js]]
 == react4xp.config.js
 
-Several aspects of React4xp can be configured with a file _react4xp.config.js_.
-
-If you're using the <<setup#create_project, starter>> or your project is based on it, this is already set up and you can skip the following section:
+Several aspects of React4xp can be configured with a file _react4xp.config.js_. When using the React4XP starter this should automatically be available in your project.
 
 
+=== Adding react4xp.config.js
 
-=== Including react4xp.config.js in your project
+NOTE: If you're using the <<setup#create_project, React4XP starter>> or your project is based on it, you may skip this section:
 
 Put _react4xp.config.js_ at the root of your XP project. A template can be copied from link:https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js[here], or from _node_modules/@enonic/react4xp/examples/react4xp.config.js_ after installing the React4xp NPM package.
 
@@ -18,7 +44,7 @@ Put _react4xp.config.js_ at the root of your XP project. A template can be copie
 
 - Add this to your _build.gradle_:
 +
-[source,groovy,options="nowrap"]
+[source,groovy]
 ----
 task react4xp(type: NpmTask, dependsOn: npmInstall) {
   args = [
@@ -45,7 +71,7 @@ This will not only make sure _react4xp.config.js_ is handled, but also give a fu
 
 - Add this to your _package.json_:
 +
-[source,json,options="nowrap"]
+[source,json]
 ----
 {
   "scripts": {
@@ -60,7 +86,7 @@ This will not only make sure _react4xp.config.js_ is handled, but also give a fu
 === entryDirs
 
 .react4xp.config.js:
-[source,js,options="nowrap"]
+[source,js]
 ----
 entryDirs: ['myComponents', '../otherComponents']
 ----
@@ -71,11 +97,8 @@ Adding comma separated values under `entryDirs` adds _more_ folder names/paths (
 
 
 
-
-
 [[chunkDirs]]
 === chunkDirs
-
 
 By default, React4xp will look for (ie. sets up webpack to look for) resources _imported by_ the entries. These are link:https://webpack.js.org/concepts/[bundled] into separate assets that React4xp automatically loads at both server- and clientside rendering: <<chunks#, chunks>>, by this pattern:
 
@@ -89,7 +112,7 @@ By default, React4xp will look for (ie. sets up webpack to look for) resources _
 The idea is to use `chunkDirs` to add a comma-separated list of names/paths of directories (relative to _src/main/resources/react4xp/_) that will be bundled into chunks of their own. The chunk name will be the name of the last directory in the path:
 
 .react4xp.config.js:
-[source,js,options="nowrap"]
+[source,js]
 ----
 chunkDirs: ['chunk1', 'bundle2', 'other/stuff']
 ----
@@ -101,15 +124,14 @@ This example adds these folders as chunkDirs, and anything the entries import fr
 - _src/main/resources/react4xp/other/stuff/_ ➔ `stuff.*.js`
 
 
-
 [[webpack.config.react4xp.js]]
 == webpack.config.react4xp.js
 
-React4xp comes with a minimal set of webpack rules built-in, for compiling react components in TSX/JSX files into vanilla JS.
+React4xp uses Webpack to build. The starter comes with a minimal set of webpack rules built-in, for compiling react components in TSX/JSX files into vanilla JS.
 
-If you need to change/expand this setup, write a custom webpack config file <Project.Dir>/webpack.config.react4xp.js
+If you need to change/expand this setup, simply place a custom `webpack.config.react4xp.js` in your project folder.
 
-There can be several reasons to this:
+Possible reasons to change the webpack config:
 
 - Most commonly, the built-in webpack setup is pretty minimal, only adding link:https://webpack.js.org/loaders/[loaders] for compiling react from TSX/JSX. It's likely you will need to add loaders of your own, maybe use additional plugins etc
 - You may want to adjust other aspects of the compilation rules, or even replace the built-in rules entirely
@@ -121,7 +143,7 @@ There can be several reasons to this:
 
 Usually, _webpack.config.js_ files tend to have a certain shape, something like:
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 module.exports = function(env) {
     var config = {
@@ -140,7 +162,7 @@ module.exports = function(env) {
 
 `webpack.config.react4xp.js` can follow the same shape, but the exported function can also take *a second `config` argument:*
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 module.exports = function(env, config) {
     // ...
@@ -152,13 +174,9 @@ The extra incoming `config` object contains the built-in rules from React4xp. Th
 
 === Webpack caching
 
-It is possible to decrease build time by using Webpack filesystem caching. The
-first build after clean, may be slower, but the subsequent (incremental) builds
-(without clean) should be faster.
+To improve the speed of incremental builds, you may also enable webpack caching.
 
-
-
-[source,javascript,options="nowrap"]
+[source,javascript]
 .webpack.config.react4xp.js
 ----
 module.exports = function(env, config) {
@@ -176,31 +194,4 @@ Read more https://webpack.js.org/configuration/cache/
 
 
 
-
-
-== Command line arguments
-
-[[NODE_ENV]]
-=== Build environment
-
-Use the gradle commandline flag `-Pdev` or `-Pdevelopment` to enable building in development mode.
-
-[source,bash,options="nowrap"]
-----
-enonic project gradle build deploy -Pdev
-----
-
-This switches between React4xp *build* modes (not to be confused with XP's link:https://developer.enonic.com/docs/enonic-cli/master/dev#start[run modes]).
-
-- `production`: assets are compiled more compact (and faster), with source maps
-- `development`: assets are compiled for more human-readability, without minification, making errors easier to track down.
-
-Default value is `production`.
-
-
-
-[[VERBOSE]]
-=== Verbosity
-
-Use the gradle commandline flag -i or --info to enable a more verbose output when compiling React4xp components and globals.
 

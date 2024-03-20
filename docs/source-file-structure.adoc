@@ -17,7 +17,7 @@ It doesn't have to be that way. In this example, we'll take a look at which reac
 
 For react components to be available to React4xp the way we've seen so far, their *TSX/JSX source files must be located in certain folders* where React4xp is looking for them and auto-compiles them.
 
-When they are located where they should (and export a `props=>component` function), those react components are called *entries* (<<entries#, full reference>>).
+When they are located where they should (and export a `props=>component` function), those react components are called *entries* (<<appendix/entries#, full reference>>).
 
 
 
@@ -112,7 +112,7 @@ entryDirs:['entries','../../../../../node_modules/externalComponents/comps']
 
 == Further reading
 
-If you want a deeper dive into details before moving on, here's more about <<entries#, entries>> and the <<jsxpath#, jsxPaths>> that point React4xp to them.
+If you want a deeper dive into details before moving on, here's more about <<appendix/, entries>> and the <<appendix/jsxpath#, jsxPaths>> that point React4xp to them.
 
 
 

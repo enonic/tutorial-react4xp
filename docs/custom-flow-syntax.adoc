@@ -8,15 +8,15 @@
 In this example things get a bit more complex. We'll make another Part, and re-use the Page controller, Template and Content type we made <<pages-parts-and-regions#template_with_react_page_controller, previously>>.
 
 - However, we won't use the `render` shorthand function from before. Instead, we'll look at a more *explicit React4xp syntax*:
-    a. It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your <<entries#, entry>>; you can manipulate the object(s) or extract data from them _before_ rendering.
-    b. Here, each entry is rendered in *two separate methods*: `renderBody` and `renderPageContributions` (full details: <<api#react4xp_object, React4xp data object API>>)
+    a. It constructs one or more *data-holding React4xp objects*. This gives you better control and opportunities for logic steps when you handle your <<appendix/entries#, entry>>; you can manipulate the object(s) or extract data from them _before_ rendering.
+    b. Here, each entry is rendered in *two separate methods*: `renderBody` and `renderPageContributions` (full details: <<appendix/api#react4xp_object, React4xp data object API>>)
     c. You can pretty easily render *multiple entries* from the same controller, by chaining together their rendering.
 +
-NOTE: Rendering multiple entries like we do here will create multiple <<entries#assets_and_apps, independent react apps>> in the browser.
+NOTE: Rendering multiple entries like we do here will create multiple <<appendix/entries#assets_and_apps, independent react apps>> in the browser.
 
 - We will also use a *thymeleaf* template for one of the entries - and take advantage of the React4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.
 
-- In addition to chain-rendering more than one entry, we will use <<jsxpath#, jsxPaths>> to point to entries in a different location. Actually, let's just recycle the same entries we used before:
+- In addition to chain-rendering more than one entry, we will use <<appendix/jsxpath#, jsxPaths>> to point to entries in a different location. Actually, let's just recycle the same entries we used before:
 
 === Files involved
 
@@ -93,9 +93,9 @@ One reason to also add `request` for SSR however, is that in cases of react comp
 ----
 include::../src/main/resources/site/parts/custom-flow/custom-flow.ts[]
 ----
-<1> Constructing the data-holding React4xp object `helloObj` from the same _hello-react.jsx_ entry we made <<editorial-data-and-props#hello_react_jsx_modified, before>>. The constructor takes one argument, which is mandatory: an <<entries#, entry reference>>. This can be an XP `component` object like before, OR like we're doing here: a <<jsxpath#, jsxPath>>.
+<1> Constructing the data-holding React4xp object `helloObj` from the same _hello-react.jsx_ entry we made <<editorial-data-and-props#hello_react_jsx_modified, before>>. The constructor takes one argument, which is mandatory: an <<appendix/entries#, entry reference>>. This can be an XP `component` object like before, OR like we're doing here: a <<appendix/jsxpath#, jsxPath>>.
 +
-This entry reference is used the same way as the first argument, _entry_, in <<api#react4xp_render, `React.render`>> (so just to be clear: a jsxPath reference string like this also works fine there).
+This entry reference is used the same way as the first argument, _entry_, in <<appendix/api#react4xp_render, `React.render`>> (so just to be clear: a jsxPath reference string like this also works fine there).
 <2> `setProps` modifies `helloObj`, to add some `props`. This of course corresponds to the second argument, `props`, in `React4xp.render`.
 <3> After creating a React4xp object `colorObj` for the second entry, _color.jsx_, we're modifying that too, starting with adding props.
 +
@@ -113,13 +113,13 @@ The ID ends up as `myColorThing-<someRandomNumber>`. This gives us something rec
 <6> Now there's a random component in the ID string of the React4xp object, and we want that ID to match a specific element in the HTML. So we read the ID out from `colorObj.react4xpId` and inject it into the thymeleaf template as `targetId`.
 <7> We render `colorObj` into an HTML string, based on the HTML output of the thymeleaf rendering...
 <8> ...and render the page contributions for activating it in the client. We'll even add a small extra script just to demonstrate that extra pageContributions can be added in `renderPageContributions` as well, by passing them through as before. Now we have both the HTML body and page contributions from the first entry, _color.jsx_.
-<9> A best practice is to add `request` to options in _both_ `renderBody` and `renderPageContributions`. This is the easiest way to automatically <<api#react4xp_object_request, take care of a couple of corner cases>>. Using it makes the output clearer in cases of errors.
+<9> A best practice is to add `request` to options in _both_ `renderBody` and `renderPageContributions`. This is the easiest way to automatically <<appendix/api#react4xp_object_request, take care of a couple of corner cases>>. Using it makes the output clearer in cases of errors.
 <10> We're going to add a second react entry to this Part's controller. This demonstrates how to *chain the HTML rendering*: we're including `colorBody` as the `body` option. If added to `renderBody`, the HTML in `body` (which is the output from the previous entry, _color.jsx_) will receive the output from the rendering of the this entry (_hello-react.jsx_).
 +
 Where in `colorBody` is that HTML added? ID and target element is handled the same way as in `React4xp.render`: we created `helloObj` without running `.setId`, so no ID is set, and therefore `helloObj` will get a random ID. Since that ID doesn't match any ID in the base HTML (`colorBody`), the rendering will just create a target container element (with a matching ID) inside the root element of `colorBody`, after all other content. Now that there's a matching-ID element, the new HTML is rendered into that.
 +
 In sum: _"Render hello-react.jsx into the HTML from color.jsx, right at the end."_
-<11> This entry will be clientside rendered (even though _color.jsx_ is serverside rendered - this is not a problem for the chain), but we're adding `request` to let React4xp <<api#react4xp_object_request, keep it serverside-rendered and static>> inside Content Studio.
+<11> This entry will be clientside rendered (even though _color.jsx_ is serverside rendered - this is not a problem for the chain), but we're adding `request` to let React4xp <<appendix/api#react4xp_object_request, keep it serverside-rendered and static>> inside Content Studio.
 +
 [NOTE]
 ====
@@ -152,7 +152,7 @@ Again, if you add more than one _custom-flow_ Part to a Region, you'll see that 
 
 == Further reading
 
-The API behind the custom flow syntax: <<api#react4xp_object, React4xp data objects>>.
+The API behind the custom flow syntax: <<appendix/api#react4xp_object, React4xp data objects>>.
 
 
 

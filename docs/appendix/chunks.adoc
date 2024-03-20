@@ -1,4 +1,4 @@
-= React4XP - Dependency chunks
+= Dependency chunks
 :toc: right
 :imagesdir: media/
 

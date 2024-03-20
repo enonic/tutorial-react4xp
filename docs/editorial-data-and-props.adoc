@@ -151,7 +151,7 @@ So did anything change in the rendered response, compared to <<hello-react#hello
 
 == Further reading
 
-Now might be a good time to take a closer look at <<api#react4xp_render, the API overview of the .render call>> from the ES6 controller in the example above.
+Now might be a good time to take a closer look at <<appendix/api#react4xp_render, the API overview of the .render call>> from the ES6 controller in the example above.
 
 
 

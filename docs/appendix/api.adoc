@@ -1,15 +1,11 @@
-= React4XP - API reference
+= API reference
 :toc: right
 :imagesdir: media/
 
 [[api]]
 The React4xp library (link:https://market.enonic.com/vendors/enonic/react4xp-lib[Enonic Market]) exposes a couple of methods that can be run from XP controllers.
 
-This chapter also covers the <<#ssr, SSR engine>>, compilation, and <<config/build-time#, configuration>> of those.
-
-
-
-
+This chapter also covers the <<#ssr, SSR engine>>, compilation, and <<config#, configuration>> of those.
 
 == Getting started
 
@@ -19,14 +15,10 @@ Instructions on how to install the library locally or insert it into your projec
 === Import library
 
 .In an XP controller:
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 const React4xp = require('/lib/enonic/react4xp');
 ----
-
-
-
-
 
 [[react4xp_render]]
 == React4xp.render
@@ -41,7 +33,7 @@ Inserts a react component into an (optional) pre-existing HTML string and adds a
 
 The signature is analogous to thymeleaf's familiar `render(view, model)`. But there are two extra parameters, and a full XP response object is returned:
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 {body, pageContributions} = React4xp.render(entry, props, request, options);
 ----
@@ -124,7 +116,7 @@ Inside that matching-ID element, there will be a serverside rendering of the ent
 
 ==== `render` with `request`:
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 React4xp.render(entry, props, request);
 React4xp.render(entry, props, request, options); // ...etc etc
@@ -142,7 +134,7 @@ Also, when `request` is used, `.render` will output **error messages from SSR** 
 
 ==== `render` without `request`:
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 React4xp.render(entry, props);
 React4xp.render(entry, props, null);
@@ -173,7 +165,7 @@ More flexible and controllable than `React4xp.render`: create a data-holding rea
 
 Call the two rendering methods from the same react4xp object. Remember, if using `hydrate`, `ssr` and/or `request` options, they should usually be the same value across the two corresponding calls. A typical (compact) usage example:
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 exports.get = function(request) => {
 
@@ -206,7 +198,7 @@ See the <<custom-flow-syntax#, "custom flow syntax">> lesson to go more in depth
 [[constructor]]
 === Object constructor
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 const myComponent = new React4xp(entry);
 ----
@@ -241,7 +233,7 @@ Extract from the object the data that has been generated or set in it.
 |===
 
 .Example:
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 const targetElementId = myComponent.react4xpId;
 ----
@@ -256,14 +248,14 @@ Use these to set the object's properties. All of them are optional; if not used,
 
 All the setter methods *return* the data object itself, so that you can use a *builder pattern* where...
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 myComponent.firstSetter("a").secondSetter("b").thirdSetter("c");
 ----
 
 ...is equivalent to:
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 myComponent.firstSetter("a");
 myComponent.secondSetter("b");
@@ -276,7 +268,7 @@ The order between the setters doesn't matter - except for `setId` and `uniqueId`
 
 ==== .setProps
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 myComponent.setProps(props);
 ----
@@ -296,7 +288,7 @@ Sets props for the entry.
 [[set_id]]
 ==== .setId
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 myComponent.setId(id);
 ----
@@ -319,7 +311,7 @@ If the data object already has an ID, `.setId(id)` will overwrite it. If `id` is
 
 ==== .uniqueId
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 myComponent.uniqueId();
 ----
@@ -332,7 +324,7 @@ No parameters.
 
 ==== .setJsxPath
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 myComponent.setJsxPath(jsxPath);
 ----
@@ -363,7 +355,7 @@ NOTE: Most of these rendering methods will lock down the jsxPath and ID if the r
 [[render_body]]
 ==== .renderBody
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 const responseBody = myComponent.renderBody(options);
 ----
@@ -419,12 +411,10 @@ The root of the returned HTML is always a *surrounding container* HTML that will
 Inside that matching-ID element, there will be a serverside rendering of the entry (with the initial props from `.setProps`) if `options.ssr` is not false.
 
 
-
-
 [[render_pgcontr]]
 ==== .renderPageContributions
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 const outputPageContributions = myComponent.renderPageContributions(options);
 ----
@@ -480,9 +470,6 @@ With a serverside rendering (`options.ssr` is not false), the client will expect
 
 
 
-
-
-
 [[react4xp_object_request]]
 === Request and automated behavior
 
@@ -492,11 +479,9 @@ However, lib-react4xp version 1.6.0 introduced support for a `request` option pa
 
 Omitting `request` will still work the same way as before, leaving more to developers.
 
-
-
 ==== Custom flow with `request`
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 const body = myComponent.renderBody({
     // ssr, etc
@@ -513,11 +498,9 @@ This will act <<#render_request, the same way as `render` used with a request>>:
 
 As with `render`, error message details are held back in live view mode.
 
-
-
 ==== Custom flow without `request`:
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 const body = myComponent.renderBody({ /* ssr, etc */ });
 const pageContributions = myComponent.renderPageContributions({ /* hydrate, ssr, etc */ });
@@ -535,16 +518,9 @@ NOTE: This risks a missing/empty visualization inside Content Studio, since `ssr
 NOTE: Best case scenario: this might make a client-side rendered entry visible in Content Studio too. Worst case, it risks intervening with Content Studio's UX, or even break its functionality, depending on the code used/imported by the entry.
 
 
-
-
 === Custom flow examples
 
 Custom flow usage in is demonstrated <<custom-flow-syntax#, here>>.
-
-
-
-
-
 
 
 [[ssr]]
@@ -587,12 +563,10 @@ But as long as the code runs without errors, initialization happens only once (i
 
 Since development can involve repeated app/server restarts, here is one way to improve initial loading time when developing large projects:
 
-- Don't build React4xp components with `NODE_ENV = development`, but use `production` (which is the default - see <<config/build-time#NODE_ENV,Build environment>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference.
+- Don't build React4xp components with `NODE_ENV = development`, but use `production` (which is the default - see <<build#NODE_ENV,Build environment>>). Assets built with `development` are much more verbose, and this size difference - although functionally equal - actually makes a difference.
 
 
 (Other optimizations and approaches are under consideration, to shorten the warmup time even more).
-
-
 
 [[performance]]
 === SSR performance
@@ -603,7 +577,7 @@ Be sure to use any value that can change the rendering output - usually from `pr
 
 For example:
 
-[source,javascript,options="nowrap"]
+[source,javascript]
 ----
 const cacheLib = require('/lib/cache');
 

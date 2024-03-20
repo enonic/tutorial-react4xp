@@ -1,4 +1,4 @@
-= React4XP - Entries
+= Entries
 :toc: right
 :imagesdir: media/
 

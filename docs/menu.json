@@ -37,52 +37,36 @@
       "document": "standalone"
     },
     {
-      "title": "Entries",
-      "document": "entries"
-    },
-    {
-      "title": "JsxPath",
-      "document": "jsxpath"
-    },
-    {
-      "title": "Dependency chunks",
-      "document": "chunks"
-    },
-    {
-      "title": "API",
-      "document": "api"
-    },
-    {
-      "title": "Configuration",
+      "title": "Appendix",
+      "document": "appendix",
       "menuItems": [
         {
-          "title": "Build time",
-          "document": "config/build-time"
+          "title": "Build",
+          "document": "appendix/build"
         },
         {
-          "title": "Run time",
-          "document": "config/run-time"
-        }
-      ]
-    },
-    {
-      "title": "Webpack",
-      "document": "webpack"
-    },
-    {
-      "title": "Upgrade",
-      "menuItems": [
-        {
-          "title": "v5",
-          "document": "upgrade/v5"
+          "title": "Dependency chunks",
+          "document": "appendix/chunks"
         },
         {
-          "title": "v4",
-          "document": "upgrade/v4"
+          "title": "Configuration",
+          "document": "appendix/config"
         },
         {
-          "title": "v3",
-          "document": "upgrade/v3"
+          "title": "Entries",
+          "document": "appendix/entries"
+        },
+        {
+          "title": "JsxPath",
+          "document": "appendix/jsxpath"
+        },
+        {
+          "title": "API",
+          "document": "appendix/api"
+        },
+        {
+          "title": "Upgrade",
+          "document": "appendix/upgrade"
         }
       ]
     }
