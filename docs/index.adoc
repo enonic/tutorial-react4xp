@@ -2,13 +2,13 @@
 :toc: right
 :imagesdir: media/
 
-Hands on tutorial for rendering Enonic sites and pages with JSX/TSX
+Hands on introduction to the React4XP framework - rendering components with JSX/TSX
 
 == Introduction
 
 [NOTE]
 ====
-A little bare-bone knowledge of link:https://reactjs.org/tutorial/tutorial.html[React] and link:https://developer.enonic.com/start[Enonic XP] is recommended before you dive into this tutorial.
+It is recommended that you have completed the https://developer.enonic.com/start[My First Site] tutorial, as well as having a some knowledge of https://reactjs.org/tutorial/tutorial.html[React] before you dive into this tutorial.
 ====
 
 image:react4xp.svg[title="React4xp logo",width=256px]
@@ -39,12 +39,7 @@ The following five lessons present a more *advanced use cases*:
 - <<standalone#, Standalone mode>>: Here we build a webapp that take the same React4xp components out of Content Studio, and render the content with assets and data served from anywhere.
 
 == Dive deeper
-Have an urge for details beyond the basic tutorial, check out the following:
-
-- <<appendix/entries#, Entries>>
-- <<appendix/jsxpath#, JsxPath>>
-- <<appendix/chunks#, Optimizing dependency chunks>>
-- <<appendix/api#, API reference>> for the (link:https://market.enonic.com/vendors/enonic/react4xp-lib[React4XP library]).
+Have an urge for details beyond the basic tutorial, check out the <<appendix#, Appendix section>>.
 
 == Issues?
 Questions, bug reports or suggestions are welcome!

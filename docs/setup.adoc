@@ -1,105 +1,97 @@
-= Setting up your project
+= Setting up the developer environment
 :toc: right
 :imagesdir: media/
 
+Set up the developer environment, create, build, and deploy and application.
 
+== Install Enonic CLI
 
+The Enonic CLI (Command Line Interface) is an essential tool for developing with Enonic.
 
-== Create project
+If you have `npm` on your device, run this command:
 
-Set up the starter project locally, run the following command:
+  npm install -g @enonic/cli
 
-[source,bash]
-----
-enonic project create -r starter-react4xp
-----
+If not, here are some https://developer.enonic.com/start[alternative ways to install Enonic CLI^]
 
-Remember to create a *new XP sandbox* when completing the project wizard.
+To verify that the CLI has been installed, run `enonic -v`. This should output the version of your installed CLI. To see all available options, simply run `enonic`.
 
-[TIP]
+TIP: To upgrade, use `enonic latest`. If there are new versions you will see instructions on how to upgrade.
+
+== Create a sandbox
+
+A sandbox is a local developer instance of our platform - Enonic XP. Each sandbox is isolated from the other ones and can run different versions of the platform.
+
+. *Create a sandbox* called `r4xptutorial` by running this command in your terminal:
++
+  enonic sandbox create r4xptutorial -t essentials -f
++
+This will create a sandbox contaiing `essential` applications, and use the latest versjon of Enonic XP.
++
+. **Start the sandbox** with this command:
++
+  enonic sandbox start r4xptutorial --dev
++
+This will start the sandbox.
+
+TIP: --dev starts the sandbox in https://developer.enonic.com/docs/xp/stable/dev/build#dev_mode[developer mode].
+
+== Create the app
+
+From a **new terminal window**, run the following command to create the application. 
+
+  enonic project create -d r4xp -r starter-react4xp -sb r4xptutorial -f my.first.r4xp
+
+[NOTE]
 ====
-*Don't have the Enonic CLI?* Visit the https://developer.enonic.com/start[Getting started guide] to install it.
-
-*Only want to inject react4xp into your own XP project?* The https://github.com/enonic/lib-react4xp/blob/master/README.md#setup-option-2-using-react4xp-in-an-existing-project[lib-react4xp docs] have a section on how to do without the starter. But it's recommended to go through this introduction first.
+This command creates an app named `my.first.r4xp` in the folder `r4xp/`. It uses the https://github.com/enonic/starter-react4xp[React4xp starter^] Github repo as a template, and links it to the `r4xptutorial` sandbox. 
 ====
-
-
 
 == Project structure
 
-If you're used to working with a typical XP project using https://developer.enonic.com/templates/webpack[webpack], the structure in your project root folder will now look familiar -
-the biggest news are _react4xp.config.js_ and the folders _src/main/resources/react4xp/_ and _src/main/resources/headless_.
-
-TIP: This is just an overview, no need to know it by heart to get started - we'll get back to all of these in more detail. For the most impatient, the takeaway is: *put your TSX/JSX source files somewhere below _react4xp/entries/_ or _site/_*.
+You will not get a typical Enonic project structure. The biggest news are `react4xp.config.js` and the folder `src/main/resources/react4xp/`.
 
 [source,files]
 ----
-build.gradle                    // <1>
-gradle.properties
-settings.gradle
+build.gradle //<1>
 package.json
-
-react4xp.config.js              // <2>
-
+react4xp.config.js // <2>
 src/
   main/
     resources/
-      react4xp/                 // <3>
+      react4xp/ // <3>
         entries/
         shared/
-      headless/
-        guillotineApi.ts        // <4>
-        guillotineRequest.ts
-
+      site/ // <4>
 ----
 
-<1> A set of gradle config files and _package.json_. These define the build process and project structure, and in particular, make sure that the *lib-react4xp library* and *@enonic/react4xp npm package* are installed.
-<2> _react4xp.config.js_: Place to add extra globals and tune the most common properties of the React4xp project.
-<3> The _react4xp/_ folder is opt-in: can be ignored for now, and doesn't need to contain anything. But when fine-tuning the build later in the tutorial, we'll get back to why you might find it handy to have a separate place for some of your react components (in ultra-short: the _entries/_ folder is for react components that can be used directly by React4xp, the _shared\_ folder is for common components imported by, and shared between, the entries).
-<4> Under _headless/_, the starter includes two wrappers that make it easier to use the optional guillotine api for using React4xp in a <<client-side#, headless context>>.
+<1> Core build files, will contain references to `lib-react4xp` library and the `@enonic/react4xp` npm package.
+<2> React4xp <<appending/build#, build configuration>>, here you may add additional globals and tune common React4xp properties.
+<3> Optionally place React components in these folders. They will be covered in detail throughout the tutorial.
+<4> Standard site/ folder
+
+TIP: The short takeaqay is that you can put your TSX/JSX source files in `react4xp/entries/` or witin the `site/` structure directly.
 
 
+== Start building
 
-== Build and Deploy
+Assuming you did not change any of the values when creating the app, run the following commmands:
 
-1. *Run the build process:*
-+
-[source, bash]
-----
-enonic project deploy
-----
-+
-2. *Start the XP sandbox* (or accept when the enonic CLI asks you to).
-+
-[NOTE]
-====
-To verify that your app started successfully, you should find an entry similar to this in the sandbox log:
+  cd r4xp
+  enonic dev
 
-`2019-04-09 13:40:40,765 INFO ... Application [<name.of.your.app>] installed successfully`
-====
-
-== Dev mode
-
-There's also the possibility to start your sandbox in detached dev mode and keep watching for changes as you develop using the react4xp starter.
-
-To work in dev mode, run this command from your shell:
-
-[source, bash]
-----
-enonic dev
-----
+This will build and deploy the application to your sandbox.
 
 [NOTE]
 ====
-If you want to see XP logs while working with react4xp, make sure to follow enonic's cli https://developer.enonic.com/docs/enonic-cli/stable/dev#dev[docs] dev command section.
+Look for a line like this in the sandbox log to verify that the app has started:
+
+  2019-04-09 13:40:40,765 INFO ... Application [my.first.r4xp] installed successfully
 ====
 
+Because the sandbox is running in dev mode, any changes to the code wihin your app will instantly be picked up.
 
-
-Now you're ready to get started with the first lesson chapters.
-
-[.right]
--> <<hello-react#, Hello React>>
+Now you're ready to get started with the first lesson: <<hello-react#, Hello React>>.
 
 
 
