@@ -452,7 +452,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Hands on tutorial for rendering Enonic sites and pages with JSX/TSX</p>
+<p>Hands on introduction to the React4XP framework - rendering components with JSX/TSX</p>
 </div>
 </div>
 </div>
@@ -467,7 +467,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 <td class="content">
 <div class="paragraph">
-<p>A little bare-bone knowledge of <a href="https://reactjs.org/tutorial/tutorial.html">React</a> and <a href="https://developer.enonic.com/start">Enonic XP</a> is recommended before you dive into this tutorial.</p>
+<p>It is recommended that you have completed the <a href="https://developer.enonic.com/start">My First Site</a> tutorial, as well as having a some knowledge of <a href="https://reactjs.org/tutorial/tutorial.html">React</a> before you dive into this tutorial.</p>
 </div>
 </td>
 </tr>
@@ -544,23 +544,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="dive_deeper"><a class="link" href="#dive_deeper">Dive deeper</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Have an urge for details beyond the basic tutorial, check out the following:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="appendix/entries.ahtml">Entries</a></p>
-</li>
-<li>
-<p><a href="appendix/jsxpath.ahtml">JsxPath</a></p>
-</li>
-<li>
-<p><a href="appendix/chunks.ahtml">Optimizing dependency chunks</a></p>
-</li>
-<li>
-<p><a href="appendix/api.ahtml">API reference</a> for the (<a href="https://market.enonic.com/vendors/enonic/react4xp-lib">React4XP library</a>).</p>
-</li>
-</ul>
+<p>Have an urge for details beyond the basic tutorial, check out the <a href="appendix.ahtml">Appendix section</a>.</p>
 </div>
 </div>
 </div>
@@ -588,7 +572,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-20 13:16:24 UTC
+Last updated 2024-03-20 14:27:56 UTC
 </div>
 </div>
 </body>
