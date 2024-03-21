@@ -483,6 +483,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>We will now look at how to use React4xp in combination with XP&#8217;s graphQL api.</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+This chapter is currently based on the deprecated Guillotine library. We are working on updating it.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -601,7 +613,7 @@ headless/                       <i class="conum" data-value="6"></i><b>(6)</b>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>This entire chapter builds on the <a href="imports-and-dependency-chunks.ahtml#webpack_config">config setup from the previous lesson</a>: <em>react4xp.config.js</em>, <em>webpack.config.react4xp.js</em> and the extra NPM packages should be set up like that.</p>
+<p>This entire chapter builds on the <a href="../imports-and-dependency-chunks.ahtml#webpack_config">config setup from the previous lesson</a>: <em>react4xp.config.js</em>, <em>webpack.config.react4xp.js</em> and the extra NPM packages should be set up like that.</p>
 </div>
 <div class="paragraph">
 <p>If you haven&#8217;t completed that section already, better take a couple of minutes and do that before proceeding.</p>
@@ -739,7 +751,7 @@ export default Movie;</code></pre>
 <p>Take a moment to note the <strong>props signature</strong> of <em>Movie.tsx</em>. <code>Movie</code> clearly expects the <code>imageUrl</code> prop to be a URL, so we&#8217;ll need to handle the <code>image</code> field from the content type. The props <code>description</code>, <code>title</code> and <code>year</code> are expected to be simple strings, but <code>actors</code> should be handled as a string array. As you&#8217;ll see, we&#8217;ll make sure that each data readout of a movie item is adapted to this signature.</p>
 </div>
 <div class="paragraph">
-<p>Moving on, <em>Movie.tsx</em> also imports some <strong>styling</strong> that&#8217;ll be handled by webpack the same way as in <a href="imports-and-dependency-chunks.ahtml#webpack_rules">the previous chapter</a>:</p>
+<p>Moving on, <em>Movie.tsx</em> also imports some <strong>styling</strong> that&#8217;ll be handled by webpack the same way as in <a href="../imports-and-dependency-chunks.ahtml#webpack_rules">the previous chapter</a>:</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/shared/Movie.scss:</div>
@@ -794,7 +806,7 @@ export default Movie;</code></pre>
 <div class="sect2">
 <h3 id="controller_mapping"><a class="link" href="#controller_mapping">Controller mapping</a></h3>
 <div class="paragraph">
-<p>Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the <em>Movie.tsx</em> entry. But we don&#8217;t want to mess around with setting up a <a href="pages-parts-and-regions.ahtml#page_template_setup">template with a part</a> the way we&#8217;ve done so far. Instead, we can use a <a href="https://developer.enonic.com/docs/xp/stable/cms/mappings">controller mapping</a> to make that connection in code.</p>
+<p>Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the <em>Movie.tsx</em> entry. But we don&#8217;t want to mess around with setting up a <a href="../pages-parts-and-regions.ahtml#page_template_setup">template with a part</a> the way we&#8217;ve done so far. Instead, we can use a <a href="https://developer.enonic.com/docs/xp/stable/cms/mappings">controller mapping</a> to make that connection in code.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s open <em>site.xml</em> and add a mapping:</p>
@@ -926,7 +938,7 @@ export function get(request) {
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td><code>"Movie"</code> is of course the <a href="appendix/jsxpath.ahtml">jsxPath</a> reference to the entry, <em>react4xp/myEntries/Movie.tsx</em>.</td>
+<td><code>"Movie"</code> is of course the <a href="../appendix/jsxpath.ahtml">jsxPath</a> reference to the entry, <em>react4xp/myEntries/Movie.tsx</em>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
@@ -945,7 +957,7 @@ export function get(request) {
 <p>With all this in place, we&#8217;re about to finish the groundwork stage: let&#8217;s add some <em>movie</em> content items to list.</p>
 </div>
 <div class="paragraph">
-<p><a href="hello-react.ahtml#first_setup_render">Build the project as usual and start XP</a>.</p>
+<p><a href="../hello-react.ahtml#first_setup_render">Build the project as usual and start XP</a>.</p>
 </div>
 <div class="paragraph">
 <p>Create a site content item and connect it to your app. Create some new Movie items:</p>
@@ -1410,7 +1422,7 @@ export default (props) =&gt; &lt;MovieList {...props} /&gt;;</code></pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-You can either do that <a href="pages-parts-and-regions.ahtml#adding_parts_to_new_content">with a template as before</a> to render <em>all</em> sites with this part controller. Or better, edit <em>MovieSite</em> directly  and add the <em>movie-list</em> part to the region there, the same way as when adding a part to the region of a template. With this last direct-edit approach, only <em>MovieSite</em> will be rendered like this; other sites won&#8217;t.
+You can either do that <a href="../pages-parts-and-regions.ahtml#adding_parts_to_new_content">with a template as before</a> to render <em>all</em> sites with this part controller. Or better, edit <em>MovieSite</em> directly  and add the <em>movie-list</em> part to the region there, the same way as when adding a part to the region of a template. With this last direct-edit approach, only <em>MovieSite</em> will be rendered like this; other sites won&#8217;t.
 </td>
 </tr>
 </table>
@@ -2145,14 +2157,15 @@ This section is not a vital part of the rest of this or the next chapter. Feel f
 </table>
 </div>
 <div class="paragraph">
-<p>To dive deeper into guillotine and graphQL, you can always check out the <a href="https://developer.enonic.com/templates/headless-cms">headless starter</a>.</p>
+<p>To dive deeper into Guillotine and graphQL, you can always check out the  <a href="https://developer.enonic.com/docs/intro">Intro</a>, or our
+<a href="https://developer.enonic.com/docs/developer-101">Developer 101 tutorial</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-20 14:27:56 UTC
+Last updated 2024-03-21 06:53:40 UTC
 </div>
 </div>
 </body>

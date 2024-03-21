@@ -531,10 +531,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><a href="imports-and-dependency-chunks.ahtml">Imports, chunks, config, webpack</a>: Importing things into your entries, and controlling the compilation rules and output.</p>
 </li>
 <li>
-<p><a href="client-side.ahtml">Client-side rendering, part 1</a>: Introduction of how to use React4xp client-side, set up a data endpoint that serves XP content as pure data, and have the already-rendered React4xp components add more content asynchronously with that content data.</p>
-</li>
-<li>
-<p><a href="standalone.ahtml">Standalone mode</a>: Here we build a webapp that take the same React4xp components out of Content Studio, and render the content with assets and data served from anywhere.</p>
+<p><a href="advanced.ahtml">The advanced section</a> dives deeper into client-side rendering and using React4XP when building Enonic webapps.</p>
 </li>
 </ul>
 </div>
@@ -572,7 +569,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-20 14:27:56 UTC
+Last updated 2024-03-21 06:53:40 UTC
 </div>
 </div>
 </body>

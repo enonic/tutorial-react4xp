@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.21">
-<title>React4XP - Configuration - Run time</title>
+<title>Advanced topics</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,83 +435,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article toc2 toc-right">
+<body class="article">
 <div id="header">
-<h1>React4XP - Configuration - Run time</h1>
-<div id="toc" class="toc2">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#application_configuration_file">Application configuration file</a>
-<ul class="sectlevel2">
-<li><a href="#ssrMaxThreads">ssrMaxThreads</a></li>
-<li><a href="#serveglobals">serveGlobals</a></li>
-</ul>
-</li>
-</ul>
-</div>
+<h1>Advanced topics</h1>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="application_configuration_file"><a class="link" href="#application_configuration_file">Application configuration file</a></h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>$XP_HOME/config/&lt;app.name&gt;.cfg</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="sect2">
-<h3 id="ssrMaxThreads"><a class="link" href="#ssrMaxThreads">ssrMaxThreads</a></h3>
-<div class="listingblock">
-<div class="title">$XP_HOME/config/&lt;app.name&gt;.cfg:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-cfg" data-lang="cfg">react4xp.ssr.maxThreads = 5</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If this override value is not set, the number of threads (<a href="api.ahtml#renderers">renderers</a>) used for simultaneous SSR requests is determined by java, by&#8230;&#8203;</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-java" data-lang="java">Runtime.getRuntime().availableProcessors()</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>&#8230;&#8203;but <code>ssrMaxThreads</code> sets this number manually instead.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="serveglobals"><a class="link" href="#serveglobals">serveGlobals</a></h3>
-<div class="paragraph">
-<p>React4xp builds a globals bundle, which MUST contain all assets NEEDED to render
-server-side. By default it contains react and react-dom, but more assets can be
-added.</p>
-</div>
-<div class="paragraph">
-<p>By default the globals bundle is also provided to the client-side, but you can
-disable the serving of the globals bundle to the client-side by adding the
-following to ${XP_HOME}/config/${app}.cfg.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-${XP_HOME}/config/${app}.cfg" data-lang="${XP_HOME}/config/${app}.cfg">	react4xp.serveGlobals = false</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Note: Keep in mind the assets in the globals bundle are still REQUIRED for
-clientSide rendering to work, so you have to provide those assets by other
-means, for example via CDN.</p>
-</div>
-</div>
-</div>
+<p>This section contains chapters on using client-side rendering as well as using React4XP when building webapps.</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-21 06:53:39 UTC
+Last updated 2024-03-21 06:53:40 UTC
 </div>
 </div>
 </body>

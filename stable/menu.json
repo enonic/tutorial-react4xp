@@ -29,12 +29,18 @@
       "document": "imports-and-dependency-chunks"
     },
     {
-      "title": "8 - Client side",
-      "document": "client-side"
-    },
-    {
-      "title": "9 - Standalone",
-      "document": "standalone"
+      "title": "Advanced topics",
+      "document": "advanced",
+      "menuItems": [
+        {
+          "title": "Client side rendering",
+          "document": "client-side"
+        },
+        {
+          "title": "Webapps",
+          "document": "standalone"
+        }
+      ]
     },
     {
       "title": "Appendix",

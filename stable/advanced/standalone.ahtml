@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.21">
-<title>R4XP webapps</title>
+<title>React4XP Webapps</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,7 +437,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>R4XP webapps</h1>
+<h1>React4XP Webapps</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -536,10 +536,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Load React and ReactDOM from somewhere. For example a CDN,</p>
 </li>
 <li>
-<p>Load all the <a href="appendix/chunks.ahtml">dependency chunks</a> that the entries need (before loading the entry assets!),</p>
+<p>Load all the <a href="../appendix/chunks.ahtml">dependency chunks</a> that the entries need (before loading the entry assets!),</p>
 </li>
 <li>
-<p>Load all <a href="appendix/entries.ahtml">entry assets</a>. This will make each entry available in the browser&#8217;s JS namespace as a react-component-creating function, at <code>React4xp[jsxPath].default</code>, for each entry&#8217;s <a href="appendix/jsxPath.ahtml">jsxPath</a>.</p>
+<p>Load all <a href="../appendix/entries.ahtml">entry assets</a>. This will make each entry available in the browser&#8217;s JS namespace as a react-component-creating function, at <code>React4xp[jsxPath].default</code>, for each entry&#8217;s <a href="../appendix/jsxPath.ahtml">jsxPath</a>.</p>
 </li>
 <li>
 <p>Construct a props object for each entry that uses props. This is where we&#8217;ll contact the <a href="client-side.ahtml#expose_api">graphQL endpoint</a> in this lesson, for fetching the data from XP.</p>
@@ -591,7 +591,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>Completely standalone:</strong> this first variation is the manual, hardcoded, vanilla-js-and-react webapp approach. The HTML and script do everything explicitly: asset URLs and initial values are <strong>handled and organized manually in the HTML itself</strong>, and the script at the end fetches data from guillotine, organizes them into props and makes a <strong>regular <code>ReactDOM.render</code> call</strong>. In this approach, XP&#8217;s role is mainly to serve content data through the guillotine API. Pretty independent but there are no helpers; so getting things right is up to you.</p>
 </li>
 <li>
-<p><strong>Webapp with XP helpers:</strong> this second variation is "slightly standalone": we use XP to wrap a little boilerplate for convenience: <strong>XP and thymeleaf provides some initial values</strong>. The script at the end is still loaded and used to fetch data and create props, but instead of having the HTML load all the entry and dependency assets and call <code>React4xp.render</code>, the React4xp client wrapper is loaded in order to use a <strong>React4xp helper function:</strong> <code>.renderWithDependencies</code>. This is an all-in-one rendering trigger that takes one or more <a href="appendix/jsxPath.ahtml">entry jsxPaths</a> with props and target container ID&#8217;s, and uses <strong>XP services</strong> for auto-tracking and loading all the assets needed (including dependency chunks) before rendering them.</p>
+<p><strong>Webapp with XP helpers:</strong> this second variation is "slightly standalone": we use XP to wrap a little boilerplate for convenience: <strong>XP and thymeleaf provides some initial values</strong>. The script at the end is still loaded and used to fetch data and create props, but instead of having the HTML load all the entry and dependency assets and call <code>React4xp.render</code>, the React4xp client wrapper is loaded in order to use a <strong>React4xp helper function:</strong> <code>.renderWithDependencies</code>. This is an all-in-one rendering trigger that takes one or more <a href="../appendix/jsxPath.ahtml">entry jsxPaths</a> with props and target container ID&#8217;s, and uses <strong>XP services</strong> for auto-tracking and loading all the assets needed (including dependency chunks) before rendering them.</p>
 </li>
 </ol>
 </div>
@@ -1000,7 +1000,7 @@ requestAndRenderMovies();</code></pre>
 <div class="sect2">
 <h3 id="output1"><a class="link" href="#output1">Output</a></h3>
 <div class="paragraph">
-<p>Assuming you&#8217;ve been through the <a href="client-side.ahtml">previous lesson</a>, you can now rebuild the project. But instead of opening Content Studio, open the XP main menu in the top right corner, choose <em>Applications</em>, and in the Applications viewer, select your app:</p>
+<p>Assuming you&#8217;ve been through the <a href="client-side.ahtml">client-side lesson</a>, you can now rebuild the project. But instead of opening Content Studio, open the XP main menu in the top right corner, choose <em>Applications</em>, and in the Applications viewer, select your app:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="media/webapp_applications.png" alt="webapp applications" width="1024px" title="Select your app in the Applications viewer"></span></p>
@@ -1316,7 +1316,7 @@ requestAndRenderMovies();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-20 14:27:56 UTC
+Last updated 2024-03-21 06:53:40 UTC
 </div>
 </div>
 </body>

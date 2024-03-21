@@ -441,12 +441,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="paragraph">
-<p>In this section you&#8217;ll find a collection of chapters that dive deeper into various aspects of React4XP.</p>
+<p>In this section you&#8217;ll find chapters that dive deeper into React4XP, such as build, configuration, entries and jsxPath - including the React4XP API.</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-20 14:27:56 UTC
+Last updated 2024-03-21 06:53:40 UTC
 </div>
 </div>
 </body>
