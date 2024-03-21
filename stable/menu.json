@@ -34,11 +34,11 @@
       "menuItems": [
         {
           "title": "Client side rendering",
-          "document": "client-side"
+          "document": "advanced/client-side"
         },
         {
           "title": "Webapps",
-          "document": "standalone"
+          "document": "advanced/standalone"
         }
       ]
     },
