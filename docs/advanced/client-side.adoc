@@ -4,6 +4,8 @@
 
 We will now look at how to use React4xp in combination with XP's graphQL api.
 
+WARNING: This chapter is currently based on the deprecated Guillotine library. We are working on updating it.
+
 == Lesson overview
 
 This chapter will focus on setting up the API and the first usages:
@@ -65,7 +67,7 @@ This first stage should be easy enough, almost entirely repeating steps you've b
 
 [NOTE]
 ====
-This entire chapter builds on the <<imports-and-dependency-chunks#webpack_config, config setup from the previous lesson>>: _react4xp.config.js_, _webpack.config.react4xp.js_ and the extra NPM packages should be set up like that.
+This entire chapter builds on the <<../imports-and-dependency-chunks#webpack_config, config setup from the previous lesson>>: _react4xp.config.js_, _webpack.config.react4xp.js_ and the extra NPM packages should be set up like that.
 
 If you haven't completed that section already, better take a couple of minutes and do that before proceeding.
 ====
@@ -78,7 +80,7 @@ When the setup is ready, we'll start by adding a _movie_ *content type*, with an
 .site/content-types/movie/movie.xml:
 [source,xml,options="nowrap"]
 ----
-include::../src/main/resources/site/content-types/movie/movie.xml[]
+include::../../src/main/resources/site/content-types/movie/movie.xml[]
 ----
 
 === React components
@@ -90,7 +92,7 @@ The *entry*, _Movie.tsx_, will take care of rendering a preview of each movie co
 .react4xp/myEntries/Movie.tsx:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/myEntries/Movie.tsx[]
+include::../../src/main/resources/react4xp/myEntries/Movie.tsx[]
 ----
 
 This is a pure entry wrapper that just imports the next react component from _react4xp/shared_.
@@ -100,20 +102,20 @@ Why import code from _shared_ instead of keeping it all in the entry? Firstly, i
 .react4xp/shared/Movie.tsx:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/shared/Movie.tsx[]
+include::../../src/main/resources/react4xp/shared/Movie.tsx[]
 ----
 
 Not a lot of functionality here, just a TSX file that contains some structural units nested inside each other: the exported root level in the component, `Movie`, contains a movie poster image, and nests an `InfoContainer` component that displays the rest of the movie data. There, each movie data section is wrapped in an `Info` component (which just displays a header), and finally each actor name is mapped out in a list in the `Cast` component.
 
 Take a moment to note the *props signature* of _Movie.tsx_. `Movie` clearly expects the `imageUrl` prop to be a URL, so we'll need to handle the `image` field from the content type. The props `description`, `title` and `year` are expected to be simple strings, but `actors` should be handled as a string array. As you'll see, we'll make sure that each data readout of a movie item is adapted to this signature.
 
-Moving on, _Movie.tsx_ also imports some *styling* that'll be handled by webpack the same way as in <<imports-and-dependency-chunks#webpack_rules, the previous chapter>>:
+Moving on, _Movie.tsx_ also imports some *styling* that'll be handled by webpack the same way as in <<../imports-and-dependency-chunks#webpack_rules, the previous chapter>>:
 
 
 .react4xp/shared/Movie.scss:
 [source,sass,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/shared/Movie.scss[]
+include::../../src/main/resources/react4xp/shared/Movie.scss[]
 ----
 
 
@@ -121,7 +123,7 @@ include::../src/main/resources/react4xp/shared/Movie.scss[]
 [[controller_mapping]]
 === Controller mapping
 
-Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the _Movie.tsx_ entry. But we don't want to mess around with setting up a <<pages-parts-and-regions#page_template_setup, template with a part>> the way we've done so far. Instead, we can use a link:https://developer.enonic.com/docs/xp/stable/cms/mappings[controller mapping] to make that connection in code.
+Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the _Movie.tsx_ entry. But we don't want to mess around with setting up a <<../pages-parts-and-regions#page_template_setup, template with a part>> the way we've done so far. Instead, we can use a link:https://developer.enonic.com/docs/xp/stable/cms/mappings[controller mapping] to make that connection in code.
 
 Let's open _site.xml_ and add a mapping:
 
@@ -159,7 +161,7 @@ Now, with that mapping set up, we can add the _previewMovie_ controller:
 .controllers/previewMovie.ts:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/controllers/previewMovie.ts[]
+include::../../src/main/resources/controllers/previewMovie.ts[]
 ----
 After the previous chapters, not much in this controller should come as a surprise, but a quick overview anyway:
 
@@ -167,7 +169,7 @@ After the previous chapters, not much in this controller should come as a surpri
 <2> `image` comes from an ImageSelector and is just an image item ID, so we use `imageUrl` to get the URL that the prop signature expects.
 <3> Normalizing the `actor` data to guarantee that it's an array.
 <4> `React4xp.render` needs a unique ID to target a container in the surrounding `body`.
-<5> `"Movie"` is of course the <<appendix/jsxpath#, jsxPath>> reference to the entry, _react4xp/myEntries/Movie.tsx_.
+<5> `"Movie"` is of course the <<../appendix/jsxpath#, jsxPath>> reference to the entry, _react4xp/myEntries/Movie.tsx_.
 <6> This controller is the only one triggered for rendering _movie_ items. That means that the `body` that the rendering is inserted into, has to be a *full root HTML document* including a `<head>` section (or otherwise React4xp won't know where to put the rendered page contributions, and the component won't work properly).
 <7> Workaround for a current link:https://github.com/enonic/lib-react4xp/issues/107[inconvenient bug].
 
@@ -176,7 +178,7 @@ After the previous chapters, not much in this controller should come as a surpri
 
 With all this in place, we're about to finish the groundwork stage: let's add some _movie_ content items to list.
 
-<<hello-react#first_setup_render, Build the project as usual and start XP>>.
+<<../hello-react#first_setup_render, Build the project as usual and start XP>>.
 
 Create a site content item and connect it to your app. Create some new Movie items:
 
@@ -211,7 +213,7 @@ The most central of the helpers and the first one we'll use, is *_headless/guill
 .headless/guillotineApi.ts:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/headless/guillotineApi.ts[]
+include::../../src/main/resources/headless/guillotineApi.ts[]
 ----
 
 <1> At the core is the function `executeQuery`. Here, a guillotine `SCHEMA` definition is combined with a graphQL `query` string and an optional `variables` object. These are used with XP's graphQL library to `execute` the query. The result, a JSON object, is returned.
@@ -234,7 +236,7 @@ Let's go ahead an write this:
 .headless/helpers/movieListRequests.ts:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/headless/helpers/movieListRequests.ts[]
+include::../../src/main/resources/headless/helpers/movieListRequests.ts[]
 ----
 <1> The function `buildQueryListMovies` returns a string: a *guillotine query* ready to use in the API. Colloquially, you can read this query in 3 parts:
 +
@@ -259,7 +261,7 @@ Armed with these helpers, we can build an XP part controller that runs a guillot
 .site/parts/movie-list/movie-list.xml
 [source,xml,options="nowrap"]
 ----
-include::../src/main/resources/site/parts/movie-list/movie-list.xml[]
+include::../../src/main/resources/site/parts/movie-list/movie-list.xml[]
 ----
 
 [[movie-list-part-controller]]
@@ -268,7 +270,7 @@ The actual controller:
 .site/parts/movie-list/movie-list.ts:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/site/parts/movie-list/movie-list.ts[]
+include::../../src/main/resources/site/parts/movie-list/movie-list.ts[]
 ----
 <1> Import the functionality from the helpers that were <<#guillotine_helpers, just described>>,
 <2> Use the part's config to build a sort expression for the query,
@@ -286,7 +288,7 @@ We're still missing that *_MovieList_ entry* that will display the list of movie
 .react4xp/myEntries/MovieList.tsx:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/myEntries/MovieList.tsx[]
+include::../../src/main/resources/react4xp/myEntries/MovieList.tsx[]
 ----
 The only notable things here:
 
@@ -298,14 +300,14 @@ Most of the styling is already handled at the single-movie level, so just a mini
 .react4xp/myEntries/MovieList.scss:
 [source,sass,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/myEntries/MovieList.scss[]
+include::../../src/main/resources/react4xp/myEntries/MovieList.scss[]
 ----
 
 === Render the list
 
 We can now set up the parent site with the movies, with a _movie-list_ part. Rebuild the app, enter/refresh Content Studio, and make the _movie-list_ part handle the visualization of the _MovieSite_ item.
 
-TIP: You can either do that <<pages-parts-and-regions#adding_parts_to_new_content, with a template as before>> to render _all_ sites with this part controller. Or better, edit _MovieSite_ directly  and add the _movie-list_ part to the region there, the same way as when adding a part to the region of a template. With this last direct-edit approach, only _MovieSite_ will be rendered like this; other sites won't.
+TIP: You can either do that <<../pages-parts-and-regions#adding_parts_to_new_content, with a template as before>> to render _all_ sites with this part controller. Or better, edit _MovieSite_ directly  and add the _movie-list_ part to the region there, the same way as when adding a part to the region of a template. With this last direct-edit approach, only _MovieSite_ will be rendered like this; other sites won't.
 
 Correctly set up, you can now select the list in the edit panel, and a part config panel will appear on the right. *Edit the config fields to control the guillotine query*: how many movies should be rendered, and in what order?
 
@@ -372,7 +374,7 @@ This too has some convenience error handling and boilerplate like default parame
 .headless/guillotineRequest.ts:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/headless/guillotineRequest.ts[]
+include::../../src/main/resources/headless/guillotineRequest.ts[]
 ----
 In short, run `doGuillotineRequest(params)` where `params` is an object that has at least a `.url` and a `.query` attribute (and optional `.variables`), and it will send the query to the guillotine API and handle the returned data (or errors). How that's handled is up to callbacks in `params`.
 
@@ -400,7 +402,7 @@ Now we're ready to *add a guillotine call from the frontend*, specifically to _M
 .react4xp/myEntries/MovieList2.tsx:
 [source,javascript,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/myEntries/MovieList2.tsx[]
+include::../../src/main/resources/react4xp/myEntries/MovieList2.tsx[]
 ----
 The changes are:
 
@@ -432,7 +434,7 @@ React is _very_ eager to do this whenever a component state is updated, so we'll
 .react4xp/myEntries/MovieList3.tsx:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/myEntries/MovieList3.tsx[]
+include::../../src/main/resources/react4xp/myEntries/MovieList3.tsx[]
 ----
 Changes:
 
@@ -471,7 +473,7 @@ With one additional change to the procedure: the trigger should disable the scro
 .react4xp/myEntries/MovieList4.tsx:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/myEntries/MovieList4.tsx[]
+include::../../src/main/resources/react4xp/myEntries/MovieList4.tsx[]
 ----
 <1> `listenForScroll` is the scroll-listener's enabled-switch.
 <2> Threshold value: if the distance between the bottom of the screen and the bottom of the movielist DOM container is less than this number of pixels, `makeRequest` should be triggered.
@@ -502,5 +504,6 @@ Rebuild, refresh the preview of _MovieSite_, and instead of clicking, just scrol
 
 TIP: This section is not a vital part of the rest of this or the next chapter. Feel free to skip it and miss out.
 
-To dive deeper into guillotine and graphQL, you can always check out the link:https://developer.enonic.com/templates/headless-cms[headless starter].
+To dive deeper into Guillotine and graphQL, you can always check out the  link:https://developer.enonic.com/docs/intro[Intro], or our 
+link:https://developer.enonic.com/docs/developer-101[Developer 101 tutorial].
 

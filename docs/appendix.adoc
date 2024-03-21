@@ -1,6 +1,6 @@
 = Appendix
 :toc: right
 
-In this section you'll find a collection of chapters that dive deeper into various aspects of React4XP.
+In this section you'll find chapters that dive deeper into React4XP, such as build, configuration, entries and jsxPath - including the React4XP API.
 
 

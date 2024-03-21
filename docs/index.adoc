@@ -35,8 +35,7 @@ The following five lessons present a more *advanced use cases*:
 - <<source-file-structure#, Free source file structure>>: Which react components are available to React4xp (called _entries_), and how to reference them.
 - <<custom-flow-syntax#, Custom flow syntax>>: A more detailed and explicit syntax, for when your controller needs more control.
 - <<imports-and-dependency-chunks#, Imports, chunks, config, webpack>>: Importing things into your entries, and controlling the compilation rules and output.
-- <<client-side#, Client-side rendering, part 1>>: Introduction of how to use React4xp client-side, set up a data endpoint that serves XP content as pure data, and have the already-rendered React4xp components add more content asynchronously with that content data.
-- <<standalone#, Standalone mode>>: Here we build a webapp that take the same React4xp components out of Content Studio, and render the content with assets and data served from anywhere.
+- <<advanced#, The advanced section>> dives deeper into client-side rendering and using React4XP when building Enonic webapps.
 
 == Dive deeper
 Have an urge for details beyond the basic tutorial, check out the <<appendix#, Appendix section>>.

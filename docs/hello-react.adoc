@@ -38,7 +38,6 @@ include::../src/main/resources/site/pages/hello-react/hello-react.xml[]
 ----
 
 
-
 [[react_component]]
 === React component
 

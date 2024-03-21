@@ -1,0 +1,5 @@
+= Advanced topics
+:toc: right
+:imagesdir: media/
+
+This section contains chapters on using client-side rendering as well as using React4XP when building webapps.
