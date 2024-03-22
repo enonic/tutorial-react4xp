@@ -45,7 +45,7 @@ React4xp handles them in build-time and runtime: locates entries, compiles each 
 
 For example, early in this tutorial we've seen the entries _hello-react.jsx_ and _color.jsx_, they are compiled into the assets _hello-react.js_ and _color.js_.
 
-When rendered (whether it's by using `.render` or a pair of `renderBody`/`renderPageContributions` in the <<custom-flow-syntax#, custom flow syntax>>), each entry will become not only assets of their own, but *independent root level react apps* in the browser memory! Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
+When rendered (whether it's by using `.render` or a pair of `renderBody`/`renderPageContributions` in the <<../custom-flow-syntax#, custom flow syntax>>), each entry will become not only assets of their own, but *independent root level react apps* in the browser memory! Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.
 
 
 

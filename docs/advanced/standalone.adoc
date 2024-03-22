@@ -208,7 +208,7 @@ If you have XP running but still want to make things work headlessly and outside
 
 === HTML base
 
-The HTML base is very similar to the one in <<#html1, the previous example>>, only this time since we're using XP anyway, it's a more traditional link:https://developer.enonic.com/docs/thymeleaf-library/master[thymeleaf template]. This means we can get rid of most of the hardcoded stuff in the HTML.
+The HTML base is very similar to the one in <<#html1, the previous example>>, only this time since we're using XP anyway, it's a more traditional https://developer.enonic.com/docs/thymeleaf-library[thymeleaf template]. This means we can get rid of most of the hardcoded stuff in the HTML.
 
 Just like before, we get react/react-dom from a CDN, provide a pinch of styling and a ready container to render into (with a "spinner". Whatever). But the differences are these:
 

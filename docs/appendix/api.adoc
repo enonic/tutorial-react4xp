@@ -152,7 +152,7 @@ When `request` is omitted, `.render` will ** never output error messages from SS
 
 === Examples
 
-Most of the lessons in the guide use `React4xp.render` (except the "custom flow" ones). For example <<hello-react#first_helloreact_jsx, here>> or <<pages-parts-and-regions#color_part_controller, here>>.
+Most of the lessons in the guide use `React4xp.render` (except the "custom flow" ones). For example <<../hello-react#first_helloreact_jsx, here>> or <<../pages-parts-and-regions#color_part_controller, here>>.
 
 
 
@@ -190,7 +190,7 @@ exports.get = function(request) => {
 }
 ----
 
-See the <<custom-flow-syntax#, "custom flow syntax">> lesson to go more in depth.
+See the <<../custom-flow-syntax#, "custom flow syntax">> lesson to go more in depth.
 
 
 
@@ -419,7 +419,7 @@ Inside that matching-ID element, there will be a serverside rendering of the ent
 const outputPageContributions = myComponent.renderPageContributions(options);
 ----
 
-Similar to <<#react4xp_render, React4xp.render>> above, but _only_ renders the link:https://developer.enonic.com/docs/xp/stable/cms/contributions[page contributions] needed to run and activate the react component in the browser:
+Similar to <<#react4xp_render, React4xp.render>> above, but _only_ renders the https://developer.enonic.com/docs/xp/stable/framework/contributions[page contributions] needed to run and activate the react component in the browser:
 
 - references to the entry's own asset,
 - dependency assets,
@@ -539,7 +539,7 @@ The aim of react4xp is link:https://medium.com/capital-one-tech/why-everyone-is-
 
 Starting from version 1.5.0, react4xp handles multithreaded rendering. This is done by setting up a number of renderers where each one is ready to answer to rendering requests in parallel, independently.
 
-The number of renderer workers is <<run_time#ssrMaxThreads, determined in java but can be overriden>>.
+The number of renderer workers is <<config#ssrMaxThreads, determined in java but can be overriden>>.
 
 When a renderer runs into an error during SSR, that renderer is torn down and a new one is initialized (see warmup time below). This happens as far as possible during idle time.
 
@@ -571,7 +571,7 @@ Since development can involve repeated app/server restarts, here is one way to i
 [[performance]]
 === SSR performance
 
-Apart from when assets are initialized during the engine <<#warmup, warmup>>, each SSR should be fast. However, in cases where you need to improve SSR performance further, it can be done by wrapping the rendering in a link:https://developer.enonic.com/docs/cache-library/master[cache] in the controller.
+Apart from when assets are initialized during the engine <<#warmup, warmup>>, each SSR should be fast. However, in cases where you need to improve SSR performance further, it can be done by wrapping the rendering in a https://developer.enonic.com/docs/cache-library[cache] in the controller.
 
 Be sure to use any value that can change the rendering output - usually from `props` (and `options`?) or a subset of them - as a *key* in the cache.
 

@@ -123,7 +123,7 @@ include::../../src/main/resources/react4xp/shared/Movie.scss[]
 [[controller_mapping]]
 === Controller mapping
 
-Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the _Movie.tsx_ entry. But we don't want to mess around with setting up a <<../pages-parts-and-regions#page_template_setup, template with a part>> the way we've done so far. Instead, we can use a link:https://developer.enonic.com/docs/xp/stable/cms/mappings[controller mapping] to make that connection in code.
+Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the _Movie.tsx_ entry. But we don't want to mess around with setting up a <<../pages-parts-and-regions#page_template_setup, template with a part>> the way we've done so far. Instead, we can use a link:https://developer.enonic.com/docs/xp/stable/framework/mappings[controller mapping] to make that connection in code.
 
 Let's open _site.xml_ and add a mapping:
 
@@ -246,7 +246,7 @@ include::../../src/main/resources/headless/helpers/movieListRequests.ts[]
 +
 - The last major block, `... on com_enonic_app_react4xp_Movie {`, asks for a selection of sub-data from each found movie item: `_id`, `displayName`, `data.year`, etc. Note the second `... on media_Image` block nested inside it: instead of returning the ID value in the `data.image` field, we pass that through an `imageUrl` function that gives us a finished `data.imageUrl` field instead - directly and in one single query.
 +
-For more about guillotine queries, see the link:https://developer.enonic.com/docs/headless-cms/2.x/api[guillotine API documentation].
+For more about guillotine queries, see the https://developer.enonic.com/docs/guillotine/stable/api[guillotine API documentation].
 <2> The function `buildParentPathQuery` returns a *sub-query string* needed to only search below the content path of a container item: the parameter `$parentPathQuery` in the main query string (1.), inserted through the `variables` object.
 +
 In <<#movies_in_container_site, the example above>>, the site _MovieSite_ is the item that contains the movies, and the content hierarchy in Content Studio shows us that _MovieSite_ has the content path `/moviesite`. So the sub-query that directs guillotine to only search for movies below that parent item, can be made like this: `buildParentPathQuery('/moviesite')`.

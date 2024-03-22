@@ -34,7 +34,7 @@ This will create a sandbox contaiing `essential` applications, and use the lates
 +
 This will start the sandbox.
 
-TIP: --dev starts the sandbox in https://developer.enonic.com/docs/xp/stable/dev/build#dev_mode[developer mode].
+TIP: --dev starts the sandbox in https://developer.enonic.com/docs/xp/stable/development/build#dev_mode[development mode].
 
 == Create the app
 
@@ -66,7 +66,7 @@ src/
 ----
 
 <1> Core build files, will contain references to `lib-react4xp` library and the `@enonic/react4xp` npm package.
-<2> React4xp <<appending/build#, build configuration>>, here you may add additional globals and tune common React4xp properties.
+<2> React4xp <<appendix/build#, build configuration>>, here you may add additional globals and tune common React4xp properties.
 <3> Optionally place React components in these folders. They will be covered in detail throughout the tutorial.
 <4> Standard site/ folder
 

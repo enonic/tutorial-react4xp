@@ -27,7 +27,7 @@ Let's change the files some more so we can use Content Studio to input some data
 
 
 === Page definition
-We start with some standard XP procedure: defining the data in the page definition XML file. This file is the same as in <<hello-react#page_definition, example 1>>, but we're adding a few link:https://developer.enonic.com/docs/xp/stable/cms/input-types[input fields] under `<form>`: `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component:
+We start with some standard XP procedure: defining the data in the page definition XML file. This file is the same as in <<hello-react#page_definition, example 1>>, but we're adding a few https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types[input fields] under `<form>`: `greeting`, `greetee`, `counted` and `startCount` are the basis for the initial props of the react component:
 
 .hello-react.xml:
 [source,xml,options="nowrap"]

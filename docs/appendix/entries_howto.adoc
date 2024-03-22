@@ -7,4 +7,4 @@ image:entries_howto.png[title="Downloadable cheat sheet: how to make a React4xp 
 ---
 
 
-<<appendix/entries#howto, <- Back>>
+<<entries#howto, <- Back>>
