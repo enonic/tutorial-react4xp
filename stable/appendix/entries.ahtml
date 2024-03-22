@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.21">
+<meta name="generator" content="Asciidoctor 2.0.22">
 <title>Entries</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -530,7 +530,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>For example, early in this tutorial we&#8217;ve seen the entries <em>hello-react.jsx</em> and <em>color.jsx</em>, they are compiled into the assets <em>hello-react.js</em> and <em>color.js</em>.</p>
 </div>
 <div class="paragraph">
-<p>When rendered (whether it&#8217;s by using <code>.render</code> or a pair of <code>renderBody</code>/<code>renderPageContributions</code> in the <a href="custom-flow-syntax.ahtml">custom flow syntax</a>), each entry will become not only assets of their own, but <strong>independent root level react apps</strong> in the browser memory! Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.</p>
+<p>When rendered (whether it&#8217;s by using <code>.render</code> or a pair of <code>renderBody</code>/<code>renderPageContributions</code> in the <a href="../custom-flow-syntax.ahtml">custom flow syntax</a>), each entry will become not only assets of their own, but <strong>independent root level react apps</strong> in the browser memory! Good to know if you display more than one entry on a page - which you can, but you might also consider using just one entry for the root, and multiple imports in it.</p>
 </div>
 </div>
 </div>
@@ -621,7 +621,7 @@ export default props =&gt; &lt;HookButton {...props} /&gt;;</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-21 06:55:29 UTC
+Last updated 2024-03-22 13:34:14 UTC
 </div>
 </div>
 </body>

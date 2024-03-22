@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.21">
+<meta name="generator" content="Asciidoctor 2.0.22">
 <title>Imports, chunks, config, webpack</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -746,7 +746,7 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The entry imports some secondary react components for nesting later. These imports have nothing to do with React4xp&#8217;s <a href="jsxPath.ahtml">jsxPaths</a>, this is <strong>regular ES6 module importing</strong> and will be handled by webpack at compile time and served to the client at runtime. Basically any react component can be imported from anywhere here, including other entries. In this case we&#8217;re referring to components below a different folder, <em>shared/</em>, which we will <a href="#webpack_config">later</a> mark as a <strong>chunk directory</strong> instead of an entry directory. <em>Shared/</em> is not below <em>entries/</em> (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with <code>React4xp.render</code>. As you will see, this <strong>folder separation</strong> is also important for the compiled outcome: the entry, <em>MultiColor.jsx</em>, will be compiled into <em>r4xAssets/MultiColor.js</em>, but <strong>imported components</strong> like this will be collected inside a common <strong>dependency chunk</strong>: <em>r4xAssets/shared.&lt;HASH&gt;.js</em>. React4xp and webpack track the dependency connections between an entry and all its required chunks - so <code>React4xp.render</code> automatically generates asset-loading page contributions from the controller. The outcome: when the webpack rules are set up correctly later, <strong>imports like this in entries rendered by React4xp are all that&#8217;s needed to connect the entries to the additional assets they might need</strong>: no manual url handling in the controller or thymeleaf views etc. Dependency chunks are also  optimized for repeated use (more details on <a href="appendix/chunks.ahtml">dependency chunks</a>).</td>
+<td>The entry imports some secondary react components for nesting later. These imports have nothing to do with React4xp&#8217;s <a href="appendix/jsxPath.ahtml">jsxPaths</a>, this is <strong>regular ES6 module importing</strong> and will be handled by webpack at compile time and served to the client at runtime. Basically any react component can be imported from anywhere here, including other entries. In this case we&#8217;re referring to components below a different folder, <em>shared/</em>, which we will <a href="#webpack_config">later</a> mark as a <strong>chunk directory</strong> instead of an entry directory. <em>Shared/</em> is not below <em>entries/</em> (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with <code>React4xp.render</code>. As you will see, this <strong>folder separation</strong> is also important for the compiled outcome: the entry, <em>MultiColor.jsx</em>, will be compiled into <em>r4xAssets/MultiColor.js</em>, but <strong>imported components</strong> like this will be collected inside a common <strong>dependency chunk</strong>: <em>r4xAssets/shared.&lt;HASH&gt;.js</em>. React4xp and webpack track the dependency connections between an entry and all its required chunks - so <code>React4xp.render</code> automatically generates asset-loading page contributions from the controller. The outcome: when the webpack rules are set up correctly later, <strong>imports like this in entries rendered by React4xp are all that&#8217;s needed to connect the entries to the additional assets they might need</strong>: no manual url handling in the controller or thymeleaf views etc. Dependency chunks are also  optimized for repeated use (more details on <a href="appendix/chunks.ahtml">dependency chunks</a>).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -1289,7 +1289,7 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-21 06:55:29 UTC
+Last updated 2024-03-22 13:34:14 UTC
 </div>
 </div>
 </body>

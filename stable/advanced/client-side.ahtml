@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.21">
+<meta name="generator" content="Asciidoctor 2.0.22">
 <title>Client side rendering</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -806,7 +806,7 @@ export default Movie;</code></pre>
 <div class="sect2">
 <h3 id="controller_mapping"><a class="link" href="#controller_mapping">Controller mapping</a></h3>
 <div class="paragraph">
-<p>Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the <em>Movie.tsx</em> entry. But we don&#8217;t want to mess around with setting up a <a href="../pages-parts-and-regions.ahtml#page_template_setup">template with a part</a> the way we&#8217;ve done so far. Instead, we can use a <a href="https://developer.enonic.com/docs/xp/stable/cms/mappings">controller mapping</a> to make that connection in code.</p>
+<p>Here comes a little variation: in this example, we want to connect a movie content item to with the rendering of the <em>Movie.tsx</em> entry. But we don&#8217;t want to mess around with setting up a <a href="../pages-parts-and-regions.ahtml#page_template_setup">template with a part</a> the way we&#8217;ve done so far. Instead, we can use a <a href="https://developer.enonic.com/docs/xp/stable/framework/mappings">controller mapping</a> to make that connection in code.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s open <em>site.xml</em> and add a mapping:</p>
@@ -1162,7 +1162,7 @@ export default {};</code></pre>
 <li>
 <p>The last major block, <code>&#8230;&#8203; on com_enonic_app_react4xp_Movie {</code>, asks for a selection of sub-data from each found movie item: <code>_id</code>, <code>displayName</code>, <code>data.year</code>, etc. Note the second <code>&#8230;&#8203; on media_Image</code> block nested inside it: instead of returning the ID value in the <code>data.image</code> field, we pass that through an <code>imageUrl</code> function that gives us a finished <code>data.imageUrl</code> field instead - directly and in one single query.</p>
 <div class="paragraph">
-<p>For more about guillotine queries, see the <a href="https://developer.enonic.com/docs/headless-cms/2.x/api">guillotine API documentation</a>.</p>
+<p>For more about guillotine queries, see the <a href="https://developer.enonic.com/docs/guillotine/stable/api">guillotine API documentation</a>.</p>
 </div>
 </li>
 </ul>
@@ -2165,7 +2165,7 @@ This section is not a vital part of the rest of this or the next chapter. Feel f
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-21 06:55:29 UTC
+Last updated 2024-03-22 13:34:14 UTC
 </div>
 </div>
 </body>

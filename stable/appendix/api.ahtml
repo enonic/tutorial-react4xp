@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.21">
+<meta name="generator" content="Asciidoctor 2.0.22">
 <title>API reference</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -754,7 +754,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 <div class="sect2">
 <h3 id="examples"><a class="link" href="#examples">Examples</a></h3>
 <div class="paragraph">
-<p>Most of the lessons in the guide use <code>React4xp.render</code> (except the "custom flow" ones). For example <a href="hello-react.ahtml#first_helloreact_jsx">here</a> or <a href="pages-parts-and-regions.ahtml#color_part_controller">here</a>.</p>
+<p>Most of the lessons in the guide use <code>React4xp.render</code> (except the "custom flow" ones). For example <a href="../hello-react.ahtml#first_helloreact_jsx">here</a> or <a href="../pages-parts-and-regions.ahtml#color_part_controller">here</a>.</p>
 </div>
 </div>
 </div>
@@ -794,7 +794,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>See the <a href="custom-flow-syntax.ahtml">"custom flow syntax"</a> lesson to go more in depth.</p>
+<p>See the <a href="../custom-flow-syntax.ahtml">"custom flow syntax"</a> lesson to go more in depth.</p>
 </div>
 <div class="sect2">
 <h3 id="constructor"><a class="link" href="#constructor">Object constructor</a></h3>
@@ -1183,7 +1183,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 </div>
 </div>
 <div class="paragraph">
-<p>Similar to <a href="#react4xp_render">React4xp.render</a> above, but <em>only</em> renders the <a href="https://developer.enonic.com/docs/xp/stable/cms/contributions">page contributions</a> needed to run and activate the react component in the browser:</p>
+<p>Similar to <a href="#react4xp_render">React4xp.render</a> above, but <em>only</em> renders the <a href="https://developer.enonic.com/docs/xp/stable/framework/contributions">page contributions</a> needed to run and activate the react component in the browser:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1419,7 +1419,7 @@ Best case scenario: this might make a client-side rendered entry visible in Cont
 <p>Starting from version 1.5.0, react4xp handles multithreaded rendering. This is done by setting up a number of renderers where each one is ready to answer to rendering requests in parallel, independently.</p>
 </div>
 <div class="paragraph">
-<p>The number of renderer workers is <a href="run_time.ahtml#ssrMaxThreads">determined in java but can be overriden</a>.</p>
+<p>The number of renderer workers is <a href="config.ahtml#ssrMaxThreads">determined in java but can be overriden</a>.</p>
 </div>
 <div class="paragraph">
 <p>When a renderer runs into an error during SSR, that renderer is torn down and a new one is initialized (see warmup time below). This happens as far as possible during idle time.</p>
@@ -1472,7 +1472,7 @@ Best case scenario: this might make a client-side rendered entry visible in Cont
 <div class="sect2">
 <h3 id="performance"><a class="link" href="#performance">SSR performance</a></h3>
 <div class="paragraph">
-<p>Apart from when assets are initialized during the engine <a href="#warmup">warmup</a>, each SSR should be fast. However, in cases where you need to improve SSR performance further, it can be done by wrapping the rendering in a <a href="https://developer.enonic.com/docs/cache-library/master">cache</a> in the controller.</p>
+<p>Apart from when assets are initialized during the engine <a href="#warmup">warmup</a>, each SSR should be fast. However, in cases where you need to improve SSR performance further, it can be done by wrapping the rendering in a <a href="https://developer.enonic.com/docs/cache-library">cache</a> in the controller.</p>
 </div>
 <div class="paragraph">
 <p>Be sure to use any value that can change the rendering output - usually from <code>props</code> (and <code>options</code>?) or a subset of them - as a <strong>key</strong> in the cache.</p>
@@ -1526,7 +1526,7 @@ exports.get = request =&gt; {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-21 06:55:29 UTC
+Last updated 2024-03-22 13:34:14 UTC
 </div>
 </div>
 </body>

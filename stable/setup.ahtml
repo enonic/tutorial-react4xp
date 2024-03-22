@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.21">
+<meta name="generator" content="Asciidoctor 2.0.22">
 <title>Setting up the developer environment</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -530,7 +530,7 @@ To upgrade, use <code>enonic latest</code>. If there are new versions you will s
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
---dev starts the sandbox in <a href="https://developer.enonic.com/docs/xp/stable/dev/build#dev_mode">developer mode</a>.
+--dev starts the sandbox in <a href="https://developer.enonic.com/docs/xp/stable/development/build#dev_mode">development mode</a>.
 </td>
 </tr>
 </table>
@@ -592,7 +592,7 @@ src/
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>React4xp <a href="appending/build.ahtml">build configuration</a>, here you may add additional globals and tune common React4xp properties.</td>
+<td>React4xp <a href="appendix/build.ahtml">build configuration</a>, here you may add additional globals and tune common React4xp properties.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -663,7 +663,7 @@ enonic dev</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-21 06:55:29 UTC
+Last updated 2024-03-22 13:34:14 UTC
 </div>
 </div>
 </body>
