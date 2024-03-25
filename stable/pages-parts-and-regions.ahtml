@@ -519,13 +519,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>Make a react-rendered general <a href="https://developer.enonic.com/docs/xp/stable/cms/components">XP Page Controller</a> with a working XP Region.</p>
+<p>Make a react-rendered general <a href="https://developer.enonic.com/docs/xp/stable/cms/pages">XP Page Controller</a> with a working XP Region.</p>
 </li>
 <li>
-<p>Make a react-rendered <a href="https://developer.enonic.com/docs/xp/stable/cms/components#part">XP Part</a> that can be dragged into the Region.</p>
+<p>Make a react-rendered <a href="https://developer.enonic.com/docs/xp/stable/cms/pages/parts">XP Part</a> that can be dragged into the Region.</p>
 </li>
 <li>
-<p>In addition, we&#8217;ll display it in the "regular XP way": using a <a href="https://developer.enonic.com/docs/xp/stable/cms#page_templates">Page Template</a> to connect a <a href="https://developer.enonic.com/docs/xp/stable/cms/content-types">Content Type</a> to our new Page controller. This way, in this example and the next ones, we can just create content items of that type and have the Page controller up and running immediately instead of having to set it up manually each time.</p>
+<p>In addition, we&#8217;ll display it in the "regular XP way": using a <a href="https://developer.enonic.com/docs/xp/stable/cms/page-templates">Page Template</a> to connect a <a href="https://developer.enonic.com/docs/xp/stable/cms/content-types">Content Type</a> to our new Page controller. This way, in this example and the next ones, we can just create content items of that type and have the Page controller up and running immediately instead of having to set it up manually each time.</p>
 </li>
 </ul>
 </div>
@@ -565,7 +565,7 @@ site/parts/
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The Page controller <em>default</em> can be made from scratch, or you can copy <em>site/pages/hello-react</em> and change the copy (don&#8217;t delete <em>hello-react.jsx</em> just yet, we&#8217;re going to re-use it <a href="custom-flow-syntax.ahtml">later</a>). If you copy and modify, just remember this as usual: name the the <strong>folder and file names</strong> identically.</p>
+<p>The Page controller <em>default</em> can be made from scratch, or you can copy <em>site/pages/hello-react</em> and change the copy (don&#8217;t delete <em>hello-react.jsx</em> just yet, we&#8217;re going to re-use it <a href="../custom-flow-syntax.ahtml">later</a>). If you copy and modify, just remember this as usual: name the the <strong>folder and file names</strong> identically.</p>
 </div>
 </td>
 </tr>
@@ -993,7 +993,7 @@ export function get(request) {
 <p>(*) Remember from the code explanation of <a href="#page_controller">our Page controller</a> that <code>React4xp.render</code> needs the <code>request</code> argument to generate page contributions. Omitting <code>request</code> forces a pure serverside rendering without hydration - so our page controller is not starting a separate react app in the client.</p>
 </div>
 <div class="paragraph">
-<p>(And just for the record, there is an alternative renderer: <code>renderPageContributions</code>. It also starts a new react app, but never needs <code>request</code>. More on that in a <a href="custom-flow-syntax.ahtml">later lesson</a>)</p>
+<p>(And just for the record, there is an alternative renderer: <code>renderPageContributions</code>. It also starts a new react app, but never needs <code>request</code>. More on that in a <a href="../custom-flow-syntax.ahtml">later lesson</a>)</p>
 </div>
 </td>
 </tr>
@@ -1010,7 +1010,7 @@ export function get(request) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-22 13:34:14 UTC
+Last updated 2024-03-25 16:09:57 UTC
 </div>
 </div>
 </body>

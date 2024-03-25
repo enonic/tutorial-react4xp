@@ -614,7 +614,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageContributions</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">object: valid <a href="https://developer.enonic.com/docs/xp/stable/cms/contributions">XP page contributions</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object: valid <a href="https://developer.enonic.com/docs/xp/stable/framework/contributions">XP page contributions</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
 <p>If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added <em>before</em> the ones that will be rendered (within each section <code>headBegin</code>, <code>bodyEnd</code> etc).</p>
@@ -794,7 +794,7 @@ React4xp.render(entry, props, undefined, options); // ...etc etc</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>See the <a href="../custom-flow-syntax.ahtml">"custom flow syntax"</a> lesson to go more in depth.</p>
+<p>See the <a href="../custom-flow-syntax.ahtml">custom flow syntax</a> lesson to go more in depth.</p>
 </div>
 <div class="sect2">
 <h3 id="constructor"><a class="link" href="#constructor">Object constructor</a></h3>
@@ -1526,7 +1526,7 @@ exports.get = request =&gt; {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-22 13:34:14 UTC
+Last updated 2024-03-25 16:09:57 UTC
 </div>
 </div>
 </body>
