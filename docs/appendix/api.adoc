@@ -69,7 +69,7 @@ If no matching element ID is found in `body`, this sets the ID of a generated el
 If no `body` is supplied, an empty `<div>` element with an ID matching `id` is generated and used as container.
 
 If a `body` is supplied but it doesn't contain any element with a matching `id`, an extra matching-`id` `<div>` element will be generated and inserted into `body` - as a child of the root element of `body` and after any other content that's already there.
-! `pageContributions` ! object: valid link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] ! ! If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added _before_ the ones that will be rendered (within each section `headBegin`, `bodyEnd` etc).
+! `pageContributions` ! object: valid link:https://developer.enonic.com/docs/xp/stable/framework/contributions[XP page contributions] ! ! If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added _before_ the ones that will be rendered (within each section `headBegin`, `bodyEnd` etc).
 ! `hydrate` ! boolean ! app.config['react4xp.hydrate'] or true ! When SSR is true, choose whether you want hydration or not.
 ! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and servierside rendering, on this particular rendering. Other renderings are not affected, even within the same controller or using the same entry more than once.
 
@@ -190,7 +190,7 @@ exports.get = function(request) => {
 }
 ----
 
-See the <<../custom-flow-syntax#, "custom flow syntax">> lesson to go more in depth.
+See the <<../custom-flow-syntax#, custom flow syntax>> lesson to go more in depth.
 
 
 

@@ -381,7 +381,7 @@ In short, run `doGuillotineRequest(params)` where `params` is an object that has
 *Full `params` specs are:*
 
 <1> `url` (string, mandatory): URL to the API endpoint, i.e. to the controller mapping of `headless/guillotineApi.ts`: `<site-url>/api/headless`.
-<2> `query` (string, mandatory): valid link:https://developer.enonic.com/docs/headless-cms/2.x/api[guillotine query] string.
+<2> `query` (string, mandatory): Must be a valid Guillotine query.
 <3> `variables` (object, optional): corresponds to the guillotine `variables` object: key-value pairs where the keys correspond to parameters in the `query` string. E.g. the value of `variables.first` will be inserted into the query string as `$first`.
 <4> `handleResponseErrorFunc` (function, optional): callback function that takes a response object and returns it, usually after having checked the response for errors and handled that. Default: just checks `response.status` for HTTP codes other than OK and throws any problems as `Error`.
 <5> `extractDataFunc` (function, optional): callback function that takes a data object and returns another. After the response body has been parsed from JSON string to actual data, the data are run through this function, before being handled by `handleDataFunc`. Default: data is returned unchanged.
