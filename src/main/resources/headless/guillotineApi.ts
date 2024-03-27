@@ -1,17 +1,16 @@
 // @ts-expect-error No types for /lib/guillotine yet.
-import {createSchema} from '/lib/guillotine';
-
-// @ts-expect-error No types for /lib/graphql yet.
-import {execute} from '/lib/graphql';
-
+import {createSchema, execute} from '/lib/guillotine';
 
 const SCHEMA = createSchema();
 
 
-// Expose and use in XP controllers:
-export const executeQuery = (query, variables) =>         // <1> <2>
-  execute(SCHEMA, query, variables);
+// ----------------------------------------------  FOR USE IN CONTROLLERS:    ------------------------------------
 
+export const executeQuery = (query, variables) => execute({
+  query: query,
+  variables: variables,
+  schema: SCHEMA
+});
 
 // Expose and use in POST requests from frontend:
 export const post = req => {                             // <3>

@@ -30,12 +30,8 @@ export default defineConfig((options: MyOptions) => {
 	if (options.d === 'build/resources/main') {
 		return {
 			entry: SERVER_FILES.map(dir => dir.replace(/\\/g,'/')),
-      esbuildOptions(options) {
-        options.outbase = 'src/main/resources';
-      },
 			external: [
 				'/lib/enonic/react4xp',
-        '/lib/graphql',
 				'/lib/guillotine',
 				'/lib/thymeleaf',
 				'/lib/xp/admin',

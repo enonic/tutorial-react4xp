@@ -37,8 +37,7 @@
 		// This feature differs from typeRoots in that it is about specifying only the exact
 		// types you want included, whereas typeRoots supports saying you want particular folders.
 		"types": [
-			// "@enonic-types/global", // Full name must be used when typeRoots is not set.
-      "global" // relative to typeRoots
+			"@enonic-types/global",
 			// "@enonic-types/lib-event" // No point, since it doesn't affect global scope
 			// "@enonic-types/lib-react4xp"
 		],
