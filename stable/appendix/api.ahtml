@@ -1078,7 +1078,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <p>Does <em>not</em> render page contributions. Combine with a corresponding <a href="#render_pgcontr">renderPageContributions</a> call from the same data object, or the rendering will not be active in the browser.</p>
 </div>
 <div class="paragraph">
-<p>&#8594; See the <a href="custom-flow-syntax.ahtml">custom flow syntax</a> examples.</p>
+<p>&#8594; See the <a href="../custom-flow-syntax.ahtml">custom flow syntax</a> examples.</p>
 </div>
 </td>
 </tr>
@@ -1260,7 +1260,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageContributions</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">object: valid <a href="https://developer.enonic.com/docs/xp/stable/cms/contributions">XP page contributions</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object: valid <a href="https://developer.enonic.com/docs/xp/stable/framework/contributions">XP page contributions</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">empty object</p></td>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
 <p>If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added <em>before</em> the ones that will be rendered (within each section <code>headBegin</code>, <code>bodyEnd</code> etc).</p>
@@ -1526,7 +1526,7 @@ exports.get = request =&gt; {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-25 16:09:57 UTC
+Last updated 2024-04-03 16:38:53 UTC
 </div>
 </div>
 </body>

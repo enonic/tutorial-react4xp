@@ -1001,19 +1001,18 @@ export function get(request) {
 <div class="title">headless/guillotineApi.ts:</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">// @ts-expect-error No types for /lib/guillotine yet.
-import {createSchema} from '/lib/guillotine';
-
-// @ts-expect-error No types for /lib/graphql yet.
-import {execute} from '/lib/graphql';
-
+import {createSchema, execute} from '/lib/guillotine';
 
 const SCHEMA = createSchema();
 
 
-// Expose and use in XP controllers:
-export const executeQuery = (query, variables) =&gt;         <i class="conum" data-value="1"></i><b>(1)</b> <i class="conum" data-value="2"></i><b>(2)</b>
-  execute(SCHEMA, query, variables);
+// ----------------------------------------------  FOR USE IN CONTROLLERS:    ------------------------------------
 
+export const executeQuery = (query, variables) =&gt; execute({
+  query: query,
+  variables: variables,
+  schema: SCHEMA
+});
 
 // Expose and use in POST requests from frontend:
 export const post = req =&gt; {                             <i class="conum" data-value="3"></i><b>(3)</b>
@@ -2165,7 +2164,7 @@ This section is not a vital part of the rest of this or the next chapter. Feel f
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-25 16:09:57 UTC
+Last updated 2024-04-03 16:38:53 UTC
 </div>
 </div>
 </body>

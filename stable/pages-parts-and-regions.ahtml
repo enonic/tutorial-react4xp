@@ -565,7 +565,7 @@ site/parts/
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The Page controller <em>default</em> can be made from scratch, or you can copy <em>site/pages/hello-react</em> and change the copy (don&#8217;t delete <em>hello-react.jsx</em> just yet, we&#8217;re going to re-use it <a href="../custom-flow-syntax.ahtml">later</a>). If you copy and modify, just remember this as usual: name the the <strong>folder and file names</strong> identically.</p>
+<p>The Page controller <em>default</em> can be made from scratch, or you can copy <em>site/pages/hello-react</em> and change the copy (don&#8217;t delete <em>hello-react.jsx</em> just yet, we&#8217;re going to re-use it <a href="custom-flow-syntax.ahtml">later</a>). If you copy and modify, just remember this as usual: name the the <strong>folder and file names</strong> identically.</p>
 </div>
 </td>
 </tr>
@@ -1010,7 +1010,7 @@ export function get(request) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-25 16:09:57 UTC
+Last updated 2024-04-03 16:38:53 UTC
 </div>
 </div>
 </body>
