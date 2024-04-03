@@ -366,7 +366,7 @@ Similar to <<#react4xp_render, React4xp.render>> above, but `renderBody` in itse
 ====
 Does _not_ render page contributions. Combine with a corresponding <<#render_pgcontr, renderPageContributions>> call from the same data object, or the rendering will not be active in the browser.
 
--> See the <<custom-flow-syntax#, custom flow syntax>> examples.
+-> See the <<../custom-flow-syntax#, custom flow syntax>> examples.
 ====
 
 `renderBody` renders based on the state of the data object reached at the time of rendering.
@@ -450,7 +450,7 @@ Also, unless you add the `request` option, there is *no detection of inside-vs-o
 .Properties
 !===
 ! Name        ! Type   ! Default ! Description
-! `pageContributions` ! object: valid link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions]  ! empty object ! If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added _before_ the ones that will be rendered (within each section `headBegin`, `bodyEnd` etc).
+! `pageContributions` ! object: valid link:https://developer.enonic.com/docs/xp/stable/framework/contributions[XP page contributions]  ! empty object ! If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added _before_ the ones that will be rendered (within each section `headBegin`, `bodyEnd` etc).
 ! `hydrate` ! boolean ! app.config['react4xp.hydrate'] or true ! When SSR is true, choose whether you want hydration or not.
 ! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and servierside rendering, on this particular rendering.
 ! `request` ! link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object] ! undefined ! Including this here (_and_ in the corresponding <<#render_body, `renderPageContributions`>> call) is the easiest way to handle <<#react4xp_object_request, view-context dependent behavior>>.

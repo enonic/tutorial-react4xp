@@ -68,7 +68,7 @@ We'll make a generic XP content type, then make a Template in Content Studio and
 
 [NOTE]
 ====
-The Page controller _default_ can be made from scratch, or you can copy _site/pages/hello-react_ and change the copy (don't delete _hello-react.jsx_ just yet, we're going to re-use it <<../custom-flow-syntax#, later>>). If you copy and modify, just remember this as usual: name the the *folder and file names* identically.
+The Page controller _default_ can be made from scratch, or you can copy _site/pages/hello-react_ and change the copy (don't delete _hello-react.jsx_ just yet, we're going to re-use it <<custom-flow-syntax#, later>>). If you copy and modify, just remember this as usual: name the the *folder and file names* identically.
 ====
 
 
