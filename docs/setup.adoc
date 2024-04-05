@@ -70,7 +70,7 @@ src/
 <3> Optionally place React components in these folders. They will be covered in detail throughout the tutorial.
 <4> Standard site/ folder
 
-TIP: The short takeaqay is that you can put your TSX/JSX source files in `react4xp/entries/` or witin the `site/` structure directly.
+TIP: The short takeaway is that you can put your TSX/JSX source files in `react4xp/entries/` or witin the `site/` structure directly.
 
 
 == Start building

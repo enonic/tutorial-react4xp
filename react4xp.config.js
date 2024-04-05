@@ -42,7 +42,9 @@ module.exports = {
 	//  Don't overlap with entryDirs or /site/.
 	//
 	// chunkDirs: [''],
-
+	chunkDirs: [
+		'shared'
+	  ],
 
 	// entryDirs are additional folder names where webpack will look for entry
 	// files. Comma-separated list of folder names, relative to
@@ -58,7 +60,10 @@ module.exports = {
 	// For compatibility with earlier versions of react4xp, add _entries here.
 	//
 	// entryDirs: [''],
-
+	entryDirs: [
+		'entries',
+		'myEntries'
+	  ],
 
 	// entryExtensions are filename extensions of files (comma-separated list)
 	// below the entryDirs folders that webpack should look for and turn into

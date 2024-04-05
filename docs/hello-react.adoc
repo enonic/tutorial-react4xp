@@ -2,65 +2,59 @@
 :toc: right
 :imagesdir: media/
 
-
-== Lesson overview
-
-React4xp is made to cover many ways of combining XP and react. Let's start with a simple scenario: displaying a working react component in content studio.
-
-We'll first do that in the serverside rendered way (this is the React4xp default). And afterwards add an option flag that turns the rendering into clientside-rendering instead.
-
+In this chapter you will be introduced to how controllers may use TSX/JSX templates for both server-side and client-side rendering
 
 
 [[code]]
 == Code
 
-Lets start by setting up a *regular XP page controller* called `hello-react`.
+We need to update the application with some code to get things going:
 
+. Start by adding this React component (tsx) file:
 
-.We'll add the following files to the project
-[source,files]
+./src/main/resources/react4xp/entries/hello-react.tsx
+[source,TSX]
 ----
-/src/main/resources/site/pages/hello-react/
-  hello-react.xml
-  hello-react.ts
-  hello-react.tsx
+include::../src/main/resources/react4xp/entries/hello-react.tsx[]
 ----
 
+<1> React component that will render a heading, and a button that will count down when clicked.
+<2> The `export default` line is required, it _may_ take a props object and _must_ return a react component. <<source-file-structure#, More on this later>>
 
-[[page_definition]]
-=== Page descriptor
-First, we need a *page * XML file. Just XP boilerplate:
+This component will be rendered server-side, and when `hydrated` it will also work on the client-side, for an amusing beer bottle countdown. The actual updating step is done with vanilla JS instead of actual react, just to keep things as simple as possible. We'll look at stateful/dynamic components later.
 
-.pages/hello-react/hello-react.xml:
-[source,xml,options="nowrap"]
+. Then add an Enonic controller (ts) to your app:
+
+./src/main/resources/controllers/hello-react.ts
+[source,TypeScript]
 ----
-include::../src/main/resources/site/pages/hello-react/hello-react.xml[]
-----
-
-
-[[react_component]]
-=== React component
-
-Next, we'll add the *react component*. This displays a "Hello world" heading, and we'll add some simple functionality to it: every time you click the message, it will update a number in the next line and print a message in the console. This is to show that we're rendering an _active_ react component; we're not only using TSX/JSX as an XP templating language for static HTML - although sure, you could do that too if you want.
-
-Obviously, the actual updating step is done with vanilla JS instead of actual react, just to keep everything as simple as possible. We'll look at stateful/dynamic components later.
-
-.hello-react.tsx
-[source,javascript,options="nowrap"]
-----
-include::../src/main/resources/site/pages/hello-react/hello-react.tsx[]
+include::../src/main/resources/controllers/hello-react.ts[]
 ----
 
-<1> One thing is mandatory for this to work, shown in the `export default` line: the TSX file *must default-export a function* that *_may_ take a props object* and *_must_ return a react component*. <<source-file-structure#, More on this later>>.
-+
-Apart from that, you can use ordinary TS and import and nest other JS, react components and third-party stuff from _node_modules/_ in the regular way. <<imports-and-dependency-chunks#, We'll also get back to that later>>, including a caveat or two.
+<1> The `render` function is imported from the library.
+<2> We pick up the `request` data. The render call needs it to know the rendering context.
+<3> We get the XP component data. Used directly in the `render` call, it's a convenient shortcut for React4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.tsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that, but for all the juicy details: <<appendix/entries#, entries>> and <<appendix/jsxpath#, jsxPath>>).
+<4> The juicy bit: *the actual render call*. The rendered response from it can be returned directly from the `get` function, since `render` creates an object with a `body` HTML string and a `pageContributions` attribute with everything needed (more details: <<appendix/api#react4xp_render, the render API>>).
+<5> The `id` attribute _"react4xpApp"_ is set in the *options* argument of `render`. This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
+<6> We're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag.
+<7> `ssr` true means the component will be Server Side Rendered
+
+
+. Finally, add the following mapping to your site.xml - this will trigger the controller when a site is previewed:
+
+./src/main/resources/site/site.xml
+[source,XML]
+----
+include::../code-samples/hello-react/site.xml[]
+----
+
 
 [[browser-specific]]
 [NOTE]
 ====
-By the way, a quick gotcha on using `document` and `window` etc, during serverside vs clientside rendering:
+A quick gotcha on using `document` and `window` etc during serverside rendering:
 
-Naturally, a lot of **browser-specific functionality won't work well during server-side rendering**. React4xp has polyfilled `window` as _empty object_. To prevent weird behavior or errors, browser-specific code should only run in the browser.
+Naturally, a lot of browser-specific functionality won't work well during server-side rendering. React4xp has polyfilled `window` as _empty object_. To prevent weird behavior or errors, browser-specific code should only run in the browser.
 
 In this example, `dropBottle` is the response to a click listener which won't be triggered to actually _run_ on the server (although the asset is compiled and read the asset into memory, but that is safe in itself), so we don't need any more safeguards here. But if you do, it's easy enough - for example:
 
@@ -74,32 +68,6 @@ if (typeof window.navigator !== 'undefined') {
 Of course, this also applies to imported packages / nested components and so on. Importing them is usually safe, but consider wrapping the areas where they're called/used, like this.
 ====
 
-
-
-[[page_controller]]
-=== Page controller
-Finally, we'll add a bare-bone *page controller* that calls the rendering engine:
-
-[[first_helloreact_jsx]]
-.hello-react.ts:
-[source,javascript,options="nowrap"]
-----
-include::../src/main/resources/site/pages/hello-react/hello-react.ts[]
-----
-
-That's it.
-
-If you've used XP before, you'll probably note that there's no HTML view file, no `thymeleaf.render`, and so on - in this example, React4xp completely handles the page view. The essential thing here is that at the end of the `get` function, *React4xp in a single _render_ call creates a _full_ XP response object that makes react work.*
-
-What's going on in the controller?
-
-<1> The `render` function is imported from the library.
-<2> We pick up the `request` data. The render call needs it to know the rendering context.
-<3> We get the XP component data. Used directly in the `render` call, it's a convenient shortcut for React4xp to "this XP component", for finding the same-name react component in the same folder: _hello-react.tsx_. React4xp has more ways to refer to react components, or _entries_ (we'll get to that, but for all the juicy details: <<appendix/entries#, entries>> and <<appendix/jsxpath#, jsxPath>>).
-<4> The juicy bit: *the actual render call*. The rendered response from it can be returned directly from the `get` function, since `render` creates an object with a `body` HTML string and a `pageContributions` attribute with everything needed (more details: <<appendix/api#react4xp_render, the render API>>).
-<5> The `id` attribute _"react4xpApp"_ is set in the *options* argument of `render`. This is the unique ID we're giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML `body`:
-<6> We're hardcoding a `body` option, an HTML string as a base for the output, with a _"react4xpApp"_ ID element. In many cases you can do without this string but here it's needed for the output, since react itself doesn't like to render the tags `<html>`, `<head>`, `<body>` or anything outside of a containing root tag.
-<7> On the server, a false `ssr` flag in the _options_ object makes the server skip the HTML rendering (in _this_ particular `render` call).
 
 
 
