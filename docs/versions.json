@@ -18,20 +18,4 @@
       "checkout": "issue-77"
     }
   ]
-}{
-  "versions": [
-    {
-      "label": "3.x",
-      "checkout": "4d6e719"
-    },
-    {
-      "label": "4.x",
-      "checkout": "4.x"
-    },
-    {
-      "label": "stable",
-      "checkout": "master",
-      "latest": true
-    }
-  ]
 }
