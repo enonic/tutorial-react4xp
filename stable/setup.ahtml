@@ -495,45 +495,18 @@ To upgrade, use <code>enonic latest</code>. If there are new versions you will s
 <h2 id="create_a_sandbox"><a class="link" href="#create_a_sandbox">Create a sandbox</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A sandbox is a local developer instance of our platform - Enonic XP. Each sandbox is isolated from the other ones and can run different versions of the platform.</p>
+<p>We&#8217;re going to need a sandbox for this tutorial:</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
+<div class="paragraph">
 <p><strong>Create a sandbox</strong> called <code>r4xptutorial</code> by running this command in your terminal:</p>
+</div>
 <div class="literalblock">
 <div class="content">
 <pre>enonic sandbox create r4xptutorial -t essentials -f</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This will create a sandbox contaiing <code>essential</code> applications, and use the latest versjon of Enonic XP.</p>
-</div>
-</li>
-<li>
-<p><strong>Start the sandbox</strong> with this command:</p>
-<div class="literalblock">
-<div class="content">
-<pre>enonic sandbox start r4xptutorial --dev</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This will start the sandbox.</p>
-</div>
-</li>
-</ol>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
---dev starts the sandbox in <a href="https://developer.enonic.com/docs/xp/stable/development/build#dev_mode">development mode</a>.
-</td>
-</tr>
-</table>
+<p>This will create and start a sandbox containg <code>essential</code> applications.</p>
 </div>
 </div>
 </div>
@@ -545,7 +518,7 @@ To upgrade, use <code>enonic latest</code>. If there are new versions you will s
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>enonic project create -d r4xp -r starter-react4xp -sb r4xptutorial -f my.first.r4xp</pre>
+<pre>enonic create my.first.r4xp -r starter-react4xp -s r4xptutorial -f</pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -556,7 +529,7 @@ To upgrade, use <code>enonic latest</code>. If there are new versions you will s
 </td>
 <td class="content">
 <div class="paragraph">
-<p>This command creates an app named <code>my.first.r4xp</code> in the folder <code>r4xp/</code>. It uses the <a href="https://github.com/enonic/starter-react4xp" target="_blank" rel="noopener">React4xp starter</a> Github repo as a template, and links it to the <code>r4xptutorial</code> sandbox.</p>
+<p>This command creates an app named <code>my.first.r4xp</code>. It uses the <a href="https://github.com/enonic/starter-react4xp" target="_blank" rel="noopener">React4xp starter Github repo</a> as a starter, and links it to the <code>r4xptutorial</code> sandbox.</p>
 </div>
 </td>
 </tr>
@@ -663,7 +636,7 @@ enonic dev</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-05 07:11:09 UTC
+Last updated 2024-04-16 06:13:39 UTC
 </div>
 </div>
 </body>

@@ -441,16 +441,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#code">Code</a></li>
-<li><a href="#first_setup_render">Setup and first render</a></li>
-<li><a href="#about_the_rendering">About the rendering</a>
+<li><a href="#code">Basic usage</a>
 <ul class="sectlevel2">
-<li><a href="#static_cs_rendering">Content studio should only have static rendering</a></li>
-<li><a href="#first_serverside_render_can_be_slow">First serverside render can be slow</a></li>
+<li><a href="#react_template">React template</a></li>
+<li><a href="#xp_controller">XP controller</a></li>
+<li><a href="#controller_mapping">Controller mapping</a></li>
 </ul>
 </li>
-<li><a href="#hello_output">Output</a></li>
-<li><a href="#client_side_rendering">Client-side rendering</a></li>
+<li><a href="#first_setup_render">Preview</a></li>
+<li><a href="#hello_output">The output</a></li>
 </ul>
 </div>
 </div>
@@ -458,22 +457,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you will be introduced to how controllers may use TSX/JSX templates for both server-side and client-side rendering</p>
+<p>In this chapter you will be introduced to how XP controllers may use TSX/JSX templates for both server-side and client-side rendering</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="code"><a class="link" href="#code">Code</a></h2>
+<h2 id="code"><a class="link" href="#code">Basic usage</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We need to update the application with some code to get things going:</p>
+<p>The following files are involved in this example, each file will be described in details below</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Start by adding this React component (tsx) file:</p>
-</li>
-</ol>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-files" data-lang="files">/src/main/resources/
+ controllers/hello-react.ts
+ react4xp/entries/hello-react.tsx
+ site/site.xml</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="react_template"><a class="link" href="#react_template">React template</a></h3>
+<div class="paragraph">
+<p>Start off by adding the following React component (tsx) file to your project:</p>
 </div>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/entries/hello-react.tsx</div>
@@ -512,34 +517,33 @@ export default (props) =&gt; &lt;HelloReact {...props}/&gt;;  <i class="conum" d
 </table>
 </div>
 <div class="paragraph">
-<p>This component will be rendered server-side, and when <code>hydrated</code> it will also work on the client-side, for an amusing beer bottle countdown. The actual updating step is done with vanilla JS instead of actual react, just to keep things as simple as possible. We&#8217;ll look at stateful/dynamic components later.</p>
+<p>This component will be rendered server-side, and then <code>hydrated</code> so it will also work on the client-side, for an amusing beer bottle countdown. The actual updating step is done with vanilla JS instead of actual react, just to keep things as simple as possible. We&#8217;ll look at stateful/dynamic components later.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Then add an Enonic controller (ts) to your app:</p>
-</li>
-</ol>
+</div>
+<div class="sect2">
+<h3 id="xp_controller"><a class="link" href="#xp_controller">XP controller</a></h3>
+<div class="paragraph">
+<p>To trigger the rendering, we&#8217;ll use a regular Enonic controller (ts). Add the following file to your app:</p>
 </div>
 <div class="listingblock">
 <div class="title">/src/main/resources/controllers/hello-react.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {render} from '/lib/enonic/react4xp'; <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {render} from '/lib/enonic/react4xp';
 import {getContent} from '/lib/xp/portal';
 
-export function get(request) {               <i class="conum" data-value="2"></i><b>(2)</b>
-  const {displayName} = getContent();        <i class="conum" data-value="3"></i><b>(3)</b>
+export function get(request) {               <i class="conum" data-value="1"></i><b>(1)</b>
+  const {displayName} = getContent(); 
   const props = {displayName};
-  const react4xpId = 'react4xpApp';
-  const component = 'hello-react';
+  const react4xpId = 'react4xpApp';          <i class="conum" data-value="2"></i><b>(2)</b>
+  const component = 'hello-react';           <i class="conum" data-value="3"></i><b>(3)</b>
 
   return render(                             <i class="conum" data-value="4"></i><b>(4)</b>
     component,
     props,
     request,
     {
-      id: react4xpId,                        <i class="conum" data-value="5"></i><b>(5)</b>
-      body:                                  <i class="conum" data-value="6"></i><b>(6)</b>
+      id: react4xpId,                        
+      body:                                  <i class="conum" data-value="5"></i><b>(5)</b>
         `&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;
         &lt;head&gt;
             &lt;meta charset="UTF-8"&gt;
@@ -548,8 +552,8 @@ export function get(request) {               <i class="conum" data-value="2"></i
             &lt;div id="${react4xpId}"&gt;&lt;/div&gt;
         &lt;/body&gt;
         &lt;/html&gt;`,
-      ssr: true,                             <i class="conum" data-value="7"></i><b>(7)</b>
-      hydrate: true,
+      ssr: true,                             <i class="conum" data-value="6"></i><b>(6)</b>
+      hydrate: true,                         <i class="conum" data-value="7"></i><b>(7)</b>
     }
   );
 }</code></pre>
@@ -559,40 +563,39 @@ export function get(request) {               <i class="conum" data-value="2"></i
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The <code>render</code> function is imported from the library.</td>
+<td>Standard XP controller implemeting the HTTP get function.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>We pick up the <code>request</code> data. The render call needs it to know the rendering context.</td>
+<td>ID for the react app (TODO)</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>We get the XP component data. Used directly in the <code>render</code> call, it&#8217;s a convenient shortcut for React4xp to "this XP component", for finding the same-name react component in the same folder: <em>hello-react.tsx</em>. React4xp has more ways to refer to react components, or <em>entries</em> (we&#8217;ll get to that, but for all the juicy details: <a href="appendix/entries.ahtml">entries</a> and <a href="appendix/jsxpath.ahtml">jsxPath</a>).</td>
+<td>React templates placed in <code>src/resources/main/react4xp/entries</code> may simply be referenced by their name, using a concept we call <a href="appendix/jsxpath.ahtml">jsxPath</a>).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>The juicy bit: <strong>the actual render call</strong>. The rendered response from it can be returned directly from the <code>get</code> function, since <code>render</code> creates an object with a <code>body</code> HTML string and a <code>pageContributions</code> attribute with everything needed (more details: <a href="appendix/api.ahtml#react4xp_render">the render API</a>).</td>
+<td>The output of React4XP render() is a regular <a href="https://developer.enonic.com/docs/xp/stable/framework/http">XP response object</a>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>The <code>id</code> attribute <em>"react4xpApp"</em> is set in the <strong>options</strong> argument of <code>render</code>. This is the unique ID we&#8217;re giving to the react component, and the HTML id of the target element where react will render the component in the end. Note that the same ID is found in an element in the HTML <code>body</code>:</td>
+<td>Bootstrap markup for the React application</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>We&#8217;re hardcoding a <code>body</code> option, an HTML string as a base for the output, with a <em>"react4xpApp"</em> ID element. In many cases you can do without this string but here it&#8217;s needed for the output, since react itself doesn&#8217;t like to render the tags <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code> or anything outside of a containing root tag.</td>
+<td><code>ssr</code> true means the component will be Server Side Rendered</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
-<td><code>ssr</code> true means the component will be Server Side Rendered
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Finally, add the following mapping to your site.xml - this will trigger the controller when a site is previewed:</p>
-</li>
-</ol>
-</div></td>
+<td><code>hydrate</code> true means the component will be activated on client-side</td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="controller_mapping"><a class="link" href="#controller_mapping">Controller mapping</a></h3>
+<div class="paragraph">
+<p>To trigger the controller, we&#8217;ll add a simple mapping to <code>site.xml</code> - this will cause the controller to execute whenever someone previews a site where the application is deployed:</p>
 </div>
 <div class="listingblock">
 <div class="title">/src/main/resources/site/site.xml</div>
@@ -620,7 +623,7 @@ export function get(request) {               <i class="conum" data-value="2"></i
 &lt;/site&gt;</code></pre>
 </div>
 </div>
-<div id="browser-specific" class="admonitionblock note">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
@@ -628,13 +631,13 @@ export function get(request) {               <i class="conum" data-value="2"></i
 </td>
 <td class="content">
 <div class="paragraph">
-<p>A quick gotcha on using <code>document</code> and <code>window</code> etc during serverside rendering:</p>
+<p><strong>SSR vs client side gotchas</strong></p>
 </div>
 <div class="paragraph">
-<p>Naturally, a lot of browser-specific functionality won&#8217;t work well during server-side rendering. React4xp has polyfilled <code>window</code> as <em>empty object</em>. To prevent weird behavior or errors, browser-specific code should only run in the browser.</p>
+<p>When using isomorphic JavaScript, some functionality may only be working on server-side, and some only on client side, like <code>document</code> and <code>window</code> - which are pure client-side concepts. React4xp has polyfilled <code>window</code> as <em>empty object</em>. To prevent weird behavior or errors, take care to only execute browser-specific code in the browser.</p>
 </div>
 <div class="paragraph">
-<p>In this example, <code>dropBottle</code> is the response to a click listener which won&#8217;t be triggered to actually <em>run</em> on the server (although the asset is compiled and read the asset into memory, but that is safe in itself), so we don&#8217;t need any more safeguards here. But if you do, it&#8217;s easy enough - for example:</p>
+<p>In the example above, <code>dropBottle</code> is the response to a click listener which won&#8217;t be triggered to actually <em>run</em> on the server (although the asset is compiled and read the asset into memory, but that is safe in itself), so we don&#8217;t need any more safeguards here. But if you do, it&#8217;s easy enough - for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -644,7 +647,7 @@ export function get(request) {               <i class="conum" data-value="2"></i
 </div>
 </div>
 <div class="paragraph">
-<p>Of course, this also applies to imported packages / nested components and so on. Importing them is usually safe, but consider wrapping the areas where they&#8217;re called/used, like this.</p>
+<p>Of course, this also applies to imported packages / nested components and so on. Importing them is usually safe, but consider wrapping the areas where they&#8217;re called/used.</p>
 </div>
 </td>
 </tr>
@@ -652,111 +655,96 @@ export function get(request) {               <i class="conum" data-value="2"></i
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="first_setup_render"><a class="link" href="#first_setup_render">Setup and first render</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>If you&#8217;ve added those 3 files, let&#8217;s get this rendered! If you&#8217;ve used XP and Content Studio before, this is all run-of-the mill:</p>
 </div>
+<div class="sect1">
+<h2 id="first_setup_render"><a class="link" href="#first_setup_render">Preview</a></h2>
+<div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>If you&#8217;re not working in dev mode (<code>enonic dev</code>), then compile the project (<code>enonic project deploy</code> in a terminal from root) and start the sandbox (<code>enonic sandbox start</code>),</p>
+<p>Your changes should automatically be picked up by XP, to manually deploy use (<code>enonic project deploy</code> in a terminal from your project root)</p>
 </li>
 <li>
-<p>Navigate your browser to <code>localhost:8080/admin</code>. Log in to XP and open Content Studio (if you haven&#8217;t already, you&#8217;ll need to <a href="https://market.enonic.com/vendors/enonic/content-studio">install Content Studio</a> in XP).</p>
+<p>Visit <code>localhost:8080/admin</code>. Log in to XP and open Content Studio.</p>
 </li>
 <li>
-<p>Create a new Site content and Edit it in a new tab. Add your React4xp app (<em>"starter-react4xp"</em>?) on the upper left.</p>
+<p>Create a new content project, then create a new Site.</p>
 </li>
 <li>
-<p>Select the new <em>Hello-react</em> page controller in the preview panel on the right. Store that change (and refresh the page if needed).</p>
-</li>
-</ol>
-</div>
+<p>Add your React4xp app (<em>"starter-react4xp"</em>?) to the site</p>
 <div class="paragraph">
-<p>You should now see something like this:</p>
-</div>
-<div class="paragraph thumb">
 <p><span class="image"><img src="media/hello_cs.png" alt="hello cs" width="720px" title="Editing in Content Studio: Hello World."></span></p>
 </div>
-<div class="olist arabic">
-<ol class="arabic" start="5">
-<li>
-<p>Click <em>Preview</em> on the top to open a new tab and view the content outside of Content Studio:</p>
-</li>
-</ol>
+<div class="paragraph">
+<p>After saving, you should now see something like this:</p>
 </div>
+<div class="paragraph">
+<p><span class="image"><img src="media/hello_cs.png" alt="hello cs" width="720px" title="Editing in Content Studio: Hello World."></span></p>
+</div>
+<div class="paragraph">
+<p>In order to support a visual editing experience, components will not be hydrated.</p>
+</div>
+</li>
+<li>
+<p>Click <em>Preview</em> for a live view of the page.</p>
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/hello_bottles.png" alt="hello bottles" width="720px" title="Rendering: Hello World and some bottles on a wall somewhere. You didn&#8217;t click this screenshot, did you?"></span></p>
 </div>
 <div class="paragraph">
-<p>Clicking somewhere on the rendered text in the preview window will trigger the <code>dropBottle</code> function from <em>hello-react.tsx</em>, and modify the DOM and output a message in the browser console. Look at those bottles go!</p>
+<p>Clicking anywhere on the text should trigger the <code>dropBottle</code> function from <em>hello-react.tsx</em>, modify the DOM and output a message in the browser console. Look at those bottles go!</p>
 </div>
+</li>
+</ol>
 </div>
-</div>
-<div class="sect1">
-<h2 id="about_the_rendering"><a class="link" href="#about_the_rendering">About the rendering</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Two things are worth knowing about the rendering, before we move on:</p>
-</div>
-<div class="sect2">
-<h3 id="static_cs_rendering"><a class="link" href="#static_cs_rendering">Content studio should only have static rendering</a></h3>
-<div class="paragraph">
-<p>If you edit some content in <em>inside XP Content Studio</em>, you&#8217;d notice there was <strong>no bottle-counting</strong>. This is on purpose: react functionality may intervene with the Content Studio editorial workflow, or even disrupt Content Studio itself. Therefore, the <code>request</code> argument is used in <code>render</code> to handle this automatically: inside Content Studio edit mode, you&#8217;ll only see the rendering as a regular static XP preview / placeholder instead of active react.</p>
-</div>
-<div class="admonitionblock note">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Later, we&#8217;ll look at two other rendering functions: <code>renderBody</code> and <code>renderPageContributions</code>. These are intended for use cases where it&#8217;s good to be more explicit than <code>render</code>. For that reason, they <em>don&#8217;t automatically handle this for you</em>. Usually, you should still keep your components from being client-activated inside Content Studio, but you&#8217;ll have to handle it yourself. The <a href="custom-flow-syntax.ahtml">custom flow</a> chapter shows you how.
+<div class="paragraph">
+<p>You might get <em>serverside runtime errors</em> in the react components that you write. The React4xp rendering engine will dump an error message and some suspected code in the server log - but it&#8217;s not always easy to make sense of those.</p>
+</div>
+<div class="paragraph">
+<p>Switching over to <em>clientside rendering</em> (SSR false, Hydrate true) for the particular react component will often give you a better/sourcemapped error message in the browser console, making your debugging life easier.</p>
+</div>
 </td>
 </tr>
 </table>
 </div>
 </div>
-<div class="sect2">
-<h3 id="first_serverside_render_can_be_slow"><a class="link" href="#first_serverside_render_can_be_slow">First serverside render can be slow</a></h3>
-<div class="paragraph">
-<p>You may also have noticed that it took a little time for the first server-side rendering to be displayed. That&#8217;s the <strong>server-side rendering engine warming up</strong>. It reads and caches the basics (notably, some necessary polyfilling, react and react-dom) for performance.</p>
-</div>
-<div class="paragraph">
-<p><strong>This delay only happens when your app is restarted</strong>, i.e. you restart XP entirely, or redeploy the app.</p>
-</div>
-</div>
-</div>
 </div>
 <div class="sect1">
-<h2 id="hello_output"><a class="link" href="#hello_output">Output</a></h2>
+<h2 id="hello_output"><a class="link" href="#hello_output">The output</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Okay, back to the rendering of the page. Open the <strong>page source</strong> code in the browser. Here&#8217;s what <code>render</code> created - the response the client receives on the initial page request:</p>
+<p>Back to the actual rendering of HTML. Looking at the page source code, you should see the following:</p>
+</div>
+<div class="paragraph">
+<p>INFO: The links have been shortened for better readability</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-html" data-lang="html">&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;
 &lt;head&gt;
   &lt;meta charset="UTF-8"&gt;
-  &lt;script defer src="(...your.app.service) /react4xp/globals.js"&gt;&lt;/script&gt;                            <i class="conum" data-value="1"></i><b>(1)</b>
-  &lt;script defer src="(...your.app.service) /react4xp/runtime.js"&gt;&lt;/script&gt;                            <i class="conum" data-value="2"></i><b>(2)</b>
-  &lt;script defer src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"&gt;&lt;/script&gt; <i class="conum" data-value="3"></i><b>(3)</b>
-  &lt;script defer src="(...your.app.service) /react4xp/client-QZN5J5VC.global.js"&gt;&lt;/script&gt;             <i class="conum" data-value="4"></i><b>(4)</b>
+  &lt;script defer src=".../react4xp/globals.js"&gt;&lt;/script&gt;                            <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;script defer src=".../react4xp/runtime.js"&gt;&lt;/script&gt;                            <i class="conum" data-value="2"></i><b>(2)</b>
+  &lt;script defer src=".../react4xp/hello-react.js"&gt;&lt;/script&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+  &lt;script defer src=".../react4xp/client-QZN5J5VC.global.js"&gt;&lt;/script&gt;             <i class="conum" data-value="4"></i><b>(4)</b>
   &lt;script data-react4xp-app-name="com.enonic.app.samples_react4xp" data-react4xp-ref="react4xpApp" type="application/json"&gt;{"command":"hydrate","devMode":false,"hasRegions":0,"isPage":1,"jsxPath":"site/pages/hello-react/hello-react","props":{}}&lt;/script&gt; <i class="conum" data-value="5"></i><b>(5)</b>
 &lt;/head&gt;
 &lt;body class="xp-page"&gt;
 
     &lt;div id="react4xpApp"&gt;
         &lt;div data-reactroot=""&gt;                                                                       <i class="conum" data-value="6"></i><b>(6)</b>
-            &lt;h1&gt;Hello world!&lt;/h1&gt;
-            &lt;p&gt;Click me: &lt;span id="counter"&gt;99&lt;/span&gt; bottles of beer on the wall. &lt;/p&gt;
+            &lt;h1&gt;Hello Sitename&lt;/h1&gt;
+            &lt;p&gt;&lt;span id="counter"&gt;99&lt;/span&gt; bottles of beer on the wall.&lt;/p&gt;
         &lt;/div&gt;
     &lt;/div&gt;
 
-    &lt;script defer src="(...your.app.service) /react4xp/executor-BL4RRDZO.js"&gt;&lt;/script&gt;                <i class="conum" data-value="7"></i><b>(7)</b>
+    &lt;script defer src=".../react4xp/executor-BL4RRDZO.js"&gt;&lt;/script&gt;                <i class="conum" data-value="7"></i><b>(7)</b>
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
@@ -764,34 +752,31 @@ Later, we&#8217;ll look at two other rendering functions: <code>renderBody</code
 <div class="paragraph">
 <p>We can see this whole output is actually the <code>body</code> HTML string we passed into the <code>render</code> call in the controller - but <strong>a lot has been inserted</strong>. Most importantly, three assets are loaded into the client.</p>
 </div>
-<div class="paragraph">
-<p>(The asset URLs are shortened for readability, and because some details may vary. At my computer for example, the <code>(&#8230;&#8203;your.app.service)</code> part actually looks like: <code>/admin/site/preview/default/draft/hello-react/_/service/com.enonic.app.react4xp/</code>)</p>
-</div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The first asset is <code>globals.&lt;contenthash&gt;.js</code>: this is react and react-dom bundled together. They are served from XP instead of from a CDN.</td>
+<td><code>globals.&lt;contenthash&gt;.js</code> is react and react-dom bundled together. For better security, they are served from XP instead of a random CDN.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The second loaded asset is the runtime chunk. Shared boilerplate code needed to run entries.</td>
+<td><code>runtime.js</code> containst chunked boilerplate code to run entries.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The third asset is the compiled version of <em>hello-react.tsx</em>, with the react component and the <code>dropBottle</code> routine. During <code>render</code>, React4xp used the <code>component</code> data to locate this asset <em>after</em> compiling. The react component gets an identifier string, <code>site/pages/hello-react/hello-react</code>, which is called a <em>jsxPath</em> in React4xp. We&#8217;ll cover jsxPaths later (full detail reference <a href="appendix/jsxpath.ahtml">here</a>), but for now you just need to know that this identifier is also used when loading this asset into the the browser&#8217;s namespace: <code>React4xp['site/pages/hello-react/hello-react']</code>.</td>
+<td><code>hello-react</code> is the compiled version of <em>hello-react.tsx</em></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>The third asset is a client-wrapper.</td>
+<td><code>client-QZN5J5VC.global.js</code> is the client-wrapper. TODO: What does it do?</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Properties and props, that the executor uses when calling the client wrapper.</td>
+<td>Properties and props needed for the client-side rendering to work properly (pun intended)</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>The <code>&lt;div id="react4xpApp"&gt;</code> target container, now filled with a server-side rendering of the react component. At this point it&#8217;s only static markup, but it will be activated during step 7 below.</td>
+<td>The <code>&lt;div id="react4xpApp"&gt;</code> target container, now filled with a server-side rendering of the react component</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
@@ -806,136 +791,20 @@ Later, we&#8217;ll look at two other rendering functions: <code>renderBody</code
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The assets are served by lib-react4xp services. Most of them (<em>react4xp-client</em> and the content-hashed assets) are optimized for client-side caching, to minimize repeated requests.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="client_side_rendering"><a class="link" href="#client_side_rendering">Client-side rendering</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Sometimes you might want or need to skip the server-side rendering of a react component, and relay the react rendering entirely to the browser. This a one-line operation in <code>render</code>.</p>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s return to <strong>the controller</strong> and comment in the ssr: false line. Callout &lt;7&gt;:</p>
-</div>
-<div class="listingblock">
-<div class="title">hello-react.ts:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import {getContent} from '/lib/xp/portal';
-import {render} from '/lib/enonic/react4xp'; <i class="conum" data-value="1"></i><b>(1)</b>
-
-
-export function get(request) {               <i class="conum" data-value="2"></i><b>(2)</b>
-  const entry = getContent().page;           <i class="conum" data-value="3"></i><b>(3)</b>
-  const props = {};
-  const react4xpId = 'react4xpApp';
-
-  return render(                             <i class="conum" data-value="4"></i><b>(4)</b>
-    entry,
-    props,
-    request,
-    {
-      id: react4xpId,                        <i class="conum" data-value="5"></i><b>(5)</b>
-      body:                                  <i class="conum" data-value="6"></i><b>(6)</b>
-`&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-  &lt;/head&gt;
-  &lt;body class="xp-page"&gt;
-      &lt;div id="${react4xpId}"&gt;&lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;`,
-      // ssr: false                          <i class="conum" data-value="7"></i><b>(7)</b>
-    }
-  );
-}</code></pre>
-</div>
-</div>
-<div id="clientrendered_output" class="paragraph">
-<p>If you compare with <a href="#hello_output">the serverside-rendered example</a>, the <code>ssr</code> flag causes the <strong>rendered output</strong> to change slightly, changing the behavior in the browser.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-html" data-lang="html">&lt;html&gt;
-&lt;head&gt;
-  &lt;meta charset="UTF-8"&gt;
-  &lt;script defer src="(...your.app.service) /react4xp/globals.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-  &lt;script defer src="(...your.app.service) /react4xp/runtime.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-  &lt;script defer src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-  &lt;script defer src="(...your.app.service) /react4xp/client-QZN5J5VC.global.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-  &lt;script data-react4xp-app-name="com.enonic.app.samples_react4xp" data-react4xp-ref="react4xpApp" type="application/json"&gt;{"command":"render","devMode":false,"hasRegions":0,"isPage":1,"jsxPath":"site/pages/hello-react/hello-react","props":{}}&lt;/script&gt; <i class="conum" data-value="2"></i><b>(2)</b>
-&lt;/head&gt;
-&lt;body class="xp-page"&gt;
-    &lt;div id="react4xpApp"&gt;&lt;/div&gt; <i class="conum" data-value="3"></i><b>(3)</b>
-    &lt;script defer src="(...your.app.service) /react4xp/executor-BL4RRDZO.js"&gt;&lt;/script&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The compiled assets and their URLs are exactly the same as in the serverside version.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The script that actually runs <code>render</code> with the <code>props</code> on the clientside.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>As expected, the target container is no longer filled with a serverside-rendered HTML representation of the react component. Instead, the browser fills in the DOM from scratch in step 3 below.</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-In Content Studio edit mode, a yellow placeholder is used for client-side rendered components. This is to avoid the components interactive behaviors from interfering with the Content Studio editing workflow.
+Most of these static assets are content-hashed, and optimized for client-side caching - thus running a CDN in front of XP will speed up the delivery of these.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Apart from these differences behind the scenes, the page will look and behave the same when presented to the user.</p>
-</div>
-<div class="paragraph">
-<p>Finally, it&#8217;s worth mentioning a special case where you might want to <em>temporarily</em> clientside-render a component:</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>You might get <em>serverside runtime errors</em> in the react components that you write. The React4xp rendering engine will dump an error message and some suspected code in the server log - but it&#8217;s not always easy to make sense of those.</p>
-</div>
-<div class="paragraph">
-<p>Often, switching over to <em>clientside rendering</em> for that particular react component, will give you a better/sourcemapped error message in the browser console, making your debugging life easier.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Okay, ready for the next example lesson?</p>
+<p>So, we are rolling, next up lets look into using pages and editorial components.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-05 07:11:09 UTC
+Last updated 2024-04-16 06:13:39 UTC
 </div>
 </div>
 </body>
