@@ -150,7 +150,6 @@ INFO: The links have been shortened for better readability
 
 We can see this whole output is actually the `body` HTML string we passed into the `render` call in the controller - but *a lot has been inserted*. Most importantly, three assets are loaded into the client.
 
-
 <1> `globals.<contenthash>.js` is react and react-dom bundled together. For better security, they are served from XP instead of a random CDN.
 <2> `runtime.js` containst chunked boilerplate code to run entries.
 <3> `hello-react` is the compiled version of _hello-react.tsx_
