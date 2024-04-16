@@ -20,31 +20,23 @@ TIP: To upgrade, use `enonic latest`. If there are new versions you will see ins
 
 == Create a sandbox
 
-A sandbox is a local developer instance of our platform - Enonic XP. Each sandbox is isolated from the other ones and can run different versions of the platform.
+We're going to need a sandbox for this tutorial:
 
-. *Create a sandbox* called `r4xptutorial` by running this command in your terminal:
-+
+*Create a sandbox* called `r4xptutorial` by running this command in your terminal:
+
   enonic sandbox create r4xptutorial -t essentials -f
-+
-This will create a sandbox contaiing `essential` applications, and use the latest versjon of Enonic XP.
-+
-. **Start the sandbox** with this command:
-+
-  enonic sandbox start r4xptutorial --dev
-+
-This will start the sandbox.
 
-TIP: --dev starts the sandbox in https://developer.enonic.com/docs/xp/stable/development/build#dev_mode[development mode].
+This will create and start a sandbox containg `essential` applications.
 
 == Create the app
 
 From a **new terminal window**, run the following command to create the application. 
 
-  enonic project create -d r4xp -r starter-react4xp -sb r4xptutorial -f my.first.r4xp
+  enonic create my.first.r4xp -r starter-react4xp -s r4xptutorial -f 
 
 [NOTE]
 ====
-This command creates an app named `my.first.r4xp` in the folder `r4xp/`. It uses the https://github.com/enonic/starter-react4xp[React4xp starter^] Github repo as a template, and links it to the `r4xptutorial` sandbox. 
+This command creates an app named `my.first.r4xp`. It uses the https://github.com/enonic/starter-react4xp[React4xp starter Github repo^] as a starter, and links it to the `r4xptutorial` sandbox. 
 ====
 
 == Project structure
