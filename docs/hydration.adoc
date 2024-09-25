@@ -1,0 +1,63 @@
+= Hydration - server and clientside rendering
+:toc: right
+:imagesdir: media/
+
+With React4XP, components may render server-side, client-side or even both.
+
+== Countdown
+
+Start by updating your hello-react template, use the code below:
+
+./src/main/resources/react4xp/entries/hello-react.tsx
+[source,TSX]
+----
+include::../src/main/resources/react4xp/entries/hello-hydration.tsx[]
+----
+
+This React component will initially render server-side, hydrate, and come alive client side as well - producing an amusing beer bottle countdown.
+
+NOTE: The interactive part here is vanilla JS, just to keep things as simple as possible. We'll look at stateful/dynamic components later.
+
+
+== Preview
+
+Back in Content Studio, your changes should automatically be picked up
+
+image:hello_cs.png[title="Editing in Content Studio: Hello World.", width=720px]
++
+In edit mode, components will not be hydrated (for a more robust visual editing experience)
+. Click _Preview_ to get the hydrated version of the page.
++
+[.thumb]
+image:hello_bottles.png[title="Rendering: Hello World and some bottles on a wall somewhere. You didn't click this screenshot, did you?", width=720px]
++
+Clicking anywhere on the text should trigger the `dropBottle` function from _hello-react.tsx_, modify the DOM and output a message in the browser console. 
+
+Look at those bottles go!
+
+== SSR vs client side gotchas
+
+When using isomorphic JavaScript, selected features may only be working on server-side, and some only on client side, like `document` and `window` - which are pure client-side concepts. React4xp has polyfilled `window` as _empty object_. To prevent weird behavior or errors, take care to only execute browser-specific code in the browser.
+
+In the example above, `dropBottle` is the response to a click listener which won't be triggered to actually _run_ on the server (although the code is compiled and read into memory), so we don't need any more safeguards here. But if you do, it's easy enough - for example:
+
+[source,javascript,options="nowrap"]
+----
+if (typeof window.navigator !== 'undefined') {
+    // ...This won't run during SSR...
+}
+----
+
+Of course, this also applies to imported packages / nested components and so on. Importing them is usually safe, but consider wrapping the areas where they're called/used.
+
+
+[TIP]
+====
+Your React components may produce server-side errors, but these are not always easily interpreted.
+
+Switching over to pure _clientside rendering_ (by setting SSR false, Hydrate true) in your controller, the particular React component will likely give you a better/sourcemapped error message in the browser console, making your debugging life easier.
+====
+
+== Next
+
+You are on a roll, next - lets look into how we may pass editorial content to the component via <<props#, props>>.

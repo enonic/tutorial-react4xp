@@ -1,0 +1,18 @@
+<content-type>
+  <display-name>Pub</display-name>
+  <description>Good ol british pub</description>  
+  <super-type>base:structured</super-type>  
+  <form>
+    <input type="TextLine" name="greeting">
+        <label>What do you call your guests?</label>
+        <default>ye old Swashbuckler</default>
+        <occurrences minimum="1" maximum="1"/>
+    </input>
+    <input type="Long" name="startCount">
+        <label>Number of beers in the pub</label>
+        <default>99</default>
+        <occurrences minimum="1" maximum="1"/>
+    </input>
+  </form>
+  <regions />
+</content-type>

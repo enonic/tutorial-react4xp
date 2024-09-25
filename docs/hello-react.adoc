@@ -2,26 +2,12 @@
 :toc: right
 :imagesdir: media/
 
-In this chapter you will be introduced to how XP controllers may use TSX/JSX templates for both server-side and client-side rendering
+In this chapter you will learn how XP controllers can use React templates - for both server-side and client-side rendering
 
 
-[[code]]
-== Basic usage
+== React template
 
-The following files are involved in this example, each file will be described in details below
-
-[source,files]
-----
-/src/main/resources/
- controllers/hello-react.ts
- react4xp/entries/hello-react.tsx
- site/site.xml
-----
-
-
-=== React template
-
-Start off by adding the following React component (tsx) file to your project:
+Right of the bat, start by adding a React component (tsx) file to your project:
 
 ./src/main/resources/react4xp/entries/hello-react.tsx
 [source,TSX]
@@ -29,20 +15,19 @@ Start off by adding the following React component (tsx) file to your project:
 include::../src/main/resources/react4xp/entries/hello-react.tsx[]
 ----
 
-<1> React component that will render a heading, and a button that will count down when clicked.
-<2> The `export default` line is required, it _may_ take a props object and _must_ return a react component. <<source-file-structure#, More on this later>>
+<1> React component that will render "Hello React4XP!"
+<2> The `export default` line is required, it _may_ take a props object and _must_ return a react component.
 
-This component will be rendered server-side, and then `hydrated` so it will also work on the client-side, for an amusing beer bottle countdown. The actual updating step is done with vanilla JS instead of actual react, just to keep things as simple as possible. We'll look at stateful/dynamic components later.
-
+This component will be executed, and rendered server-side.
 
 === XP controller
 
-To trigger the rendering, we'll use a regular Enonic controller (ts). Add the following file to your app:
+To trigger the rendering, we'll use a standard Enonic controller (ts). Add the following file to your app:
 
 ./src/main/resources/controllers/hello-react.ts
 [source,TypeScript]
 ----
-include::../src/main/resources/controllers/hello-react.ts[]
+include::../code-samples/hello-react.ts[]
 ----
 
 <1> Standard XP controller implemeting the HTTP get function.
@@ -50,70 +35,33 @@ include::../src/main/resources/controllers/hello-react.ts[]
 <3> React templates placed in `src/resources/main/react4xp/entries` may simply be referenced by their name, using a concept we call <<appendix/jsxpath#, jsxPath>>).
 <4> The output of React4XP render() is a regular https://developer.enonic.com/docs/xp/stable/framework/http[XP response object].
 <5> Bootstrap markup for the React application 
-<6> `ssr` true means the component will be Server Side Rendered
-<7> `hydrate` true means the component will be activated on client-side
 
 
 === Controller mapping
 
-To trigger the controller, we'll add a simple mapping to `site.xml` - this will cause the controller to execute whenever someone previews a site where the application is deployed:
+By adding a mapping to `site.xml` - our controller will be invoked for sites where the application is deployed:
 
 ./src/main/resources/site/site.xml
 [source,XML]
 ----
-include::../code-samples/hello-react/site.xml[]
+include::../src/main/resources/site/site.xml[]
 ----
 
-[NOTE]
-====
-*SSR vs client side gotchas*
-
-When using isomorphic JavaScript, some functionality may only be working on server-side, and some only on client side, like `document` and `window` - which are pure client-side concepts. React4xp has polyfilled `window` as _empty object_. To prevent weird behavior or errors, take care to only execute browser-specific code in the browser.
-
-In the example above, `dropBottle` is the response to a click listener which won't be triggered to actually _run_ on the server (although the asset is compiled and read the asset into memory, but that is safe in itself), so we don't need any more safeguards here. But if you do, it's easy enough - for example:
-
-[source,javascript,options="nowrap"]
-----
-if (typeof window.navigator !== 'undefined') {
-    // ...This won't run during SSR...
-}
-----
-
-Of course, this also applies to imported packages / nested components and so on. Importing them is usually safe, but consider wrapping the areas where they're called/used.
-====
-
-
-
-[[first_setup_render]]
 == Preview
 
+Your changes should automatically be picked up by XP
 
-. Your changes should automatically be picked up by XP, to manually deploy use (`enonic project deploy` in a terminal from your project root)
 . Visit `localhost:8080/admin`. Log in to XP and open Content Studio.
-. Create a new content project, then create a new Site.
-. Add your React4xp app (_"starter-react4xp"_?) to the site
 +
-image:hello_cs.png[title="Editing in Content Studio: Hello World.", width=720px]
+. Create a new content project called `r4xp`
+. Then, create a Site within this project - call it ´Tutorial´
+. Add your React4xp app to the site.
 +
-After saving, you should now see something like this:
+After saving, you should see something like this:
 +
-image:hello_cs.png[title="Editing in Content Studio: Hello World.", width=720px]
-+
-In order to support a visual editing experience, components will not be hydrated.
-. Click _Preview_ for a live view of the page.
-+
-[.thumb]
-image:hello_bottles.png[title="Rendering: Hello World and some bottles on a wall somewhere. You didn't click this screenshot, did you?", width=720px]
-+
-Clicking anywhere on the text should trigger the `dropBottle` function from _hello-react.tsx_, modify the DOM and output a message in the browser console. Look at those bottles go!
+image:hello_cs.png[title="Editing site in Content Studio: Hello React4XP!.", width=720px]
 
-[TIP]
-====
-You might get _serverside runtime errors_ in the react components that you write. The React4xp rendering engine will dump an error message and some suspected code in the server log - but it's not always easy to make sense of those.
-
-Switching over to _clientside rendering_ (SSR false, Hydrate true) for the particular react component will often give you a better/sourcemapped error message in the browser console, making your debugging life easier.
-====
-
+TODO: New screenshot
 
 
 [[hello_output]]
@@ -121,7 +69,7 @@ Switching over to _clientside rendering_ (SSR false, Hydrate true) for the parti
 
 Back to the actual rendering of HTML. Looking at the page source code, you should see the following:
 
-INFO: The links have been shortened for better readability
+TIP: The links have been shortened for better readability
 
 [source,html]
 ----
@@ -138,8 +86,7 @@ INFO: The links have been shortened for better readability
 
     <div id="react4xpApp">
         <div data-reactroot="">                                                                       // <6>
-            <h1>Hello Sitename</h1>
-            <p><span id="counter">99</span> bottles of beer on the wall.</p>
+            <h1>Hello React4XP</h1>
         </div>
     </div>
 
@@ -148,19 +95,18 @@ INFO: The links have been shortened for better readability
 </html>
 ----
 
-We can see this whole output is actually the `body` HTML string we passed into the `render` call in the controller - but *a lot has been inserted*. Most importantly, three assets are loaded into the client.
+The result is the HTML string we passed to the  `render` request of our initial controller - but *a lot of stuff* has also been inserted.
 
-<1> `globals.<contenthash>.js` is react and react-dom bundled together. For better security, they are served from XP instead of a random CDN.
+<1> `globals.<contenthash>.js` is react and react-dom bundled together. For improved security, they are served from XP instead of a random CDN.
 <2> `runtime.js` containst chunked boilerplate code to run entries.
-<3> `hello-react` is the compiled version of _hello-react.tsx_
+<3> `hello-react.js` is the compiled version of _hello-react.tsx_
 <4> `client-QZN5J5VC.global.js` is the client-wrapper. TODO: What does it do?
 <5> Properties and props needed for the client-side rendering to work properly (pun intended)
 <6> The `<div id="react4xpApp">` target container, now filled with a server-side rendering of the react component
-<7> The script that actually runs `hydrate` with the `props` on the clientside.
+<7> Script that triggers `hydration` - more on this in the next chapter
 
-NOTE: Most of these static assets are content-hashed, and optimized for client-side caching - thus running a CDN in front of XP will speed up the delivery of these.
+NOTE: Most of these static assets are content-hashed, and optimized for client-side caching - thus running a CDN in front of XP in production will speed up the delivery.
 
+== Next
 
-So, we are rolling, next up lets look into using pages and editorial components.
-
-
+What a start, coming up, let's make the component come alive on the <<hydration#, client side>> as well.

@@ -1,8 +1,8 @@
-= React4XP - Building React sites with the Enonic framework
+= React4XP - Server Side React using the Enonic framework
 :toc: right
 :imagesdir: media/
 
-Hands on introduction to the React4XP framework - rendering components with JSX/TSX
+React4XP enables you build React-based websites with server-side rendering - without introducing a 3rd party front-end.
 
 == Introduction
 
@@ -13,8 +13,7 @@ It is recommended that you have completed the https://developer.enonic.com/start
 
 image:react4xp.svg[title="React4xp logo",width=256px]
 
-
-React4XP facilitates advanced use of React when rendering pages with the Enonic framework.
+React4XP facilitates advanced use of React within with the Enonic framework.
 
 * enables you to use TSX/JSX as a templating language, similar to other XP templating engines
 * supports isomorphic server side and client side rendering with hydration
@@ -26,10 +25,9 @@ React4XP facilitates advanced use of React when rendering pages with the Enonic 
 
 After <<setup#, getting set up>>, you start with *three basic lessons*:
 
-- <<hello-react#, Hello React: server and clientside>>: Meet the React4xp library and display a react component from content studio - first serverside rendered, then clientside.
-- <<editorial-data-and-props#, Editorial data and props>>: Use props to pass data - for example editorial data from XP - into the react component.
-- <<pages-parts-and-regions#, XP Pages, Parts, Regions and Content>>: Taking more advantage of the page-building powers in Content Studio - react rendering from any XP controller.
-
+- <<hello-react#, Hello React: server and clientside>>: Meet the React4xp library and display a react component in content studio - first serverside rendered, then clientside.
+- <<editorial-data-and-props#, Editorial content and props>>: Use props to pass data - for example editorial content from XP to the react component.
+- <<pages-parts-and-regions#, XP Pages, Parts and Regions>>: This chapter adds visual page building support
 The following five lessons present a more *advanced use cases*:
 
 - <<source-file-structure#, Free source file structure>>: Which react components are available to React4xp (called _entries_), and how to reference them.

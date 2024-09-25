@@ -1,0 +1,68 @@
+= Editorial content and props
+:toc: right
+:imagesdir: media/
+
+In this chapter we'll have a closer look at how content may be passed to your React component via props.
+
+
+== Content type
+
+To create some interesting content, start off by adding a new content type. To stay on topic, we'll call the new content type `Pub`.
+
+Add the following file to your app:
+
+./src/main/resources/site/content-types/pub/pub.xml:
+[source,xml]
+----
+include::../src/main/resources/site/content-types/pub/pub.xml[]
+----
+
+== Controller
+Next, we'll modify our controller. It needs to fetch the content, and pass it as `props` to the React component:
+
+[[controller_with_props]]
+.react4xp/hello-react.ts:
+[source,TypeScript]
+----
+include::../src/main/resources/react4xp/hello-react.ts[]
+----
+<1> We'll use a new React component this time
+<2> Fetches the contextual content
+<3> The `props` object is just any standard *serializable* JS object
+<4> Pass the props to the component
+
+=== Hello props component
+Finally, add a new React template that makes use of the props object.
+
+.react4xp/entries/hello-props.tsx
+[source,TypeScript]
+----
+include::../src/main/resources/react4xp/entries/hello-props.tsx[]
+----
+
+[TIP]
+====
+`props` are of course the standard react way to do this. It all is. As long as a _props => reactComponent_ function is default-exported, React4xp accepts standard valid TSX/JSX/TS/JS/ES6.
+
+Although, if you think that the _makeObjectDropper_ closure thing is a strange way to do something react itself could do better... sure. Just trying to stay focused on one thing at a time.
+====
+
+== Create a Pub
+
+Setting up a new Pub has never been easier. Back in Content Studio, click new - and select `Pub`, which should now be available in the list of content you can create.
+
+Fill in the form, and press save to see the glorious result.
+
+[.thumb]
+image:hello_cs.png[title="Editing Hello World, same as before.", width=720px]
+
+== Further reading
+
+Now might be a good time to take a closer look at <<appendix/api#react4xp_render, the API overview of the .render call>> from the ES6 controller in the example above.
+
+
+== Next
+
+TODO
+
+
