@@ -87,7 +87,7 @@ include::../src/main/resources/site/parts/multi-color/multi-color.ts[]
 
 == The _MultiColor_ entry
 
-Before we do the React4xp / webpack configuration, we'll make *the _MultiColor.jsx_ entry* and its dependencies.
+Before we do the React4xp / webpack configuration, we'll make *the _MultiColor.tsx_ entry* and its dependencies.
 
 This is a more complex entry than before (and the most complex part of this example) - it's composed of main react code that *imports secondary dependencies*.
 
@@ -102,7 +102,15 @@ This is a *stateful* react component that not only *imports and nests secondary 
 ----
 include::../src/main/resources/react4xp/myEntries/MultiColor.tsx[]
 ----
-<1> The entry imports some secondary react components for nesting later. These imports have nothing to do with React4xp's <<appendix/jsxPath#, jsxPaths>>, this is *regular ES6 module importing* and will be handled by webpack at compile time and served to the client at runtime. Basically any react component can be imported from anywhere here, including other entries. In this case we're referring to components below a different folder, _shared/_, which we will <<#webpack_config, later>> mark as a *chunk directory* instead of an entry directory. _Shared/_ is not below _entries/_ (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with `React4xp.render`. As you will see, this *folder separation* is also important for the compiled outcome: the entry, _MultiColor.jsx_, will be compiled into _r4xAssets/MultiColor.js_, but *imported components* like this will be collected inside a common *dependency chunk*: _r4xAssets/shared.<HASH>.js_. React4xp and webpack track the dependency connections between an entry and all its required chunks - so `React4xp.render` automatically generates asset-loading page contributions from the controller. The outcome: when the webpack rules are set up correctly later, *imports like this in entries rendered by React4xp are all that's needed to connect the entries to the additional assets they might need*: no manual url handling in the controller or thymeleaf views etc. Dependency chunks are also  optimized for repeated use (more details on <<appendix/chunks#, dependency chunks>>).
+
+<1> The entry imports some secondary react components for nesting later.
+These imports have nothing to do with React4xp's <<appendix/jsxPath#, jsxPaths>>, this is *regular ES6 module importing* and will be handled by webpack at compile time and served to the client at runtime.
+Basically any react component can be imported from anywhere here, including other entries.
+In this case we're referring to components below a different folder, _shared/_, which we will <<#webpack_config, later>> mark as a *chunk directory* instead of an entry directory. _Shared/_ is not below _entries/_ (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with `React4xp.render`.
+As you will see, this *folder separation* is also important for the compiled outcome: the entry, _MultiColor.tsx_, will be compiled into _r4xAssets/MultiColor.js_, but *imported components* like this will be collected inside a common *dependency chunk*: _r4xAssets/shared.<HASH>.js_.
+React4xp and webpack track the dependency connections between an entry and all its required chunks - so `React4xp.render` automatically generates asset-loading page contributions from the controller.
+The outcome: when the webpack rules are set up correctly later, *imports like this in entries rendered by React4xp are all that's needed to connect the entries to the additional assets they might need*: no manual url handling in the controller or thymeleaf views etc.
+Dependency chunks are also optimized for repeated use (more details on <<appendix/chunks#, dependency chunks>>).
 <2> This applies to styling too. Here, the entry imports some specific styling of its own, from a SASS file in the _entries/_ folder. This import is webpack-centric syntax too: the SASS in _MultiColor.scss_ is compiled to the asset _r4xAssets/Multicolor.css_, and automatically added when using this entry (of course, there's more than one way to handle styling in webpack, this is just one working example).
 <3> Another SASS styling import, this time not from the same folder but from the _shared/_ folder. Just like with compiled JS chunks, all imported styling below _shared/_ will be compiled into the dependency chunk _r4xAssets/shared.<HASH>.css_ - again automatically handled.
 <4> Unlike previous examples, this is an old-school stateful react Component with class syntax. See also (13).
@@ -128,11 +136,21 @@ Now, with the entry done, we can look at the *entry's styling* - a lot simpler, 
 include::../src/main/resources/react4xp/myEntries/MultiColor.scss[]
 ----
 
+==== Type definitions
+
+Next up is the *type definitions* for the entry:
+.src/main/resources/react4xp/myEntries/MultiColor.d.ts:
+
+[source,typescript,options="nowrap"]
+----
+include::../src/main/resources/react4xp/myEntries/MultiColor.d.ts[]
+----
 
 
 *Moving on to the _shared/_ folder*, this is where we find source files that will be compiled into common assets: dependency chunks with the _"shared"_ prefix and a content-dependent _"<HASH>"_ (reminder: this will happen because we later will mark _shared/_ as a `chunkDir` in _react4xp.properites_).
 
-First, some *_shared-styles.scss_*, also imported by the entry _MultiColor.jsx_. This could for example serve as common, normalizing styling imported by many react components across wide parts of a site:
+First, some *_shared-styles.scss_*, also imported by the entry _MultiColor.tsx_.
+This could for example serve as common, normalizing styling imported by many react components across wide parts of a site:
 
 .src/main/resources/react4xp/shared/shared-styles.scss:
 [source,sass,options="nowrap"]
@@ -143,14 +161,19 @@ include::../src/main/resources/react4xp/shared/shared-styles.scss[]
 
 
 ==== Imported react components
-Next, _shared/_ also contains the *secondary react components* imported by  _MultiColor.jsx_. Note how each of them imports their own specific styling the same way as the entry _MultiColor.jsx_.
+
+Next, _shared/_ also contains the *secondary react components* imported by  _MultiColor.tsx_.
+Note how each of them imports their own specific styling the same way as the entry _MultiColor.tsx_.
 
 NOTE: It's important that these react components are *not <<appendix/entries#, entries>>* themselves. They are only imported by the MultiColor entry - hence the folder name _shared/_.
 
 
 
 ===== Button
-There's the generic *Button* component. This is used both by _MultiColor.jsx_ and the secondary component _ColorButtons.jsx_. It gets custom onClick function, HTML class, inline styling (for single-button-specific attributes) and label (`children`) from `props` (the spread-out function parameters):
+
+There's the generic *Button* component.
+This is used both by _MultiColor.tsx_ and the secondary component _ColorButtons.tsx_.
+It gets custom onClick function, HTML class, inline styling (for single-button-specific attributes) and label (`children`) from `props` (the spread-out function parameters):
 
 
 .src/main/resources/react4xp/shared/Button.tsx:
@@ -180,13 +203,17 @@ include::../src/main/resources/react4xp/shared/ActiveColorOval.tsx[]
 .src/main/resources/react4xp/shared/ActiveColorOval.scss:
 [source,sass,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/shared/ActiveColorOval.tsx[]
+include::../src/main/resources/react4xp/shared/ActiveColorOval.scss[]
 ----
 
 
 
 ===== ColorButtons
-And finally a *ColorButtons* component. It takes the list of `props.colors` (from the editorial data), and assigns each of them to a `Button` labeled with the color, each of them triggering the change-color-selection from _MultiColor.jsx_ with its own specific color index `i` in the list of colors. In addition, the HTML class name(s) of the buttons is assigned dynamically: the buttons all have a `color-button` class, and each item checks if its own array index `i` matches the current `selectedIndex`. If it does, the class `selected` is added, making that button differently styled:
+
+And finally a *ColorButtons* component.
+It takes the list of `props.colors` (from the editorial data), and assigns each of them to a `Button` labeled with the color, each of them triggering the change-color-selection from _MultiColor.tsx_ with its own specific color index `i` in the list of colors.
+In addition, the HTML class name(s) of the buttons is assigned dynamically: the buttons all have a `color-button` class, and each item checks if its own array index `i` matches the current `selectedIndex`.
+If it does, the class `selected` is added, making that button differently styled:
 
 .src/main/resources/react4xp/shared/ColorButtons.tsx:
 [source,typescript,options="nowrap"]
@@ -217,9 +244,9 @@ First, open _react4xp.config.js_ in your project root and add/look up the attrib
 .react4xp.config.js:
 [source,js,options="nowrap"]
 ----
-entryDirs: 'myEntries'   // <1>
+entryDirs: ['myEntries']   // <1>
 
-chunkDirs: 'shared'    // <2>
+chunkDirs: ['shared']    // <2>
 ----
 <1> `entryDirs` is a list of where React4xp will look for source files to compile and serve as entries: in this case _src/main/resource/react4xp/myEntries_. This list is *in addition* to XP's _site/_ folder - _site/_ always acts as a sort of default, special-case entryDir: under _site/_ only .TSX/.JSX files are picked up as entries, while in all other entryDirs, .TS, .ES6 and .JS are picked up as well.
 <2> `chunkDirs` is a list of folders that will be turned into collection/library assets (dependency chunks): in this case _src/main/resource/react4xp/shared_. One chunk asset for each file type in each chunkDir, named after the chunkDir. If a different name is already here: `entryDirs: ['entries', 'myEntries']` works fine.
