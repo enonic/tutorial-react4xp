@@ -24,9 +24,9 @@ We're going to need a sandbox for this tutorial:
 
 *Create a sandbox* called `r4xptutorial` by running this command in your terminal:
 
-  enonic sandbox create r4xptutorial -t essentials -f
+  enonic sandbox create r4xptutorial -t hmdb -f
 
-This will create and start a sandbox containg `essential` applications.
+This will create and start a sandbox containig some relevant applications, including the Headless Movie DB sample dataset.
 
 == Create the app
 
@@ -41,7 +41,7 @@ This command creates an app named `my.first.r4xp`. It uses the https://github.co
 
 == Project structure
 
-You will not get a typical Enonic project structure. The biggest news are `react4xp.config.js` and the folder `src/main/resources/react4xp/`.
+You will now get a typical Enonic project structure, but the biggest news are `react4xp.config.js` and the folder `src/main/resources/react4xp/`.
 
 [source,files]
 ----

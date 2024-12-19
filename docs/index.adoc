@@ -1,42 +1,35 @@
-= React4XP - Server Side React using the Enonic framework
+= React4XP - Server Side React sites on Enonic
 :toc: right
 :imagesdir: media/
 
-React4XP enables you build React-based websites with server-side rendering - without introducing a 3rd party front-end.
+Build server-side rendered React websites with without introducing a 3rd party front-end framework
 
 == Introduction
 
 [NOTE]
 ====
-It is recommended that you have completed the https://developer.enonic.com/start[My First Site] tutorial, as well as having a some knowledge of https://reactjs.org/tutorial/tutorial.html[React] before you dive into this tutorial.
+It is recommended that you have had a look at https://developer.enonic.com/start[My First Site], as well as basic https://reactjs.org/tutorial/tutorial.html[React] knowledge before you dive into this tutorial.
 ====
 
 image:react4xp.svg[title="React4xp logo",width=256px]
 
-React4XP facilitates advanced use of React within with the Enonic framework.
+React4XP facilitates advanced use of React within Enonic.
 
-* enables you to use TSX/JSX as a templating language, similar to other XP templating engines
-* supports isomorphic server side and client side rendering with hydration
-* handles build flow with automated optimized asset serving
-* is modular and flexible enough to cover many advanced use cases
+* 100% TSX/JSX rendering
+* Single React app
+* Isomorphic server side and client side rendering through hydration
+* Supports Enonic page templates
+* Fast and continuous builds
+* Optimized static asset handling
+* Flexible enough to cover many advanced use cases
+                                      
 
-                                                      
-== Tutorial overview
+== Get started
 
-After <<setup#, getting set up>>, you start with *three basic lessons*:
-
-- <<hello-react#, Hello React: server and clientside>>: Meet the React4xp library and display a react component in content studio - first serverside rendered, then clientside.
-- <<editorial-data-and-props#, Editorial content and props>>: Use props to pass data - for example editorial content from XP to the react component.
-- <<pages-parts-and-regions#, XP Pages, Parts and Regions>>: This chapter adds visual page building support
-The following five lessons present a more *advanced use cases*:
-
-- <<source-file-structure#, Free source file structure>>: Which react components are available to React4xp (called _entries_), and how to reference them.
-- <<custom-flow-syntax#, Custom flow syntax>>: A more detailed and explicit syntax, for when your controller needs more control.
-- <<imports-and-dependency-chunks#, Imports, chunks, config, webpack>>: Importing things into your entries, and controlling the compilation rules and output.
-- <<advanced#, The advanced section>> dives deeper into client-side rendering and using React4XP when building Enonic webapps.
+Get started by <<setup#, setting up the developer environment>>.
 
 == Dive deeper
-Have an urge for details beyond the basic tutorial, check out the <<appendix#, Appendix section>>.
+For details beyond the tutorial, visit the <<appendix#, Appendix section>>.
 
 == Issues?
 Questions, bug reports or suggestions are welcome!

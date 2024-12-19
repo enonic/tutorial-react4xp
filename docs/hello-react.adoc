@@ -5,51 +5,9 @@
 In this chapter you will learn how XP controllers can use React templates - for both server-side and client-side rendering
 
 
-== React template
+TODO: Install HMDB demo app instead?
 
-Right of the bat, start by adding a React component (tsx) file to your project:
-
-./src/main/resources/react4xp/entries/hello-react.tsx
-[source,TSX]
-----
-include::../src/main/resources/react4xp/entries/hello-react.tsx[]
-----
-
-<1> React component that will render "Hello React4XP!"
-<2> The `export default` line is required, it _may_ take a props object and _must_ return a react component.
-
-This component will be executed, and rendered server-side.
-
-=== XP controller
-
-To trigger the rendering, we'll use a standard Enonic controller (ts). Add the following file to your app:
-
-./src/main/resources/controllers/hello-react.ts
-[source,TypeScript]
-----
-include::../code-samples/hello-react.ts[]
-----
-
-<1> Standard XP controller implemeting the HTTP get function.
-<2> ID for the react app (TODO)
-<3> React templates placed in `src/resources/main/react4xp/entries` may simply be referenced by their name, using a concept we call <<appendix/jsxpath#, jsxPath>>).
-<4> The output of React4XP render() is a regular https://developer.enonic.com/docs/xp/stable/framework/http[XP response object].
-<5> Bootstrap markup for the React application 
-
-
-=== Controller mapping
-
-By adding a mapping to `site.xml` - our controller will be invoked for sites where the application is deployed:
-
-./src/main/resources/site/site.xml
-[source,XML]
-----
-include::../src/main/resources/site/site.xml[]
-----
-
-== Preview
-
-Your changes should automatically be picked up by XP
+== Create a site
 
 . Visit `localhost:8080/admin`. Log in to XP and open Content Studio.
 +
@@ -106,6 +64,57 @@ The result is the HTML string we passed to the  `render` request of our initial 
 <7> Script that triggers `hydration` - more on this in the next chapter
 
 NOTE: Most of these static assets are content-hashed, and optimized for client-side caching - thus running a CDN in front of XP in production will speed up the delivery.
+
+
+== React template
+
+Right of the bat, start by adding a React component (tsx) file to your project:
+
+TODO: Place elsewhere
+
+./src/main/resources/react4xp/entries/hello-react.tsx
+[source,TSX]
+----
+include::../src/main/resources/react4xp/entries/hello-react.tsx[]
+----
+
+<1> React component that will render "Hello React4XP!"
+<2> The `export default` line is required, it _may_ take a props object and _must_ return a react component.
+
+This component will be executed, and rendered server-side.
+
+=== XP controller
+
+To trigger the rendering, we'll use a standard Enonic controller (ts). Add the following file to your app:
+
+TODO: This whould now using mappings + app.ts
+
+./src/main/resources/controllers/hello-react.ts
+[source,TypeScript]
+----
+include::../code-samples/hello-react.ts[]
+----
+
+<1> Standard XP controller implemeting the HTTP get function.
+<2> ID for the react app (TODO)
+<3> React templates placed in `src/resources/main/react4xp/entries` may simply be referenced by their name, using a concept we call <<appendix/jsxpath#, jsxPath>>).
+<4> The output of React4XP render() is a regular https://developer.enonic.com/docs/xp/stable/framework/http[XP response object].
+<5> Bootstrap markup for the React application 
+
+
+=== Controller mapping
+
+TODO: This should be just a note, telling how app.ts is kickstarted.
+
+By adding a mapping to `site.xml` - our controller will be invoked for sites where the application is deployed:
+
+./src/main/resources/site/site.xml
+[source,XML]
+----
+include::../src/main/resources/site/site.xml[]
+----
+
+
 
 == Next
 
