@@ -2,17 +2,11 @@
 :toc: right
 :imagesdir: media/
 
-Create and deploy your first React4XP application
-
-== Create the app
-
-You should already have the sandbox with HMDB running. 
-
-
+Render your first React4XP page
 
 == Add to site
 
-With the application deployed to the sandbox, let's add it to the HMDB site so it can act as a front-end for the existing content.
+In a few steps we connect the application to the Headless Movie DB, and should be rewarded gloriously. 
 
 . Visit http://localhost:8080/admin^[localhost:8080/admin]. Log in to XP and open Content Studio.
 +
@@ -22,7 +16,7 @@ With the application deployed to the sandbox, let's add it to the HMDB site so i
 +
 image:hmdb.png[title="HMDB welcome page", width=855px]
 +
-. Click btn:[Edit], and add your the React4xp app to the site.
+. Click btn:[Edit], and connect the React4xp app to the site.
 +
 image:add-to-site.png[title="Add React4XP application to the site", width=647px]
 +
@@ -35,25 +29,24 @@ image:hello.png[title="React4XP starter page", width=647px]
 
 So, what actually happened here?
 
-Your React4XP app runs on top of XP's site engine. By adding the application to the site, it was injected into the request pipeline - where it basically hijacked the rendering.
+The React4XP app runs on top of XP's site engine. By adding the application to the site, it was injected into the request pipeline - where it basically hijacked the rendering, and thus now appears in the preview.
 
-Essentially, Reac4XP follows a familiar MVC approach, the main files involved are:
+Reac4XP uses the familiar MVC approach. These are the main files involved:
 
 [source,Files]
 ----
 -> site/app.ts (App controller)
- -> site/dataFetcher.ts (Fetches data for the CMS components)
+ -> site/dataFetcher.ts (Fetches data for the R4XP components)
   -> react4xp/entries/App.tsx (React entry file)
-   -> react4xp/componentRegistry.tsx (Mapping CMS components to React) 
+   -> react4xp/componentRegistry.tsx (Mapping components to R4XP) 
     -> react4xp/components/Hello.tsx (Welcome page)
 ----
 
-TIP: Visit the <<appendix/controller#, app controller>> in appendix to learn more about how React4XP is bootstrapped.
-
+TIP: Visit the <<appendix/controller#, app controller>> appendix to learn more about how React4XP is bootstrapped.
 
 === Hello component
 
-The Hello component itself is very simple:
+The Hello component that rendered the page is very simple:
 
 .react4xp/components/Hello.tsx
 [source,TypeScript]
