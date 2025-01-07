@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.22">
-<title>Advanced topics</title>
+<meta name="generator" content="Asciidoctor 2.0.23">
+<title>Type mappings</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,18 +435,110 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article">
+<body class="article toc2 toc-right">
 <div id="header">
-<h1>Advanced topics</h1>
+<h1>Type mappings</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#datafetcher">Datafetcher</a></li>
+<li><a href="#component">Component</a></li>
+<li><a href="#component_registry">Component registry</a>
+<ul class="sectlevel2">
+<li><a href="#controller_mapping">Controller mapping</a></li>
+</ul>
+</li>
+<li><a href="#next">Next</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>This section contains chapters on using client-side rendering as well as using React4XP when building webapps.</p>
+<p>It&#8217;s time to build your first component - let&#8217;s focus on rendering persons.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="datafetcher"><a class="link" href="#datafetcher">Datafetcher</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>TODO</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="component"><a class="link" href="#component">Component</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>TODO</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Right of the bat, start by adding a React component (tsx) file to your project:</p>
+</div>
+<div class="paragraph">
+<p>TODO: Place elsewhere</p>
+</div>
+<div class="listingblock">
+<div class="title">/src/main/resources/react4xp/components/Person.tsx</div>
+<div class="content">
+<pre class="highlight"><code class="language-TSX" data-lang="TSX">TODO</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>React component that will render "Hello React4XP!"</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>export default</code> line is required, it <em>may</em> take a props object and <em>must</em> return a react component.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This component will be executed, and rendered server-side.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="component_registry"><a class="link" href="#component_registry">Component registry</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>TODO</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="controller_mapping"><a class="link" href="#controller_mapping">Controller mapping</a></h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="next"><a class="link" href="#next">Next</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>What a start, coming up, let&#8217;s make the component come alive on the <a href="hydration.ahtml">client side</a> as well.</p>
+</div>
+</div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-16 06:22:56 UTC
+Last updated 2025-01-07 18:05:19 UTC
 </div>
 </div>
 </body>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Editorial data and props</title>
+<title>Editorial content and props</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,144 +437,89 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Editorial data and props</h1>
+<h1>Editorial content and props</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#lesson_overview">Lesson overview</a></li>
-<li><a href="#code">Code</a>
+<li><a href="#content_type">Content type</a></li>
+<li><a href="#controller">Controller</a>
 <ul class="sectlevel2">
-<li><a href="#page_definition">Page definition</a></li>
-<li><a href="#react_component">React component</a></li>
-<li><a href="#page_controller">Page controller</a></li>
+<li><a href="#hello_props_component">Hello props component</a></li>
 </ul>
 </li>
-<li><a href="#setup_and_rendering">Setup and rendering</a></li>
-<li><a href="#output">Output</a></li>
+<li><a href="#create_a_pub">Create a Pub</a></li>
 <li><a href="#further_reading">Further reading</a></li>
+<li><a href="#next">Next</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Here we&#8217;ll spice up our react component a little bit, by using <code>props</code> to insert editorial data from XP into the react component.</p>
-</div>
-<div class="paragraph">
-<p>We&#8217;ll modify the same files you created <a href="hello-react.ahtml#code">previously</a>:</p>
-</div>
-<div class="listingblock">
-<div class="title">Files involved:</div>
-<div class="content">
-<pre class="highlight"><code class="language-files" data-lang="files">site/pages/hello-react/
-  hello-react.xml
-  hello-react.jsx
-  hello-react.es6</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
+<p>In this chapter we&#8217;ll have a closer look at how content may be passed to your React component via props.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="code"><a class="link" href="#code">Code</a></h2>
+<h2 id="content_type"><a class="link" href="#content_type">Content type</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s change the files some more so we can use Content Studio to input some data into the react rendering.</p>
+<p>To create some interesting content, start off by adding a new content type. To stay on topic, we&#8217;ll call the new content type <code>Pub</code>.</p>
 </div>
 <div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="sect2">
-<h3 id="page_definition"><a class="link" href="#page_definition">Page definition</a></h3>
-<div class="paragraph">
-<p>We start with some standard XP procedure: defining the data in the page definition XML file. This file is the same as in <a href="hello-react.ahtml#page_definition">example 1</a>, but we&#8217;re adding a few <a href="https://developer.enonic.com/docs/xp/stable/cms/input-types">input fields</a> under <code>&lt;form&gt;</code>: <code>greeting</code>, <code>greetee</code>, <code>counted</code> and <code>startCount</code> are the basis for the initial props of the react component:</p>
+<p>Add the following file to your app:</p>
 </div>
 <div class="listingblock">
-<div class="title">hello-react.xml:</div>
+<div class="title">/src/main/resources/site/content-types/pub/pub.xml:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;page&gt;
-    &lt;display-name&gt;Hello React&lt;/display-name&gt;
-    &lt;description&gt;Editorial example&lt;/description&gt;
-    &lt;form&gt;
-        &lt;input type="TextLine" name="greeting"&gt;
-            &lt;label&gt;What's the greeting?&lt;/label&gt;
-            &lt;default&gt;Hello&lt;/default&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
-        &lt;/input&gt;
-
-        &lt;input type="TextLine" name="greetee"&gt;
-            &lt;label&gt;Who shall we greet?&lt;/label&gt;
-            &lt;default&gt;world&lt;/default&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
-        &lt;/input&gt;
-
-        &lt;input type="TextLine" name="things"&gt;
-            &lt;label&gt;What are the things on the wall?&lt;/label&gt;
-            &lt;default&gt;bottles of beer&lt;/default&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
-        &lt;/input&gt;
-
-        &lt;input type="Long" name="startCount"&gt;
-            &lt;label&gt;How many of them are there?&lt;/label&gt;
-            &lt;default&gt;99&lt;/default&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
-        &lt;/input&gt;
-    &lt;/form&gt;
-&lt;/page&gt;</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/content-types/pub/pub.xml[]</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="controller"><a class="link" href="#controller">Controller</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>&#8203;<br></p>
+<p>Next, we&#8217;ll modify our controller. It needs to fetch the content, and pass it as <code>props</code> to the React component:</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="react_component"><a class="link" href="#react_component">React component</a></h3>
-<div class="paragraph">
-<p>Next, we&#8217;ll modify <a href="hello-react.ahtml#react_component">the react component</a> so that it displays data from a <code>props</code> object, instead of hardcoding everything.</p>
-</div>
-<div id="hello_react_jsx_modified" class="listingblock">
-<div class="title">hello-react.jsx</div>
+<div id="controller_with_props" class="listingblock">
+<div class="title">react4xp/hello-react.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import React from 'react';
-
-
-function makeThingDropper(droppableProp, initialCountProp) {
-    let currentCount = initialCountProp;
-    return () =&gt; {
-        currentCount--;
-        console.log(currentCount.toString(), droppableProp, 'on the wall.');
-        if (document) { <i class="conum" data-value="1"></i><b>(1)</b>
-            document.getElementById('counter').innerText = currentCount;
-        }
-    };
-}
-
-export default (props) =&gt; {
-    const dropThing = makeThingDropper(props.droppableThing, props.initialCount);
-    return (
-        &lt;div onClick={dropThing}&gt;
-            &lt;h1&gt;
-                {props.message} {props.messageTarget}!
-            &lt;/h1&gt;
-            &lt;p&gt;
-                Click me: &lt;span id="counter"&gt;{props.initialCount}&lt;/span&gt; {props.droppableThing} on the wall.
-            &lt;/p&gt;
-        &lt;/div&gt;
-    );
-}</code></pre>
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">## include::../src/main/resources/react4xp/hello-react.ts[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>React4xp no longer polyfill&#8217;s document, so an if block is needed to avoid SSR errors.</td>
+<td>We&#8217;ll use a new React component this time</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Fetches the contextual content</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>props</code> object is just any standard <strong>serializable</strong> JS object</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Pass the props to the component</td>
 </tr>
 </table>
+</div>
+<div class="sect2">
+<h3 id="hello_props_component"><a class="link" href="#hello_props_component">Hello props component</a></h3>
+<div class="paragraph">
+<p>Finally, add a new React template that makes use of the props object.</p>
+</div>
+<div class="listingblock">
+<div class="title">react4xp/entries/hello-props.tsx</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">## include::../src/main/resources/react4xp/entries/hello-props.tsx[]</code></pre>
+</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -593,174 +538,20 @@ export default (props) =&gt; {
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="page_controller"><a class="link" href="#page_controller">Page controller</a></h3>
-<div class="paragraph">
-<p>And lastly, we&#8217;ll hook them together: modify <a href="hello-react.ahtml#page_controller">the controller</a> to fetch the data we defined in XML, then use a <code>props</code> object to inject the data into the react component:</p>
-</div>
-<div id="controller_with_props" class="listingblock">
-<div class="title">hello-react.es6:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const portal = require('/lib/xp/portal');
-const React4xp = require('/lib/enonic/react4xp');
-
-
-exports.get = function(request) {
-    const entry = portal.getComponent();
-
-    const content = portal.getContent();                    <i class="conum" data-value="1"></i><b>(1)</b>
-    const pageConfig = (content.page || {}).config || {};
-
-    const props = {                                         <i class="conum" data-value="2"></i><b>(2)</b>
-        message: pageConfig.greeting,                       <i class="conum" data-value="3"></i><b>(3)</b>
-        messageTarget: pageConfig.greetee,
-        droppableThing: pageConfig.things,
-        initialCount: pageConfig.startCount
-    };
-
-    return React4xp.render(
-        entry,
-        props,                                              <i class="conum" data-value="4"></i><b>(4)</b>
-        request,
-        {
-            id: "react4xpApp",
-            body: `
-                &lt;html&gt;
-                    &lt;head&gt;&lt;/head&gt;
-                    &lt;body class="xp-page"&gt;
-                        &lt;div id="react4xpApp"&gt;&lt;/div&gt;
-                    &lt;/body&gt;
-                &lt;/html&gt;
-            `
-        }                                                   <i class="conum" data-value="5"></i><b>(5)</b>
-    )
-};</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Fetching the content data defined in the XML (and in the next line, we&#8217;re unpacking it into <code>pageConfig</code> while choosing that missing data should just display emptiness, not throw an error).</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The <code>props</code> object is just any standard JS object. So the data can of course come from anywhere you want and take any shape - with one exception: <code>props</code> needs to be <strong>serializable</strong>, so functions can&#8217;t be passed here!</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Connecting the field names in <code>pageConfig</code> from <em>hello-react.xml</em> to the prop names that <em>hello-react.jsx</em> needs.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>See how this makes the first two arguments of <code>React4xp.render</code> analogous to XP&#8217;s <code>thymeleaf.render</code> template engine? The first argument, <code>entry</code>, is just a reference to what should be rendered (<em>react component</em> ~ <em>template</em>), and the second one is a collection of data injected into it (<em>props</em> ~ <em>model</em>).</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>To keep things simpler and clearer, just remove the <code>ssr = false</code> flag from the previous example.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>There it is, now let&#8217;s take a look!</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="setup_and_rendering"><a class="link" href="#setup_and_rendering">Setup and rendering</a></h2>
+<h2 id="create_a_pub"><a class="link" href="#create_a_pub">Create a Pub</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Compile the project, enter Content Studio (see the first two steps in <a href="hello-react.ahtml#first_setup_render">the previous setup</a>), and edit the content you created (double-click it to open a new tab).</p>
+<p>Setting up a new Pub has never been easier. Back in Content Studio, click new - and select <code>Pub</code>, which should now be available in the list of content you can create.</p>
 </div>
 <div class="paragraph">
-<p>You should still see it in the preview panel on the right (although, since you probably created the content without any data created along with it, it might not display much of the text. We&#8217;ll fix that):</p>
+<p>Fill in the form, and press save to see the glorious result.</p>
 </div>
 <div class="paragraph thumb">
 <p><span class="image"><img src="media/hello_cs.png" alt="hello cs" width="720px" title="Editing Hello World, same as before."></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
-<p>Now, when you click the preview panel, the page-config editing panel should open on the right, with the data fields containing the default text we defined. Once you click Apply/save, the preview panel to the left should update.</p>
-</div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/hello_editorial.png" alt="hello editorial" width="720px" title="Editing Hello World in the page-config panel in Content Studio."></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="paragraph">
-<p>So now, it looks the same as before, but with editorial data instead of hardcoded text. Boring, and too similar to the previous example; just repeating "Hello World" might cause a little confusion. <strong>Try adding your own data in the fields</strong>, for example changing <em>"world"</em> into <em>"<a href="https://montypython.fandom.com/wiki/Bruces_sketch">Bruce</a>"</em> etc, to keep it clear.</p>
-</div>
-<div class="paragraph">
-<p><strong>Apply/save</strong> your new props, and the output should change again. But since we&#8217;re still in Content Studio, it&#8217;s just a static serverside-rendered update. To see the final rendering with your new data, all active, click <em>Preview</em> on the top to open the page in a fresh tab:</p>
-</div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/gday_bruce.png" alt="gday bruce" width="720px" title="Rendering: G&#8217;day Bruce. This is turning into one big philosophers' joke, isn&#8217;t it?"></span></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="output"><a class="link" href="#output">Output</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>So did anything change in the rendered response, compared to <a href="hello-react.ahtml#hello_output">the first serverside-rendered example</a>? Not all that much, actually. Depending on what data you inserted and the resulting <code>props</code>, your page source should look something like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-html" data-lang="html">&lt;html&gt;
-&lt;head&gt;&lt;/head&gt;
-&lt;body class="xp-page"&gt;
-
-    <i class="conum" data-value="1"></i><b>(1)</b>
-    &lt;div id="react4xpApp"&gt;
-        &lt;div data-reactroot=""&gt;
-            &lt;h1&gt;G'day&lt;!-- --&gt; &lt;!-- --&gt;Bruce&lt;!-- --&gt; !&lt;/h1&gt;
-            &lt;p&gt;Click me: &lt;span id="counter"&gt;42&lt;/span&gt; &lt;!-- --&gt;tubes&lt;!-- --&gt; on the wall.&lt;/p&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-
-    <i class="conum" data-value="2"></i><b>(2)</b>
-    &lt;script src="(...your.app.service) /react4xp/globals.489d97cdf.js"&gt;&lt;/script&gt;
-    &lt;script src="(...your.app.service) /react4xp/client.5678abcd.js"&gt;&lt;/script&gt;
-    &lt;script src="(...your.app.service) /react4xp/site/pages/hello-react/hello-react.12345678.js"&gt;&lt;/script&gt;
-
-    &lt;script src="(...your.app.service) /react4xp/dynamic.87654321.js"&gt;&lt;/script&gt;                            <i class="conum" data-value="3"></i><b>(3)</b>
-
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Since we removed the <code>ssr = false</code> flag again, the target container <code>react4xpApp</code> comes filled from the server. But now with a rendering with <em>your</em> texts from <code>props</code> already inserted.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>There&#8217;s still no change in the asset URLs, but since we changed <em>hello-react.jsx</em>, the content of <em>hello-react.js</em> has of course been recompiled.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The script that actually runs <code>hydrate</code> with the <code>props</code> on the clientside.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
 </div>
 </div>
@@ -768,24 +559,22 @@ exports.get = function(request) {
 <h2 id="further_reading"><a class="link" href="#further_reading">Further reading</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Now might be a good time to take a closer look at <a href="api.ahtml#react4xp_render">the API overview of the .render call</a> from the ES6 controller in the example above.</p>
+<p>Now might be a good time to take a closer look at <a href="appendix/api.ahtml#react4xp_render">the API overview of the .render call</a> from the ES6 controller in the example above.</p>
 </div>
-<div class="paragraph">
-<p>&#8203;<br></p>
 </div>
-<div class="paragraph">
-<p>Either way, you should be ready for the last of the three basic lesson chapters.</p>
 </div>
+<div class="sect1">
+<h2 id="next"><a class="link" href="#next">Next</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br></p>
+<p>TODO</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-01-07 18:05:17 UTC
+Last updated 2025-01-07 18:05:19 UTC
 </div>
 </div>
 </body>

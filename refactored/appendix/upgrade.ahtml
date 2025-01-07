@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.22">
-<title>Upgrading to v5</title>
+<meta name="generator" content="Asciidoctor 2.0.23">
+<title>Upgrading to v6</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,147 +437,104 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Upgrading to v5</h1>
+<h1>Upgrading to v6</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#important_changes">Important changes</a>
+<li><a href="#background">Background</a></li>
+<li><a href="#changes">Changes</a>
 <ul class="sectlevel2">
-<li><a href="#import_restrictions">Import restrictions</a></li>
-<li><a href="#entry_extension_whitelist">Entry Extension Whitelist</a></li>
-<li><a href="#enonicreact_components">@enonic/react-components</a></li>
+<li><a href="#single_react_app">Single React app</a></li>
+<li><a href="#pages_and_layouts_must_be_implemented_with_react">Pages and layouts must be implemented with React</a></li>
+<li><a href="#detached_front_end">Detached front-end</a></li>
+<li><a href="#component_registry">Component registry</a></li>
 </ul>
 </li>
-<li><a href="#upgrade_steps">Upgrade steps</a>
-<ul class="sectlevel2">
-<li><a href="#package_json">package.json</a></li>
-<li><a href="#build_gradle">build.gradle</a></li>
-<li><a href="#react4xp_config_json">react4xp.config.json</a></li>
-<li><a href="#build">Build</a></li>
-<li><a href="#move_code">Move code</a></li>
-</ul>
-</li>
-<li><a href="#side_notes">Side notes</a>
-<ul class="sectlevel2">
-<li><a href="#enonicreact_components_2">@enonic/react-components</a></li>
-</ul>
-</li>
+<li><a href="#migration_steps">Migration steps</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="important_changes"><a class="link" href="#important_changes">Important changes</a></h2>
+<h2 id="background"><a class="link" href="#background">Background</a></h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="import_restrictions"><a class="link" href="#import_restrictions">Import restrictions</a></h3>
 <div class="paragraph">
-<p>It turns out importing from React4xp entries causes "intermittent" SSR errors. "When" it happens depends upon which page is visited first, after starting the React4xp application.</p>
+<p>This section describes the steps to upgrade from React4XP v5 go v6.</p>
 </div>
 <div class="paragraph">
-<p>"Why" it happens is slightly complex. Entries and dependencies are transpiled with different optimizations. When an entry is imported somewhere: the imported entry&#8217;s source code is duplicated into multiple bundles. Each bundle pushes it&#8217;s "version" of the code onto the global chunk object using a chunk id. All duplications use the same chunk id, but have different optimizations. When the original entry "wins", everything works as expected, but when a imported chunk with wrong optimization wins, the error occurs.</p>
-</div>
-<div class="paragraph">
-<p>To avoid this we have introduced import restrictions on the site folder and entryDirs. Trying to import from any restricted path, will cause a compilation error with a helpful error message.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="entry_extension_whitelist"><a class="link" href="#entry_extension_whitelist">Entry Extension Whitelist</a></h3>
-<div class="paragraph">
-<p>We have also introduced a configurable <code>entryExtensionWhitelist</code>.</p>
-</div>
-<div class="paragraph">
-<p>This is a list of file extensions that are allowed to be imported from under site and entryDirs. There is a default list, but you can override it in react4xp.config.json.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="enonicreact_components"><a class="link" href="#enonicreact_components">@enonic/react-components</a></h3>
-<div class="paragraph">
-<p>If you are using @enonic/react-components, you might run into some compiletime resolve issues. The new version of this package fixes that.</p>
-</div>
+<p>There are significant changes between these versions, but you should be able to reuse most of the code that fetches data, as well we your React templates.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="upgrade_steps"><a class="link" href="#upgrade_steps">Upgrade steps</a></h2>
+<h2 id="changes"><a class="link" href="#changes">Changes</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Upgrade @enonic/react4xp in package.json, and also the lib-react4xp in build.gradle.</p>
+<p>The most significant changes between these versions are:</p>
 </div>
 <div class="sect2">
-<h3 id="package_json"><a class="link" href="#package_json">package.json</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">npm install --save-dev @enonic/react4xp@^5</code></pre>
-</div>
+<h3 id="single_react_app"><a class="link" href="#single_react_app">Single React app</a></h3>
+<div class="paragraph">
+<p>In v6, each page only has a single React entry/application, vs one entry/app per CMS part in the previous version</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="build_gradle"><a class="link" href="#build_gradle">build.gradle</a></h3>
-<div class="listingblock">
-<div class="title">build.gradle</div>
-<div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
-    include "com.enonic.lib:lib-react4xp:5.x.x"
-}</code></pre>
-</div>
+<h3 id="pages_and_layouts_must_be_implemented_with_react"><a class="link" href="#pages_and_layouts_must_be_implemented_with_react">Pages and layouts must be implemented with React</a></h3>
+<div class="paragraph">
+<p>In v5, pages and parts could not be implemented as TSX, because React did not support nested apps/entries.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="react4xp_config_json"><a class="link" href="#react4xp_config_json">react4xp.config.json</a></h3>
-<div class="listingblock">
-<div class="title">react4xp.config.json</div>
-<div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">entryExtensionWhitelist: [
-    'css',
-    'd', <i class="conum" data-value="1"></i><b>(1)</b>
-    'png',
-    'sass',
-    'scss',
-    'styl'
-],</code></pre>
+<h3 id="detached_front_end"><a class="link" href="#detached_front_end">Detached front-end</a></h3>
+<div class="paragraph">
+<p>v5 was based on XP&#8217;s traditional site engine, where rendering is bundled together with each CMS component.</p>
 </div>
+<div class="paragraph">
+<p>React4XP severs this tie, and takes full control over the rendering, via a controller mapping. This means you may implement the front-end/rendering code separately from the CMS model definition - even via a separate XP application than where your model is defined.</p>
 </div>
-<div class="colist arabic">
+<div class="paragraph">
+<p>You may still add the front-end code in the same application as your model, at your own discretion.</p>
+</div>
+<div class="admonitionblock important">
 <table>
 <tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>TypeScript declaration files</td>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+You may still combine React4XP apps with other XP apps on the same site. For instance apps that add services, or contribute scripts or tags to the response.
+</td>
 </tr>
 </table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="build"><a class="link" href="#build">Build</a></h3>
+<h3 id="component_registry"><a class="link" href="#component_registry">Component registry</a></h3>
 <div class="paragraph">
-<p>Try to compile and see if you get the compilation error mentioned in the what section at the top.</p>
+<p>TODO: Move
+React4XP follows a traditional MVC approach, where data is first collected into a model (in the form of props), and then passed to the view (React template)</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="move_code"><a class="link" href="#move_code">Move code</a></h3>
 <div class="paragraph">
-<p>If you get a compilation error, move any imported entry code outside site and entryDirs. For example into the src/main/resources/react4xp folder.</p>
+<p>To facilitate this, you register server-side controllers that fetches relevant content for each component</p>
+</div>
+<div class="paragraph">
+<p>On the view side of things, each CMS component is implemented as a React component, and added to a component registry.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="side_notes"><a class="link" href="#side_notes">Side notes</a></h2>
+<h2 id="migration_steps"><a class="link" href="#migration_steps">Migration steps</a></h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="enonicreact_components_2"><a class="link" href="#enonicreact_components_2">@enonic/react-components</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">npm install --save-dev @enonic/react-components@^4</code></pre>
-</div>
-</div>
+<div class="paragraph">
+<p>TODO</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-16 06:22:56 UTC
+Last updated 2025-01-07 18:05:19 UTC
 </div>
 </div>
 </body>

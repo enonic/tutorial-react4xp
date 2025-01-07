@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.22">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <title>XP content studio -  pages, parts, regions and content</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -581,12 +581,7 @@ site/parts/
 <div class="listingblock">
 <div class="title">my-content.xml:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;content-type&gt;
-  &lt;display-name&gt;My Content&lt;/display-name&gt;
-  &lt;description&gt;Just some content&lt;/description&gt;
-  &lt;super-type&gt;base:structured&lt;/super-type&gt;
-  &lt;form/&gt;
-&lt;/content-type&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/content-types/my-content/my-content.xml[]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -601,14 +596,7 @@ site/parts/
 <div class="listingblock">
 <div class="title">default.xml:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;page&gt;
-  &lt;display-name&gt;Default page&lt;/display-name&gt;
-  &lt;description&gt;Default react-rendered Page controller&lt;/description&gt;
-  &lt;form/&gt;
-  &lt;regions&gt;
-    &lt;region name="main"/&gt;
-  &lt;/regions&gt;
-&lt;/page&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/pages/default/default.xml[]</code></pre>
 </div>
 </div>
 </div>
@@ -640,15 +628,7 @@ site/parts/
 <div class="listingblock">
 <div class="title">default.tsx</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react';
-import Regions from '@enonic/react-components/Regions'; <i class="conum" data-value="1"></i><b>(1)</b>
-
-
-export default (props) =&gt; (
-    &lt;div className="default-page"&gt;
-        &lt;Regions {...props} /&gt; {/* &lt;2&gt; */}
-    &lt;/div&gt;
-);</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/pages/default/default.tsx[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -672,40 +652,7 @@ export default (props) =&gt; (
 <div class="listingblock">
 <div class="title">default.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import {getContent} from '/lib/xp/portal';
-import {render} from '/lib/enonic/react4xp';
-
-export function get(request) {
-    const content = getContent();
-    const entry = content.page;
-
-    const id = `react4xp_${content._id}`;   <i class="conum" data-value="1"></i><b>(1)</b>
-
-    const props = {
-        regionsData: content.page.regions,  <i class="conum" data-value="2"></i><b>(2)</b>
-        names: "main",                      <i class="conum" data-value="3"></i><b>(3)</b>
-        tag: "main",                        <i class="conum" data-value="4"></i><b>(4)</b>
-    };
-
-    return render(
-        entry,
-        props,
-        null,                               <i class="conum" data-value="5"></i><b>(5)</b>
-        {
-            id,
-            body: `
-                &lt;html&gt;
-                    &lt;head&gt;
-                        &lt;title&gt;${content.displayName}&lt;/title&gt;
-                    &lt;/head&gt;
-                    &lt;body class="xp-page"&gt;
-                        &lt;div id="${id}"&gt;&lt;/div&gt;
-                    &lt;/body&gt;
-                &lt;/html&gt;
-            `
-        }
-    );
-};</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/pages/default/default.ts[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -813,18 +760,7 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 <div class="listingblock">
 <div class="title">color.xml:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
-&lt;part&gt;
-    &lt;display-name&gt;Color part&lt;/display-name&gt;
-    &lt;description&gt;React4xp rendered part with editorial color&lt;/description&gt;
-    &lt;form&gt;
-        &lt;input name="color" type="TextLine"&gt;
-            &lt;label&gt;What's the color of the thing?&lt;/label&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
-            &lt;default&gt;red&lt;/default&gt;
-        &lt;/input&gt;
-    &lt;/form&gt;
-&lt;/part&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/parts/color/color.xml[]</code></pre>
 </div>
 </div>
 </div>
@@ -836,18 +772,7 @@ Adding an XP Region to a Layout is the same, only easier: since it will be injec
 <div id="color_jsx" class="listingblock">
 <div class="title">color.tsx</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react';
-
-export default (props) =&gt; (
-    &lt;div style={{
-        border: `1px solid ${props.color}`,
-        margin: "8px",
-        padding: "8px",
-        borderRadius: "10px"
-    }}&gt;
-        &lt;p style={{color: props.color}}&gt;Hey, I'm pretty {props.color}!&lt;/p&gt;
-    &lt;/div&gt;
-);</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/parts/color/color.tsx[]</code></pre>
 </div>
 </div>
 </div>
@@ -859,47 +784,7 @@ export default (props) =&gt; (
 <div id="color_part_controller" class="listingblock">
 <div class="title">color.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import type {PartComponent} from '@enonic-types/core';
-
-
-import {getComponent} from '/lib/xp/portal';
-import {render} from '/lib/enonic/react4xp';
-
-
-declare global {
-  interface XpPartMap {
-    ['com.enonic.app.samples-react4xp:color']: {
-      color: string
-    }
-  }
-}
-
-
-export function get(request) {
-
-  const component = getComponent&lt;PartComponent&lt;'com.enonic.app.samples-react4xp:color'&gt;&gt;();
-  const {color} = component.config;
-  const props = { color };
-
-  const response = render(
-    component,
-    props,
-    request,
-    {                               <i class="conum" data-value="1"></i><b>(1)</b>
-        ssr: false,                 <i class="conum" data-value="2"></i><b>(2)</b>
-        pageContributions: {        <i class="conum" data-value="3"></i><b>(3)</b>
-            bodyEnd: `&lt;script nonce="rAnd0m"&gt;console.log("The color of the thing is: ${color}");&lt;/script&gt;`
-        }
-    }
-  );
-
-  // Allow execturing the script tag we added above:
-  response.headers = {
-    'content-security-policy': `script-src 'self' 'nonce-rAnd0m'`
-  };
-
-  return response;
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/parts/color/color.ts[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1010,7 +895,7 @@ export function get(request) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-16 06:22:56 UTC
+Last updated 2025-01-07 18:05:19 UTC
 </div>
 </div>
 </body>

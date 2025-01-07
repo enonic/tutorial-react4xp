@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.22">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <title>Imports, chunks, config, webpack</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -555,23 +555,7 @@ webpack.config.react4xp.js</code></pre>
 <div class="listingblock">
 <div class="title">site/parts/multi-color/multi-color.xml:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
-&lt;part&gt;
-    &lt;display-name&gt;Multi-Color&lt;/display-name&gt;
-    &lt;description&gt;Add your own clickable colors&lt;/description&gt;
-
-    &lt;form&gt;
-        &lt;input name="SSR" type="CheckBox"&gt;          &lt;!-- &lt;1&gt; --&gt;
-            &lt;label&gt;Server-side rendering&lt;/label&gt;
-            &lt;occurrences minimum="0" maximum="1"/&gt;
-        &lt;/input&gt;
-
-        &lt;input name="colors" type="TextLine"&gt;       &lt;!-- &lt;2&gt; --&gt;
-            &lt;label&gt;Color&lt;/label&gt;
-            &lt;occurrences minimum="0" maximum="0"/&gt;
-        &lt;/input&gt;
-    &lt;/form&gt;
-&lt;/part&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/parts/multi-color/multi-color.xml[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -595,47 +579,7 @@ webpack.config.react4xp.js</code></pre>
 <div class="listingblock">
 <div class="title">site/parts/multi-color/multi-color.ts:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import type {PartComponent} from '@enonic-types/core';
-import type {MultiColorProps} from '../../../react4xp/myEntries/MultiColor.d';
-
-
-import {forceArray} from '@enonic/js-utils/array/forceArray';
-import {getComponent} from '/lib/xp/portal';
-import {render} from '/lib/enonic/react4xp';
-
-
-declare global {
-  interface XpPartMap {
-    ['com.enonic.app.samples-react4xp:multi-color']: {
-      colors?: string|string[]
-      SSR?: boolean
-    }
-  }
-}
-
-
-const ENTRY = 'MultiColor';
-
-
-export function get(request) {
-  const component = getComponent&lt;PartComponent&lt;'com.enonic.app.samples-react4xp:multi-color'&gt;&gt;();
-
-  const {
-    colors = [],
-    SSR: ssr = false, <i class="conum" data-value="1"></i><b>(1)</b>
-  } = component.config;
-
-  const props: MultiColorProps = {
-    colors: forceArray(colors).map(c =&gt; (c || '').trim()).filter(c =&gt; !!c) <i class="conum" data-value="2"></i><b>(2)</b>
-  };
-
-  return render(
-    ENTRY, <i class="conum" data-value="3"></i><b>(3)</b>
-    props,
-    request,
-    { ssr }
-  );
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/parts/multi-color/multi-color.ts[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -674,72 +618,7 @@ export function get(request) {
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/myEntries/MultiColor.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import type {MultiColorProps} from './MultiColor.d';
-
-import React from 'react';
-
-import Button from '../shared/Button';                  <i class="conum" data-value="1"></i><b>(1)</b>
-import ColorButtons from '../shared/ColorButtons';
-import ActiveColorOval from '../shared/ActiveColorOval';
-
-import './MultiColor.scss';                             <i class="conum" data-value="2"></i><b>(2)</b>
-import '../shared/shared-styles.scss';                  <i class="conum" data-value="3"></i><b>(3)</b>
-
-
-class MultiColor extends React.Component&lt;MultiColorProps&gt; { <i class="conum" data-value="4"></i><b>(4)</b>
-  state: { selected: number } = { selected: 0 };        <i class="conum" data-value="5"></i><b>(5)</b>
-
-  constructor(props: MultiColorProps) {
-      super(props);
-      // this.state = {
-      //     selected: 0                              <i class="conum" data-value="5"></i><b>(5)</b>
-      // };
-
-      this.shiftUp = this.shiftUp.bind(this);         <i class="conum" data-value="6"></i><b>(6)</b>
-      this.shiftDown = this.shiftDown.bind(this);
-  }
-
-  shiftUp() {                                         <i class="conum" data-value="7"></i><b>(7)</b>
-      this.setState({
-          selected: (this.state.selected + 1) % this.props.colors.length
-      });
-  };
-  shiftDown() {
-      this.setState({
-          selected: (this.props.colors.length + this.state.selected - 1) % this.props.colors.length
-      });
-  };
-
-  render() {
-      const props = this.props;
-      const state = this.state;
-      return props.colors.length ?                    <i class="conum" data-value="8"></i><b>(8)</b>
-          &lt;div className="multi-color"&gt;
-
-                                                      {/* &lt;9&gt; */}
-              &lt;Button className="my-button" clickFunc={this.shiftDown}&gt;Previous color&lt;/Button&gt;
-              &lt;Button className="my-button" clickFunc={this.shiftUp}&gt;Next color&lt;/Button&gt;
-
-                                                      {/* &lt;10&gt; */}
-              &lt;ActiveColorOval color={props.colors[state.selected]} /&gt;
-
-                                                      {/* &lt;11&gt; */}
-              &lt;ColorButtons colors={props.colors}
-                            selectedIndex={state.selected}
-                            clickFunc={ i =&gt; {
-                                this.setState({selected: (i) % props.colors.length});
-                            }}
-              /&gt;
-
-          &lt;/div&gt; :
-
-                                                      <i class="conum" data-value="12"></i><b>(12)</b>
-          &lt;p&gt;Add some color!&lt;/p&gt;
-  }
-}
-
-                                                      <i class="conum" data-value="13"></i><b>(13)</b>
-export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/react4xp/myEntries/MultiColor.tsx[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -809,13 +688,7 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/myEntries/MultiColor.scss:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">.my-button {
-  padding: 16px 35px;
-  border-radius: 5px;
-  border: 2px solid black;
-  font-weight: bold;
-  margin: 10px 40px;
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">## include::../src/main/resources/react4xp/myEntries/MultiColor.scss[]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -827,10 +700,7 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/shared-styles.scss:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">* {
-  font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
-  font-size: 15pt;
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">## include::../src/main/resources/react4xp/shared/shared-styles.scss[]</code></pre>
 </div>
 </div>
 </div>
@@ -859,28 +729,7 @@ It&#8217;s important that these react components are <strong>not <a href="append
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/Button.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react';
-
-import './Button.scss'; <i class="conum" data-value="1"></i><b>(1)</b>
-
-export default ({
-  clickFunc,
-  className,
-  style,
-  children
-}: {
-  clickFunc: () =&gt; void;
-  className: string;
-  style?: React.CSSProperties;
-  children: React.ReactNode;
-}) =&gt;
-  &lt;button className={className}
-          type="button"
-          onClick={clickFunc}
-          style={style}
-  &gt;
-    {children}
-  &lt;/button&gt;;</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/react4xp/shared/Button.tsx[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -894,9 +743,7 @@ export default ({
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/Button.scss:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">button {
-  cursor:pointer;
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">## include::../src/main/resources/react4xp/shared/Button.scss[]</code></pre>
 </div>
 </div>
 </div>
@@ -908,31 +755,13 @@ export default ({
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/ActiveColorOval.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react';
-
-import './ActiveColorOval.scss';
-
-export default ({color}: {color: string}) =&gt;
-  &lt;div className="active-color-oval"
-        style={{backgroundColor: color}}
-  &gt;
-    {color}
-  &lt;/div&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/react4xp/shared/ActiveColorOval.tsx[]</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/ActiveColorOval.scss:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">import React from 'react';
-
-import './ActiveColorOval.scss';
-
-export default ({color}: {color: string}) =&gt;
-  &lt;div className="active-color-oval"
-        style={{backgroundColor: color}}
-  &gt;
-    {color}
-  &lt;/div&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">## include::../src/main/resources/react4xp/shared/ActiveColorOval.tsx[]</code></pre>
 </div>
 </div>
 </div>
@@ -944,65 +773,13 @@ export default ({color}: {color: string}) =&gt;
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/ColorButtons.tsx:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import React from 'react';
-
-import Button from './Button';
-
-import './ColorButtons.scss';
-
-export default ({
-  colors,
-  selectedIndex,
-  clickFunc
-}: {
-  colors: string[];
-  selectedIndex: number;
-  clickFunc: (i: number) =&gt; void;
-}) =&gt;
-  &lt;ul className="color-list"&gt;
-    {colors.map( (color, i) =&gt;
-
-      &lt;li key={i} className="color"&gt;
-        &lt;Button className={`color-button${i === selectedIndex ? ' selected' : ''}`}
-                clickFunc={ ()=&gt;clickFunc(i) }
-                style={{backgroundColor: color, borderColor: color}}
-        &gt;
-          {color}
-        &lt;/Button&gt;
-      &lt;/li&gt;
-
-    )}
-  &lt;/ul&gt;;</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/react4xp/shared/ColorButtons.tsx[]</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/ColorButtons.scss:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">.color {
-  width: 50%;
-  list-style-type: none;
-  margin-bottom: 5px;
-}
-
-.color-button {
-  min-width: 100%;
-  padding: 6px;
-  border-radius: 5px;
-  border: 1px solid black;
-
-  &amp;:focus {
-    outline: none;
-  }
-
-  &amp;.selected {
-    color: white;
-    font-weight: bold;
-  }
-
-  &amp;:not(.selected) {
-    background-color: white !important;
-  }
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">## include::../src/main/resources/react4xp/shared/ColorButtons.scss[]</code></pre>
 </div>
 </div>
 </div>
@@ -1085,19 +862,39 @@ chunkDirs: 'shared'    <i class="conum" data-value="2"></i><b>(2)</b></code></pr
 <div class="listingblock">
 <div class="title">webpack.config.react4xp.js:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">//──────────────────────────────────────────────────────────────────────────────
+// Use this file to adjust the webpack config.
+//──────────────────────────────────────────────────────────────────────────────
+// A template version of this, with upated properties and explanations,
+//  can always be found in the react4xp NPM package:
+//   node_modules/react4xp/examples/webpack.config.react4xp.js after installing,
+//  or:
+//   https://github.com/enonic/enonic-react4xp/blob/master/examples/webpack.config.react4xp.js
+//──────────────────────────────────────────────────────────────────────────────
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const rspack = require('@rspack/core');
 
-module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>(1)</b>
+module.exports = function(env, config) {
+
+	// Comment in and customize the lines below to improve incremental builds in
+	// development mode. (see https://webpack.js.org/configuration/cache/)
+	//
+	// if (process.env.NODE_ENV === 'development') {
+	// 	config.cache = {
+	// 		type: 'filesystem'
+	// 	}
+	// }
 
 	// This makes 'npm link' symlinks in node_modules work:
 	config.resolve.symlinks = true;
 
-	config.module.rules = [ <i class="conum" data-value="2"></i><b>(2)</b>
+	config.module.rules = [
 		...(config.module.rules || []),
 		{
 			test: /\.((sa|sc|c))ss$/i,
 			use: [
-				MiniCssExtractPlugin.loader,
+				// MiniCssExtractPlugin.loader,
+				rspack.CssExtractRspackPlugin.loader,
 				{
 					loader: 'css-loader',
 					options: {
@@ -1114,19 +911,27 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 					}
 				}
 			]
-		}
+		},
+		{
+			test: /\.(woff|woff2|eot|ttf|otf)$/i,
+			type: 'asset/resource', // ends up as auxiliaryAssets in stats.components.json
+		},
 	]
 
 	// Set up how the compiled assets are exported:
 	config.plugins = [
 		...(config.plugins || []),
-		new MiniCssExtractPlugin({
-			filename: '[name].css',
-			chunkFilename: '[id].[contenthash:9].css'
+		// new MiniCssExtractPlugin({
+		// 	filename: '[name].[contenthash:9].css',
+		// 	chunkFilename: '[id].[contenthash:9].css'
+		// }),
+		new rspack.CssExtractRspackPlugin({
+			chunkFilename: '[id].[contenthash:9].css',
+			filename: '[name].[contenthash:9].css',
 		})
 	]
 
-	return config; <i class="conum" data-value="3"></i><b>(3)</b>
+	return config;
 };</code></pre>
 </div>
 </div>
@@ -1289,7 +1094,7 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-16 06:22:56 UTC
+Last updated 2025-01-07 18:05:19 UTC
 </div>
 </div>
 </body>

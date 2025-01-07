@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.22">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <title>Custom flow syntax</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -551,41 +551,7 @@ site/pages/
 <div class="listingblock">
 <div class="title">custom-flow.xml:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;part&gt;
-    &lt;display-name&gt;CustomFlow example&lt;/display-name&gt;
-    &lt;description&gt;Single part with multiple entries&lt;/description&gt;
-    &lt;form&gt;
-        &lt;input name="color" type="TextLine"&gt;
-            &lt;label&gt;What's the color of the thing?&lt;/label&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
-            &lt;default&gt;red&lt;/default&gt;
-        &lt;/input&gt;
-
-        &lt;input type="TextLine" name="greeting"&gt;
-            &lt;label&gt;What's the greeting?&lt;/label&gt;
-            &lt;default&gt;Hello&lt;/default&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
-        &lt;/input&gt;
-
-        &lt;input type="TextLine" name="greetee"&gt;
-            &lt;label&gt;Who shall we greet?&lt;/label&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
-            &lt;default&gt;world&lt;/default&gt;
-        &lt;/input&gt;
-
-        &lt;input type="TextLine" name="things"&gt;
-            &lt;label&gt;What are the things on the wall?&lt;/label&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
-            &lt;default&gt;bottles of beer&lt;/default&gt;
-        &lt;/input&gt;
-
-        &lt;input type="Long" name="startCount"&gt;
-            &lt;label&gt;How many of them are there?&lt;/label&gt;
-            &lt;occurrences minimum="1" maximum="1"/&gt;
-            &lt;default&gt;99&lt;/default&gt;
-        &lt;/input&gt;
-    &lt;/form&gt;
-&lt;/part&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/parts/custom-flow/custom-flow.xml[]</code></pre>
 </div>
 </div>
 </div>
@@ -603,13 +569,7 @@ site/pages/
 <div class="listingblock">
 <div class="title">custom-flow-view.html:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-html" data-lang="html">&lt;div class="custom-flow-view"&gt;
-  &lt;section class="color-section"&gt;
-      &lt;h2 data-th-text="|Ain't nothing but a ${color} thing|"&gt;&lt;/h2&gt;
-      &lt;p&gt;Here it comes:&lt;/p&gt;
-      &lt;div data-th-id="${targetId}"&gt;&lt;/div&gt;
-  &lt;/section&gt;
-&lt;/div&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-html" data-lang="html">## include::../src/main/resources/site/parts/custom-flow/custom-flow-view.html[]</code></pre>
 </div>
 </div>
 </div>
@@ -654,107 +614,7 @@ site/pages/
 <div class="listingblock">
 <div class="title">custom-flow.ts</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import type {PartComponent} from '@enonic-types/core';
-
-
-import {getComponent} from '/lib/xp/portal';
-import {React4xp} from '/lib/enonic/react4xp';
-// @ts-expect-error No types for /lib/thymeleaf yet.
-import {render as renderThymeleaf} from '/lib/thymeleaf';
-
-
-declare global {
-  interface XpPartMap {
-    ['com.enonic.app.samples-react4xp:custom-flow']: {
-      color: string
-      greeting: string
-      greetee: string
-      things: string
-      startCount: number
-    }
-  }
-}
-
-
-const VIEW = resolve('custom-flow-view.html');
-
-
-export function get(request) {
-    // Fetching data from the part config:
-    const component = getComponent&lt;PartComponent&lt;'com.enonic.app.samples-react4xp:custom-flow'&gt;&gt;();
-    const {
-        color,
-        greeting,
-        greetee,
-        things,
-        startCount
-    } = component.config;
-
-    // Setting up the data-holding object for hello-react2.tsx:
-    const helloObj = new React4xp(`site/pages/hello-react2/hello-react2`);     <i class="conum" data-value="1"></i><b>(1)</b>
-    helloObj.setProps({                                                      <i class="conum" data-value="2"></i><b>(2)</b>
-            message: greeting,
-            messageTarget: greetee,
-            droppableThing: things,
-            initialCount: startCount
-        })
-
-
-    // Setting up colorObj, the data-holding object for color.tsx:
-    const colorObj = new React4xp(`site/parts/color/color`);
-    colorObj                                                                 <i class="conum" data-value="3"></i><b>(3)</b>
-        .setProps({ color })
-        .setId("myColorThing")                                               <i class="conum" data-value="4"></i><b>(4)</b>
-        .uniqueId()                                                          <i class="conum" data-value="5"></i><b>(5)</b>
-
-
-    // Using thymeleaf to render container HTML,
-    // inserting the colorObj's ID into the target container where colorObj will be rendered:
-    const thymeleafModel = {
-        color: colorObj.props.color,
-        targetId: colorObj.react4xpId
-    }
-    const colorSectionContainer = renderThymeleaf(VIEW, thymeleafModel);    <i class="conum" data-value="6"></i><b>(6)</b>
-
-
-    // Render the color.tsx entry into the same-ID target container in the container HTML:
-    const colorBody = colorObj.renderBody({
-        body: colorSectionContainer,                                         <i class="conum" data-value="7"></i><b>(7)</b>
-        request
-    });
-    // Rendering the activating page contributions of color.tsx.
-    const colorPageContributions = colorObj.renderPageContributions({
-        pageContributions: {                                                 <i class="conum" data-value="8"></i><b>(8)</b>
-            bodyEnd: `&lt;script&gt;console.log('Created: ${colorObj.props.color} thing.');&lt;/script&gt;`
-        },
-        request                                                              <i class="conum" data-value="9"></i><b>(9)</b>
-    });
-
-
-    // Rendering helloObj's entry into colorBody (which is basically custom-flow-view.html with color.tsx added),
-    // using client-side rendering only outside of Content Studio:
-    const finalBody = helloObj.renderBody({
-        body: colorBody,                                                     <i class="conum" data-value="10"></i><b>(10)</b>
-        ssr: false,                                                          <i class="conum" data-value="11"></i><b>(11)</b>
-        request
-    });
-
-    // Adding helloObj's page contributions to the previously rendered page contributions,
-    // duplicating ssr between renderPageContributions and renderBody (pair-wise for each entry).
-    const finalPageContributions = helloObj.renderPageContributions({
-        pageContributions: colorPageContributions,                           <i class="conum" data-value="12"></i><b>(12)</b>
-        // hydrate: false, // Turn off hydration?
-        ssr: false,
-        request
-    });
-
-
-    // Finally, returning the response object in the standard XP-controller way:
-    return {
-        body: finalBody,
-        pageContributions: finalPageContributions
-    }
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/parts/custom-flow/custom-flow.ts[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -898,7 +758,7 @@ colorObj.uniqueId();`.</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-16 06:22:56 UTC
+Last updated 2025-01-07 18:05:19 UTC
 </div>
 </div>
 </body>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.22">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <title>Imports, chunks, config, webpack</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -454,6 +454,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#dependencies_for_the_entry">Dependencies for the entry</a>
 <ul class="sectlevel3">
 <li><a href="#styling">Styling</a></li>
+<li><a href="#type_definitions">Type definitions</a></li>
 <li><a href="#imported_react_components">Imported react components</a></li>
 </ul>
 </li>
@@ -661,7 +662,7 @@ export function get(request) {
 <h2 id="the_multicolor_entry"><a class="link" href="#the_multicolor_entry">The <em>MultiColor</em> entry</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Before we do the React4xp / webpack configuration, we&#8217;ll make <strong>the <em>MultiColor.jsx</em> entry</strong> and its dependencies.</p>
+<p>Before we do the React4xp / webpack configuration, we&#8217;ll make <strong>the <em>MultiColor.tsx</em> entry</strong> and its dependencies.</p>
 </div>
 <div class="paragraph">
 <p>This is a more complex entry than before (and the most complex part of this example) - it&#8217;s composed of main react code that <strong>imports secondary dependencies</strong>.</p>
@@ -746,7 +747,14 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The entry imports some secondary react components for nesting later. These imports have nothing to do with React4xp&#8217;s <a href="appendix/jsxPath.ahtml">jsxPaths</a>, this is <strong>regular ES6 module importing</strong> and will be handled by webpack at compile time and served to the client at runtime. Basically any react component can be imported from anywhere here, including other entries. In this case we&#8217;re referring to components below a different folder, <em>shared/</em>, which we will <a href="#webpack_config">later</a> mark as a <strong>chunk directory</strong> instead of an entry directory. <em>Shared/</em> is not below <em>entries/</em> (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with <code>React4xp.render</code>. As you will see, this <strong>folder separation</strong> is also important for the compiled outcome: the entry, <em>MultiColor.jsx</em>, will be compiled into <em>r4xAssets/MultiColor.js</em>, but <strong>imported components</strong> like this will be collected inside a common <strong>dependency chunk</strong>: <em>r4xAssets/shared.&lt;HASH&gt;.js</em>. React4xp and webpack track the dependency connections between an entry and all its required chunks - so <code>React4xp.render</code> automatically generates asset-loading page contributions from the controller. The outcome: when the webpack rules are set up correctly later, <strong>imports like this in entries rendered by React4xp are all that&#8217;s needed to connect the entries to the additional assets they might need</strong>: no manual url handling in the controller or thymeleaf views etc. Dependency chunks are also  optimized for repeated use (more details on <a href="appendix/chunks.ahtml">dependency chunks</a>).</td>
+<td>The entry imports some secondary react components for nesting later.
+These imports have nothing to do with React4xp&#8217;s <a href="appendix/jsxPath.ahtml">jsxPaths</a>, this is <strong>regular ES6 module importing</strong> and will be handled by webpack at compile time and served to the client at runtime.
+Basically any react component can be imported from anywhere here, including other entries.
+In this case we&#8217;re referring to components below a different folder, <em>shared/</em>, which we will <a href="#webpack_config">later</a> mark as a <strong>chunk directory</strong> instead of an entry directory. <em>Shared/</em> is not below <em>entries/</em> (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with <code>React4xp.render</code>.
+As you will see, this <strong>folder separation</strong> is also important for the compiled outcome: the entry, <em>MultiColor.tsx</em>, will be compiled into <em>r4xAssets/MultiColor.js</em>, but <strong>imported components</strong> like this will be collected inside a common <strong>dependency chunk</strong>: <em>r4xAssets/shared.&lt;HASH&gt;.js</em>.
+React4xp and webpack track the dependency connections between an entry and all its required chunks - so <code>React4xp.render</code> automatically generates asset-loading page contributions from the controller.
+The outcome: when the webpack rules are set up correctly later, <strong>imports like this in entries rendered by React4xp are all that&#8217;s needed to connect the entries to the additional assets they might need</strong>: no manual url handling in the controller or thymeleaf views etc.
+Dependency chunks are also optimized for repeated use (more details on <a href="appendix/chunks.ahtml">dependency chunks</a>).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -818,11 +826,26 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="type_definitions"><a class="link" href="#type_definitions">Type definitions</a></h4>
+<div class="paragraph">
+<p>Next up is the <strong>type definitions</strong> for the entry:
+.src/main/resources/react4xp/myEntries/MultiColor.d.ts:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">export type MultiColorProps = {
+  colors?: string[]
+}</code></pre>
+</div>
+</div>
 <div class="paragraph">
 <p><strong>Moving on to the <em>shared/</em> folder</strong>, this is where we find source files that will be compiled into common assets: dependency chunks with the <em>"shared"</em> prefix and a content-dependent <em>"&lt;HASH&gt;"</em> (reminder: this will happen because we later will mark <em>shared/</em> as a <code>chunkDir</code> in <em>react4xp.properites</em>).</p>
 </div>
 <div class="paragraph">
-<p>First, some <strong><em>shared-styles.scss</em></strong>, also imported by the entry <em>MultiColor.jsx</em>. This could for example serve as common, normalizing styling imported by many react components across wide parts of a site:</p>
+<p>First, some <strong><em>shared-styles.scss</em></strong>, also imported by the entry <em>MultiColor.tsx</em>.
+This could for example serve as common, normalizing styling imported by many react components across wide parts of a site:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/shared-styles.scss:</div>
@@ -837,7 +860,8 @@ export default (props: MultiColorProps) =&gt; &lt;MultiColor {...props} /&gt;;</
 <div class="sect3">
 <h4 id="imported_react_components"><a class="link" href="#imported_react_components">Imported react components</a></h4>
 <div class="paragraph">
-<p>Next, <em>shared/</em> also contains the <strong>secondary react components</strong> imported by  <em>MultiColor.jsx</em>. Note how each of them imports their own specific styling the same way as the entry <em>MultiColor.jsx</em>.</p>
+<p>Next, <em>shared/</em> also contains the <strong>secondary react components</strong> imported by  <em>MultiColor.tsx</em>.
+Note how each of them imports their own specific styling the same way as the entry <em>MultiColor.tsx</em>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -854,7 +878,9 @@ It&#8217;s important that these react components are <strong>not <a href="append
 <div class="sect4">
 <h5 id="button"><a class="link" href="#button">Button</a></h5>
 <div class="paragraph">
-<p>There&#8217;s the generic <strong>Button</strong> component. This is used both by <em>MultiColor.jsx</em> and the secondary component <em>ColorButtons.jsx</em>. It gets custom onClick function, HTML class, inline styling (for single-button-specific attributes) and label (<code>children</code>) from <code>props</code> (the spread-out function parameters):</p>
+<p>There&#8217;s the generic <strong>Button</strong> component.
+This is used both by <em>MultiColor.tsx</em> and the secondary component <em>ColorButtons.tsx</em>.
+It gets custom onClick function, HTML class, inline styling (for single-button-specific attributes) and label (<code>children</code>) from <code>props</code> (the spread-out function parameters):</p>
 </div>
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/Button.tsx:</div>
@@ -923,23 +949,24 @@ export default ({color}: {color: string}) =&gt;
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/ActiveColorOval.scss:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">import React from 'react';
-
-import './ActiveColorOval.scss';
-
-export default ({color}: {color: string}) =&gt;
-  &lt;div className="active-color-oval"
-        style={{backgroundColor: color}}
-  &gt;
-    {color}
-  &lt;/div&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-sass" data-lang="sass">.active-color-oval {
+  margin: 10px 40px;
+  background-color: transparent;
+  padding: 20px;
+  border-radius: 50%;
+  float: right;
+  color: white;
+}</code></pre>
 </div>
 </div>
 </div>
 <div class="sect4">
 <h5 id="colorbuttons"><a class="link" href="#colorbuttons">ColorButtons</a></h5>
 <div class="paragraph">
-<p>And finally a <strong>ColorButtons</strong> component. It takes the list of <code>props.colors</code> (from the editorial data), and assigns each of them to a <code>Button</code> labeled with the color, each of them triggering the change-color-selection from <em>MultiColor.jsx</em> with its own specific color index <code>i</code> in the list of colors. In addition, the HTML class name(s) of the buttons is assigned dynamically: the buttons all have a <code>color-button</code> class, and each item checks if its own array index <code>i</code> matches the current <code>selectedIndex</code>. If it does, the class <code>selected</code> is added, making that button differently styled:</p>
+<p>And finally a <strong>ColorButtons</strong> component.
+It takes the list of <code>props.colors</code> (from the editorial data), and assigns each of them to a <code>Button</code> labeled with the color, each of them triggering the change-color-selection from <em>MultiColor.tsx</em> with its own specific color index <code>i</code> in the list of colors.
+In addition, the HTML class name(s) of the buttons is assigned dynamically: the buttons all have a <code>color-button</code> class, and each item checks if its own array index <code>i</code> matches the current <code>selectedIndex</code>.
+If it does, the class <code>selected</code> is added, making that button differently styled:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/shared/ColorButtons.tsx:</div>
@@ -1036,9 +1063,9 @@ If you need more details, some of this is covered in more depth under <a href="a
 <div class="listingblock">
 <div class="title">react4xp.config.js:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-js" data-lang="js">entryDirs: 'myEntries'   <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlight nowrap"><code class="language-js" data-lang="js">entryDirs: ['myEntries']   <i class="conum" data-value="1"></i><b>(1)</b>
 
-chunkDirs: 'shared'    <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+chunkDirs: ['shared']    <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1289,7 +1316,7 @@ module.exports = function(env, config) { <i class="conum" data-value="1"></i><b>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-16 06:22:55 UTC
+Last updated 2025-01-07 18:05:18 UTC
 </div>
 </div>
 </body>
