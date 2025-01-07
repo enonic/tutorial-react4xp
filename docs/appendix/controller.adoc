@@ -81,7 +81,7 @@ The render function kicks off React server-side rendering by invoking the `App` 
 ./src/main/resources/react4xp/entries/App.tsx
 [source,React]
 ----
-include::../src/main/resources/react4xp/entries/App.tsx[]
+include::../../src/main/resources/react4xp/entries/App.tsx[]
 ----
 
 From here on, it is all React.
