@@ -1,6 +1,6 @@
 plugins {
-    id 'com.enonic.xp.app' version '3.4.0'
-    id "com.github.node-gradle.node" version "7.0.2"
+    id 'com.enonic.xp.app' version '3.5.2'
+    id "com.github.node-gradle.node" version "7.1.0"
 }
 
 repositories {
@@ -11,7 +11,7 @@ repositories {
 
 node {
     download = true
-    version = '18.18.0'
+    version = '20.13.1'
 }
 
 app {
@@ -33,15 +33,15 @@ dependencies {
     //include "com.enonic.xp:lib-io:${xpVersion}"
     //include "com.enonic.xp:lib-mail:${xpVersion}"
     //include "com.enonic.xp:lib-repo:${xpVersion}"
+    include "com.enonic.xp:lib-schema:${xpVersion}"
     //include "com.enonic.xp:lib-websocket:${xpVersion}"
 
-    include 'com.enonic.lib:lib-guillotine:5.5.0'
-    // include 'com.enonic.lib:lib-guillotine:6.2.1'
+    // The version numbers must be here (or dependabot will fail)
+    include 'com.enonic.lib:lib-asset:1.0.1'
+    include 'com.enonic.lib:lib-thymeleaf:2.1.1'
+    include 'com.enonic.lib:lib-guillotine:6.2.1'
 
-    include 'com.enonic.lib:lib-react4xp:5.1.0'
-    // include 'com.enonic.lib:lib-react4xp:5.1.1-SNAPSHOT'
-
-    include 'com.enonic.lib:lib-thymeleaf:2.1.0'
+    include 'com.enonic.lib:lib-react4xp:6.0.0-B3'
 }
 
 sourceSets {
@@ -64,11 +64,24 @@ processResources {
   exclude '**/*.ts' // handled by tsup
 }
 
-tasks.withType(Copy) {
-  includeEmptyDirs = false
+tasks.withType(Copy).configureEach {
+    includeEmptyDirs = false
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+tasks.register('npmCheck', NpmTask) {
+	dependsOn npmInstall
+	args = [
+		'run',
+		'check'
+	]
+	environment = [
+		'FORCE_COLOR': 'true',
+	]
+}
+
+check.dependsOn npmCheck
 
 // This task takes care of XP non-react (and therefore non-react4xp) ts files
 // under src/main/resources. This is independent of react4xp, so you can replace
@@ -98,36 +111,36 @@ tasks.register('buildXpResources', NpmTask) {
       '**/*.sass',
       '**/*.scss',
       '**/*.svg',
+      '**/*.d.ts',
       '**/*.tsx',
       '**/*.xml'
     ])
 }
 
 tasks.register('react4xp', NpmTask) {
-  dependsOn( npmInstall )
-  args = [
-    'run', 'build:react4xp'
-  ]
-  description 'Compile react4xp resources'
-  environment = [
-	  'R4X_APP_NAME': "${appName}",
-    'R4X_BUILD_LOG_LEVEL': gradle.startParameter.logLevel.toString(),
-    'R4X_DIR_PATH_ABSOLUTE_PROJECT': project.projectDir.toString(),
-    'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
-  ]
-  group 'react4xp'
-  inputs.dir 'node_modules/@enonic/react4xp'
-  inputs.dir 'src/main/resources'
-  outputs.dir 'build/resources/main'
+    args = [
+        'run', 'build:react4xp'
+    ]
+    dependsOn( npmInstall )
+    description 'Compile react4xp resources'
+    environment = [
+        'R4X_APP_NAME': "${appName}",
+        'R4X_BUILD_LOG_LEVEL': gradle.startParameter.logLevel.toString(),
+        'R4X_DIR_PATH_ABSOLUTE_PROJECT': project.projectDir.toString(),
+        'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
+    ]
+    group 'react4xp'
+    inputs.dir 'node_modules/@enonic/react4xp'
+    inputs.dir 'src/main/resources'
+    outputs.dir 'build/resources/main'
 }
 
 tasks.register('dev', Exec) {
-  dependsOn( deploy )
-  if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-    commandLine 'gradlew.bat', 'deploy', '-t'
-  } else {
-    commandLine './gradlew', 'deploy', '-t'
-  }
+    if (System.getProperty('os.name').toLowerCase().contains('windows')) {
+        commandLine 'gradlew.bat', 'deploy', '-t'
+    } else {
+        commandLine './gradlew', 'deploy', '-t'
+    }
 }
 
-jar.dependsOn ( 'buildXpResources', 'react4xp' )
+jar.dependsOn ( buildXpResources, react4xp )

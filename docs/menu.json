@@ -1,12 +1,16 @@
 {
   "menuItems": [
     {
-      "title": "1 - Project setup",
+      "title": "Intro",
+      "document": "index"
+    },
+    {
+      "title": "1 - Sandbox setup",
       "document": "setup"
     },
     {
-      "title": "2 - Hello React",
-      "document": "hello-react"
+      "title": "2 - Hello React4XP",
+      "document": "hello"
     },
     {
       "title": "3 - Hydration",
@@ -50,6 +54,10 @@
       "title": "Appendix",
       "document": "appendix",
       "menuItems": [
+        {
+          "title": "App controller",
+          "document": "appendix/controller"
+        },
         {
           "title": "Build",
           "document": "appendix/build"

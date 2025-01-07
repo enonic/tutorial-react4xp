@@ -28,9 +28,9 @@ We're going to need a sandbox for this tutorial:
 
 This will create and start a sandbox containig some relevant applications, including the Headless Movie DB sample dataset.
 
-== Create the app
+== Create application
 
-From a **new terminal window**, run the following command to create the application. 
+From a **new terminal window**, run the following command to create the application that will contain the React4XP front-end. 
 
   enonic create my.first.r4xp -r starter-react4xp -s r4xptutorial -f 
 
@@ -41,49 +41,55 @@ This command creates an app named `my.first.r4xp`. It uses the https://github.co
 
 == Project structure
 
-You will now get a typical Enonic project structure, but the biggest news are `react4xp.config.js` and the folder `src/main/resources/react4xp/`.
+You will now get a typical Enonic app file structure. Below we're highlighting some of the most interesting files and folders:
 
 [source,files]
 ----
-build.gradle //<1>
 package.json
-react4xp.config.js // <2>
+react4xp.config.js // <1>
 src/
   main/
     resources/
-      react4xp/ // <3>
+      react4xp/ // <2>
         entries/
-        shared/
-      site/ // <4>
+         app.tsx <3>
+      site/
+        controllers // <4>
+        site.xml // <5>
 ----
 
-<1> Core build files, will contain references to `lib-react4xp` library and the `@enonic/react4xp` npm package.
-<2> React4xp <<appendix/build#, build configuration>>, here you may add additional globals and tune common React4xp properties.
-<3> Optionally place React components in these folders. They will be covered in detail throughout the tutorial.
-<4> Standard site/ folder
+<1> Optionally tune common React4xp properties.
+<2> React components _must_ be placed within this folder
+<3> The React app component
+<4> Location of application controller files
+<5> Site.xml hooks React4XP into the Site Engine rendering pipeline
 
-TIP: The short takeaway is that you can put your TSX/JSX source files in `react4xp/entries/` or witin the `site/` structure directly.
 
-
-== Start building
+== Dev mode
 
 Assuming you did not change any of the values when creating the app, run the following commmands:
 
   cd r4xp
   enonic dev
 
-This will build and deploy the application to your sandbox.
+This will perform an initial build, and deploy the application to the sandbox. 
 
-[NOTE]
+Once you see the following lines, the application has been built and deployed to the sandbox:
+
+  BUILD SUCCESSFUL in 1m 27s
+  8 actionable tasks: 7 executed, 1 up-to-date
+
+[TIP]
 ====
-Look for a line like this in the sandbox log to verify that the app has started:
+In the sandbox log, this shows that app is running:
 
   2019-04-09 13:40:40,765 INFO ... Application [my.first.r4xp] installed successfully
 ====
 
 Because the sandbox is running in dev mode, any changes to the code wihin your app will instantly be picked up.
 
-Now you're ready to get started with the first lesson: <<hello-react#, Hello React>>.
+
+In the next chapter, you'll get familiar with <<hello#, basic React4XP rendering>>.
 
 
 

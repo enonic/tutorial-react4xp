@@ -1,0 +1,100 @@
+= Hello React4XP
+:toc: right
+:imagesdir: media/
+
+Create and deploy your first React4XP application
+
+== Create the app
+
+You should already have the sandbox with HMDB running. 
+
+
+
+== Add to site
+
+With the application deployed to the sandbox, let's add it to the HMDB site so it can act as a front-end for the existing content.
+
+. Visit http://localhost:8080/admin^[localhost:8080/admin]. Log in to XP and open Content Studio.
++
+. The "Headless Movie Database" project should automatically be selected
++
+. Select the root item in the tree structure, and you should see something like this:
++
+image:hmdb.png[title="HMDB welcome page", width=855px]
++
+. Click btn:[Edit], and add your the React4xp app to the site.
++
+image:add-to-site.png[title="Add React4XP application to the site", width=647px]
++
+After saving, the preview should change to something like this:
++
+image:hello.png[title="React4XP starter page", width=647px]
+
+
+== Request handling
+
+So, what actually happened here?
+
+Your React4XP app runs on top of XP's site engine. By adding the application to the site, it was injected into the request pipeline - where it basically hijacked the rendering.
+
+Essentially, Reac4XP follows a familiar MVC approach, the main files involved are:
+
+[source,Files]
+----
+-> site/app.ts (App controller)
+ -> site/dataFetcher.ts (Fetches data for the CMS components)
+  -> react4xp/entries/App.tsx (React entry file)
+   -> react4xp/componentRegistry.tsx (Mapping CMS components to React) 
+    -> react4xp/components/Hello.tsx (Welcome page)
+----
+
+TIP: Visit the <<appendix/app-controller#, app controller appendix>>  to learn more about how React4XP is bootstrapped.
+
+
+=== Hello component
+
+The Hello component itself is very simple:
+
+.react4xp/components/Hello.tsx
+[source,TypeScript]
+----
+include::../src/main/resources/react4xp/components/Hello.tsx[]
+----
+
+It takes a single parameter, HelloProps. The type is declared like this:
+
+.types/HelloProps.ts
+[source,TypeScript]
+----
+include::../src/main/resources/types/HelloProps.ts[]
+----
+
+The component is rendered because it has been added to the componentRegistry:
+
+.react4xp/componentRegistry.ts
+[source,TypeScript]
+----
+include::../src/main/resources/react4xp/componentRegistry.ts[]
+----
+
+<1> The Hello component is mapped to the content type `portal:site`, which means it will be executed when the URL matches a site.
+
+NOTE: Try clicking other content items in Content Studio, and you should simply see an error message.
+
+=== DataFetcher
+
+Similar to the componentRegistry, the dataFetcher has a list of fetchers it will execute to fetch relevant data for the current request.
+
+.react4xp/dataFetcher.ts
+[source,TypeScript]
+----
+include::../src/main/resources/react4xp/dataFetcher.ts[]
+----
+
+<1> HelloProcessor will be executed when a site is rendered, the props output will be passed to the matching Component.
+
+
+== Next
+
+You now know the basic flow of things, in the following chapter you will investigate <<hydration#, hydration>>.
+
