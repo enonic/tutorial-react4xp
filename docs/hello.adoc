@@ -74,7 +74,7 @@ The component is rendered because it has been added to the componentRegistry:
 .react4xp/componentRegistry.ts
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/componentRegistry.ts[]
+include::../src/main/resources/react4xp/componentRegistry.tsx[]
 ----
 
 <1> The Hello component is mapped to the content type `portal:site`, which means it will be executed when the URL matches a site.

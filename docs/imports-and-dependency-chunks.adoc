@@ -61,7 +61,7 @@ The Part definition enables two editorial configurations:
 .site/parts/multi-color/multi-color.xml:
 [source,xml,options="nowrap"]
 ----
-include::../src/main/resources/site/parts/multi-color/multi-color.xml[]
+## include::../src/main/resources/site/parts/multi-color/multi-color.xml[]
 ----
 <1> a checkbox for making the entry serverside or clientside rendered,
 <2> and an array of colors where a user in Content Studio can add any number of HTML-compliant color tags.
@@ -100,7 +100,7 @@ This is a *stateful* react component that not only *imports and nests secondary 
 .src/main/resources/react4xp/myEntries/MultiColor.tsx:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/myEntries/MultiColor.tsx[]
+## include::../src/main/resources/react4xp/myEntries/MultiColor.tsx[]
 ----
 <1> The entry imports some secondary react components for nesting later. These imports have nothing to do with React4xp's <<appendix/jsxPath#, jsxPaths>>, this is *regular ES6 module importing* and will be handled by webpack at compile time and served to the client at runtime. Basically any react component can be imported from anywhere here, including other entries. In this case we're referring to components below a different folder, _shared/_, which we will <<#webpack_config, later>> mark as a *chunk directory* instead of an entry directory. _Shared/_ is not below _entries/_ (but adjacent to it), so these imported react components will not be entries, just secondary react components and not reachable with `React4xp.render`. As you will see, this *folder separation* is also important for the compiled outcome: the entry, _MultiColor.jsx_, will be compiled into _r4xAssets/MultiColor.js_, but *imported components* like this will be collected inside a common *dependency chunk*: _r4xAssets/shared.<HASH>.js_. React4xp and webpack track the dependency connections between an entry and all its required chunks - so `React4xp.render` automatically generates asset-loading page contributions from the controller. The outcome: when the webpack rules are set up correctly later, *imports like this in entries rendered by React4xp are all that's needed to connect the entries to the additional assets they might need*: no manual url handling in the controller or thymeleaf views etc. Dependency chunks are also  optimized for repeated use (more details on <<appendix/chunks#, dependency chunks>>).
 <2> This applies to styling too. Here, the entry imports some specific styling of its own, from a SASS file in the _entries/_ folder. This import is webpack-centric syntax too: the SASS in _MultiColor.scss_ is compiled to the asset _r4xAssets/Multicolor.css_, and automatically added when using this entry (of course, there's more than one way to handle styling in webpack, this is just one working example).
@@ -125,7 +125,7 @@ Now, with the entry done, we can look at the *entry's styling* - a lot simpler, 
 .src/main/resources/react4xp/myEntries/MultiColor.scss:
 [source,sass,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/myEntries/MultiColor.scss[]
+## include::../src/main/resources/react4xp/myEntries/MultiColor.scss[]
 ----
 
 
@@ -156,14 +156,14 @@ There's the generic *Button* component. This is used both by _MultiColor.jsx_ an
 .src/main/resources/react4xp/shared/Button.tsx:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/shared/Button.tsx[]
+## include::../src/main/resources/react4xp/shared/Button.tsx[]
 ----
 <1> The specific Button styling it imports is marginal - this is just a generic button, so most of the styling is left to the class it's given, or inline attributes:
 
 .src/main/resources/react4xp/shared/Button.scss:
 [source,sass,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/shared/Button.scss[]
+## include::../src/main/resources/react4xp/shared/Button.scss[]
 ----
 
 
@@ -174,13 +174,13 @@ Then there's the *ActiveColorOval* component, which just displays `props.color` 
 .src/main/resources/react4xp/shared/ActiveColorOval.tsx:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/shared/ActiveColorOval.tsx[]
+## include::../src/main/resources/react4xp/shared/ActiveColorOval.tsx[]
 ----
 
 .src/main/resources/react4xp/shared/ActiveColorOval.scss:
 [source,sass,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/shared/ActiveColorOval.tsx[]
+## include::../src/main/resources/react4xp/shared/ActiveColorOval.tsx[]
 ----
 
 
@@ -191,13 +191,13 @@ And finally a *ColorButtons* component. It takes the list of `props.colors` (fro
 .src/main/resources/react4xp/shared/ColorButtons.tsx:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/shared/ColorButtons.tsx[]
+## include::../src/main/resources/react4xp/shared/ColorButtons.tsx[]
 ----
 
 .src/main/resources/react4xp/shared/ColorButtons.scss:
 [source,sass,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/shared/ColorButtons.scss[]
+## include::../src/main/resources/react4xp/shared/ColorButtons.scss[]
 ----
 
 [[webpack_config]]

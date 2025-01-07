@@ -14,7 +14,7 @@ Add the following file to your app:
 ./src/main/resources/site/content-types/pub/pub.xml:
 [source,xml]
 ----
-include::../src/main/resources/site/content-types/pub/pub.xml[]
+## include::../src/main/resources/site/content-types/pub/pub.xml[]
 ----
 
 == Controller
@@ -24,7 +24,7 @@ Next, we'll modify our controller. It needs to fetch the content, and pass it as
 .react4xp/hello-react.ts:
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/hello-react.ts[]
+## include::../src/main/resources/react4xp/hello-react.ts[]
 ----
 <1> We'll use a new React component this time
 <2> Fetches the contextual content
@@ -37,7 +37,7 @@ Finally, add a new React template that makes use of the props object.
 .react4xp/entries/hello-props.tsx
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/entries/hello-props.tsx[]
+## include::../src/main/resources/react4xp/entries/hello-props.tsx[]
 ----
 
 [TIP]
