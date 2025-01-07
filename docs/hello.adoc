@@ -48,7 +48,7 @@ Essentially, Reac4XP follows a familiar MVC approach, the main files involved ar
     -> react4xp/components/Hello.tsx (Welcome page)
 ----
 
-TIP: Visit the <<appendix/app-controller#, app controller appendix>>  to learn more about how React4XP is bootstrapped.
+TIP: Visit the <<appendix/controller#, app controller>> in appendix to learn more about how React4XP is bootstrapped.
 
 
 === Hello component

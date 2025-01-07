@@ -37,20 +37,6 @@
       "document": "imports-and-dependency-chunks"
     },
     {
-      "title": "Advanced topics",
-      "document": "advanced",
-      "menuItems": [
-        {
-          "title": "Client side rendering",
-          "document": "advanced/client-side"
-        },
-        {
-          "title": "Webapps",
-          "document": "advanced/standalone"
-        }
-      ]
-    },
-    {
       "title": "Appendix",
       "document": "appendix",
       "menuItems": [
