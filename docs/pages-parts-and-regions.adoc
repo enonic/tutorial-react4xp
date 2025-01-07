@@ -118,7 +118,7 @@ As long as you follow the general patterns here, you can use parts with React4xp
 .default.tsx
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/site/pages/default/default.tsx[]
+## include::../src/main/resources/site/pages/default/default.tsx[]
 ----
 
 <1> Importing a Region template from an NPM package that comes with React4xp (link:https://www.npmjs.com/package/@enonic/react-components[@enonic/react-components]).

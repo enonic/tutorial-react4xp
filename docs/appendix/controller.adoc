@@ -13,7 +13,7 @@ This happes because the application declares a "catch all" pattern mapping in `s
 ./src/main/resources/site/site.xml
 [source,XML]
 ----
-include::../src/main/resources/site/site.xml[]
+include::../../src/main/resources/site/site.xml[]
 ----
 
 <1> Pattern mapping to catch all requests

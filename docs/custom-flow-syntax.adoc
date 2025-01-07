@@ -52,7 +52,7 @@ The Part definition again defines some base data for us to play with. This is ex
 .custom-flow.xml:
 [source,xml,options="nowrap"]
 ----
-include::../src/main/resources/site/parts/custom-flow/custom-flow.xml[]
+## include::../src/main/resources/site/parts/custom-flow/custom-flow.xml[]
 ----
 
 
@@ -67,7 +67,7 @@ The controller will render _two_ entries into this base HTML. To be clear: even 
 .custom-flow-view.html:
 [source,html,options="nowrap"]
 ----
-include::../src/main/resources/site/parts/custom-flow/custom-flow-view.html[]
+## include::../src/main/resources/site/parts/custom-flow/custom-flow-view.html[]
 ----
 
 
@@ -91,7 +91,7 @@ One reason to also add `request` for SSR however, is that in cases of react comp
 .custom-flow.ts
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/site/parts/custom-flow/custom-flow.ts[]
+## include::../src/main/resources/site/parts/custom-flow/custom-flow.ts[]
 ----
 <1> Constructing the data-holding React4xp object `helloObj` from the same _hello-react.jsx_ entry we made <<editorial-data-and-props#hello_react_jsx_modified, before>>. The constructor takes one argument, which is mandatory: an <<appendix/entries#, entry reference>>. This can be an XP `component` object like before, OR like we're doing here: a <<appendix/jsxpath#, jsxPath>>.
 +

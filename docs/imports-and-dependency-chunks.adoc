@@ -75,7 +75,7 @@ For the Part controller, we don't need any more than this in this example:
 .site/parts/multi-color/multi-color.ts:
 [source,typescript,options="nowrap"]
 ----
-include::../src/main/resources/site/parts/multi-color/multi-color.ts[]
+## include::../src/main/resources/site/parts/multi-color/multi-color.ts[]
 ----
 <1> Taking the serverside-rendering checkbox from the Part's config, and turning it into a `ssr` flag that's sent into the _options_ argument <<hello-react#_client_side_rendering, just like before>>.
 <2> Creating a `colors` array of the color names from the Part's config, trimming them and removing empty ones. This is passed into the _props_ argument <<editorial-data-and-props#, like before>>.
@@ -137,7 +137,7 @@ First, some *_shared-styles.scss_*, also imported by the entry _MultiColor.jsx_.
 .src/main/resources/react4xp/shared/shared-styles.scss:
 [source,sass,options="nowrap"]
 ----
-include::../src/main/resources/react4xp/shared/shared-styles.scss[]
+## include::../src/main/resources/react4xp/shared/shared-styles.scss[]
 ----
 
 

@@ -11,7 +11,7 @@ Start by updating your hello-react template, use the code below:
 ./src/main/resources/react4xp/entries/hello-react.tsx
 [source,TSX]
 ----
-include::../src/main/resources/react4xp/entries/hello-hydration.tsx[]
+## include::../src/main/resources/react4xp/entries/hello-hydration.tsx[]
 ----
 
 This React component will initially render server-side, hydrate, and come alive client side as well - producing an amusing beer bottle countdown.
