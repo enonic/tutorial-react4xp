@@ -441,7 +441,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#create_the_app">Create the app</a></li>
 <li><a href="#add_to_site">Add to site</a></li>
 <li><a href="#request_handling">Request handling</a>
 <ul class="sectlevel2">
@@ -457,15 +456,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Create and deploy your first React4XP application</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="create_the_app"><a class="link" href="#create_the_app">Create the app</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>You should already have the sandbox with HMDB running.</p>
+<p>Render your first React4XP page</p>
 </div>
 </div>
 </div>
@@ -473,7 +464,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="add_to_site"><a class="link" href="#add_to_site">Add to site</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>With the application deployed to the sandbox, let&#8217;s add it to the HMDB site so it can act as a front-end for the existing content.</p>
+<p>In a few steps we connect the application to the Headless Movie DB, and should be rewarded gloriously.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -490,7 +481,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </li>
 <li>
-<p>Click btn:[Edit], and add your the React4xp app to the site.</p>
+<p>Click btn:[Edit], and connect the React4xp app to the site.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/add-to-site.png" alt="add to site" width="647px" title="Add React4XP application to the site"></span></p>
 </div>
@@ -512,17 +503,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>So, what actually happened here?</p>
 </div>
 <div class="paragraph">
-<p>Your React4XP app runs on top of XP&#8217;s site engine. By adding the application to the site, it was injected into the request pipeline - where it basically hijacked the rendering.</p>
+<p>The React4XP app runs on top of XP&#8217;s site engine. By adding the application to the site, it was injected into the request pipeline - where it basically hijacked the rendering, and thus now appears in the preview.</p>
 </div>
 <div class="paragraph">
-<p>Essentially, Reac4XP follows a familiar MVC approach, the main files involved are:</p>
+<p>Reac4XP uses the familiar MVC approach. These are the main files involved:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-Files" data-lang="Files">-&gt; site/app.ts (App controller)
- -&gt; site/dataFetcher.ts (Fetches data for the CMS components)
+ -&gt; site/dataFetcher.ts (Fetches data for the R4XP components)
   -&gt; react4xp/entries/App.tsx (React entry file)
-   -&gt; react4xp/componentRegistry.tsx (Mapping CMS components to React)
+   -&gt; react4xp/componentRegistry.tsx (Mapping components to R4XP)
     -&gt; react4xp/components/Hello.tsx (Welcome page)</code></pre>
 </div>
 </div>
@@ -533,7 +524,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Visit the <a href="appendix/controller.ahtml">app controller</a> in appendix to learn more about how React4XP is bootstrapped.
+Visit the <a href="appendix/controller.ahtml">app controller</a> appendix to learn more about how React4XP is bootstrapped.
 </td>
 </tr>
 </table>
@@ -541,7 +532,7 @@ Visit the <a href="appendix/controller.ahtml">app controller</a> in appendix to 
 <div class="sect2">
 <h3 id="hello_component"><a class="link" href="#hello_component">Hello component</a></h3>
 <div class="paragraph">
-<p>The Hello component itself is very simple:</p>
+<p>The Hello component that rendered the page is very simple:</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/components/Hello.tsx</div>
@@ -643,7 +634,7 @@ dataFetcher.addContentType('portal:site', { processor: helloProcessor }); <i cla
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-01-07 18:05:19 UTC
+Last updated 2025-01-08 17:18:58 UTC
 </div>
 </div>
 </body>
