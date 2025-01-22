@@ -24,7 +24,7 @@ We're going to need a sandbox for this tutorial:
 
 *Create a sandbox* called `r4xptutorial` by running this command in your terminal:
 
-  enonic sandbox create r4xptutorial -t hmdb -f
+  enonic sandbox create r4xptutorial -t headless-demo -f
 
 This will create and start a sandbox containig some relevant applications, including the Headless Movie DB sample dataset.
 

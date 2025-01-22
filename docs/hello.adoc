@@ -29,24 +29,24 @@ image:hello.png[title="React4XP starter page", width=647px]
 
 So, what actually happened here?
 
-The React4XP app runs on top of XP's site engine. By adding the application to the site, it was injected into the request pipeline - where it basically hijacked the rendering, and thus now appears in the preview.
+The app runs on top of XP's site engine. By adding the application to the site, it is injected into the request pipeline - where it basically hijacks the rendering.
 
-Reac4XP uses the familiar MVC approach. These are the main files involved:
+These are the main files involved:
 
 [source,Files]
 ----
--> site/app.ts (App controller)
- -> site/dataFetcher.ts (Fetches data for the R4XP components)
-  -> react4xp/entries/App.tsx (React entry file)
-   -> react4xp/componentRegistry.tsx (Mapping components to R4XP) 
-    -> react4xp/components/Hello.tsx (Welcome page)
+-> site/dataFetcher.ts (Map of data processors)
+ -> site/helloProcessor.ts (props for the Hello component)
+ -> react4xp/entries/App.tsx (React entry)
+  -> react4xp/componentRegistry.tsx (R4XP component list) 
+   -> react4xp/components/Hello.tsx (Welcome page)
 ----
 
-TIP: Visit the <<appendix/controller#, app controller>> appendix to learn more about how React4XP is bootstrapped.
+Below we backtrack what happened:
 
 === Hello component
 
-The Hello component that rendered the page is very simple:
+The Hello component that rendered the actual page is very simple:
 
 .react4xp/components/Hello.tsx
 [source,TypeScript]
@@ -74,20 +74,30 @@ include::../src/main/resources/react4xp/componentRegistry.tsx[]
 
 NOTE: Try clicking other content items in Content Studio, and you should simply see an error message.
 
-=== DataFetcher
 
-Similar to the componentRegistry, the dataFetcher has a list of fetchers it will execute to fetch relevant data for the current request.
+=== HelloProcessor
 
-.react4xp/dataFetcher.ts
+The responsiblity of HelloProcessor is to produce the props required by a component. A processor may also intercept the request, for instance by producing a redirect. 
+
+.react4xp/components/HelloProcessor.ts
+[source,TypeScript]
+----
+include::../src/main/resources/react4xp/components/HelloProcessor.ts[]
+----
+
+Similar to a component, a processor is invoked because it is registered in the dataProcessor:
+
+.react4xp/dataProcessor.ts
 [source,TypeScript]
 ----
 include::../src/main/resources/react4xp/dataFetcher.ts[]
-----
 
-<1> HelloProcessor will be executed when a site is rendered, the props output will be passed to the matching Component.
 
+That is basically it. Throughout the tutorial, you'll be using this extensively.
+
+TIP: Dive deeper into this topic by visiting the <<appendix/controller#, app controller appendix>>. 
 
 == Next
 
-You now know the basic flow of things, in the following chapter you will investigate <<hydration#, hydration>>.
+Great, you rendered your first page, next up how about <<person#, adding your own components>>.
 
