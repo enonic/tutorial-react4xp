@@ -502,7 +502,7 @@ To upgrade, use <code>enonic latest</code>. If there are new versions you will s
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>enonic sandbox create r4xptutorial -t hmdb -f</pre>
+<pre>enonic sandbox create r4xptutorial -t headless-demo -f</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -638,7 +638,7 @@ enonic dev</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-01-08 17:18:58 UTC
+Last updated 2025-01-28 09:48:27 UTC
 </div>
 </div>
 </body>
