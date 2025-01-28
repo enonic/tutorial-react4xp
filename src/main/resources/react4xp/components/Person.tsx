@@ -1,14 +1,14 @@
 //import type { PersonProps } from '/types/PersonProps';
 import React from 'react'
 //import * as React from 'react';
-import * as styles from './Person.module.css';
+import styles from './Person.module.css';
 
 export const Person = (props) => {
     const {displayName, photo} = props as any;
  
     return (
         < >
-            <div /*className={styles.person}*/>
+            <div className={styles.person}>
                 <h2>{displayName}</h2>
                 {
                     photo ? (
