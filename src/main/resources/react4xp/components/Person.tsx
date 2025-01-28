@@ -7,8 +7,8 @@ export const Person = (props) => {
     const {displayName, photo} = props as any;
  
     return (
-        <>
-            <div className={styles.person}>
+        < >
+            <div /*className={styles.person}*/>
                 <h2>{displayName}</h2>
                 {
                     photo ? (
