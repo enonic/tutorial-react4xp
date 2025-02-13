@@ -9,16 +9,11 @@ import {assetUrl} from '/lib/enonic/asset';
 export function get(request: Request): Response {
 	const url = assetUrl({path: 'images/Icon-XP.svg'});
 	const content = getContent();
-	const {
-		component,
-		response
-	} = dataFetcher.process({
+	const component = dataFetcher.process({
 		content, // Since it's already gotten, pass it along, so DataFetcher doesn't have to get it again.
 		request,
 	});
-	if (response) {
-		return response; // This also handles the special case when ContentStudio needs 418.
-	}
+
 	const props: AppProps = {
 		component,
 		url
