@@ -1,15 +1,10 @@
-import type {
-	Component,
-	Content,
-	Request,
-	Response
-} from '@enonic-types/core';
-import type { AppProps } from '/types/AppProps';
+import type {Component, Content, Request, Response} from '@enonic-types/core';
+import type {AppProps} from '/types/AppProps';
 
-import { getIn } from '@enonic/js-utils/object/getIn';
-import { render } from '/lib/enonic/react4xp';
-import { getContent } from '/lib/xp/portal';
-import { dataFetcher } from '../react4xp/dataFetcher';
+import {getIn} from '@enonic/js-utils/object/getIn';
+import {render} from '/lib/enonic/react4xp';
+import {getContent} from '/lib/xp/portal';
+import {dataFetcher} from '../react4xp/dataFetcher';
 
 
 const JsonResponse = (obj: Record<string, unknown>, status = 200): Response => ({
@@ -57,17 +52,12 @@ export function get(request: Request) {
 		content,
 		request,
 	});
-	const {
-		component,
-		response
-	} = dataFetcher.process({
+	const component = dataFetcher.process({
 		component: origComponent,
 		content,
 		request
 	});
-	if (response) {
-		return response;
-	}
+
 	const props: AppProps = {
 		component
 	}
