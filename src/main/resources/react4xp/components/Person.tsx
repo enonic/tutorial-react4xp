@@ -1,10 +1,10 @@
 //import type { PersonProps } from '/types/PersonProps';
 import React from 'react'
 //import * as React from 'react';
-import * as styles from './Person.module.css';
+import {RichText} from '@enonic/react-components';
 
 export const Person = (props) => {
-    const {displayName, photo} = props as any;
+    const {displayName, photo, bio} = props as any;
  
     return (
         < >
@@ -21,6 +21,7 @@ export const Person = (props) => {
                         <p>No photo available</p>
                     )
                 }
+                <RichText data={bio}/>
             </div>
         </>
     )
