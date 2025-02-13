@@ -24,24 +24,17 @@ export function get(request: Request): Response {
             status: 404
         }
     }
-    const {
-        component,
-        response
-    } = dataFetcher.process({
+    const component = dataFetcher.process({
         content, // Since it's already gotten, pass it along, so DataFetcher doesn't have to get it again.
         request,
     });
 
-    //log.info(JSON.stringify(request, null, 2))
-    if (response) {
-        return response; // This also handles the special case when ContentStudio needs 418.
-    }
-    const props: AppProps = {
-        component,
-        url
-    }
-    const react4xpId = `react4xp_${content._id}`;
-    const htmlBody = `<!DOCTYPE html>
+	const props: AppProps = {
+		component,
+		url
+	}
+	const react4xpId = `react4xp_${content._id}`;
+	const htmlBody = `<!DOCTYPE html>
 	<html lang="en">
 		<head>
 			<meta charset="UTF-8">

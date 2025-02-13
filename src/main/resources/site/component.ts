@@ -52,17 +52,12 @@ export function get(request: Request) {
         content,
         request,
     });
-    const {
-        component,
-        response
-    } = dataFetcher.process({
-        component: origComponent,
-        content,
-        request
-    });
-    if (response) {
-        return response;
-    }
+    const component = dataFetcher.process({
+		component: origComponent,
+		content,
+		request
+	});
+
     const props: AppProps = {
         component
     }

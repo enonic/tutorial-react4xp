@@ -1,8 +1,10 @@
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 import {getChildren} from '/lib/xp/content';
-import type {PartComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {PartComponent} from '@enonic-types/core';
 
-export const childListProcessor: PartComponentProcessorFunction<'com.enonic.app.hmdb:child-list'> = (params) => {
-    const sortOrder: any = params.component.config.sorting;
+export const childListProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:child-list'> = (params) => {
+    const component = params.component as PartComponent;
+    const sortOrder: any = component.config.sorting;
 
     const result = getChildren({
         key: params.content._id,
@@ -12,9 +14,7 @@ export const childListProcessor: PartComponentProcessorFunction<'com.enonic.app.
     });
 
     return {
-        props: {
-            names: result.hits.map((content) => content.displayName),
-            paths: result.hits.map((content) => params.request.path + '/' + content._name),
-        },
+        names: result.hits.map((content) => content.displayName),
+        paths: result.hits.map((content) => params.request.path + '/' + content._name),
     };
 };
