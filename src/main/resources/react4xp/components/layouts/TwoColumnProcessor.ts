@@ -4,7 +4,6 @@ export const layoutProcessor: LayoutComponentProcessorFunction<'com.enonic.app.h
     const region = component?.regions|| {};
 
     const { regions } = component;
-    
 
     return {
         props: {

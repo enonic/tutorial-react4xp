@@ -3,69 +3,48 @@ import styles from './MoviePage.module.css';
 import { Part } from "@enonic/react-components";
 
 export const Movie = (props) => {
-    const {
-        name, // Movie title
-        subtitle, // Subtitle
-        photo, // First photo
-        restPhotos, // Additional photos
-        trailer, // URL for the trailer
-        abstract, // Abstract description
-        release, // Release date
-        website, // Website link
-        cast, // Cast members
-        descriptor,
-        componentRegistry,
-        casts,
-        director,
-        ...partProps
-    } = props;
+    // All properties are accessed via props object
     return (
-        <Part {...partProps}>
+        <Part {...props}>
             <div className={styles.moviePage}>
                 <header>
-                    <h1><a className={styles.sneakyLink} href={trailer}>{name}</a></h1>
+                    <h1><a href={props.trailer} className={styles.sneakyLink}>{props.name}</a></h1>
                 </header>
 
                 <main className={styles.main}>
                     <div className={styles.flexy}>
-                    {/* First Photo */}
-                        {photo && (
+                        {/* First Photo */}
+                        {props.photo && (
                             <section className={styles.firstPhoto}>
                                 <h3>Featured Image</h3>
                                 <img
-                                    src={photo.imageUrl}
-                                    alt={photo.title}
-                                    title={photo.title}
+                                    src={props.photo.imageUrl}
+                                    alt={props.photo.title}
+                                    title={props.photo.title}
                                     className={styles.featuredImage}
                                 />
                             </section>
                         )}
 
-
                         <div className={styles.blocky}>
-
                             {/* Release Date and Website */}
                             <div>
-
-                                {website && (
+                                {props.website && (
                                     <h3>
-                                        <a className={styles.sneakyLink} href={website} target="_blank" rel="noopener noreferrer">
+                                        <a href={props.website} className={styles.sneakyLink} target="_blank" rel="noopener noreferrer">
                                             Official Website
                                         </a>
                                     </h3>
                                 )}
-                                {release && (
-                                    <p>Release Date: {release}</p>
-                                )}
-
+                                {props.release && <p>Release Date: {props.release}</p>}
                             </div>
 
                             {/* Cast */}
-                            {cast.length > 0 && (
+                            {props.cast.length > 0 && (
                                 <section className={styles.cast}>
                                     <h3>Cast</h3>
                                     <ul>
-                                        {cast.map((member, index) => (
+                                        {props.cast.map((member, index) => (
                                             <li key={index}>
                                                 <a className={styles.sneakyLink} href={member.castUrl}><img src={member.photoUrl} alt={member.actorName} /></a>
                                                 <p>
@@ -77,37 +56,32 @@ export const Movie = (props) => {
                                 </section>
                             )}
 
-                    {/* Director */}
-                    {director && (
-                        <section>
-                            <h3>Director</h3>
-                            <h4><a className={styles.sneakyLink} href={director.url}>{director.name}</a></h4>
-                            <a href={director.url}><img className={styles.directorImg} src={director.photo} alt={director.name} /></a>
-                        </section>
-                    )}
-
-
-
-
-
+                            {/* Director */}
+                            {props.director && (
+                                <section>
+                                    <h3>Director</h3>
+                                    <a href={props.director.url} className={styles.sneakyLink}>
+                                        <h4>{props.director.name}</h4>
+                                        <img className={styles.directorImg} src={props.director.photo} alt={props.director.name} />
+                                    </a>
+                                </section>
+                            )}
                         </div>
-
-
-
                     </div>
 
+                    <h2>{props.subtitle}</h2>
 
-                    <h2>{subtitle}</h2>
                     {/* Abstract */}
                     <section className={styles.abstract}>
-                        <p>{abstract}</p>
+                        <p>{props.abstract}</p>
                     </section>
+
                     {/* Additional Photos */}
-                    {restPhotos && restPhotos.length > 0 && (
+                    {props.restPhotos && props.restPhotos.length > 0 && (
                         <section className={styles.photos}>
-                            <h3>Photos</h3>
+                            <h3>More Photos</h3>
                             <div className={styles.photoGrid}>
-                                {restPhotos.map((photo, index) => (
+                                {props.restPhotos.map((photo, index) => (
                                     <img
                                         key={index}
                                         src={photo.imageUrl}
@@ -119,10 +93,6 @@ export const Movie = (props) => {
                             </div>
                         </section>
                     )}
-
-
-
-
                 </main>
             </div>
         </Part>

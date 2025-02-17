@@ -1,11 +1,16 @@
 import React from 'react';
 import styles from './Article.module.css';
 import { RichText } from "@enonic/react-components";
+import Header from "../common/Header";
+import Footer from "../common/Footer"
+
 
 export const Article = (props) => {
     const { title, blocks, coverImage, preface, author, tags, spotlight } = props; // Include new props
 
     return (
+    <>
+        <Header title="React4XP" logoUrl={props.url}  />
         <div className={styles.article}>
             {/* Article Header */}
             <header className={styles.header}>
@@ -143,5 +148,7 @@ export const Article = (props) => {
                 })}
             </main>
         </div>
+        <Footer/>
+    </>
     );
 };
