@@ -1,0 +1,27 @@
+/* Footer.module.css */
+.footer {
+    margin: auto auto;
+    width: 100%;
+    padding: 0 0 1.45rem;
+    text-align: center;
+    background-color: black; /* Dark theme */
+    color: lightpink;        /* Light pink for text */
+    position: fixed;
+    bottom: 0;
+
+}
+
+.footer a {
+    color: deeppink;      /* Light purple for links */
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: white;            /* Change to white on hover */
+    text-decoration: underline;
+}
+
+.footer hr {
+    border-color: lightpink; /* Light pink for the horizontal line */
+    border-width: 1px;
+}

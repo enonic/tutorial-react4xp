@@ -42,6 +42,7 @@ dependencies {
     include 'com.enonic.lib:lib-guillotine:6.2.1'
 
     include 'com.enonic.lib:lib-react4xp:6.0.0-B3'
+    include "com.enonic.lib:lib-asset:1.0.1"
 }
 
 sourceSets {
