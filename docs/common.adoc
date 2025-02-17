@@ -1,0 +1,13 @@
+= Common components
+:toc: right
+:imagesdir: media/
+
+In this chapter you will add header and footer components.
+
+== To do
+
+The Headless Movie DB contains sample content, and content types. One of these is `Person`. From Content Studio, you may find and list persons. By selecting the JSON preview, you can also study the properties of a person:
+
+== Next
+
+You are on a roll, next - lets look into how we may pass editorial content to the component via <<props#, props>>.
