@@ -69,8 +69,9 @@ export function get(request: Request) {
 		return response;
 	}
 	const props: AppProps = {
-		component
+		component,
 	}
+
 	const react4xpId = `react4xp_${content._id}`;
 	const output = render(
 		'App',

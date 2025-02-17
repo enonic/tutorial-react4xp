@@ -11,6 +11,7 @@
 	],
 	"compilerOptions": {
 		"allowUmdGlobalAccess": true,
+		"esModuleInterop": true,
 
 		"noLib": true,
 
@@ -37,6 +38,7 @@
 		// types you want included, whereas typeRoots supports saying you want particular folders.
 		"types": [
 			"@enonic-types/global",
+			"@enonic-types/core"
 		],
 	},
 }

@@ -35,7 +35,8 @@ module.exports = function(env, config) {
 					loader: 'css-loader',
 					options: {
 						importLoaders: 1,
-						modules: { auto: true }
+						modules: { auto: true },
+						esModule: false,
 					}
 				},
 				{
