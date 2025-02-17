@@ -2,8 +2,12 @@ import type { Content } from '@enonic-types/lib-content';
 import type { ContentTypeProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
 import {processHtml, imageUrl, pageUrl} from '/lib/xp/portal';
 import {get as getContentByKey} from "/lib/xp/content";
+import {assetUrl} from '/lib/enonic/asset';
+
+
 
 export const articleProcessor: ContentTypeProcessorFunction<Content<Record<string, unknown>>> = (params) => {
+    const url = assetUrl({path: 'images/Icon-XP.svg'});
     const { content } = params;
     const { data } = content;
 
@@ -100,7 +104,8 @@ export const articleProcessor: ContentTypeProcessorFunction<Content<Record<strin
             author: data.author || null,
             tags: data.tags || [],
             blocks: processedBlocks,
-            spotlight
+            spotlight,
+            url
         },
     };
 };
