@@ -1,0 +1,95 @@
+.playlist {
+    padding: 16px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #31313a;
+    max-width: 96%;
+    box-shadow: #510614 5px 5px 5px;
+
+}
+
+/* Playlist title styling */
+.title {
+    font-size: 34px;
+    margin-bottom: 16px;
+    text-align: center;
+    color: deeppink;
+}
+
+/* Playlist description styling */
+.description {
+    font-size: 20px;
+    color: #00cfdd;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+/* Styling for the movie list container */
+.movieList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Individual movie item */
+.movieItem {
+    margin-bottom: 24px;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    font-family: Arial, sans-serif;
+}
+
+/* Heading for each movie */
+.movieItem h3 {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+/* Primary movie photo (scaled with max-width) */
+.mainPhoto {
+    display: block;
+    max-width: 500px;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Container for additional photos */
+.additionalPhotos {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+/* Additional photos below each movie */
+.extraPhoto {
+    max-width: 100px;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Message when no photo is available */
+.noPhoto {
+    font-size: 14px;
+    color: #e74c3c;
+    font-style: italic;
+    margin-bottom: 12px;
+}
+
+/* Message when no movies are available */
+.noMovies {
+    font-size: 16px;
+    color: #c0392b;
+    text-align: center;
+    font-style: italic;
+}
+
+.link {
+    text-decoration: none;
+    color: #e766ff;
+}
