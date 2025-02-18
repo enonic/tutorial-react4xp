@@ -8,13 +8,19 @@
     flex-direction: column;
     margin-inline: 1rem;
 }
-
+.flexy{
+    display: flex;
+}
+h3 {
+    margin-inline: 2rem;
+    color: #eafbee;
+}
 .bio {
     line-height: 24px;
 }
 
-.bio figcaption {
-    font-size: 12px;
+p {
+    font-size: 18px;
 }
 
 .bio figure > img {
@@ -23,7 +29,7 @@
 }
 
 .photos {
-    padding: 0 20px;
+    padding: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-gap: 50px;

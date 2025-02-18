@@ -27,7 +27,9 @@ function fetchMovies(movieIds: string[]) {
                 title: '(Unknown Movie)',
                 movieUrl: '#',
                 photo: null, // No photo available for missing movies
-                restPhotos: []
+                restPhotos: [],
+                subtitle: 'Subtitle unavailable.',
+                description: 'Description unavailable.'
             };
         }
 
@@ -48,13 +50,15 @@ function fetchMovies(movieIds: string[]) {
 
         // Fetch remaining photos
         const restPhotos = fetchAdditionalPhotos(remainingPhotoIds);
-
+        const abstract = movieContent.data.abstract
         return {
             _id: movieContent._id,
             title: movieContent.displayName,
             movieUrl: pageUrl({ path: movieContent._path }),
             photo: firstPhoto, // Primary photo
-            restPhotos // Additional photos
+            restPhotos, // Additional photos
+            subtitle: movieContent.data.subtitle,
+            description: movieContent.data.abstract
         };
     });
 }

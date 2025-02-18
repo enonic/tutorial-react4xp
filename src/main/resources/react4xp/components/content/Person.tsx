@@ -5,11 +5,14 @@ import styles from './Person.module.css';
 import { RichText } from '@enonic/react-components';
 
 export const Person = (props) => {
-    const {displayName, photo, restPhotos, bioHtml} = props as any;
+    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
     return (
         < >
             <div className={styles.person}>
+                <div className={styles.flexy}>
                 <h2>{displayName}</h2>
+                <h3 className={styles.birth}>{birthDate}</h3>
+                </div>
                 {
                     photo ? (
                         <>

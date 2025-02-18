@@ -47,6 +47,7 @@ export const personProcessor: ContentTypeProcessorFunction<Content<Record<string
 				value: `${params.content.data.bio}`,
 				imageWidths: [200, 400, 800],
 			}),
+			birthDate: params.content.data.dateofbirth,
 			restPhotos: extraPhotos,
 		}
 	};

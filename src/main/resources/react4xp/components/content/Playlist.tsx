@@ -10,10 +10,11 @@ export const Playlist = (props: any) => {
             <p className={styles.description}>{description}</p>
 
             {movies && movies.length > 0 ? (
-                <ul>
+                <ul className={styles.flowX}>
                     {movies.map((movie: any, index: number) => (
                         <li className={styles.movieItem} key={movie._id || index} >
                             <h3><a className={styles.link} href={movie.movieUrl}>{movie.title}</a></h3>
+                            <h2>{movie.subtitle}</h2>
                             {movie.photo ? (
                                 <div>
                                     <a href={movie.movieUrl}>
@@ -28,8 +29,9 @@ export const Playlist = (props: any) => {
                             ) : (
                                 <p>No image available</p>
                             )}
+                            <p className={styles.movieDescription}>{movie.description}</p>
                             {movie.restPhotos && movie.restPhotos.length > 0 && (
-                                <div>
+                                <div className={styles.additionalPhotos}>
                                     {movie.restPhotos.map((photo: any, photoIndex: number) => (
                                         <img
                                             key={photoIndex}
