@@ -1,10 +1,9 @@
-import type { Content } from '@enonic-types/lib-content';
-import type { ContentTypeProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
-import {processHtml, imageUrl, pageUrl} from '/lib/xp/portal';
+import type {Content} from '@enonic-types/lib-content';
+import type {ContentTypeProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {imageUrl, pageUrl, processHtml} from '/lib/xp/portal';
 import {get as getContentByKey} from "/lib/xp/content";
 import {assetUrl} from '/lib/enonic/asset';
-import { toArray} from "/react4xp/utils/arrayUtils";
-import {string} from "prop-types";
+import {toArray} from "/react4xp/utils/arrayUtils";
 
 
 export const articleProcessor: ContentTypeProcessorFunction<Content<Record<string, unknown>>> = (params) => {
@@ -13,9 +12,9 @@ export const articleProcessor: ContentTypeProcessorFunction<Content<Record<strin
     const { data } = content;
 
     // Process the cast
-    const spotlight = toArray<any>(data.spotlight).map(spotlightItem => {
+    const spotlight = toArray<string>(data.spotlight as string | string[]).map(spotlightKey => {
 
-         const spotlightContent = getContentByKey<Content>({ key: spotlightItem });
+        const spotlightContent = getContentByKey<Content>({key: spotlightKey});
 
 
 
@@ -33,10 +32,7 @@ export const articleProcessor: ContentTypeProcessorFunction<Content<Record<strin
     });
 
 
-
-    // Process the blocks
-    const blocks = toArray<any>(data.blocks);
-    const processedBlocks = blocks.map(block => {
+    const processedBlocks = toArray<any>(data.blocks).map(block => {
 
         if (block._selected === 'banner' && block.banner?.text) {
             // Banner block
@@ -70,10 +66,11 @@ export const articleProcessor: ContentTypeProcessorFunction<Content<Record<strin
                 },
             };
         }
+        const storyArray = toArray(block.story.panel)
+        if (block._selected === 'story' && storyArray) {
 
-        if (block._selected === 'story' && toArray(block.story.panel)) {
             // Story block with multiple panels
-            const panels = block.story.panel.map(panel => ({
+            const panels = storyArray.map(panel => ({
                 image: panel.image,
                 imageUrl: imageUrl({ id: panel.image, scale: 'width(250)' }),
                 storyline: panel.storyline || '',

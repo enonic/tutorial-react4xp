@@ -1,15 +1,10 @@
-import type {
-	Component,
-	Content,
-	Request,
-	Response
-} from '@enonic-types/core';
-import type { AppProps } from '/types/AppProps';
+import type {Component, Content, Request, Response} from '@enonic-types/core';
+import type {AppProps} from '/types/AppProps';
 
-import { getIn } from '@enonic/js-utils/object/getIn';
-import { render } from '/lib/enonic/react4xp';
-import { getContent } from '/lib/xp/portal';
-import { dataFetcher } from '../react4xp/dataFetcher';
+import {getIn} from '@enonic/js-utils/object/getIn';
+import {render} from '/lib/enonic/react4xp';
+import {getContent} from '/lib/xp/portal';
+import {dataFetcher} from '../react4xp/dataFetcher';
 
 
 const JsonResponse = (obj: Record<string, unknown>, status = 200): Response => ({
@@ -69,7 +64,7 @@ export function get(request: Request) {
 		return response;
 	}
 	const props: AppProps = {
-		component,
+		component
 	}
 
 	const react4xpId = `react4xp_${content._id}`;
@@ -88,7 +83,7 @@ export function get(request: Request) {
 			// you can disable server-side rendering here:
 			// ssr: false,
 
-			id: react4xpId,
+			id: react4xpId
 
 			// Generate server relative urls or fully qualified urls.
 			// Will use what is set here:

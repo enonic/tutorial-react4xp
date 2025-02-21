@@ -1,8 +1,8 @@
-import type { Request, Response } from '@enonic-types/core';
-import type { AppProps } from '/types/AppProps';
-import { getContent } from '/lib/xp/portal';
-import { render } from '/lib/enonic/react4xp';
-import { dataFetcher } from '../react4xp/dataFetcher';
+import type {Request, Response} from '@enonic-types/core';
+import type {AppProps} from '/types/AppProps';
+import {getContent} from '/lib/xp/portal';
+import {render} from '/lib/enonic/react4xp';
+import {dataFetcher} from '../react4xp/dataFetcher';
 import {assetUrl} from '/lib/enonic/asset';
 
 
@@ -30,7 +30,7 @@ export function get(request: Request): Response {
 			<meta charset="UTF-8">
 			<title>${content.displayName}</title>
 		</head>
-		<body style="margin: 0; padding: 0;">
+		<body class="noMarginNoPadding">
 			<div id="${react4xpId}"></div>
 		</body>
 	</html>`;

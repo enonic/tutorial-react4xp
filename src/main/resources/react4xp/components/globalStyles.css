@@ -16,3 +16,8 @@ img {
     object-fit: cover;
     object-position: 50% 50%;
 }
+
+.noMarginNoPadding {
+    margin: 0;
+    padding: 0;
+}
