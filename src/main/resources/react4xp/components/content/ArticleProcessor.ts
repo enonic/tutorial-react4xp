@@ -3,7 +3,8 @@ import type { ContentTypeProcessorFunction } from '@enonic-types/lib-react4xp/Da
 import {processHtml, imageUrl, pageUrl} from '/lib/xp/portal';
 import {get as getContentByKey} from "/lib/xp/content";
 import {assetUrl} from '/lib/enonic/asset';
-
+import { toArray} from "/react4xp/utils/arrayUtils";
+import {string} from "prop-types";
 
 
 export const articleProcessor: ContentTypeProcessorFunction<Content<Record<string, unknown>>> = (params) => {
@@ -12,21 +13,15 @@ export const articleProcessor: ContentTypeProcessorFunction<Content<Record<strin
     const { data } = content;
 
     // Process the cast
-    const spotlight = (Array.isArray(data?.spotlight) ? data.spotlight : []).map(spotlightItem => {
+    const spotlight = toArray<any>(data.spotlight).map(spotlightItem => {
 
          const spotlightContent = getContentByKey<Content>({ key: spotlightItem });
 
 
-        const spotlightId = spotlightContent._id; // Extracted variable for clarity
-
-        const contentUrl = spotlightContent;
 
 
-        let photos = spotlightContent.data.photos;
-        if (!Array.isArray(photos)) {
-            photos = [photos]; // Convert to an array if it's not already
-        }
-        const firstPhotoId = photos[0]; // Safely access the first ID
+        const photos: string [] = toArray<string>(spotlightContent.data.photos as string | string[])
+        const firstPhotoId = photos[0] || ''; // Safely access the first ID
 
 
         return {
@@ -40,8 +35,9 @@ export const articleProcessor: ContentTypeProcessorFunction<Content<Record<strin
 
 
     // Process the blocks
-    const blocks = Array.isArray(data.blocks) ? data.blocks : [];
+    const blocks = toArray<any>(data.blocks);
     const processedBlocks = blocks.map(block => {
+
         if (block._selected === 'banner' && block.banner?.text) {
             // Banner block
             return {
@@ -75,7 +71,7 @@ export const articleProcessor: ContentTypeProcessorFunction<Content<Record<strin
             };
         }
 
-        if (block._selected === 'story' && Array.isArray(block.story.panel)) {
+        if (block._selected === 'story' && toArray(block.story.panel)) {
             // Story block with multiple panels
             const panels = block.story.panel.map(panel => ({
                 image: panel.image,

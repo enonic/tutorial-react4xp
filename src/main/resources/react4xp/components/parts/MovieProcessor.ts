@@ -2,6 +2,7 @@ import type { Content } from '@enonic-types/lib-content';
 import type { PartComponentProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
 import {imageUrl, pageUrl} from '/lib/xp/portal';
 import { get as getContentByKey } from '/lib/xp/content';
+import { toArray} from "/react4xp/utils/arrayUtils";
 
 function fetchAdditionalPhotos(photoIds: string[]) {
     return photoIds.map(photoId => {
@@ -18,9 +19,9 @@ export const movieProcessor: PartComponentProcessorFunction<'com.enonic.app.hmdb
     const data = params.content.data;
 
     // Extract the photos from content.data
-    const photos = data.photos;
-    const firstPhotoId = Array.isArray(photos) ? photos[0] : photos; // First photo ID
-    const remainingPhotoIds = Array.isArray(photos) ? photos.slice(1) : []; // Remaining photo IDs
+    const photos: string[] = toArray<string>(data.photos as string | string[]);
+    const firstPhotoId = photos[0] || ''; // First photo ID
+    const remainingPhotoIds: string[] = photos.slice(1); // Remaining photo IDs
 
     // Fetch the first photo
     const firstPhotoContent = getContentByKey<Content>({ key: firstPhotoId });
@@ -38,18 +39,13 @@ export const movieProcessor: PartComponentProcessorFunction<'com.enonic.app.hmdb
 
 
     // Process the cast
-    const cast = (Array.isArray(data?.cast) ? data.cast : []).map(castMember => {
+    const cast = toArray<any>(data.cast).map(castMember => {
         const actorContent = getContentByKey<Content>({ key: castMember.actor });
-        const actorId = actorContent._id; // Extracted variable for clarity
-
-        const actorUrl = actorContent;
 
 
-        let photos = actorContent.data.photos;
-        if (!Array.isArray(photos)) {
-            photos = [photos]; // Convert to an array if it's not already
-        }
-        const firstPhotoId = photos[0]; // Safely access the first ID
+
+        const photos: string[] = toArray<string>(actorContent.data.photos as string | string[])
+        const firstPhotoId = photos[0] || ''; // Safely access the first ID
 
 
         return {
@@ -69,10 +65,8 @@ export const movieProcessor: PartComponentProcessorFunction<'com.enonic.app.hmdb
 
         const result = getContentByKey<Content>({ key: directorId });
 
-        let directorPhotos = result.data.photos;
-        if (!Array.isArray(directorPhotos)) {
-            directorPhotos = [directorPhotos]; // Convert to an array if it's not already
-        }
+
+        const directorPhotos: string[] = toArray<string>(result.data.photos as string | string[])
         const firstDirectorPhoto = directorPhotos[0];
         const directorTitle = result.displayName;
         const directorUrl = pageUrl({ path: result._path });

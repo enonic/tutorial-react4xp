@@ -10,9 +10,18 @@ export const TwoColumnLayout = (props: any,) => {
     return (
         <>
             <Layout className={styles.row}{...layoutProps} >
-                <Region  name="left" components={props['left']?.components}{...props} />
-                <Region  name="right" components={props['right']?.components}{...props} />
+                <Region
+                    name="left"
+                    components={props.left?.components}
+                    componentRegistry={props.componentRegistry}
+                />
+                <Region
+                    name="right"
+                    components={props.right?.components}
+                    componentRegistry={props.componentRegistry}
+                />
             </Layout>
         </>
     );
 };
+//<Region  name="right" components={props['right']?.components} componentRegistry={props.right}/>

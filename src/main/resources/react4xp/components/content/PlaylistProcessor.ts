@@ -2,6 +2,7 @@ import type { Content } from '@enonic-types/lib-content';
 import type { ContentTypeProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
 import { get as getContentByKey } from '/lib/xp/content';
 import { imageUrl, componentUrl, pageUrl } from '/lib/xp/portal';
+import {toArray} from "/react4xp/utils/arrayUtils";
 
 // Function to fetch additional photos and return their image URLs
 function fetchAdditionalPhotos(photoIds: string[]) {
@@ -34,9 +35,9 @@ function fetchMovies(movieIds: string[]) {
         }
 
         // Extract photos from movie content
-        const photos = movieContent.data.photos;
-        const firstPhotoId = Array.isArray(photos) ? photos[0] : photos; // First photo ID
-        const remainingPhotoIds = Array.isArray(photos) ? photos.slice(1) : []; // Remaining photo IDs
+        const photos: string[] = toArray(movieContent.data.photos as string | string[])
+        const firstPhotoId = photos[0] || ''; // First photo ID
+        const remainingPhotoIds =  photos.slice(1) || []; // Remaining photo IDs
 
         // Fetch the first photo
         const firstPhotoContent = getContentByKey<Content>({ key: firstPhotoId });
@@ -67,13 +68,15 @@ export const playlistProcessor: ContentTypeProcessorFunction<Content<Record<stri
     const content = params.content;
     const playlistData = content.data;
 
-    // Ensure playlist data is valid
-    if (!playlistData || !Array.isArray(playlistData.list)) {
-        throw new Error(`Invalid playlist data for content ID: ${content._id}`);
+// Ensure playlistData.list is always an array
+    const movieList: string[] = toArray<string>(playlistData?.list as string | string[]);
+
+    if (movieList.length === 0) {
+        throw new Error(`Invalid or empty playlist data for content ID: ${content._id}`);
     }
 
-    // Fetch movies with additional photo data
-    const movies = fetchMovies(playlistData.list);
+// Fetch movies with additional photo data
+    const movies = fetchMovies(movieList);
 
     return {
         props: {

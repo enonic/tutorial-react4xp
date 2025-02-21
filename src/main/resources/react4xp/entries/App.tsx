@@ -1,6 +1,4 @@
 import type { AppProps } from '/types/AppProps';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
 import '../components/globalStyles.css'
 
 import * as React from 'react';

@@ -2,6 +2,7 @@ import type { Content } from '@enonic-types/lib-content';
 import type { ContentTypeProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
 import { imageUrl, processHtml } from '/lib/xp/portal';
 import { get as getContentByKey } from '/lib/xp/content';
+import {toArray} from "/react4xp/utils/arrayUtils";
 
 
 
@@ -25,9 +26,10 @@ export const personProcessor: ContentTypeProcessorFunction<Content<Record<string
 = (params) => {
 
 
-	const photos = params.content.data.photos;
-	const firstPhotoId = Array.isArray(photos) ? photos[0] : photos;
-	const remainingPhotoIds = Array.isArray(photos) ? photos.slice(1) : [];
+
+	const photos: string[] = toArray<string>(params.content.data.photos as string | string[])
+	const firstPhotoId = photos[0] || '';
+	const remainingPhotoIds = photos.slice(1) || '';
 
 	// Fetch the first photo
 	const {_id, displayName} = getContentByKey<Content>({ key: firstPhotoId });
