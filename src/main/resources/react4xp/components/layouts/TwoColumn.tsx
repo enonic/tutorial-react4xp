@@ -1,12 +1,10 @@
-
 import React from 'react'
-import { Layout, Region } from '@enonic/react-components';
+import {Layout, Region} from '@enonic/react-components';
 import styles from './TwoColumn.module.css';
 
 
 export const TwoColumnLayout = (props: any,) => {
-
-  const { region, config, content, ...layoutProps} = props;
+    const {...layoutProps} = props;
     return (
         <>
             <Layout className={styles.row}{...layoutProps} >
@@ -24,4 +22,3 @@ export const TwoColumnLayout = (props: any,) => {
         </>
     );
 };
-//<Region  name="right" components={props['right']?.components} componentRegistry={props.right}/>
