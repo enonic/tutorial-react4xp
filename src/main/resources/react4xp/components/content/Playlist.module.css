@@ -32,6 +32,9 @@
 .flowX{
     display: flex;
     overflow-x: auto;
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
 }
 
 /* Individual movie item */
