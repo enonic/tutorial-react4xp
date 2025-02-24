@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from './Article.module.css';
-import { RichText } from "@enonic/react-components";
-import Header from "../common/Header";
-import Footer from "../common/Footer"
+import {RichText} from "@enonic/react-components";
 
 
 export const Article = (props) => {
@@ -10,8 +8,8 @@ export const Article = (props) => {
 
     return (
     <>
-        <Header title="React4XP" logoUrl={props.url}  />
-        <div className={styles.article}>
+
+    <div className={styles.article}>
             {/* Article Header */}
             <header className={styles.header}>
                 <h1>{title}</h1>
@@ -148,7 +146,7 @@ export const Article = (props) => {
                 })}
             </main>
         </div>
-        <Footer/>
+
     </>
     );
 };

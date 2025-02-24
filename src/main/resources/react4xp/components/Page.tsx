@@ -1,8 +1,6 @@
-
 import React from 'react'
-import {Regions, } from '@enonic/react-components';
-import { componentRegistry } from '../componentRegistry';
-import  Header  from '../components/common/Header';
+import {Regions,} from '@enonic/react-components';
+import {componentRegistry} from '../componentRegistry';
 import Footer from '../components/common/Footer';
 import styles from './Page.module.css';
 
@@ -19,9 +17,9 @@ export const Page = (props: any) => {
     const regionsProps = { componentRegistry, regions:page.regions}
     return (
         <div className={styles.page}>
-            <Header title="React4XP" logoUrl={props.url}  />
+
             <Regions {...regionsProps} />
-            <Footer/>
+            <Footer logoUrl={props.url}/>
             </div>
     );
 };
