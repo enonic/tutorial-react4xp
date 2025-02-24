@@ -1,18 +1,13 @@
 import React from "react";
 import styles from "./ChildList.module.css";
-import { Part } from "@enonic/react-components";
+import {Part} from "@enonic/react-components";
 
-interface ChildListProps {
-    names: string[];
-    paths: string[];
-    "data-portal-component-type"?: string;
-}
 
-export const ChildList: React.FC<ChildListProps> = ({ names, paths, "data-portal-component-type": portalComponentType }) => {
-    console.log("Full props:", { names, paths, portalComponentType });
+export const ChildList = (props) => {
 
+    const {names, paths, componentRegistry, ...extraProps} = props;
     return (
-        <Part data-portal-component-type={portalComponentType}>
+        <Part {...extraProps}>
             <ul>
                 {names.map((name, index) => (
                     <li className={styles.listItem} key={index}>
