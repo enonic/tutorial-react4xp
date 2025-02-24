@@ -36,7 +36,7 @@ module.exports = function(env, config) {
 					options: {
 						importLoaders: 1,
 						modules: { auto: true },
-						esModule: false,
+						esModule: false
 					}
 				},
 				{

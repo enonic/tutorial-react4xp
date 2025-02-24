@@ -1,0 +1,23 @@
+html{
+    background-color: #130937;
+    color: wheat;
+}
+
+a{
+    color: chartreuse;
+}
+
+.xp-region {
+    padding-inline: .5rem;
+
+}
+
+img {
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.noMarginNoPadding {
+    margin: 0;
+    padding: 0;
+}

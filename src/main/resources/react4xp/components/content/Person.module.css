@@ -1,0 +1,67 @@
+.person,
+.person .bio {
+    font-family: sans-serif;
+}
+
+.person {
+    display: flex;
+    flex-direction: column;
+    margin-inline: 1rem;
+}
+.flexy{
+    display: flex;
+}
+h3 {
+    margin-inline: 2rem;
+    color: #eafbee;
+}
+.bio {
+    line-height: 24px;
+}
+
+p {
+    font-size: 18px;
+}
+
+.bio figure > img {
+    width: 100%;
+    height: auto;
+}
+
+.photos {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 50px;
+    gap: 50px;
+}
+
+.restPhotosContainer{
+    padding: 1rem 0;
+}
+.restPhotos{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.restImg{
+    width: 200px;
+    height: 250px;
+    object-fit: cover;
+    object-position: 50% 50%;
+    border: solid 2px rebeccapurple;
+}
+
+.photos img {
+    width: 100%;
+    height: auto; /* Ensures images scale properly */
+    max-width: 500px;
+    border: solid 2px rebeccapurple;
+}
+
+@media screen and (max-width: 720px) {
+    .bio figure {
+        width: auto !important;
+    }
+}
