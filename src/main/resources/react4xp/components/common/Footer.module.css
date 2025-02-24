@@ -2,13 +2,20 @@
 .footer {
     margin: auto auto;
     width: 100%;
-    padding: 0 0 1.45rem;
+    padding: 0 0 2rem;
     text-align: center;
     background-color: black; /* Dark theme */
     color: lightpink;        /* Light pink for text */
     position: fixed;
     bottom: 0;
+    font-size: 18px;
 
+}
+
+.footerContainer {
+    border-top: 2px solid lightpink;
+    padding-top: 1.45rem;
+    margin-top: 2rem;
 }
 
 .footer a {
@@ -24,4 +31,21 @@
 .footer hr {
     border-color: lightpink; /* Light pink for the horizontal line */
     border-width: 1px;
+}
+
+.logoContainer {
+    position: absolute;
+    bottom: .8rem;
+    right: 1.5rem;
+}
+
+@media (max-width: 610px) {
+    .logoContainer {
+        position: initial;
+        margin-top: .5rem;
+    }
+
+    .footer {
+        padding: 0 0 1.45rem;
+    }
 }

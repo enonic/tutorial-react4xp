@@ -9,18 +9,19 @@ export interface FooterProps {
 
 const Footer = ({logoUrl}: FooterProps) => (
     <footer className={styles.footer}>
-        <br />
-        <hr />
-        <br />
+        <div className={styles.footerContainer}>
         {`© ${new Date().getFullYear()}, Built with `}
         <a href="https://reactjs.org">React</a>
         {` and Powered by `}
         <a href="https://enonic.com">Enonic XP</a>
+        </div>
             {logoUrl && (
+                <div className={styles.logoContainer}>
                 <img src={logoUrl}
-                     width={33}
-                     height={40}
+                     width={40}
+                     height={50}
                      alt="Enonic XP logo"/>
+                </div>
             )}
     </footer>
 );
