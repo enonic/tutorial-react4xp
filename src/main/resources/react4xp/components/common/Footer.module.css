@@ -5,7 +5,7 @@
     padding: 0 0 2rem;
     text-align: center;
     background-color: black; /* Dark theme */
-    color: lightpink;        /* Light pink for text */
+    color: #f5eafb; /* Light pink for text */
     position: fixed;
     bottom: 0;
     font-size: 18px;
@@ -13,13 +13,13 @@
 }
 
 .footerContainer {
-    border-top: 2px solid lightpink;
+    border-top: 2px solid #f5eafb;
     padding-top: 1.45rem;
     margin-top: 2rem;
 }
 
 .footer a {
-    color: deeppink;      /* Light purple for links */
+    color: #ef14ff; /* Light purple for links */
     text-decoration: none;
 }
 
@@ -28,10 +28,6 @@
     text-decoration: underline;
 }
 
-.footer hr {
-    border-color: lightpink; /* Light pink for the horizontal line */
-    border-width: 1px;
-}
 
 .logoContainer {
     position: absolute;
