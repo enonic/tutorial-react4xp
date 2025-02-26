@@ -2,7 +2,7 @@
 import React from 'react'
 //import * as React from 'react';
 import styles from './Person.module.css';
-import { RichText } from '@enonic/react-components';
+import {RichText} from '@enonic/react-components';
 
 export const Person = (props) => {
     const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;

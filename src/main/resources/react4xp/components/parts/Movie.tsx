@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './MoviePage.module.css';
-import { Part } from "@enonic/react-components";
+import {Part} from "@enonic/react-components";
 
 export const Movie = (props) => {
     // All properties are accessed via props object
@@ -47,7 +47,9 @@ export const Movie = (props) => {
                                             <li key={index}>
                                                 <a className={styles.sneakyLink} href={member.castUrl}><img src={member.photoUrl} alt={member.actorName} /></a>
                                                 <p>
-                                                    <a className={styles.sneakyCastLink} href={member.castUrl}><strong>{member.actorName}</strong> as {member.character}</a>
+                                                    <a className={styles.sneakyCastLink}
+                                                       href={member.castUrl}><strong>{member.actorName}</strong> as {member.character}
+                                                    </a>
                                                 </p>
                                             </li>
                                         ))}
