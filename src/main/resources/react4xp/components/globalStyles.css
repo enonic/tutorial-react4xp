@@ -1,6 +1,7 @@
 html{
     background-color: #071622;
     color: ghostwhite;
+    max-width: 1600px;
 }
 h1 h2 {
     color: #61DBFB;
@@ -22,6 +23,7 @@ a{
 img {
     object-fit: cover;
     object-position: 50% 50%;
+    max-width: 1400px;
 }
 
 .noMarginNoPadding {

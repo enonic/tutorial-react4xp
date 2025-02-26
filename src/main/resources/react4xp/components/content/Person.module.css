@@ -11,15 +11,17 @@
     margin-top: 3rem;
     max-width: 1200px;
 }
-.flex{
+
+.flex {
     display: flex;
 }
-.flexBlock{
+
+.flexBlock {
     display: flex;
     justify-content: space-between;
 }
 
-h2{
+h2 {
     color: #0892D4;
 }
 
@@ -49,7 +51,7 @@ p {
 }
 
 .restPhotosContainer{
-    padding:  0.5rem 1rem;
+    padding: 0.5rem 1rem;
 }
 .restPhotos{
     display: grid;
@@ -83,13 +85,15 @@ p {
 }
 
 @media screen and (max-width: 900px) {
-    .flexBlock{
+    .flexBlock {
         display: block;
     }
-    .restPhotosContainer{
+
+    .restPhotosContainer {
         padding: 1rem 0;
     }
-    .restImg{
+
+    .restImg {
         width: 200px;
         height: 250px;
         object-fit: cover;
@@ -98,7 +102,7 @@ p {
     }
 }
 
-.photosHeader{
+.photosHeader {
     margin-top: 0;
     color: #EF82F0;
 }

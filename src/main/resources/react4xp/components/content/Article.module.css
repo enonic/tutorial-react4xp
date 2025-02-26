@@ -119,7 +119,8 @@
     padding-left: 20px;
     margin: 20px 0;
 }
-.quote p{
+
+.quote p {
     color: #61dbfb
 }
 
@@ -178,6 +179,7 @@
 .spotlight {
     width: 250px;
 }
+
 .spotlight h3 {
     margin-inline: 0;
 }

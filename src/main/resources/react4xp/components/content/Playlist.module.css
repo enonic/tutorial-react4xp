@@ -5,10 +5,11 @@
 
 
 }
+
 .photoBanner img {
     max-width: 90vw;
     border: solid 1px #09C0F0;
-    box-shadow:  0 0 8px #09C0F0;
+    box-shadow: 0 0 8px #09C0F0;
 }
 
 /* Playlist title styling */
@@ -79,7 +80,6 @@
 }
 
 
-
 /* Message when no photo is available */
 .noPhoto {
     font-size: 14px;
@@ -101,14 +101,15 @@
     font-size: 2rem;
     color: #EF82F0;
 }
-.subTitle{
+
+.subTitle {
     font-size: 1.5rem;
     margin-inline: 1rem;
     max-width: 500px;
     min-height: 3.5rem;
 }
 
-.photoBanner{
+.photoBanner {
     max-width: 90vw;
     min-height: 750px;
     align-items: center;
