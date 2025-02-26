@@ -6,21 +6,33 @@
 .person {
     display: flex;
     flex-direction: column;
-    margin-inline: 1rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+    margin-top: 3rem;
+    max-width: 1200px;
 }
-.flexy{
+.flex{
     display: flex;
 }
-h3 {
+.flexBlock{
+    display: flex;
+    justify-content: space-between;
+}
+
+h2{
+    color: #0892D4;
+}
+
+.birth {
     margin-inline: 2rem;
-    color: #eafbee;
+
 }
 .bio {
     line-height: 24px;
 }
 
 p {
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .bio figure > img {
@@ -37,7 +49,7 @@ p {
 }
 
 .restPhotosContainer{
-    padding: 1rem 0;
+    padding:  0.5rem 1rem;
 }
 .restPhotos{
     display: grid;
@@ -46,22 +58,47 @@ p {
 }
 
 .restImg{
-    width: 200px;
-    height: 250px;
+    width: 250px;
+    height: 280px;
     object-fit: cover;
     object-position: 50% 50%;
-    border: solid 2px rebeccapurple;
+    border: solid 1px #EF82F0;
+    box-shadow: 0 0 8px #EF82F0;
+    border-radius: 8px;
 }
 
 .photos img {
     width: 100%;
     height: auto; /* Ensures images scale properly */
     max-width: 500px;
-    border: solid 2px rebeccapurple;
+    border: solid 1px #09C0F0;
+    box-shadow: 0 0 8px #09C0F0;
+    border-radius: 8px;
 }
 
 @media screen and (max-width: 720px) {
     .bio figure {
         width: auto !important;
     }
+}
+
+@media screen and (max-width: 900px) {
+    .flexBlock{
+        display: block;
+    }
+    .restPhotosContainer{
+        padding: 1rem 0;
+    }
+    .restImg{
+        width: 200px;
+        height: 250px;
+        object-fit: cover;
+        object-position: 50% 50%;
+        border: solid 1px #0892D4;
+    }
+}
+
+.photosHeader{
+    margin-top: 0;
+    color: #EF82F0;
 }

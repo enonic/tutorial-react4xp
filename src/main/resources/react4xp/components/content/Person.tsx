@@ -13,10 +13,10 @@ export const Person = (props) => {
                 <h2>{displayName}</h2>
                 <h3 className={styles.birth}>{birthDate}</h3>
                 </div>
+                <div className={styles.flexBlock}>
                 {
                     photo ? (
                         <>
-                        <h4 className={styles.photosheader}>Photos</h4>
                         <div className={styles.photos}>
                         <img src={photo.imageUrl}
                              title={photo.displayName}
@@ -30,7 +30,7 @@ export const Person = (props) => {
                 }
                 {restPhotos && restPhotos.length > 0 && (
                         <div className={styles.restPhotosContainer}>
-                            <h4 className={styles.photosheader}>Other Photos</h4>
+                            <h4 className={styles.photosHeader}>Other Photos</h4>
                             <div className={styles.restPhotos}>
                                 {restPhotos.map((photo, index) => (
                                     <img key={index}
@@ -43,6 +43,7 @@ export const Person = (props) => {
                             </div>
                         </div>
                     )}
+                </div>
             <div>
                 {/*<div>
                 {parse(`${bioHtml}`)}

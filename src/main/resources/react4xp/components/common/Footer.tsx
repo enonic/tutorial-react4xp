@@ -19,7 +19,7 @@ const Footer = ({logoUrl}: FooterProps) => (
                 <div className={styles.logoContainer}>
                 <img src={logoUrl}
                      width={40}
-                     height={50}
+                     height={54}
                      alt="Enonic XP logo"/>
                 </div>
             )}

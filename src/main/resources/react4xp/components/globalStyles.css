@@ -1,10 +1,16 @@
 html{
-    background-color: #130937;
-    color: #eeeafb;
+    background-color: #071622;
+    color: ghostwhite;
 }
-
+h1 h2 {
+    color: #61DBFB;
+}
+h3{
+    margin-inline: 2rem;
+    color: #61DBFB;
+}
 a{
-    color: #84fff6;
+    color: #61DBFB;
 }
 
 .xp-region {
