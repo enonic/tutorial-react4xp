@@ -5,7 +5,6 @@ import {imageUrl, pageUrl} from '/lib/xp/portal';
 import {processHtml} from '/lib/enonic/react4xp';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import {PageDescriptor} from '@enonic-types/core';
-import type {Content} from '@enonic-types/lib-content';
 
 
 export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (params) => {

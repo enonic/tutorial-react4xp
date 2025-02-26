@@ -44,7 +44,7 @@ export const personProcessor: ComponentProcessorFunction<PageDescriptor>
         },
         bio: `${params.content.data.bio}`,
         bioHtml: processHtml({
-            value: `${params.content.data.bio}`,
+            value: params.content.data.bio as string,
             imageWidths: [200, 400, 800],
         }),
         birthDate: params.content.data.dateofbirth,

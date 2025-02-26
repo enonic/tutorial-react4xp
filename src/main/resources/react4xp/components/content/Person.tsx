@@ -43,7 +43,7 @@ export const Person = (props) => {
                 )}
             </div>
             <div className={styles.richText}>
-                <RichText data={{processedHtml: bioHtml}}/>
+                <RichText data={ bioHtml}/>
 
             </div>
 

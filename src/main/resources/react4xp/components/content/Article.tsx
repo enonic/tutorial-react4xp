@@ -80,7 +80,7 @@ export const Article = (props) => {
                         return (
                             <section key={index} className={styles.textBlock}>
                                 {/* Use processed HTML */}
-                                <RichText data={{processedHtml: block.text}}/>
+                                <RichText data={block.text}/>
                             </section>
                         );
                     }
@@ -148,3 +148,4 @@ export const Article = (props) => {
         </div>
     );
 };
+
