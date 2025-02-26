@@ -1,9 +1,9 @@
-import type { Content } from '@enonic-types/lib-content';
-import type { ContentTypeProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
-import { imageUrl, processHtml } from '/lib/xp/portal';
-import { get as getContentByKey } from '/lib/xp/content';
+import type {Content} from '@enonic-types/lib-content';
+import type {ContentTypeProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {imageUrl} from '/lib/xp/portal';
+import {get as getContentByKey} from '/lib/xp/content';
 import {toArray} from "/react4xp/utils/arrayUtils";
-
+import {processHtml} from "/lib/enonic/react4xp";
 
 
 function fetchAdditionalPhotos(photosIds) {
@@ -46,7 +46,7 @@ export const personProcessor: ContentTypeProcessorFunction<Content<Record<string
 			},
 			bio: `${params.content.data.bio}`,
 			bioHtml: processHtml({
-				value: `${params.content.data.bio}`,
+				value: params.content.data.bio as string,
 				imageWidths: [200, 400, 800],
 			}),
 			birthDate: params.content.data.dateofbirth,

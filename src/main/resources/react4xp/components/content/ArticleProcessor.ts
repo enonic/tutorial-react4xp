@@ -1,6 +1,7 @@
 import type {Content} from '@enonic-types/lib-content';
 import type {ContentTypeProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
-import {imageUrl, pageUrl, processHtml} from '/lib/xp/portal';
+import {imageUrl, pageUrl} from '/lib/xp/portal';
+import {processHtml} from '/lib/enonic/react4xp';
 import {get as getContentByKey} from "/lib/xp/content";
 import {assetUrl} from '/lib/enonic/asset';
 import {toArray} from "/react4xp/utils/arrayUtils";
