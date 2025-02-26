@@ -1,20 +1,16 @@
-import type { Content } from '@enonic-types/lib-content';
-import type { ContentTypeProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
-import { get as getContentByKey } from '/lib/xp/content';
-import { imageUrl, componentUrl, pageUrl } from '/lib/xp/portal';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {imageUrl} from '/lib/xp/portal';
+import {PageDescriptor} from '@enonic-types/core';
 
 
-
-export const imageProcessor: ContentTypeProcessorFunction<Content<Record<string, unknown>>> = params => {
+export const imageProcessor: ComponentProcessorFunction<PageDescriptor> = params => {
     const content = params.content;
 
     return {
-        props: {
-            image: {
-                name: content.displayName,
-                url: imageUrl({id: content._id, scale: 'width(1000)'}),
-                altName: content._name
-            }
+        image: {
+            name: content.displayName,
+            url: imageUrl({id: content._id, scale: 'width(1000)'}),
+            altName: content._name
         }
     };
 };
