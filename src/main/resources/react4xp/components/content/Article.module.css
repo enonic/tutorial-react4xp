@@ -4,7 +4,7 @@
     font-family: Arial, sans-serif;
     margin: 3rem auto 10rem auto;
     width: 90%;
-    max-width: 800px;
+    max-width: 1000px;
 }
 
 
@@ -13,6 +13,10 @@
 .header {
     text-align: start;
     margin-bottom: 10rem;
+}
+
+.header h1 {
+    color: #61dbfb;
 }
 
 .coverImageContainer {
@@ -24,7 +28,8 @@
     height: auto;
     border-radius: 8px;
     object-fit: cover;
-    box-shadow: 0 0 8px #e89cff;
+    box-shadow: 0 0 8px #EF82F0;
+    border: 1px solid #EF82F0;
 }
 
 .preface {
@@ -34,7 +39,7 @@
 }
 
 .author {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #ffffff;
     margin-bottom: 10px;
 }
@@ -56,6 +61,7 @@
     border-radius: 20px;
     font-size: 1rem;
     color: #0b0425;
+    box-shadow: 0 0 8px #61dbfb;
 }
 
 
@@ -86,22 +92,24 @@
     margin-bottom: 10px;
 }
 .bannerImage {
-    height: 200px;
-    width: 600px;
+    height: 300px;
+    width: 800px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;
-    box-shadow: 0 0 8px #cccccc;
+    box-shadow: 0 0 8px #61dbfb;
+    border: 1px solid #61dbfb;
     max-width: 100%;
 }
 .bannerText {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    font-size: 1.2rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 1.8rem;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    width: 90%;
 }
 
 /* ----- Quote Block ----- */
@@ -111,18 +119,23 @@
     padding-left: 20px;
     margin: 20px 0;
 }
+.quote p{
+    color: #61dbfb
+}
+
 .byline {
     display: block;
     font-size: 1rem;
     margin-top: 5px;
-    color: #58cac1;
+    color: #EF82F0;
 }
 
 /* ----- Story Block ----- */
 .storyBlock {
     margin: 10px 0;
     overflow-x: auto; /* Allow horizontal scrolling */
-    box-shadow: 0 0 8px #cccccc;
+    box-shadow: 0 0 8px #EF82F0;
+    border: 1px solid #EF82F0;
     border-radius: 8px;
     background-color: #0b0425;
 }
@@ -135,7 +148,7 @@
 
 .storyPanel {
     flex: 0 0 auto; /* Prevent panels from growing/shrinking */
-    width: 300px; /* Width of the entire panel */
+    width: 350px; /* Width of the entire panel */
     text-align: center; /* Center-align text and images */
 
     display: flex; /* Add flexbox for vertical alignment */
@@ -145,23 +158,28 @@
 }
 
 .storyPanel img {
-    width: 300px; /* Fixed image width */
-    height: 200px; /* Fixed image height */
+    width: 350px; /* Fixed image width */
+    height: 220px; /* Fixed image height */
     object-fit: cover; /* Ensure consistent cropping of images */
     border-radius: 8px; /* Rounded corners for images */
+    box-shadow: 0 0 8px #EF82F0;
+    border: 1px solid #EF82F0;
 }
 
 .storyline {
     margin-top: 10px; /* Space between the image and text */
-    font-size: 1rem; /* Small readable font size */
-    color: #dfdfdf; /* Muted color for captions */
+    font-size: 1.2rem; /* Small readable font size */
+    color: #61dbfb; /* Muted color for captions */
     max-width: 100%; /* Restrict text width to the panel */
     word-break: break-word; /* Force line breaks on long words */
     line-height: 1.4; /* Better readability for multiline captions */
     text-align: center; /* Center-align multiline captions */
 }
 .spotlight {
-    width: 200px;
+    width: 250px;
+}
+.spotlight h3 {
+    margin-inline: 0;
 }
 .flexy {
     display: flex;
@@ -170,7 +188,8 @@
 }
 .blocky {
     display: block;
-    width: 580px;
+    width: 650px;
+    align-content: center;
 }
 .spotlight ul {
     list-style: none;

@@ -16,7 +16,6 @@ export const Movie = (props) => {
                         {/* First Photo */}
                         {props.photo && (
                             <section className={styles.firstPhoto}>
-                                <h3>Featured Image</h3>
                                 <img
                                     src={props.photo.imageUrl}
                                     alt={props.photo.title}
@@ -48,7 +47,7 @@ export const Movie = (props) => {
                                             <li key={index}>
                                                 <a className={styles.sneakyLink} href={member.castUrl}><img src={member.photoUrl} alt={member.actorName} /></a>
                                                 <p>
-                                                    <a className={styles.sneakyLink} href={member.castUrl}><strong>{member.actorName}</strong> as {member.character}</a>
+                                                    <a className={styles.sneakyCastLink} href={member.castUrl}><strong>{member.actorName}</strong> as {member.character}</a>
                                                 </p>
                                             </li>
                                         ))}

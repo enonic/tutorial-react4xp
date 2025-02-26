@@ -5,19 +5,22 @@
 
 
 }
+.photoBanner img {
+    max-width: 90vw;
+    border: solid 1px #09C0F0;
+    box-shadow:  0 0 8px #09C0F0;
+}
 
 /* Playlist title styling */
 .title {
     font-size: 34px;
     margin-bottom: 16px;
     text-align: center;
-    color: deeppink;
 }
 
 /* Playlist description styling */
 .description {
     font-size: 20px;
-    color: #00cfdd;
     margin-bottom: 24px;
     text-align: center;
 }
@@ -44,44 +47,38 @@
     border-bottom: 1px solid #eee;
     font-family: Arial, sans-serif;
     min-width: fit-content;
+    min-height: 100%;
 }
 
 /* Heading for each movie */
 .movieItem h3 {
-    font-size: 30px;
     margin-bottom: 12px;
 }
 .movieItem p {
-    width: 600px;
-    max-width: 100%;
+    width: 550px;
+    max-width: 90vw;
 }
-/* Primary movie photo (scaled with max-width) */
-.mainPhoto {
-    display: block;
-    max-width: 500px;
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
+
 
 /* Container for additional photos */
 .additionalPhotos {
     display: flex;
-    gap: 25px;
+    gap: 20px;
     flex-wrap: wrap;
     margin-top: 8px;
-    max-width: 800px;
+    max-width: 90vw;
+    width: 500px;
 }
 
-/* Additional photos below each movie */
-.extraPhoto {
-    max-width: 100px;
-    height: auto;
-    border-radius: 4px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+.additionalPhotos img {
+    height: 160px;
+    width: 238px;
+    border-radius: 8px;
+    border: solid 1px #EF82F0;
+    box-shadow: 0 0 8px #EF82F0;
 }
+
+
 
 /* Message when no photo is available */
 .noPhoto {
@@ -101,5 +98,24 @@
 
 .link {
     text-decoration: none;
-    color: #e766ff;
+    font-size: 2rem;
+    color: #EF82F0;
+}
+.subTitle{
+    font-size: 1.5rem;
+    margin-inline: 1rem;
+    max-width: 500px;
+    min-height: 3.5rem;
+}
+
+.photoBanner{
+    max-width: 90vw;
+    min-height: 750px;
+    align-items: center;
+    display: flex;
+    width: 500px;
+}
+
+.photoBanner img {
+    border-radius: 8px;
 }

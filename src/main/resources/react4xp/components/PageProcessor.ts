@@ -5,7 +5,7 @@ import {pageUrl} from "/lib/xp/portal";
 
 export const pageProcessor: PageComponentProcessorFunction<'com.enonic.app.hmdb:main'> = ({ component }) => {
     const regions = component?.regions || {};
-    const url = assetUrl({path: 'images/Icon-XP.svg'});
+    const url = assetUrl({path: 'images/React4LowXp.svg'});
 
     return {
         props: {
