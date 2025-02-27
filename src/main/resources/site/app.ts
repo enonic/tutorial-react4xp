@@ -1,14 +1,25 @@
 import type {Request, Response} from '@enonic-types/core';
 import type {AppProps} from '/types/AppProps';
-import {getContent} from '/lib/xp/portal';
+import {getContent, pageUrl} from '/lib/xp/portal';
 import {render} from '/lib/enonic/react4xp';
 import {dataFetcher} from '../react4xp/dataFetcher';
 import {assetUrl} from '/lib/enonic/asset';
-
+import {type Content, get as getContentByKey} from '/lib/xp/content';
 
 export function get(request: Request): Response {
 	const url = assetUrl({path: 'images/Icon-XP.svg'});
-	const content = getContent();
+	let content = getContent();
+	if (content.type == "base:shortcut") {
+		const targetId: string = content.data.target as string
+		if (targetId) {
+			content = getContentByKey<Content>({key: targetId});
+			return {
+				status: 302, // Temporary redirect
+				redirect: pageUrl({path: content._path})
+			};
+		}
+	}
+
 	const {
 		component,
 		response
@@ -16,11 +27,13 @@ export function get(request: Request): Response {
 		content, // Since it's already gotten, pass it along, so DataFetcher doesn't have to get it again.
 		request,
 	});
+
+	//log.info(JSON.stringify(request, null, 2))
 	if (response) {
 		return response; // This also handles the special case when ContentStudio needs 418.
 	}
 	const props: AppProps = {
-		component,
+		component: component,
 		url
 	}
 	const react4xpId = `react4xp_${content._id}`;
