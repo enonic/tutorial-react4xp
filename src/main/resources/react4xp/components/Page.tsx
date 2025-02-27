@@ -1,7 +1,6 @@
 import React from 'react'
 import {Regions,} from '@enonic/react-components';
 import {componentRegistry} from '../componentRegistry';
-import Footer from '../components/common/Footer';
 import styles from './Page.module.css';
 
 export const Page = (props: any) => {
@@ -19,7 +18,6 @@ export const Page = (props: any) => {
         <div className={styles.page}>
 
             <Regions {...regionsProps} />
-            <Footer logoUrl={props.url}/>
             </div>
     );
 };
