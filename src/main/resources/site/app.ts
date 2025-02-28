@@ -13,10 +13,15 @@ export function get(request: Request): Response {
 		const targetId: string = content.data.target as string
 		if (targetId) {
 			content = getContentByKey<Content>({key: targetId});
-			return {
-				status: 302, // Temporary redirect
+			if (content) {
+				return {
+					status: 302,
 				redirect: pageUrl({path: content._path})
 			};
+		}
+	}
+		return {
+			status: 404
 		}
 	}
 
@@ -33,7 +38,7 @@ export function get(request: Request): Response {
 		return response; // This also handles the special case when ContentStudio needs 418.
 	}
 	const props: AppProps = {
-		component: component,
+		component,
 		url
 	}
 	const react4xpId = `react4xp_${content._id}`;
