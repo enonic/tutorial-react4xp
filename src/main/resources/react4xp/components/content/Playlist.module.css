@@ -2,8 +2,6 @@
     padding: 16px;
     margin: 20px auto;
     max-width: 96%;
-
-
 }
 
 .photoBanner img {
@@ -26,14 +24,7 @@
     text-align: center;
 }
 
-/* Styling for the movie list container */
-.movieList {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.flowX{
+.flowX {
     display: flex;
     overflow-x: auto;
     list-style: none;
@@ -55,6 +46,7 @@
 .movieItem h3 {
     margin-bottom: 12px;
 }
+
 .movieItem p {
     width: 550px;
     max-width: 90vw;

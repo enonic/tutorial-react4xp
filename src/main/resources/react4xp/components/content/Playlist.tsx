@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Playlist.module.css';
 
 export const Playlist = (props: any) => {
-    const { displayName, description, movies } = props.playlist;
+    const {displayName, description, movies} = props.playlist;
 
     return (
         <div className={styles.playlist}>
@@ -12,22 +12,22 @@ export const Playlist = (props: any) => {
             {movies && movies.length > 0 ? (
                 <ul className={styles.flowX}>
                     {movies.map((movie: any, index: number) => (
-                        <li className={styles.movieItem} key={movie._id || index} >
+                        <li className={styles.movieItem} key={movie._id || index}>
                             <h2><a className={styles.link} href={movie.movieUrl}>{movie.title}</a></h2>
                             <h3 className={styles.subTitle}>{movie.subtitle}</h3>
                             {movie.photo ? (
                                 <div className={styles.photoBanner}>
                                     <a href={movie.movieUrl}>
-                                    <img
-                                        src={movie.photo.imageUrl}
-                                        alt={movie.photo.title}
-                                        title={movie.photo.title}
+                                        <img
+                                            src={movie.photo.imageUrl}
+                                            alt={movie.photo.title}
+                                            title={movie.photo.title}
 
-                                    />
+                                        />
                                     </a>
                                 </div>
                             ) : (
-                                <p>No image available</p>
+                                <p className={styles.noPhoto}> No image available</p>
                             )}
                             <p className={styles.movieDescription}>{movie.description}</p>
                             {movie.restPhotos && movie.restPhotos.length > 0 && (
@@ -46,7 +46,7 @@ export const Playlist = (props: any) => {
                     ))}
                 </ul>
             ) : (
-                <p>No movies in this playlist.</p>
+                <p className={styles.noMovies}>No movies in this playlist.</p>
             )}
         </div>
     );

@@ -29,17 +29,10 @@ h2 {
     margin-inline: 2rem;
 
 }
-.bio {
-    line-height: 24px;
-}
+
 
 p {
     font-size: 20px;
-}
-
-.bio figure > img {
-    width: 100%;
-    height: auto;
 }
 
 .photos {
@@ -50,16 +43,17 @@ p {
     gap: 50px;
 }
 
-.restPhotosContainer{
+.restPhotosContainer {
     padding: 0.5rem 1rem;
 }
-.restPhotos{
+
+.restPhotos {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 10px;
 }
 
-.restImg{
+.restImg {
     width: 250px;
     height: 280px;
     object-fit: cover;

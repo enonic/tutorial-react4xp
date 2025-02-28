@@ -13,11 +13,11 @@ export const Page = (props: any) => {
             }
         }
     }
-    const regionsProps = { componentRegistry, regions:page.regions}
+    const regionsProps = {componentRegistry, regions: page.regions}
     return (
         <div className={styles.page}>
 
             <Regions {...regionsProps} />
-            </div>
+        </div>
     );
 };

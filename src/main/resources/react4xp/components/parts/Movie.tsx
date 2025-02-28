@@ -30,7 +30,8 @@ export const Movie = (props) => {
                             <div>
                                 {props.website && (
                                     <h3>
-                                        <a href={props.website} className={styles.sneakyLink} target="_blank" rel="noopener noreferrer">
+                                        <a href={props.website} className={styles.sneakyLink} target="_blank"
+                                           rel="noopener noreferrer">
                                             Official Website
                                         </a>
                                     </h3>
@@ -45,7 +46,8 @@ export const Movie = (props) => {
                                     <ul>
                                         {props.cast.map((member, index) => (
                                             <li key={index}>
-                                                <a className={styles.sneakyLink} href={member.castUrl}><img src={member.photoUrl} alt={member.actorName} /></a>
+                                                <a className={styles.sneakyLink} href={member.castUrl}><img
+                                                    src={member.photoUrl} alt={member.actorName}/></a>
                                                 <p>
                                                     <a className={styles.sneakyCastLink}
                                                        href={member.castUrl}><strong>{member.actorName}</strong> as {member.character}
@@ -63,7 +65,8 @@ export const Movie = (props) => {
                                     <h3>Director</h3>
                                     <a href={props.director.url} className={styles.sneakyLink}>
                                         <h4>{props.director.name}</h4>
-                                        <img className={styles.directorImg} src={props.director.photo} alt={props.director.name} />
+                                        <img className={styles.directorImg} src={props.director.photo}
+                                             alt={props.director.name}/>
                                     </a>
                                 </section>
                             )}
