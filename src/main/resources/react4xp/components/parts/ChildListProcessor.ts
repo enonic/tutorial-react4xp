@@ -1,5 +1,5 @@
-import type { PartComponentProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
-import { getChildren } from '/lib/xp/content';
+import {getChildren} from '/lib/xp/content';
+import type {PartComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 export const childListProcessor: PartComponentProcessorFunction<'com.enonic.app.hmdb:child-list'> = (params) => {
     const sortOrder: any = params.component.config.sorting;

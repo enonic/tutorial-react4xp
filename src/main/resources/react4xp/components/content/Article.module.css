@@ -1,22 +1,14 @@
 
-
 .article {
-    font-family: Arial, sans-serif;
-    margin: 3rem auto 10rem auto;
+    margin: 2rem auto 10rem auto;
     width: 90%;
-    max-width: 1000px;
 }
-
 
 
 /* ----- Article Header ----- */
 .header {
     text-align: start;
     margin-bottom: 10rem;
-}
-
-.header h1 {
-    color: #61dbfb;
 }
 
 .coverImageContainer {
@@ -33,7 +25,6 @@
 }
 
 .preface {
-    font-size: 1.1rem;
     font-style: italic;
     margin-bottom: 20px;
 }
@@ -78,19 +69,12 @@
 }
 
 /* ----- Banner Block ----- */
-.bannerBlock {
+.banner {
     position: relative;
     text-align: center;
 }
-.banner {
-    position: relative;
-}
-.imagePlaceholder {
-    background: #ccc;
-    height: 200px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
+
+
 .bannerImage {
     height: 300px;
     width: 800px;
@@ -101,6 +85,7 @@
     border: 1px solid #61dbfb;
     max-width: 100%;
 }
+
 .bannerText {
     position: absolute;
     top: 40%;
@@ -176,6 +161,7 @@
     line-height: 1.4; /* Better readability for multiline captions */
     text-align: center; /* Center-align multiline captions */
 }
+
 .spotlight {
     width: 250px;
 }
@@ -183,16 +169,19 @@
 .spotlight h3 {
     margin-inline: 0;
 }
+
 .flexy {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
 }
+
 .blocky {
     display: block;
     width: 650px;
     align-content: center;
 }
+
 .spotlight ul {
     list-style: none;
     padding: 0;
@@ -205,12 +194,12 @@
 }
 
 .spotlight img {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 100px;
     margin-right: 10px;
 }
 
-.sneakyLink{
+.sneakyLink {
     text-decoration: none;
     color: inherit;
 }

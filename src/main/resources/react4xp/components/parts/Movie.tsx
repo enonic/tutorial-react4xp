@@ -1,6 +1,6 @@
+import {Part} from "@enonic/react-components";
 import React from 'react';
 import styles from './MoviePage.module.css';
-import {Part} from "@enonic/react-components";
 
 export const Movie = (props) => {
     // All properties are accessed via props object
@@ -8,7 +8,7 @@ export const Movie = (props) => {
         <Part {...props}>
             <div className={styles.moviePage}>
                 <header>
-                    <h1><a href={props.trailer} className={styles.sneakyLink}>{props.name}</a></h1>
+                    <h1><a href={props.trailer} className={styles.sneakyTitle}>{props.name}</a></h1>
                 </header>
 
                 <main className={styles.main}>
@@ -26,26 +26,29 @@ export const Movie = (props) => {
                         )}
 
                         <div className={styles.blocky}>
+                            <div>
                             {/* Release Date and Website */}
                             <div>
                                 {props.website && (
-                                    <h3>
-                                        <a href={props.website} className={styles.sneakyLink} target="_blank" rel="noopener noreferrer">
+                                    <h2>
+                                        <a href={props.website} className={styles.sneakyLink} target="_blank"
+                                           rel="noopener noreferrer">
                                             Official Website
                                         </a>
-                                    </h3>
+                                    </h2>
                                 )}
-                                {props.release && <p>Release Date: {props.release}</p>}
+                                {props.release && <p className={styles.date}>Release Date: {props.release}</p>}
                             </div>
 
                             {/* Cast */}
                             {props.cast.length > 0 && (
                                 <section className={styles.cast}>
-                                    <h3>Cast</h3>
+                                    <h2>Cast</h2>
                                     <ul>
                                         {props.cast.map((member, index) => (
                                             <li key={index}>
-                                                <a className={styles.sneakyLink} href={member.castUrl}><img src={member.photoUrl} alt={member.actorName} /></a>
+                                                <a className={styles.sneakyLink} href={member.castUrl}><img
+                                                    src={member.photoUrl} alt={member.actorName}/></a>
                                                 <p>
                                                     <a className={styles.sneakyCastLink}
                                                        href={member.castUrl}><strong>{member.actorName}</strong> as {member.character}
@@ -56,17 +59,20 @@ export const Movie = (props) => {
                                     </ul>
                                 </section>
                             )}
-
+                            </div>
+                            <div>
                             {/* Director */}
                             {props.director && (
                                 <section>
-                                    <h3>Director</h3>
+                                    <h2>Director</h2>
                                     <a href={props.director.url} className={styles.sneakyLink}>
-                                        <h4>{props.director.name}</h4>
-                                        <img className={styles.directorImg} src={props.director.photo} alt={props.director.name} />
+                                        <h3>{props.director.name}</h3>
+                                        <img className={styles.directorImg} src={props.director.photo}
+                                             alt={props.director.name}/>
                                     </a>
                                 </section>
                             )}
+                            </div>
                         </div>
                     </div>
 
@@ -80,7 +86,6 @@ export const Movie = (props) => {
                     {/* Additional Photos */}
                     {props.restPhotos && props.restPhotos.length > 0 && (
                         <section className={styles.photos}>
-                            <h3>More Photos</h3>
                             <div className={styles.photoGrid}>
                                 {props.restPhotos.map((photo, index) => (
                                     <img

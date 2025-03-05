@@ -1,18 +1,18 @@
-import type { Content } from '@enonic-types/lib-content';
-import type { ContentTypeProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
-import { get as getContentByKey } from '/lib/xp/content';
-import { imageUrl, componentUrl, pageUrl } from '/lib/xp/portal';
+import {get as getContentByKey} from '/lib/xp/content';
+import {imageUrl, pageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
+import type {Content} from '@enonic-types/lib-content';
+import type {ContentTypeProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 // Function to fetch additional photos and return their image URLs
 function fetchAdditionalPhotos(photoIds: string[]) {
     return photoIds.map(photoId => {
-        const photoContent = getContentByKey<Content>({ key: photoId });
+        const photoContent = getContentByKey<Content>({key: photoId});
         return photoContent
             ? {
                 _id: photoContent._id,
                 title: photoContent.displayName,
-                imageUrl: imageUrl({ id: photoContent._id, scale: 'width(250)' }) // Smaller images for additional photos
+                imageUrl: imageUrl({id: photoContent._id, scale: 'width(250)'}) // Smaller images for additional photos
             }
             : null;
     }).filter(Boolean); // Filter out null entries in case a photo is missing
@@ -21,7 +21,7 @@ function fetchAdditionalPhotos(photoIds: string[]) {
 // Function to fetch detailed information for each movie
 function fetchMovies(movieIds: string[]) {
     return movieIds.map(movieId => {
-        const movieContent = getContentByKey<Content>({ key: movieId });
+        const movieContent = getContentByKey<Content>({key: movieId});
         if (!movieContent) {
             return {
                 _id: movieId,
@@ -37,15 +37,15 @@ function fetchMovies(movieIds: string[]) {
         // Extract photos from movie content
         const photos: string[] = toArray(movieContent.data.photos as string | string[])
         const firstPhotoId = photos[0] || ''; // First photo ID
-        const remainingPhotoIds =  photos.slice(1) || []; // Remaining photo IDs
+        const remainingPhotoIds = photos.slice(1) || []; // Remaining photo IDs
 
         // Fetch the first photo
-        const firstPhotoContent = getContentByKey<Content>({ key: firstPhotoId });
+        const firstPhotoContent = getContentByKey<Content>({key: firstPhotoId});
         const firstPhoto = firstPhotoContent
             ? {
                 _id: firstPhotoContent._id,
                 title: firstPhotoContent.displayName,
-                imageUrl: imageUrl({ id: firstPhotoContent._id, scale: 'width(500)' }) // Larger image for the first photo
+                imageUrl: imageUrl({id: firstPhotoContent._id, scale: 'block(500, 740)'}) // Larger image for the first photo
             }
             : null;
 
@@ -55,7 +55,7 @@ function fetchMovies(movieIds: string[]) {
         return {
             _id: movieContent._id,
             title: movieContent.displayName,
-            movieUrl: pageUrl({ path: movieContent._path }),
+            movieUrl: pageUrl({path: movieContent._path}),
             photo: firstPhoto, // Primary photo
             restPhotos, // Additional photos
             subtitle: movieContent.data.subtitle,

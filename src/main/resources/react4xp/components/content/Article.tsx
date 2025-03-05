@@ -1,15 +1,13 @@
+import {RichText} from "@enonic/react-components";
 import React from 'react';
 import styles from './Article.module.css';
-import {RichText} from "@enonic/react-components";
 
 
 export const Article = (props) => {
-    const { title, blocks, coverImage, preface, author, tags, spotlight } = props; // Include new props
+    const {title, blocks, coverImage, preface, author, tags, spotlight} = props; // Include new props
 
     return (
-    <>
-
-    <div className={styles.article}>
+        <div className={styles.article}>
             {/* Article Header */}
             <header className={styles.header}>
                 <h1>{title}</h1>
@@ -44,30 +42,32 @@ export const Article = (props) => {
                             <ul>
                                 {spotlight.map((spotlight, index) => (
                                     <li key={index}>
-                                        <a className={styles.sneakyLink} href={spotlight.url}><img src={spotlight.photoUrl} alt={spotlight.name} /></a>
+                                        <a className={styles.sneakyLink} href={spotlight.url}><img
+                                            src={spotlight.photoUrl} alt={spotlight.name}/></a>
                                         <p>
-                                            <a className={styles.sneakyLink} href={spotlight.url}><strong>{spotlight.name}</strong></a>
+                                            <a className={styles.sneakyLink}
+                                               href={spotlight.url}><strong>{spotlight.name}</strong></a>
                                         </p>
                                     </li>
                                 ))}
                             </ul>
                         </section>
                     )}
-                <div className={styles.blocky}>
-                {/* Preface */}
-                {preface && (
-                    <p className={styles.preface}>
-                        {preface}
-                    </p>
-                )}
+                    <div className={styles.blocky}>
+                        {/* Preface */}
+                        {preface && (
+                            <p className={styles.preface}>
+                                {preface}
+                            </p>
+                        )}
 
-                {/* Author */}
-                {author && (
-                    <p className={styles.author}>
-                        <strong>By:</strong> {author}
-                    </p>
-                )}
-                </div>
+                        {/* Author */}
+                        {author && (
+                            <p className={styles.author}>
+                                <strong>By:</strong> {author}
+                            </p>
+                        )}
+                    </div>
                 </div>
 
             </header>
@@ -80,7 +80,7 @@ export const Article = (props) => {
                         return (
                             <section key={index} className={styles.textBlock}>
                                 {/* Use processed HTML */}
-                                <RichText data={{ processedHtml: block.text }} />
+                                <RichText data={{processedHtml: block.text}}/>
                             </section>
                         );
                     }
@@ -88,8 +88,8 @@ export const Article = (props) => {
                     // Render Banner Block
                     if (block.type === 'banner') {
                         return (
-                            <section key={index} className={styles.bannerBlock}>
-                                <div className={styles.banner}>
+                            <section key={index} className={styles.banner}>
+                                <div>
                                     <img
                                         className={styles.bannerImage}
                                         src={block.banner.imageUrl}
@@ -122,22 +122,22 @@ export const Article = (props) => {
                     if (block.type === 'story') {
                         return (
                             <>
-                            <h3>Scroll-story</h3>
-                            <section key={index} className={styles.storyBlock}>
-                                <div className={styles.storyScroll}>
-                                    {block.story.map((panel, panelIndex) => (
-                                        <div key={panelIndex} className={styles.storyPanel}>
-                                            <img
-                                                src={panel.imageUrl}
-                                                alt={panel.storyline}
-                                            />
-                                            <div className={styles.storylineContainer}>
-                                                <p className={styles.storyline}>{panel.storyline}</p>
+                                <h3>Scroll-story</h3>
+                                <section key={index} className={styles.storyBlock}>
+                                    <div className={styles.storyScroll}>
+                                        {block.story.map((panel, panelIndex) => (
+                                            <div key={panelIndex} className={styles.storyPanel}>
+                                                <img
+                                                    src={panel.imageUrl}
+                                                    alt={panel.storyline}
+                                                />
+                                                <div>
+                                                    <p className={styles.storyline}>{panel.storyline}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
+                                        ))}
+                                    </div>
+                                </section>
                             </>
                         );
                     }
@@ -146,7 +146,5 @@ export const Article = (props) => {
                 })}
             </main>
         </div>
-
-    </>
     );
 };

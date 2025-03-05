@@ -1,9 +1,6 @@
 .playlist {
-    padding: 16px;
-    margin: 20px auto;
+    margin: 15rem auto -5rem auto;
     max-width: 96%;
-
-
 }
 
 .photoBanner img {
@@ -13,27 +10,29 @@
 }
 
 /* Playlist title styling */
+
+
+.titleContainer {
+    width: 1150px;
+    background: #151d4e;
+    position: absolute;
+    left: calc(50vw - 575px);
+    top: 0;
+    border-radius: 0 0 25px 25px;
+    padding-inline: 25px;
+}
+
 .title {
-    font-size: 34px;
-    margin-bottom: 16px;
-    text-align: center;
+    color: #61DBFB;
 }
 
 /* Playlist description styling */
 .description {
     font-size: 20px;
     margin-bottom: 24px;
-    text-align: center;
 }
 
-/* Styling for the movie list container */
-.movieList {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.flowX{
+.flowX {
     display: flex;
     overflow-x: auto;
     list-style: none;
@@ -43,10 +42,8 @@
 
 /* Individual movie item */
 .movieItem {
-    margin-bottom: 24px;
-    padding: 8px 3rem 3rem 8px;
-    border-bottom: 1px solid #eee;
-    font-family: Arial, sans-serif;
+    margin-bottom: 10rem;
+    padding: 8px 3rem 2rem 8px;
     min-width: fit-content;
     min-height: 100%;
 }
@@ -54,10 +51,23 @@
 /* Heading for each movie */
 .movieItem h3 {
     margin-bottom: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
+
 .movieItem p {
     width: 550px;
     max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 
@@ -77,6 +87,7 @@
     border-radius: 8px;
     border: solid 1px #EF82F0;
     box-shadow: 0 0 8px #EF82F0;
+    max-width: 100%;
 }
 
 
@@ -111,7 +122,6 @@
 
 .photoBanner {
     max-width: 90vw;
-    min-height: 750px;
     align-items: center;
     display: flex;
     width: 500px;
@@ -119,4 +129,26 @@
 
 .photoBanner img {
     border-radius: 8px;
+}
+
+.bottomBar {
+    width: 100vw;
+    border-top: 1px solid #09C0F0;
+    position: absolute;
+    left: 0;
+}
+
+@media screen and (max-width: 1400px) {
+
+    .playlist {
+        margin: 0 auto -5rem auto;
+    }
+
+    .titleContainer {
+        background: none;
+        max-width: 90%;
+        left: 0;
+        position: relative;
+
+    }
 }
