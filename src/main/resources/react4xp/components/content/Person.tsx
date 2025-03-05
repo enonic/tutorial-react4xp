@@ -3,6 +3,7 @@ import {RichText} from '@enonic/react-components';
 import React from 'react'
 //import * as React from 'react';
 import styles from './Person.module.css';
+import {componentRegistry} from '/react4xp/componentRegistry';
 
 export const Person = (props) => {
     const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
@@ -43,7 +44,7 @@ export const Person = (props) => {
                 )}
             </div>
             <div className={styles.richText}>
-                <RichText data={ bioHtml}/>
+                <RichText data={bioHtml} componentRegistry={componentRegistry}/>
 
             </div>
 

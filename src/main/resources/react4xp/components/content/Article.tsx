@@ -1,6 +1,7 @@
 import {RichText} from "@enonic/react-components";
 import React from 'react';
 import styles from './Article.module.css';
+import {componentRegistry} from '/react4xp/componentRegistry';
 
 
 export const Article = (props) => {
@@ -80,7 +81,7 @@ export const Article = (props) => {
                         return (
                             <section key={index} className={styles.textBlock}>
                                 {/* Use processed HTML */}
-                                <RichText data={block.text}/>
+                                <RichText data={block.text} componentRegistry={componentRegistry}/>
                             </section>
                         );
                     }

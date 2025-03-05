@@ -96,6 +96,5 @@ export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (par
         tags: data.tags || [],
         blocks: processedBlocks,
         spotlight,
-        url
     };
 };
