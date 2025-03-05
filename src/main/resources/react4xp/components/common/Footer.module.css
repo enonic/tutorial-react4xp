@@ -1,12 +1,13 @@
 /* Footer.module.css */
 .footer {
     margin: auto auto;
-    width: 100%;
+    width: 100vw;
     padding: 0 0 2rem;
     text-align: center;
     background-color: black; /* Dark theme */
     position: fixed;
     bottom: 0;
+    left: 0;
     font-size: 18px;
 
 }

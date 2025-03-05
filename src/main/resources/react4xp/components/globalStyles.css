@@ -1,32 +1,58 @@
-html{
+html {
     background-color: #071622;
     color: ghostwhite;
-    max-width: 1600px;
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
 }
-h1 h2 {
+
+body {
+    max-width: 1400px;
+    margin: 0 auto 10rem auto;
+}
+
+h1 {
+    color: #0892D4;
+    font-size: 3rem;
+    margin-block: 3rem;
+    text-align: left;
+    line-height: normal;
+}
+
+h2 {
     color: #61DBFB;
 }
-h3{
+
+h3 {
     margin-inline: 2rem;
     color: #61DBFB;
 }
-a{
+
+a {
     color: #61DBFB;
-}
-
-.xp-region {
-    padding-inline: .5rem;
-    padding-top: 1rem;
-
 }
 
 img {
     object-fit: cover;
     object-position: 50% 50%;
-    max-width: 1400px;
+    max-width: 1600px;
 }
 
-.noMarginNoPadding {
-    margin: 0;
-    padding: 0;
+
+p {
+    font-size: 24px;
+}
+
+@media screen and (max-width: 900px) {
+
+    p {
+        font-size: 20px;
+    }
+
+}
+
+@media screen and (max-width: 720px) {
+
+    p {
+        font-size: 18px;
+    }
+
 }
