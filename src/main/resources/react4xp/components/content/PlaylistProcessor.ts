@@ -1,20 +1,21 @@
+import type {Content} from '@enonic-types/lib-content';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 import {get as getContentByKey} from '/lib/xp/content';
 import {imageUrl, pageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
-import type {Content} from '@enonic-types/lib-content';
-import type {ContentTypeProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {PageDescriptor} from '@enonic-types/core';
 
 // Function to fetch additional photos and return their image URLs
 function fetchAdditionalPhotos(photoIds: string[]) {
     return photoIds.map(photoId => {
         const photoContent = getContentByKey<Content>({key: photoId});
         return photoContent
-            ? {
+               ? {
                 _id: photoContent._id,
                 title: photoContent.displayName,
                 imageUrl: imageUrl({id: photoContent._id, scale: 'width(250)'}) // Smaller images for additional photos
             }
-            : null;
+               : null;
     }).filter(Boolean); // Filter out null entries in case a photo is missing
 }
 
@@ -42,12 +43,12 @@ function fetchMovies(movieIds: string[]) {
         // Fetch the first photo
         const firstPhotoContent = getContentByKey<Content>({key: firstPhotoId});
         const firstPhoto = firstPhotoContent
-            ? {
+                           ? {
                 _id: firstPhotoContent._id,
                 title: firstPhotoContent.displayName,
                 imageUrl: imageUrl({id: firstPhotoContent._id, scale: 'block(500, 740)'}) // Larger image for the first photo
             }
-            : null;
+                           : null;
 
         // Fetch remaining photos
         const restPhotos = fetchAdditionalPhotos(remainingPhotoIds);
@@ -64,7 +65,7 @@ function fetchMovies(movieIds: string[]) {
     });
 }
 
-export const playlistProcessor: ContentTypeProcessorFunction<Content<Record<string, unknown>>> = params => {
+export const playlistProcessor: ComponentProcessorFunction<PageDescriptor> = params => {
     const content = params.content;
     const playlistData = content.data;
 
@@ -79,13 +80,12 @@ export const playlistProcessor: ContentTypeProcessorFunction<Content<Record<stri
     const movies = fetchMovies(movieList);
 
     return {
-        props: {
-            playlist: {
-                _id: content._id,
-                displayName: content.displayName,
-                description: playlistData.description || 'No description available.',
-                movies: movies // Movies with image data included
-            }
+        playlist: {
+            _id: content._id,
+            displayName: content.displayName,
+            description: playlistData.description || 'No description available.',
+            movies: movies // Movies with image data included
         }
     };
 };
+

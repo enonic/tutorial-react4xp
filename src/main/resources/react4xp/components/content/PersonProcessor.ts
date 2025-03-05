@@ -1,8 +1,10 @@
-import {get as getContentByKey} from '/lib/xp/content';
-import {imageUrl, processHtml} from '/lib/xp/portal';
-import {toArray} from "/react4xp/utils/arrayUtils";
 import type {Content} from '@enonic-types/lib-content';
-import type {ContentTypeProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {imageUrl} from '/lib/xp/portal';
+import {processHtml} from '/lib/enonic/react4xp';
+import {get as getContentByKey} from '/lib/xp/content';
+import {toArray} from "/react4xp/utils/arrayUtils";
+import {PageDescriptor} from '@enonic-types/core';
 
 
 function fetchAdditionalPhotos(photosIds) {
@@ -21,9 +23,8 @@ function fetchAdditionalPhotos(photosIds) {
 	displayName: string;
   } */
 
-export const personProcessor: ContentTypeProcessorFunction<Content<Record<string, unknown>>>
+export const personProcessor: ComponentProcessorFunction<PageDescriptor>
     = (params) => {
-
 
     const photos: string[] = toArray<string>(params.content.data.photos as string | string[])
     const firstPhotoId = photos[0] || '';
@@ -34,21 +35,19 @@ export const personProcessor: ContentTypeProcessorFunction<Content<Record<string
 
     const extraPhotos = fetchAdditionalPhotos(remainingPhotoIds);
 
-    return {
-        props: /*<PersonProps>*/{
-            displayName: `${params.content.displayName}`,
-            photo: {
-                _id,
-                title: displayName,
-                imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
-            },
-            bio: `${params.content.data.bio}`,
-            bioHtml: processHtml({
-                value: `${params.content.data.bio}`,
-                imageWidths: [200, 400, 800],
-            }),
-            birthDate: params.content.data.dateofbirth,
-            restPhotos: extraPhotos,
-        }
+    return /*<PersonProps>*/{
+        displayName: `${params.content.displayName}`,
+        photo: {
+            _id,
+            title: displayName,
+            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
+        },
+        bio: `${params.content.data.bio}`,
+        bioHtml: processHtml({
+            value: params.content.data.bio as string,
+            imageWidths: [200, 400, 800],
+        }),
+        birthDate: params.content.data.dateofbirth,
+        restPhotos: extraPhotos,
     };
 };

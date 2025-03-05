@@ -1,17 +1,17 @@
-import type {PageComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {PageComponent} from "@enonic-types/core";
 
 
-export const pageProcessor: PageComponentProcessorFunction<'com.enonic.app.hmdb:main'> = ({component}) => {
+export const pageProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:main'> = (props) => {
+    const component = props.component as PageComponent;
     const regions = component?.regions || {};
     return {
-        props: {
-            page: {
-                type: 'page',
-                path: '/',
-                config: component.config || {},
-                descriptor: 'com.enonic.app.hmdb:main',
-                regions,
-            },
-        },
+        page: {
+            type: 'page',
+            path: '/',
+            config: component.config || {},
+            descriptor: 'com.enonic.app.hmdb:main',
+            regions,
+        }
     };
 };

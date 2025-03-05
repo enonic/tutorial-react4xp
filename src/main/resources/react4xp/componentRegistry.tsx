@@ -9,6 +9,10 @@ import {Heading} from './components/parts/Heading';
 import {Movie} from './components/parts/Movie';
 
 export const componentRegistry = new ComponentRegistry;
+
+const Factbox = (props) => (<h1>Facts !</h1>)
+componentRegistry.addMacro('factbox', {View: Factbox});
+
 //componentRegistry.addContentType('portal:site', { View: Hello }); // <1>
 componentRegistry.addPart('com.enonic.app.hmdb:heading', {View: Heading}); // <2>
 componentRegistry.addPage('com.enonic.app.hmdb:main', {View: Page}); // <3>

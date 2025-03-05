@@ -1,8 +1,8 @@
-import {get as getContentByKey} from '/lib/xp/content';
-import {imageUrl, pageUrl} from '/lib/xp/portal';
-import {toArray} from "/react4xp/utils/arrayUtils";
 import type {Content} from '@enonic-types/lib-content';
-import type {PartComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {imageUrl, pageUrl} from '/lib/xp/portal';
+import {get as getContentByKey} from '/lib/xp/content';
+import {toArray} from "/react4xp/utils/arrayUtils";
 
 function fetchAdditionalPhotos(photoIds: string[]) {
     return photoIds.map(photoId => {
@@ -15,7 +15,7 @@ function fetchAdditionalPhotos(photoIds: string[]) {
     });
 }
 
-export const movieProcessor: PartComponentProcessorFunction<'com.enonic.app.hmdb:movie-details'> = (params) => {
+export const movieProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:movie-details'> = (params) => {
     const data = params.content.data;
 
     // Extract the photos from content.data
@@ -26,13 +26,13 @@ export const movieProcessor: PartComponentProcessorFunction<'com.enonic.app.hmdb
     // Fetch the first photo
     const firstPhotoContent = getContentByKey<Content>({key: firstPhotoId});
     const firstPhoto = firstPhotoContent
-        ? {
+                       ? {
             _id: firstPhotoContent._id,
             title: firstPhotoContent.displayName,
             imageUrl: imageUrl({id: firstPhotoContent._id, scale: 'width(800)'}), // Larger scale for first photo
             id: firstPhotoContent._id
         }
-        : null;
+                       : null;
 
     // Fetch remaining photos
     const restPhotos = fetchAdditionalPhotos(remainingPhotoIds);
@@ -78,17 +78,16 @@ export const movieProcessor: PartComponentProcessorFunction<'com.enonic.app.hmdb
     }
 
     return {
-        props: {
-            name: params.content.displayName,
-            subtitle: data.subtitle,
-            trailer: data.trailer,
-            abstract: data.abstract,
-            release: data.release,
-            photo: firstPhoto, // First photo
-            restPhotos, // Remaining photos
-            website: data.website,
-            cast, // Cast members,
-            director // Only include director if it exists
-        }
+        name: params.content.displayName,
+        subtitle: data.subtitle,
+        trailer: data.trailer,
+        abstract: data.abstract,
+        release: data.release,
+        photo: firstPhoto, // First photo
+        restPhotos, // Remaining photos
+        website: data.website,
+        cast, // Cast members,
+        director // Only include director if it exists
     };
 };
+

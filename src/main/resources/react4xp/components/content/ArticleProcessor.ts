@@ -1,11 +1,13 @@
-import {get as getContentByKey} from "/lib/xp/content";
-import {imageUrl, pageUrl, processHtml} from '/lib/xp/portal';
-import {toArray} from "/react4xp/utils/arrayUtils";
 import type {Content} from '@enonic-types/lib-content';
-import type {ContentTypeProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {get as getContentByKey} from "/lib/xp/content";
+import {imageUrl, pageUrl} from '/lib/xp/portal';
+import {processHtml} from '/lib/enonic/react4xp';
+import {toArray} from "/react4xp/utils/arrayUtils";
+import {PageDescriptor} from '@enonic-types/core';
 
 
-export const articleProcessor: ContentTypeProcessorFunction<Content<Record<string, unknown>>> = (params) => {
+export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (params) => {
 
     const {content} = params;
     const {data} = content;
@@ -87,14 +89,12 @@ export const articleProcessor: ContentTypeProcessorFunction<Content<Record<strin
     const cover = data.coverimage as string
 
     return {
-        props: {
-            title: content.displayName,
-            coverImage: imageUrl({id: cover, scale: 'block(864, 486)'}),// Adjust the scale to your needs
-            preface: data.preface || null,
-            author: data.author || null,
-            tags: data.tags || [],
-            blocks: processedBlocks,
-            spotlight,
-        },
+        title: content.displayName,
+        coverImage: imageUrl({id: cover, scale: 'block(864, 486)'}),// Adjust the scale to your needs
+        preface: data.preface || null,
+        author: data.author || null,
+        tags: data.tags || [],
+        blocks: processedBlocks,
+        spotlight,
     };
 };

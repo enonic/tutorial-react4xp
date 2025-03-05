@@ -1,23 +1,17 @@
-import type {PartComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {PartComponent} from '@enonic-types/core';
 
-export const headingProcessor: PartComponentProcessorFunction<'com.enonic.app.hmdb:heading'> = ({
-                                                                                                    content,
-                                                                                                    component
-                                                                                                }) => {
-
-    const heading = component.config?.heading || content.displayName;
+export const headingProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:heading'> = (params) => {
+    const component = params.component as PartComponent;
+    const heading = component.config?.heading || params.content.displayName;
 
     return {
-        props: {
-            path: '/',
-            type: 'part',
-            descriptor: 'com.enonic.app.hmdb:heading',
-            config: content || {},
-            heading: heading,
-
-
-        },
-
+        path: '/',
+        type: 'part',
+        descriptor: 'com.enonic.app.hmdb:heading',
+        config: params.content || {},
+        heading: heading,
     };
 
 };
+
