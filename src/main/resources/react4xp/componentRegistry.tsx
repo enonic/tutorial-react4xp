@@ -1,4 +1,5 @@
 import {Article} from "/react4xp/components/content/Article";
+import {Factbox} from '/react4xp/components/macro/FactBox';
 import {ComponentRegistry} from '@enonic/react-components';
 import {Person} from './components/content/Person';
 import {Playlist} from './components/content/Playlist';
@@ -10,7 +11,7 @@ import {Movie} from './components/parts/Movie';
 
 export const componentRegistry = new ComponentRegistry;
 
-const Factbox = (props) => (<h1>Facts !</h1>)
+
 componentRegistry.addMacro('factbox', {View: Factbox});
 
 //componentRegistry.addContentType('portal:site', { View: Hello }); // <1>

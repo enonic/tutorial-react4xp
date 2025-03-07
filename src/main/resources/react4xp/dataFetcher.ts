@@ -10,6 +10,8 @@ import {movieProcessor} from "./components/parts/MovieProcessor";
 
 export const dataFetcher = new DataFetcher();
 //dataFetcher.addContentType('portal:site', { processor: helloProcessor });
+
+
 dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor});
 dataFetcher.addPage('com.enonic.app.hmdb:main', {processor: pageProcessor});
 dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});
