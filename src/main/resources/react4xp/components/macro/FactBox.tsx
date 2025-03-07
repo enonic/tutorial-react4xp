@@ -4,8 +4,6 @@ import styles from './FactBox.module.css';
 
 export const Factbox = ({header, body, children}) => {
     // Creating an object for dangerouslySetInnerHTML
-    console.log(JSON.stringify(body, null, 2)) // This will print the body content
-    debugger
     return (
         <ins className={styles.factbox}>
             <i className={styles.icon}/>
