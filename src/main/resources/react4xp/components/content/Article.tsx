@@ -1,7 +1,7 @@
+import {componentRegistry} from '/react4xp/componentRegistry';
 import {RichText} from "@enonic/react-components";
 import React from 'react';
 import styles from './Article.module.css';
-import {componentRegistry} from '/react4xp/componentRegistry';
 
 
 export const Article = (props) => {
@@ -9,7 +9,8 @@ export const Article = (props) => {
 
     return (
         <div className={styles.article}>
-            {/* Article Header */}
+
+        {/* Article Header */}
             <header className={styles.header}>
                 <h1>{title}</h1>
 
