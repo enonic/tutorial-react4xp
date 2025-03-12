@@ -1,14 +1,13 @@
 
 .article {
     margin: 2rem auto 10rem auto;
-    width: 90%;
 }
 
 
 /* ----- Article Header ----- */
 .header {
     text-align: start;
-    margin-bottom: 10rem;
+    margin-bottom: 3rem;
 }
 
 .coverImageContainer {
@@ -50,7 +49,7 @@
     padding: 5px 10px;
     background-color: #f5f5f5;
     border-radius: 20px;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #0b0425;
     box-shadow: 0 0 8px #61dbfb;
 }
@@ -76,14 +75,12 @@
 
 
 .bannerImage {
-    height: 300px;
-    width: 800px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;
     box-shadow: 0 0 8px #61dbfb;
     border: 1px solid #61dbfb;
-    max-width: 100%;
+    max-width: 90%;
 }
 
 .bannerText {
@@ -119,11 +116,21 @@
 /* ----- Story Block ----- */
 .storyBlock {
     margin: 10px 0;
-    overflow-x: auto; /* Allow horizontal scrolling */
-    box-shadow: 0 0 8px #EF82F0;
-    border: 1px solid #EF82F0;
-    border-radius: 8px;
     background-color: #0b0425;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+.storyBlockContainer {
+    max-width: 1400px;
+    margin: 3rem auto 1rem auto;
+    width: 90%;
+    border-radius: 8px;
+    overflow-x: auto;
 }
 
 .storyScroll {
@@ -144,8 +151,6 @@
 }
 
 .storyPanel img {
-    width: 350px; /* Fixed image width */
-    height: 220px; /* Fixed image height */
     object-fit: cover; /* Ensure consistent cropping of images */
     border-radius: 8px; /* Rounded corners for images */
     box-shadow: 0 0 8px #EF82F0;
@@ -155,7 +160,6 @@
 .storyline {
     margin-top: 10px; /* Space between the image and text */
     font-size: 1.2rem; /* Small readable font size */
-    color: #61dbfb; /* Muted color for captions */
     max-width: 100%; /* Restrict text width to the panel */
     word-break: break-word; /* Force line breaks on long words */
     line-height: 1.4; /* Better readability for multiline captions */
@@ -163,7 +167,8 @@
 }
 
 .spotlight {
-    width: 250px;
+    overflow-x: auto;
+    margin-left: -10px;
 }
 
 .spotlight h3 {
@@ -185,18 +190,24 @@
 .spotlight ul {
     list-style: none;
     padding: 0;
+    display: flex;
+    gap: 25px;
 }
 
 .spotlight li {
-    display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    padding-inline: 10px;
 }
 
 .spotlight img {
-    width: 80px;
-    height: 100px;
-    margin-right: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 8px #61dbfb;
+    border: 1px solid #61dbfb;
+}
+
+.spotlight p {
+    margin-block-start: 0;
 }
 
 .sneakyLink {

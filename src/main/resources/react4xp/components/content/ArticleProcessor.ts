@@ -1,10 +1,10 @@
-import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {processHtml} from '/lib/enonic/react4xp';
 import {get as getContentByKey} from "/lib/xp/content";
 import {imageUrl, pageUrl} from '/lib/xp/portal';
-import {processHtml} from '/lib/enonic/react4xp';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import {PageDescriptor} from '@enonic-types/core';
+import type {Content} from '@enonic-types/lib-content';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 
 export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (params) => {
@@ -24,7 +24,7 @@ export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (par
 
         return {
             name: spotlightContent.displayName,
-            photoUrl: imageUrl({id: firstPhotoId, scale: 'width(250)'}),
+            photoUrl: imageUrl({id: firstPhotoId, scale: 'block(200, 200)'}),
             id: spotlightContent._id,
             url: pageUrl({path: spotlightContent._path})
         };
@@ -39,7 +39,7 @@ export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (par
                 type: 'banner',
                 banner: {
                     text: block.banner.text,
-                    imageUrl: imageUrl({id: block.banner.image, scale: 'width(250)'})
+                    imageUrl: imageUrl({id: block.banner.image, scale: 'block(1000, 350)'})
                 },
             };
         }
@@ -71,7 +71,7 @@ export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (par
             // Story block with multiple panels
             const panels = storyArray.map(panel => ({
                 image: panel.image,
-                imageUrl: imageUrl({id: panel.image, scale: 'width(250)'}),
+                imageUrl: imageUrl({id: panel.image, scale: 'block(340, 220)'}),
                 storyline: panel.storyline || '',
             }));
             return {

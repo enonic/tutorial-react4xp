@@ -14,16 +14,7 @@ export const Article = (props) => {
             <header className={styles.header}>
                 <h1>{title}</h1>
 
-                {/* Tags */}
-                {tags && tags.length > 0 && (
-                    <div className={styles.tags}>
-                        {tags.map((tag, index) => (
-                            <span key={index} className={styles.tag}>
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
-                )}
+
 
                 {/* Cover Image */}
                 {coverImage && (
@@ -35,27 +26,19 @@ export const Article = (props) => {
                         />
                     </div>
                 )}
-                <div className={styles.flexy}>
 
-                    {/* spotlight */}
-                    {spotlight.length > 0 && (
-                        <section className={styles.spotlight}>
-                            <h3>Spotlight</h3>
-                            <ul>
-                                {spotlight.map((spotlight, index) => (
-                                    <li key={index}>
-                                        <a className={styles.sneakyLink} href={spotlight.url}><img
-                                            src={spotlight.photoUrl} alt={spotlight.name}/></a>
-                                        <p>
-                                            <a className={styles.sneakyLink}
-                                               href={spotlight.url}><strong>{spotlight.name}</strong></a>
-                                        </p>
-                                    </li>
+
+                <div>
+                    {/* Tags */}
+                    {tags && tags.length > 0 && (
+                        <div className={styles.tags}>
+                            {tags.map((tag, index) => (
+                                <span key={index} className={styles.tag}>
+                                {tag}
+                            </span>
                                 ))}
-                            </ul>
-                        </section>
+                        </div>
                     )}
-                    <div className={styles.blocky}>
                         {/* Preface */}
                         {preface && (
                             <p className={styles.preface}>
@@ -70,7 +53,6 @@ export const Article = (props) => {
                             </p>
                         )}
                     </div>
-                </div>
 
             </header>
 
@@ -124,8 +106,8 @@ export const Article = (props) => {
                     if (block.type === 'story') {
                         return (
                             <>
-                                <h3>Scroll-story</h3>
                                 <section key={index} className={styles.storyBlock}>
+                                    <div className={styles.storyBlockContainer}>
                                     <div className={styles.storyScroll}>
                                         {block.story.map((panel, panelIndex) => (
                                             <div key={panelIndex} className={styles.storyPanel}>
@@ -139,6 +121,7 @@ export const Article = (props) => {
                                             </div>
                                         ))}
                                     </div>
+                                    </div>
                                 </section>
                             </>
                         );
@@ -146,6 +129,28 @@ export const Article = (props) => {
 
                     return null;
                 })}
+
+                {/* spotlight */}
+                {spotlight.length > 0 && (
+                    <section>
+                        <h3>Spotlight</h3>
+                        <div className={styles.spotlight}>
+                            <ul>
+                                {spotlight.map((spotlight, index) => (
+                                    <li key={index}>
+                                        <a className={styles.sneakyLink} href={spotlight.url}><img
+                                            src={spotlight.photoUrl} alt={spotlight.name}/></a>
+                                        <p>
+                                            <a className={styles.sneakyLink}
+                                               href={spotlight.url}><strong>{spotlight.name}</strong></a>
+                                        </p>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </section>
+                )}
+
             </main>
         </div>
     );
