@@ -36,7 +36,7 @@ Several aspects of React4xp can be configured with a file _react4xp.config.js_. 
 
 === Adding react4xp.config.js
 
-NOTE: If you're using the https://market.enonic.com/vendors/enonic/react4xp-starter[React4XP starter] or your project is based on it, you may skip this section:
+NOTE: If you're using the https://market.enonic.com/starters/react4xp-starter[React4XP starter] or your project is based on it, you may skip this section:
 
 Put _react4xp.config.js_ at the root of your XP project. A template can be copied from link:https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js[here], or from _node_modules/@enonic/react4xp/examples/react4xp.config.js_ after installing the React4xp NPM package.
 
