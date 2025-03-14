@@ -51,10 +51,10 @@ To implement the rendering we need to add code that will perform a two-step oper
 
 . Create a data fetcher
 +
-./src/main/resources/react4xp/components/PersonProcessor.ts
+./src/main/resources/react4xp/components/content/PersonProcessor.ts
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/components/PersonProcessor.ts[]
+include::../src/main/resources/react4xp/components/content/PersonProcessor.ts[]
 ----
 +
 . Then *add it to the dataFetcher*, with these lines:
@@ -73,16 +73,16 @@ We are now able to fetch the Person data, next up we need to render it.
 
 The component consists of two files:
 
-./src/main/resources/react4xp/components/Person.tsx (React component)
+./src/main/resources/react4xp/components/content/Person.tsx (React component)
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/components/Person.tsx[]
+include::../src/main/resources/react4xp/components/content/Person.tsx[]
 ----
 +
-./src/main/resources/react4xp/components/Person.module.css (CSS module)
+./src/main/resources/react4xp/components/content/Person.module.css (CSS module)
 [source,CSS]
 ----
-include::../src/main/resources/react4xp/components/Person.module.css[]
+include::../src/main/resources/react4xp/components/content/Person.module.css[]
 ----
 +
 Once they are created *register the component in the componentRegistry*, by adding the following lines:
