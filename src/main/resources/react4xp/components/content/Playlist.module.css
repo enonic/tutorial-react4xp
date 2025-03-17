@@ -6,7 +6,7 @@
 .photoBanner img {
     max-width: 90vw;
     border: solid 1px #09C0F0;
-    box-shadow: 0 0 8px #09C0F0;
+    box-shadow: 0 0 4px #09C0F0;
 }
 
 /* Playlist title styling */
@@ -83,7 +83,7 @@
     width: 238px;
     border-radius: 8px;
     border: solid 1px #EF82F0;
-    box-shadow: 0 0 8px #EF82F0;
+    box-shadow: 0 0 4px #EF82F0;
     max-width: 100%;
 }
 

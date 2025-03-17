@@ -132,10 +132,11 @@ export const Article = (props) => {
 
                 {/* spotlight */}
                 {spotlight.length > 0 && (
-                    <section>
+                    <>
                         <h3>Spotlight</h3>
-                        <div className={styles.spotlight}>
-                            <ul>
+                        <section className={styles.spotlight}>
+                            <div className={styles.spotlightGrid}>
+                                <ul className={styles.spotlightScroll}>
                                 {spotlight.map((spotlight, index) => (
                                     <li key={index}>
                                         <a className={styles.sneakyLink} href={spotlight.url}><img
@@ -149,6 +150,7 @@ export const Article = (props) => {
                             </ul>
                         </div>
                     </section>
+                    </>
                 )}
 
             </main>

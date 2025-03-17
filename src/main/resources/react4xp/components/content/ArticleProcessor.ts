@@ -90,7 +90,7 @@ export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (par
 
     return {
         title: content.displayName,
-        coverImage: imageUrl({id: cover, scale: 'block(864, 486)'}),// Adjust the scale to your needs
+        coverImage: imageUrl({id: cover, scale: 'block(1400, 800)'}),// Adjust the scale to your needs
         preface: data.preface || null,
         author: data.author || null,
         tags: data.tags || [],
