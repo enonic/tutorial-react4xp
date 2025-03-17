@@ -87,6 +87,7 @@ export const Movie = (props) => {
                     {props.restPhotos && props.restPhotos.length > 0 && (
                         <section className={styles.photos}>
                             <div className={styles.photoGrid}>
+                                <div className={styles.photoScroll}>
                                 {props.restPhotos.map((photo, index) => (
                                     <img
                                         key={index}
@@ -96,6 +97,7 @@ export const Movie = (props) => {
                                         className={styles.photoImg}
                                     />
                                 ))}
+                            </div>
                             </div>
                         </section>
                     )}
