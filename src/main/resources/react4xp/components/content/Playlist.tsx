@@ -48,12 +48,14 @@ export const Playlist = (props: any) => {
                             {movie.restPhotos && movie.restPhotos.length > 0 && (
                                 <div className={styles.additionalPhotos}>
                                     {movie.restPhotos.map((photo: any, photoIndex: number) => (
+                                        <a href={movie.movieUrl}>
                                         <img
                                             key={photoIndex}
                                             src={photo.imageUrl}
                                             alt={photo.title}
                                             title={photo.title}
                                         />
+                                        </a>
                                     ))}
                                 </div>
                             )}
@@ -63,7 +65,6 @@ export const Playlist = (props: any) => {
             ) : (
                  <p className={styles.noMovies}>No movies in this playlist.</p>
             )}
-            <div className={styles.bottomBar}></div>
         </div>
     );
 };

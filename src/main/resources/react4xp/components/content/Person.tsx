@@ -1,18 +1,16 @@
 //import type { PersonProps } from '/types/PersonProps';
+import {componentRegistry} from '/react4xp/componentRegistry';
 import {RichText} from '@enonic/react-components';
 import React from 'react'
 //import * as React from 'react';
 import styles from './Person.module.css';
-import {componentRegistry} from '/react4xp/componentRegistry';
 
 export const Person = (props) => {
     const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
     return (
         <div className={styles.person}>
-            <div className={styles.flexy}>
                 <h1>{displayName}</h1>
-                <h2 className={styles.birth}>{birthDate}</h2>
-            </div>
+            <p>{birthDate}</p>
             <div>
                 {
                     photo ? (

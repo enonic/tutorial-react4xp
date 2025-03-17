@@ -18,7 +18,7 @@
   ],
   "dependencies": {
     "@enonic/js-utils": "^1",
-    "@enonic/react-components": "^6.0.0-B3",
+    "@enonic/react-components": "^6.0.0-B4",
     "clsx": "^2.1.1",
     "core-js": "^3.39.0",
     "cross-env": "^7.0.3",

@@ -5,17 +5,15 @@
     padding: 0 0 2rem;
     text-align: center;
     background-color: black; /* Dark theme */
-    position: fixed;
-    bottom: 0;
+    position: absolute;
     left: 0;
     font-size: 18px;
-
 }
 
 .footerContainer {
     border-top: 2px solid #EF82F0;
-    padding-top: 1.45rem;
-    margin-top: 2rem;
+    padding-top: 1.2rem;
+    margin-top: 1.8rem;
 }
 
 .footer a {

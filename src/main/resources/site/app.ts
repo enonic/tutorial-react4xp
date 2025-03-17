@@ -41,7 +41,7 @@ export function get(request: Request): Response {
 			<title>${content.displayName}</title>
 		</head>
 		<body>
-			<div id="${react4xpId}"></div>
+			<div id="${react4xpId}" class="contentContainer"></div>
 		</body>
 	</html>`;
 

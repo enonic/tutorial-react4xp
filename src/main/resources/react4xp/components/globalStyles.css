@@ -7,6 +7,12 @@ html {
 body {
     max-width: 1400px;
     margin: 0 auto 10rem auto;
+    width: 90%;
+
+}
+
+.contentContainer > div {
+    min-height: 80vh;
 }
 
 h1 {
@@ -19,11 +25,12 @@ h1 {
 
 h2 {
     color: #61DBFB;
+    font-size: 2rem;
 }
 
 h3 {
-    margin-inline: 2rem;
     color: #61DBFB;
+    font-size: 1.4rem;
 }
 
 a {
@@ -38,10 +45,22 @@ img {
 
 
 p {
-    font-size: 24px;
+    font-size: 22px;
 }
 
 @media screen and (max-width: 900px) {
+
+    h1 {
+        font-size: 2.8rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    h3 {
+        font-size: 1.3rem;
+    }
 
     p {
         font-size: 20px;
@@ -50,6 +69,18 @@ p {
 }
 
 @media screen and (max-width: 720px) {
+
+    h1 {
+        font-size: 2.6rem;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
 
     p {
         font-size: 18px;
