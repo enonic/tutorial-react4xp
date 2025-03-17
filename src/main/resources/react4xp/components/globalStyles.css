@@ -8,6 +8,11 @@ body {
     max-width: 1400px;
     margin: 0 auto 10rem auto;
     width: 90%;
+
+}
+
+.contentContainer > div {
+    min-height: 80vh;
 }
 
 h1 {
