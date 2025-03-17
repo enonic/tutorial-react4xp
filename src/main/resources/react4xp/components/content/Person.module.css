@@ -60,17 +60,18 @@
     border-radius: 5px;
 }
 
-figure img {
-    border: solid 1px #09C0F0;
-    box-shadow: 0 0 5px #09C0F0;
-    border-radius: 5px;
-}
 
 .richText {
     max-width: 90vw;
     font-size: 24px;
 }
 
+
+.richText figure img {
+    border: solid 1px #09C0F0;
+    box-shadow: 0 0 5px #09C0F0;
+    border-radius: 5px;
+}
 
 @media screen and (max-width: 900px) {
     .restPhotosContainer {
