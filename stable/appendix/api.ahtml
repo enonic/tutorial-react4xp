@@ -1290,7 +1290,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <p>Including this here (<em>and</em> in the corresponding <a href="#render_body"><code>renderPageContributions</code></a> call) is the easiest way to handle <a href="#react4xp_object_request">view-context dependent behavior</a>.</p>
 </div>
 <div class="paragraph">
-<p>Other renderings are not affected, <em>even from the same data object</em> (so you usually want to make sure a different rendering from the same data object uses the same mode).</p>
+<p>Other renderings are not affected, <em>even from the same data object</em> (so you usually want to ensure a different rendering from the same data object uses the same mode).</p>
 </div></div></td>
 </tr>
 </tbody>
@@ -1305,7 +1305,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <p>A regular <a href="https://developer.enonic.com/docs/xp/stable/cms/contributions">XP page contributions</a> object, ready to be used as the <code>pageContributions</code> attribute in an <a href="https://developer.enonic.com/docs/xp/stable/framework/http#http-response">XP response object</a> from the controller.</p>
 </div>
 <div class="paragraph">
-<p>Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating trigger call to the client wrapper. Urls point to react4xp&#8217;s own optimized asset services. Also included before this, are any input <code>options.pageContributions</code>.</p>
+<p>Includes everything the browser needs to activate (or client-side render) the react component: script tags with URLs to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset, and an activating trigger call to the client wrapper. URLs point to react4xp&#8217;s own optimized asset services. Also included before this, are any input <code>options.pageContributions</code>.</p>
 </div>
 <div class="paragraph">
 <p>With a serverside rendering (<code>options.ssr</code> is not false), the client will expect an existing target element with a pre-rendered entry in the response <code>body</code>, and call <code>hydrate</code>. If <code>options.ssr</code> is false, an empty target element is expected in the response <code>body</code>, and the rendering is left to the client with <code>render</code>.</p>
@@ -1315,7 +1315,7 @@ Most of these rendering methods will lock down the jsxPath and ID if the react4x
 <div class="sect2">
 <h3 id="react4xp_object_request"><a class="link" href="#react4xp_object_request">Request and automated behavior</a></h3>
 <div class="paragraph">
-<p>The <a href="custom-flow-syntax.ahtml">"custom flow"</a> (<code>.renderBody</code> in tandem with <code>.renderPageContributions</code>) is intended as a more low-level approach: less hand-holding, more control to the developer for cases where that&#8217;s needed.</p>
+<p>The <a href="../custom-flow-syntax.ahtml">"custom flow"</a> (<code>.renderBody</code> in tandem with <code>.renderPageContributions</code>) is intended as a more low-level approach: less hand-holding, more control to the developer for cases where that&#8217;s needed.</p>
 </div>
 <div class="paragraph">
 <p>However, lib-react4xp version 1.6.0 introduced support for a <code>request</code> option parameter for these methods as well. The main idea is that <strong>using <code>request</code> in both calls will now automate some behavior</strong> the same way as calling <code>.render</code> with <code>request</code> (see <a href="#render_request">above</a>).</p>
@@ -1526,7 +1526,7 @@ exports.get = request =&gt; {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-03-18 08:59:11 UTC
+Last updated 2025-03-18 09:09:06 UTC
 </div>
 </div>
 </body>
