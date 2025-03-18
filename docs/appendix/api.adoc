@@ -31,7 +31,7 @@ Inserts a react component into an (optional) pre-existing HTML string and adds a
 
 === Signature
 
-The signature is analogous to thymeleaf's familiar `render(view, model)`. But there are two extra parameters, and a full XP response object is returned:
+The signature is analogous to Thymeleaf's familiar `render(view, model)`. But there are two extra parameters and a full XP response object is returned:
 
 [source,javascript]
 ----
@@ -66,12 +66,12 @@ The signature is analogous to thymeleaf's familiar `render(view, model)`. But th
 If no matching element ID is found in `body`, this sets the ID of a generated element in the HTML output. If `id` is missing, a unique ID is generated, either random or generated from the content.
 ! `body` ! string: valid HTML ! `<div>` with matching `id` ! HTML to serve as container for the react content. Can be a hardcoded string, come from a thymeleaf/mustache/XSLT render, or any source.  When server-side rendering, the rendered output will be inserted into the matching-`id` element inside here (replacing whatever was already in that element), and everything (container `body` with rendered content in it) is returned as one HTML string. When client-side rendering, this insertion happens in the browser.
 
-If no `body` is supplied, an empty `<div>` element with an ID matching `id` is generated and used as container.
+If no `body` is supplied, an empty `<div>` element with an ID matching `id` is generated and used as a container.
 
 If a `body` is supplied but it doesn't contain any element with a matching `id`, an extra matching-`id` `<div>` element will be generated and inserted into `body` - as a child of the root element of `body` and after any other content that's already there.
 ! `pageContributions` ! object: valid link:https://developer.enonic.com/docs/xp/stable/framework/contributions[XP page contributions] ! ! If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added _before_ the ones that will be rendered (within each section `headBegin`, `bodyEnd` etc).
 ! `hydrate` ! boolean ! app.config['react4xp.hydrate'] or true ! When SSR is true, choose whether you want hydration or not.
-! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and servierside rendering, on this particular rendering. Other renderings are not affected, even within the same controller or using the same entry more than once.
+! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and serverside rendering, on this particular rendering. Other renderings are not affected, even within the same controller or using the same entry more than once.
 
 If `false` / falsy or omitted, you get serverside rendering and the returned object will contain an HTML representation of the react component with the initial `props`, and page contributions will make the client call `.hydrate`.
 
@@ -79,7 +79,7 @@ If `true` / truthy, the server-side rendering is skipped for this particular ren
 
 This *only applies in live mode and previews*: inside _edit_ or _browse_ modes in Content Studio, you still only get a static server-side rendered representation).
 
-! `urlType` ! server \| absolute ! app.config['react4xp.urlType'] or server ! URL type. Either server (server-relative URL) or absolute. Default is server. Available from `React4xp-5.1.0`.
+! `urlType` ! server \| absolute ! app.config['react4xp.urlType'] or server ! URL type. Either server (server-relative URL) or absolute. The default is server. Available from `React4xp-5.1.0`.
 
 !===
 
@@ -101,7 +101,7 @@ Returns an link:https://developer.enonic.com/docs/xp/stable/framework/http[XP re
 The root of this HTML is always a *surrounding container* HTML that will have a matching-ID *target element* in it somewhere (an element matching the ID of the clientside call to `.render` or `.hydrate`: that ID is `options.id` if that was set, or a generated unique one if not). This surrounding structure is `options.body`, unchanged if that already contained a matching-ID element, or with a new target element generated and inserted at the end if it didn’t have one. If there is no `options.body`, the surrounding container is just a generated target `<div>` element.
 
 Inside that matching-ID element, there will be a serverside rendering of the entry (with the initial props from `options.props`) if `options.ssr` is not false.
-| `pageContributions`| object | Regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions]. Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating client-wrapper call. Urls point to React4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
+| `pageContributions`| object | Regular link:https://developer.enonic.com/docs/xp/stable/framework/contributions[XP page contributions]. Includes everything the browser needs to activate (or client-side render) the react component: script tags with URLs to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset, and an activating client-wrapper call. URLs point to React4xp's optimized asset services. Also included before this, are any input `options.pageContributions`.
 |===
 
 
@@ -128,7 +128,7 @@ If `request` is supplied, viewing context is detected from `request.mode`: is re
 
 - *Outside Content Studio edit mode*, the rendering will be activated as a react app (i.e. all pageContributions are rendered). Also, `ssr` is used, so if this is `false`, serverside rendering is skipped. The ``and `render` is called in the client instead of `hydrate`.
 
-Also, when `request` is used, `.render` will output **error messages from SSR** in error containers and browser consoles (except in live view mode, where error containers and browser log are more generic: shown without the specific messages).
+Also, when `request` is used, `.render` will output **error messages from SSR** in error containers and browser consoles (except in live view mode, where error containers and browser logs are more generic: shown without the specific messages).
 
 
 
@@ -161,7 +161,7 @@ Most of the lessons in the guide use `React4xp.render` (except the "custom flow"
 [[react4xp_object]]
 == React4xp object: custom flow
 
-More flexible and controllable than `React4xp.render`: create a data-holding react4xp object with the React4xp contructor, manipulate it or extract data from it, combine with other objects, and then later render it to an HTML body string and/or page contributions, separately. This is actually what `React4xp.render` does behind the scenes.
+More flexible and controllable than `React4xp.render`: create a data-holding react4xp object with the React4xp constructor, manipulate it or extract data from it, combine it with other objects, and then later render it to an HTML body string and/or page contributions, separately. This is actually what `React4xp.render` does behind the scenes.
 
 Call the two rendering methods from the same react4xp object. Remember, if using `hydrate`, `ssr` and/or `request` options, they should usually be the same value across the two corresponding calls. A typical (compact) usage example:
 
@@ -392,7 +392,7 @@ Just like `render` does, `renderBody` ensures that the output HTML will always c
 !===
 ! Name        ! Type   ! Default ! Description
 ! `body` ! string: valid HTML ! `<div>` with matching `id` (same as `react4xpId` in the data object) ! Same as the `options.body` in <<#react4xp_render_parameters, React4xp.render>> above.
-! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and servierside rendering, on this particular rendering.
+! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and serverside rendering, on this particular rendering.
 ! `request` ! link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object] ! undefined ! Including this here (_and_ in the corresponding <<#render_pgcontr, `renderPageContributions`>> call) is the easiest way to handle <<#react4xp_object_request, view-context dependent behavior>>.
 !===
 
@@ -452,7 +452,7 @@ Also, unless you add the `request` option, there is *no detection of inside-vs-o
 ! Name        ! Type   ! Default ! Description
 ! `pageContributions` ! object: valid link:https://developer.enonic.com/docs/xp/stable/framework/contributions[XP page contributions]  ! empty object ! If you already have some page contributions you want to add to the output of this rendering, add them here. These added page contributions will be added _before_ the ones that will be rendered (within each section `headBegin`, `bodyEnd` etc).
 ! `hydrate` ! boolean ! app.config['react4xp.hydrate'] or true ! When SSR is true, choose whether you want hydration or not.
-! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and servierside rendering, on this particular rendering.
+! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and serverside rendering, on this particular rendering.
 ! `request` ! link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object] ! undefined ! Including this here (_and_ in the corresponding <<#render_body, `renderPageContributions`>> call) is the easiest way to handle <<#react4xp_object_request, view-context dependent behavior>>.
 
 Other renderings are not affected, _even from the same data object_ (so you usually want to ensure a different rendering from the same data object uses the same mode).
@@ -515,12 +515,12 @@ NOTE: This risks a missing/empty visualization inside Content Studio, since `ssr
 
 - And `.renderPageContributions` will render _all_ page contributions in all contexts, including JS dependency assets and the `hydrate`/`render` browser-side calls.
 +
-NOTE: Best case scenario: this might make a client-side rendered entry visible in Content Studio too. Worst case, it risks intervening with Content Studio's UX, or even break its functionality, depending on the code used/imported by the entry.
+NOTE: Best case scenario: this might make a client-side rendered entry visible in Content Studio too. Worst case, it risks intervening with Content Studio's UX or even breaking its functionality, depending on the code used/imported by the entry.
 
 
 === Custom flow examples
 
-Custom flow usage in is demonstrated <<custom-flow-syntax#, here>>.
+Custom flow usage is demonstrated <<../custom-flow-syntax#, here>>.
 
 
 [[ssr]]
@@ -528,9 +528,9 @@ Custom flow usage in is demonstrated <<custom-flow-syntax#, here>>.
 
 The default running mode of React4xp is link:https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/[serverside rendering (SSR)] (although `ssr` can override this).
 
-In a nutshell, source files like TSX and JSX are compiled into JS assets that lib-react4xp's SSR engine runs to render HTML. This output is then delivered to the browser along with dependency code (usually references to necessary assets like CSS, JS etc) - these dependencies are also rendered, as page contributions. Rendering the HTML body and the page contributions happens to two different steps, using either <<#react4xp_render, `render`>> (which wraps both steps for convenience) or the <<#react4xp_object, "custom flow">>.
+In a nutshell, source files like TSX and JSX are compiled into JS assets that lib-react4xp's SSR engine runs to render HTML. This output is then delivered to the browser along with dependency code (usually references to necessary assets like CSS, JS, etc) - these dependencies are also rendered, as page contributions. Rendering the HTML body and the page contributions happens in two different steps, using either <<#react4xp_render, `render`>> (which wraps both steps for convenience) or the <<#react4xp_object, "custom flow">>.
 
-The aim of react4xp is link:https://medium.com/capital-one-tech/why-everyone-is-talking-about-isomorphic-universal-javascript-and-why-it-matters-38c07c87905[isomorphic rendering]: after the react component(s) are serverside rendered, they are activated (hydrated) in the browser, turning them into running, active react apps. It's _the same react code_ that runs at the server as in the browser: no need to write the same component twice - one for SSR and one for the browser (although occasionally, tweaks are needed to prevent browserspecific code from running on the server).
+The aim of react4xp is link:https://medium.com/capital-one-tech/why-everyone-is-talking-about-isomorphic-universal-javascript-and-why-it-matters-38c07c87905[isomorphic rendering]: after the react component(s) are serverside rendered, they are activated (hydrated) in the browser, turning them into running, active react apps. It's _the same react code_ that runs at the server as in the browser: no need to write the same component twice - one for SSR and one for the browser (although occasionally, tweaks are needed to prevent browser specific code from running on the server).
 
 
 
@@ -555,9 +555,9 @@ After your React4xp app is (re)started, the first time React4xp is triggered to 
 - dependency assets imported by the react components (aka. <<chunks#, chunks>>),
 - and finally, the <<entries#, entry assets>> themselves.
 
-*This causes some warmup time* when starting your app: a noticable delay before the first rendering shows up. This may be just a couple of seconds in total, but it may also take longer. It depends on the size and complexity of the _compiled_ assets involved. This will happen on every restart of the app (and every <<#renderers, renderer>> must be initialized, but they do this in parallel).
+*This causes some warmup time* when starting your app: a noticeable delay before the first rendering shows up. This may be just a couple of seconds in total, but it may also take longer. It depends on the size and complexity of the _compiled_ assets involved. This will happen on every restart of the app (and every <<#renderers, renderer>> must be initialized, but they do this in parallel).
 
-But as long as the code runs without errors, initialization happens only once (i.e. each asset is loaded once at most, on each renderer). After the warmup, the react apps are ready-to-run from memory, so repeated renderings after that (even with different props) are fast.
+But as long as the code runs without errors, initialization happens only once (i.e. each asset is loaded once at most, on each renderer). After the warmup, the react apps are ready to run from memory, so repeated renderings after that (even with different props) are fast.
 
 ==== Improving warmup time for development
 
@@ -603,7 +603,7 @@ exports.get = request => {
     const key = makeKey(props);
 
     // Now render is only called when the key is new.
-    // If the key is cached before, just returns the output for that key.
+    // If the key is cached before, it just returns the output for that key.
     return cache.get(
         key,
         () => React4xp.render(
