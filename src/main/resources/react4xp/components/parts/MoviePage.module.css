@@ -21,8 +21,6 @@ header {
 .photoImg {
   margin-right: 25px;
   max-width: 100%;
-  border: solid 1px #0892D4;
-  box-shadow: 0 0 4px #0892D4;
   border-radius: 8px;
   margin-block: 5px;
 }
@@ -93,8 +91,8 @@ header {
   width: 75px;
   height: 75px;
   margin-right: 10px;
-  border: 1px solid #4E1F4F;
-  box-shadow: 0 0 4px #4E1F4F;
+  border: 1px solid #61DBFB;
+  box-shadow: 0 0 4px #61DBFB;
   border-radius: 8px;
 }
 
@@ -123,13 +121,17 @@ header {
   text-decoration: none;
 }
 
+.website {
+  margin-top: -2rem;
+}
+
 .sneakyLink H3 {
   margin-inline: 0rem;
 }
 
 .sneakyTitle {
   text-decoration: none;
-  color: #0892D4;;
+  color: #0892D4;
 }
 
 .sneakyCastLink {

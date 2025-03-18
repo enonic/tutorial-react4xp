@@ -30,12 +30,17 @@ export const Movie = (props) => {
                             {/* Release Date and Website */}
                             <div>
                                 {props.website && (
+                                    <>
                                     <h2>
-                                        <a href={props.website} className={styles.sneakyLink} target="_blank"
-                                           rel="noopener noreferrer">
                                             Official Website
-                                        </a>
                                     </h2>
+                                        <p className={styles.website}>
+                                            <a href={props.website} className={styles.sneakyLink} target="_blank"
+                                               rel="noopener noreferrer">
+                                                {props.website}
+                                            </a>
+                                        </p>
+                                    </>
                                 )}
                                 {props.release && <p className={styles.date}>Release Date: {props.release}</p>}
                             </div>

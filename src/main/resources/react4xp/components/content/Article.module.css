@@ -77,8 +77,6 @@
 
 .textBlock img {
   border-radius: 8px;
-  box-shadow: 0 0 4px #61dbfb;
-  border: 1px solid #61dbfb;
 }
 /* ----- Banner Block ----- */
 .banner {
@@ -91,8 +89,6 @@
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 10px;
-  box-shadow: 0 0 4px #61dbfb;
-  border: 1px solid #61dbfb;
   max-width: 90%;
 }
 
@@ -176,8 +172,6 @@
 .storyPanel img {
   object-fit: cover; /* Ensure consistent cropping of images */
   border-radius: 8px; /* Rounded corners for images */
-  box-shadow: 0 0 4px #EF82F0;
-  border: 1px solid #EF82F0;
 }
 
 .storyline {
@@ -205,6 +199,10 @@
   ::-webkit-scrollbar-thumb {
     border-radius: 8px;
     background-color: ghostwhite;
+  }
+
+  p {
+    font-size: 1rem;
   }
 }
 
