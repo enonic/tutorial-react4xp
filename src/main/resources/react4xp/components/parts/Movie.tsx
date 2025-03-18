@@ -37,7 +37,7 @@ export const Movie = (props) => {
                                         <p className={styles.website}>
                                             <a href={props.website} className={styles.sneakyLink} target="_blank"
                                                rel="noopener noreferrer">
-                                                {props.website}
+                                                Click to visit
                                             </a>
                                         </p>
                                     </>

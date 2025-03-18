@@ -123,6 +123,7 @@ header {
 
 .website {
   margin-top: -2rem;
+  max-width: 100%;
 }
 
 .sneakyLink H3 {
