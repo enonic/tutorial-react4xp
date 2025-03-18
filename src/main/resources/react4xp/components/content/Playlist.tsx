@@ -29,7 +29,7 @@ export const Playlist = (props: any) => {
                     {movies.map((movie: any, index: number) => (
                         <li className={styles.movieItem} key={movie._id || index}>
                             <h2><a className={styles.link} href={movie.movieUrl}>{movie.title}</a></h2>
-                            <h3 className={styles.subTitle}>{movie.subtitle}</h3>
+                            <p className={styles.subTitle}>{movie.subtitle}</p>
                             {movie.photo ? (
                                 <div className={styles.photoBanner}>
                                     <a href={movie.movieUrl}>
