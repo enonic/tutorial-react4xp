@@ -455,7 +455,7 @@ Also, unless you add the `request` option, there is *no detection of inside-vs-o
 ! `ssr` ! boolean ! app.config['react4xp.ssr'] or true ! Switch between clientside and servierside rendering, on this particular rendering.
 ! `request` ! link:https://developer.enonic.com/docs/xp/stable/framework/http[XP request object] ! undefined ! Including this here (_and_ in the corresponding <<#render_body, `renderPageContributions`>> call) is the easiest way to handle <<#react4xp_object_request, view-context dependent behavior>>.
 
-Other renderings are not affected, _even from the same data object_ (so you usually want to make sure a different rendering from the same data object uses the same mode).
+Other renderings are not affected, _even from the same data object_ (so you usually want to ensure a different rendering from the same data object uses the same mode).
 !===
 
 |===
@@ -464,7 +464,7 @@ Other renderings are not affected, _even from the same data object_ (so you usua
 
 A regular link:https://developer.enonic.com/docs/xp/stable/cms/contributions[XP page contributions] object, ready to be used as the `pageContributions` attribute in an link:https://developer.enonic.com/docs/xp/stable/framework/http#http-response[XP response object] from the controller.
 
-Includes everything the browser needs to activate (or client-side render) the react component: script tags with urls to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset and an activating trigger call to the client wrapper. Urls point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
+Includes everything the browser needs to activate (or client-side render) the react component: script tags with URLs to auto-compiled assets for the entry and its dependencies, a client-side react4xp wrapper asset, and an activating trigger call to the client wrapper. URLs point to react4xp's own optimized asset services. Also included before this, are any input `options.pageContributions`.
 
 With a serverside rendering (`options.ssr` is not false), the client will expect an existing target element with a pre-rendered entry in the response `body`, and call `hydrate`. If `options.ssr` is false, an empty target element is expected in the response `body`, and the rendering is left to the client with `render`.
 
@@ -473,7 +473,7 @@ With a serverside rendering (`options.ssr` is not false), the client will expect
 [[react4xp_object_request]]
 === Request and automated behavior
 
-The <<custom-flow-syntax#, "custom flow">> (`.renderBody` in tandem with `.renderPageContributions`) is intended as a more low-level approach: less hand-holding, more control to the developer for cases where that's needed.
+The <<../custom-flow-syntax#, "custom flow">> (`.renderBody` in tandem with `.renderPageContributions`) is intended as a more low-level approach: less hand-holding, more control to the developer for cases where that's needed.
 
 However, lib-react4xp version 1.6.0 introduced support for a `request` option parameter for these methods as well. The main idea is that **using `request` in both calls will now automate some behavior** the same way as calling `.render` with `request` (see link:#render_request[above]).
 
