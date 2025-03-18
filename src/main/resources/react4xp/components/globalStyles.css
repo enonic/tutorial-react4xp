@@ -11,8 +11,12 @@ body {
 
 }
 
+#PageView {
+    width: 100%;
+}
+
 .contentContainer > div {
-    min-height: 80vh;
+    min-height: 85vh;
 }
 
 h1 {
