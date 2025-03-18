@@ -9,7 +9,8 @@ const App: React.FC<AppProps> = (props) => {
     return (
         <>
             <BaseComponent componentRegistry={componentRegistry} {...props}/>
-            {props.component.type == "page" && <Footer logoUrl={props.url}/>}
+            {(props.component.type == "page" || props.component.type == "contentType")
+             && <Footer logoUrl={props.url}/>}
         </>
     );
 }

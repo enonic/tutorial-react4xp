@@ -1,6 +1,6 @@
 /* Footer.module.css */
 .footer {
-    margin: auto auto;
+    margin: 3rem auto auto auto;
     width: 100vw;
     padding: 0 0 2rem;
     text-align: center;
@@ -11,9 +11,7 @@
 }
 
 .footerContainer {
-    border-top: 2px solid #EF82F0;
-    padding-top: 1.2rem;
-    margin-top: 1.8rem;
+    margin-top: 2rem;
 }
 
 .footer a {
@@ -29,7 +27,7 @@
 
 .logoContainer {
     position: absolute;
-    bottom: .8rem;
+    bottom: 1.2rem;
     right: 1.5rem;
 }
 
