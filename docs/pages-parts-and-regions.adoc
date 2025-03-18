@@ -250,7 +250,7 @@ image:page_with_ready_region.png[title="Editing new content in Content Studio, w
 
 
 [start=3]
-. Drag _"Part"_ from the config panel into the Region. In the dropdown menu (_"Type to search..."_) that appears in the Region (or the _"Part"_ dropdown menu now on the right), select your new _color_ Part. It should now appear correctly rendered in the preview panel (occasionally, you might need to _Save_ and refresh the page). And the config panel for editing the settings of that particular part should appear on the far right (if it doesn't, click the part itself: _"Hey, I'm pretty red"_):
+. Drag _"Part"_ from the config panel into the Region. In the dropdown menu (_"Type to search..."_) that appears in the Region (or the _"Part"_ dropdown menu now on the right), select your new _color_ Part. It should now appear correctly rendered in the preview panel (occasionally, you might need to _Save_ and refresh the page). The config panel for editing the settings of that particular part should appear on the far right (if it doesn't, click the part itself: _"Hey, I'm pretty red"_):
 
 [.thumb]
 image:content_with_red_part.png[title="Editing new content in Content Studio, with Region ready to receive parts etc", width=720px]
@@ -258,7 +258,7 @@ image:content_with_red_part.png[title="Editing new content in Content Studio, wi
 
 
 [start=4]
-. Try experimenting with dragging other XP components from the _"Insert"_ tab into the Region. Say, a Text component, and/or adding another instance of the same _color_ Part but with a different (HTML-compliant) color value in the Part config panel. You'll see that the react-rendered Region accepts all regular XP components, and that multiple instances of the same _color_ Part remain independent from each other.
+. Try experimenting with dragging other XP components from the _"Insert"_ tab into the Region. Say, a Text component, and/or adding another instance of the same _color_ Part but with a different (HTML-compliant) color value in the Part config panel. You'll see that the react-rendered Region accepts all regular XP components and that multiple instances of the same _color_ Part remain independent of each other.
 . As usual, clicking _Preview_ on the top will open a new Preview tab for your page.
 
 
@@ -270,9 +270,9 @@ We won't go into the details about the HTML output anymore - it's structurally a
 ====
 Each time the client calls `render` or `hydrate`, it will spawn a *separate root react app*. For this to happen a controller usually calls `React4xp.render` (*). So in this example, there will be one independent react app in the client for each of the _color_ Parts you added to the Region.
 
-(*) Remember from the code explanation of <<#page_controller, our Page controller>> that `React4xp.render` needs the `request` argument to generate page contributions. Omitting `request` forces a pure serverside rendering without hydration - so our page controller is not starting a separate react app in the client.
+(*) Remember from the code explanation of <<#page_controller, our Page controller>> that `React4xp.render` needs the `request` argument to generate page contributions. Omitting a `request` forces a pure serverside rendering without hydration, so our page controller is not starting a separate react app in the client.
 
-(And just for the record, there is an alternative renderer: `renderPageContributions`. It also starts a new react app, but never needs `request`. More on that in a <<../custom-flow-syntax#, later lesson>>)
+(And just for the record, there is an alternative renderer: `renderPageContributions`. It also starts a new react app, but never needs `request`. More on that in a <<custom-flow-syntax#, later lesson>>)
 ====
 
 
