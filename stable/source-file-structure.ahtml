@@ -461,7 +461,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>So far, every time we&#8217;ve referenced a <em>.tsx</em> react component from React4xp in a controller, we&#8217;ve used a <code>component</code> object in the <em>entry</em> argument of <code>render</code>. This is just a shortcut, and it depends on an "XP-conventional" naming regime to work: the <em>.tsx</em> source file must be in the same folder as the controller, and have the same name.</p>
 </div>
 <div class="paragraph">
-<p>It doesn&#8217;t have to be that way. In this example, we&#8217;ll take a look at which react components are available to <code>render</code> - called <strong>entries</strong> in React4xp - and how to reference them, whatever they&#8217;re called and wherever they&#8217;re located.</p>
+<p>It doesn&#8217;t have to be that way. In this example, we&#8217;ll take a look at which react components are available to <code>render</code> - called <strong>entries</strong> in React4xp - and how to reference them, whatever they&#8217;re called, and wherever they&#8217;re located.</p>
 </div>
 </div>
 </div>
@@ -472,7 +472,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>For react components to be available to React4xp the way we&#8217;ve seen so far, their <strong>TSX/JSX source files must be located in certain folders</strong> where React4xp is looking for them and auto-compiles them.</p>
 </div>
 <div class="paragraph">
-<p>When they are located where they should (and export a <code>props&#8658;component</code> function), those react components are called <strong>entries</strong> (<a href="appendix/entries.ahtml">full reference</a>).</p>
+<p>When they are located where they should be (and export a <code>props&#8658;component</code> function), those react components are called <strong>entries</strong> (<a href="appendix/entries.ahtml">full reference</a>).</p>
 </div>
 <div class="sect2">
 <h3 id="1_below_site"><a class="link" href="#1_below_site">1: Below <em>site/</em></a></h3>
@@ -523,7 +523,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>And so on. Calling the <em>.tsx</em> source file something else, or having it in a different folder, is fine as long as you refer it correctly like this.</p>
+<p>And so on. Calling the <em>.tsx</em> source file something else, or having it in a different folder, is fine as long as you refer to it correctly like this.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -544,7 +544,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you look at the rendered HTML output in page source, you can see React4xp using the jsxPaths to refer to the compiled assets from the client - even if you used the <code>component</code> object in the <em>entry</em> argument.
+If you look at the rendered HTML output in the page source, you can see React4xp using the jsxPaths to refer to the compiled assets from the client - even if you used the <code>component</code> object in the <em>entry</em> argument.
 </td>
 </tr>
 </table>
@@ -565,7 +565,7 @@ All the <em>entries</em> in your project are listed with their <em>jsxPath</em> 
 <div class="sect2">
 <h3 id="2_below_react4xp"><a class="link" href="#2_below_react4xp">2: Below <em>react4xp/</em></a></h3>
 <div class="paragraph">
-<p>If you just want to keep your react components out of the regular XP file structure in <em>site/</em> and be independent of the structure of Parts, Pages etc, the folder <em>src/main/resources/react4xp/</em> is meant for that. Here&#8217;s how (assuming you&#8217;re using <a href="https://market.enonic.com/vendors/enonic/react4xp-starter">the starter</a> or generally following <a href="https://github.com/enonic/lib-react4xp/blob/master/README.adoc#setup-option-2-using-react4xp-in-an-existing-project">the recommended react4xp setup pattern</a>):</p>
+<p>If you just want to keep your react components out of the regular XP file structure in <em>site/</em> and be independent of the structure of Parts, Pages, etc, the folder <em>src/main/resources/react4xp/</em> is meant for that. Here&#8217;s how (assuming you&#8217;re using <a href="https://market.enonic.com/starters/react4xp-starter">the starter</a> or generally following <a href="https://github.com/enonic/lib-react4xp/blob/master/README.adoc#setup-option-2-using-react4xp-in-an-existing-project">the recommended react4xp setup pattern</a>):</p>
 </div>
 <div class="paragraph">
 <p>Open <em>react4xp.config.js</em> in the project root, and look for the property <code>entryDirs</code>. This is a (comma-separated) list of folder names <strong>relative to the <em>react4xp/</em> folder</strong>. React4xp comes with a built-in suggestion here: <code>entryDirs: ['entries']</code>. This means that all <em>.tsx</em> source files below <em>src/main/resources/react4xp/entries</em> will become entries: react components available to React4xp.</p>
@@ -645,7 +645,7 @@ React4xp doesn&#8217;t currently separate between different <em>entryDirs</em>, 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-03-18 08:51:03 UTC
+Last updated 2025-03-18 08:59:11 UTC
 </div>
 </div>
 </body>
