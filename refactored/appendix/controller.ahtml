@@ -473,7 +473,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     &lt;mappings&gt;
         &lt;mapping controller="/site/app.js" order="10"&gt; <i class="conum" data-value="1"></i><b>(1)</b>
             &lt;pattern&gt;/.*&lt;/pattern&gt;
-        &lt;/mapping&gt;        
+        &lt;/mapping&gt;
         &lt;mapping controller="/site/component.js" order="10"&gt; <i class="conum" data-value="2"></i><b>(2)</b>
             &lt;service&gt;component&lt;/service&gt;
         &lt;/mapping&gt;
@@ -581,16 +581,20 @@ return output;</code></pre>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/entries/App.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-React" data-lang="React">import type { AppProps } from '/types/AppProps';
-
-import * as React from 'react';
+<pre class="highlight"><code class="language-React" data-lang="React">import Footer from "/react4xp/components/common/Footer";
+import type {AppProps} from '/types/AppProps';
+import '../components/globalStyles.css'
 import {BaseComponent} from '@enonic/react-components';
+import * as React from 'react';
 import {componentRegistry} from '../componentRegistry';
 
 const App: React.FC&lt;AppProps&gt; = (props) =&gt; {
-	return (
-		&lt;BaseComponent componentRegistry={componentRegistry} {...props}/&gt;
-	);
+    return (
+        &lt;&gt;
+            &lt;BaseComponent componentRegistry={componentRegistry} {...props}/&gt;
+            {props.component.type == "page" &amp;&amp; &lt;Footer logoUrl={props.url}/&gt;}
+        &lt;/&gt;
+    );
 }
 
 App.displayName = 'App';
@@ -697,7 +701,7 @@ Most of these static assets are content-hashed, and optimized for client-side ca
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-01-28 09:50:08 UTC
+Last updated 2025-03-18 08:51:04 UTC
 </div>
 </div>
 </body>

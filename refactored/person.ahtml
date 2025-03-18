@@ -513,39 +513,60 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li>
 <p>Create a data fetcher</p>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/PersonProcessor.ts</div>
+<div class="title">/src/main/resources/react4xp/components/content/PersonProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type { Content } from '@enonic-types/lib-content';
-import type { ContentTypeProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
-import { imageUrl } from '/lib/xp/portal';
-import { get as getContentByKey } from '/lib/xp/content';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {Content} from '@enonic-types/lib-content';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {imageUrl} from '/lib/xp/portal';
+import {processHtml} from '/lib/enonic/react4xp';
+import {get as getContentByKey} from '/lib/xp/content';
+import {toArray} from "/react4xp/utils/arrayUtils";
+import {PageDescriptor} from '@enonic-types/core';
+
+
+function fetchAdditionalPhotos(photosIds) {
+    return photosIds.map(photoId =&gt; {
+        const photoContent = getContentByKey&lt;Content&gt;({key: photoId});
+        return {
+            _id: photoContent._id,
+            title: photoContent.displayName,
+            imageUrl: imageUrl({id: photoContent._id, scale: 'width(300)'})
+        };
+    });
+}
 
 /* interface Photo {
 	_id: string;
 	displayName: string;
   } */
 
-export const personProcessor: ContentTypeProcessorFunction&lt;Content&lt;Record&lt;string, unknown&gt;&gt;&gt;
-= (params) =&gt; {
+export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
+    = (params) =&gt; {
 
-	log.info('personProcessor params:%s', params);
+    const photos: string[] = toArray&lt;string&gt;(params.content.data.photos as string | string[])
+    const firstPhotoId = photos[0] || '';
+    const remainingPhotoIds = photos.slice(1) || '';
 
-	const photos = params.content.data.photos;
-	const firstPhotoId = Array.isArray(photos) ? photos[0] : photos;
+    // Fetch the first photo
+    const {_id, displayName} = getContentByKey&lt;Content&gt;({key: firstPhotoId});
 
-	// Fetch the first photo
-	const {_id, displayName} = getContentByKey&lt;Content&gt;({ key: firstPhotoId });
-	
-	return {
-		props: /*&lt;PersonProps&gt;*/{
-			displayName: `${params.content.displayName}`,
-			photo: {
-				_id,
-				title: displayName,
-				imageUrl: imageUrl({id: _id, scale: 'width(500)'})
-			}
-		}
-	};
+    const extraPhotos = fetchAdditionalPhotos(remainingPhotoIds);
+
+    return /*&lt;PersonProps&gt;*/{
+        displayName: `${params.content.displayName}`,
+        photo: {
+            _id,
+            title: displayName,
+            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
+        },
+        bio: `${params.content.data.bio}`,
+        bioHtml: processHtml({
+            value: params.content.data.bio as string,
+            imageWidths: [200, 400, 800],
+        }),
+        birthDate: params.content.data.dateofbirth,
+        restPhotos: extraPhotos,
+    };
 };</code></pre>
 </div>
 </div>
@@ -575,85 +596,189 @@ dataFetcher.addContentType('com.enonic.app.hmdb:person', { processor: personProc
 <p>The component consists of two files:</p>
 </div>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/Person.tsx (React component)</div>
+<div class="title">/src/main/resources/react4xp/components/content/Person.tsx (React component)</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">//import type { PersonProps } from '/types/PersonProps';
+import {componentRegistry} from '/react4xp/componentRegistry';
+import {RichText} from '@enonic/react-components';
 import React from 'react'
 //import * as React from 'react';
-import * as styles from './Person.module.css';
+import styles from './Person.module.css';
 
 export const Person = (props) =&gt; {
-    const {displayName, photo} = props as any;
- 
+    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
     return (
-        &lt; &gt;
-            &lt;div /*className={styles.person}*/&gt;
-                &lt;h2&gt;{displayName}&lt;/h2&gt;
+        &lt;div className={styles.person}&gt;
+                &lt;h1&gt;{displayName}&lt;/h1&gt;
+            &lt;p&gt;{birthDate}&lt;/p&gt;
+            &lt;div&gt;
                 {
                     photo ? (
-                        &lt;img src={photo.imageUrl}
-                             title={photo.displayName}
-                             alt={photo.displayName}
-                             width="500"
-                        /&gt;
+                        &lt;&gt;
+                            &lt;div className={styles.photos}&gt;
+                                &lt;img src={photo.imageUrl}
+                                     title={photo.displayName}
+                                     alt={photo.displayName}
+                                /&gt;
+                            &lt;/div&gt;
+                        &lt;/&gt;
                     ) : (
                         &lt;p&gt;No photo available&lt;/p&gt;
                     )
                 }
+                {restPhotos &amp;&amp; restPhotos.length &gt; 0 &amp;&amp; (
+                    &lt;div className={styles.restPhotosContainer}&gt;
+                        &lt;div className={styles.restPhotos}&gt;
+                            {restPhotos.map((photo, index) =&gt; (
+                                &lt;img key={index}
+                                     src={photo.imageUrl}
+                                     title={photo.title}
+                                     alt={photo.title}
+                                     className={styles.restImg}
+                                /&gt;
+                            ))}
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                )}
             &lt;/div&gt;
-        &lt;/&gt;
+            &lt;div className={styles.richText}&gt;
+                &lt;RichText data={bioHtml} componentRegistry={componentRegistry}/&gt;
+
+            &lt;/div&gt;
+
+        &lt;/div&gt;
     )
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>+
-./src/main/resources/react4xp/components/Person.module.css (CSS module)</p>
+./src/main/resources/react4xp/components/content/Person.module.css (CSS module)</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-CSS" data-lang="CSS">.person {
-    display: flex;
-    flex-direction: column;
-}
-
-.person,
-.person .bio {
+<pre class="highlight"><code class="language-CSS" data-lang="CSS">.person .bio {
     font-family: sans-serif;
 }
 
-
-
-.bio {
-    line-height: 24px;
+.person {
+    display: flex;
+    flex-direction: column;
+    margin-inline: auto;
 }
 
-.bio figcaption {
-    font-size: 12px;
+.person h1 {
+    margin-bottom: 0;
 }
 
-.bio figure &gt; img {
-    width: 100%;
-    height: auto;
+.person p {
+    margin-top: 0;
+}
+
+.flexBlock {
+    display: flex;
+    justify-content: space-between;
 }
 
 .photos {
-    padding: 0 20px;
+    padding-block: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-gap: 50px;
     gap: 50px;
 }
 
+.restPhotosContainer {
+    padding: 1rem 0;
+    max-width: calc(90vw - 1rem);
+}
+
+.restPhotos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15%, 1fr));
+    gap: 5%;
+    margin-block: 1rem;
+}
+
 .photos img {
     width: 100%;
     height: auto; /* Ensures images scale properly */
+    max-width: 90vw;
+    border: solid 1px #09C0F0;
+    box-shadow: 0 0 5px #09C0F0;
+    border-radius: 8px;
 }
 
+.restImg {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: 50% 50%;
+    border: solid 1px #EF82F0;
+    box-shadow: 0 0 5px #EF82F0;
+    border-radius: 5px;
+}
+
+
+.richText {
+    max-width: 90vw;
+    font-size: 24px;
+}
+
+
+.richText figure img {
+    border: solid 1px #09C0F0;
+    box-shadow: 0 0 5px #09C0F0;
+    border-radius: 5px;
+}
+
+@media screen and (max-width: 900px) {
+    .restPhotosContainer {
+        padding: .5rem 0;
+    }
+
+    .flexBlock {
+        display: block;
+    }
+
+    .restPhotos {
+        grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+        margin-block: 0.5rem;
+    }
+
+    .richText {
+        font-size: 20px;
+    }
+
+}
+
+.photosHeader {
+    margin-top: 0;
+    color: #EF82F0;
+}
+
+
 @media screen and (max-width: 720px) {
+    .restPhotos {
+        margin-block: 0;
+    }
+
     .bio figure {
         width: auto !important;
     }
+
+
+    .richText {
+        font-size: 18px;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+    .restPhotos {
+        grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    }
+
 }</code></pre>
 </div>
 </div>
@@ -693,7 +818,7 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', { View: Person })
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-01-28 09:50:08 UTC
+Last updated 2025-03-18 08:51:04 UTC
 </div>
 </div>
 </body>

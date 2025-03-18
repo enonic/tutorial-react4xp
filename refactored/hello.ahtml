@@ -527,16 +527,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">react4xp/components/Hello.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type { HelloProps } from '/types/HelloProps';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {HelloProps} from '/types/HelloProps';
 import * as React from 'react';
 
-export const Hello = ({ title, text }: HelloProps) =&gt; {
-	return (
-		&lt;div&gt;
-			&lt;h1&gt;{title}&lt;/h1&gt;
-			&lt;p&gt;{text}&lt;/p&gt;
-		&lt;/div&gt;
-	);
+export const Hello = ({title, text}: HelloProps) =&gt; {
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;{title}&lt;/h1&gt;
+            &lt;p&gt;{text}&lt;/p&gt;
+        &lt;/div&gt;
+    );
 };</code></pre>
 </div>
 </div>
@@ -547,8 +547,8 @@ export const Hello = ({ title, text }: HelloProps) =&gt; {
 <div class="title">types/HelloProps.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">export interface HelloProps {
-	title: string
-	text: string
+    title: string
+    text: string
 }</code></pre>
 </div>
 </div>
@@ -558,14 +558,31 @@ export const Hello = ({ title, text }: HelloProps) =&gt; {
 <div class="listingblock">
 <div class="title">react4xp/componentRegistry.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import * as React from 'react';
-import { ComponentRegistry } from '@enonic/react-components';
-import { Hello } from './components/Hello';
-import { Person } from './components/Person';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Article} from "/react4xp/components/content/Article";
+import {Factbox} from '/react4xp/components/macro/FactBox';
+import {ComponentRegistry} from '@enonic/react-components';
+import {Person} from './components/content/Person';
+import {Playlist} from './components/content/Playlist';
+import {TwoColumnLayout} from './components/layouts/TwoColumn';
+import {Page} from './components/Page';
+import {ChildList} from './components/parts/ChildList';
+import {Heading} from './components/parts/Heading';
+import {Movie} from './components/parts/Movie';
 
 export const componentRegistry = new ComponentRegistry;
-componentRegistry.addContentType('portal:site', { View: Hello }); <i class="conum" data-value="1"></i><b>(1)</b>
-componentRegistry.addContentType('com.enonic.app.hmdb:person', { View: Person }); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+
+
+componentRegistry.addMacro('factbox', {View: Factbox});
+
+//componentRegistry.addContentType('portal:site', { View: Hello }); <i class="conum" data-value="1"></i><b>(1)</b>
+componentRegistry.addPart('com.enonic.app.hmdb:heading', {View: Heading}); <i class="conum" data-value="2"></i><b>(2)</b>
+componentRegistry.addPage('com.enonic.app.hmdb:main', {View: Page}); <i class="conum" data-value="3"></i><b>(3)</b>
+componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); <i class="conum" data-value="4"></i><b>(4)</b>
+componentRegistry.addPart('com.enonic.app.hmdb:movie-details', {View: Movie}); <i class="conum" data-value="5"></i><b>(5)</b>
+componentRegistry.addLayout('com.enonic.app.hmdb:2-column', {View: TwoColumnLayout}); <i class="conum" data-value="6"></i><b>(6)</b>
+componentRegistry.addPart('com.enonic.app.hmdb:child-list', {View: ChildList}); <i class="conum" data-value="7"></i><b>(7)</b>
+componentRegistry.addContentType('com.enonic.app.hmdb:playlist', {View: Playlist});
+componentRegistry.addContentType('com.enonic.app.hmdb:article', {View: Article});</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -597,19 +614,15 @@ Try clicking other content items in Content Studio, and you should simply see an
 <div class="listingblock">
 <div class="title">react4xp/components/HelloProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type { Content } from '@enonic-types/lib-content';
-import type { ContentTypeProcessorFunction } from '@enonic-types/lib-react4xp/DataFetcher';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {PageDescriptor} from '@enonic-types/core';
 
-type MyType = ContentTypeProcessorFunction&lt;Content&lt;Record&lt;string, unknown&gt;&gt;&gt;
+export const helloProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt; = (params) =&gt; {
 
-export const helloProcessor: MyType = (params) =&gt; {
-	// log.info('helloProcessor params:%s', toStr(params));
-	return {
-		props: /*&lt;HelloProps&gt;*/{
-			title: `React4XP: ${params.content.displayName}`,
-			text: 'Welcome to the React4XP starter!',
-		}
-	};
+    return /*&lt;HelloProps&gt;*/{
+        title: `React4XP: ${params.content.displayName}`,
+        text: 'Welcome to the React4XP starter!',
+    };
 };</code></pre>
 </div>
 </div>
@@ -619,13 +632,28 @@ export const helloProcessor: MyType = (params) =&gt; {
 <div class="listingblock">
 <div class="title">react4xp/dataProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import { DataFetcher } from '/lib/enonic/react4xp';
-import { helloProcessor } from './components/HelloProcessor';
-import { personProcessor } from './components/PersonProcessor';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {DataFetcher} from '/lib/enonic/react4xp';
+import {articleProcessor} from "/react4xp/components/content/ArticleProcessor";
+import {personProcessor} from './components/content/PersonProcessor';
+import {playlistProcessor} from './components/content/PlaylistProcessor';
+import {layoutProcessor} from './components/layouts/TwoColumnProcessor';
+import {pageProcessor} from './components/PageProcessor';
+import {childListProcessor} from './components/parts/ChildListProcessor';
+import {headingProcessor} from './components/parts/HeadingProcessor';
+import {movieProcessor} from "./components/parts/MovieProcessor";
 
 export const dataFetcher = new DataFetcher();
-dataFetcher.addContentType('portal:site', { processor: helloProcessor }); <i class="conum" data-value="1"></i><b>(1)</b>
-dataFetcher.addContentType('com.enonic.app.hmdb:person', { processor: personProcessor });
+//dataFetcher.addContentType('portal:site', { processor: helloProcessor });
+
+
+dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor});
+dataFetcher.addPage('com.enonic.app.hmdb:main', {processor: pageProcessor});
+dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});
+dataFetcher.addPart('com.enonic.app.hmdb:movie-details', {processor: movieProcessor});
+dataFetcher.addLayout('com.enonic.app.hmdb:2-column', {processor: layoutProcessor});
+dataFetcher.addPart('com.enonic.app.hmdb:child-list', {processor: childListProcessor});
+dataFetcher.addContentType('com.enonic.app.hmdb:playlist', {processor: playlistProcessor});
+dataFetcher.addContentType('com.enonic.app.hmdb:article', {processor: articleProcessor});
 
 
 That is basically it. Throughout the tutorial, you'll be using this extensively.
@@ -643,7 +671,7 @@ Great, you rendered your first page, next up how about &lt;&lt;person#, adding y
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-01-28 09:50:08 UTC
+Last updated 2025-03-18 08:51:04 UTC
 </div>
 </div>
 </body>

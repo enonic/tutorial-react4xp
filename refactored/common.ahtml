@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>React4XP - Configuration - Build time</title>
+<title>Common components</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,362 +437,43 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>React4XP - Configuration - Build time</h1>
+<h1>Common components</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#react4xp.config.js">react4xp.config.js</a>
-<ul class="sectlevel2">
-<li><a href="#including_react4xp_config_js_in_your_project">Including react4xp.config.js in your project</a></li>
-<li><a href="#entryDirs">entryDirs</a></li>
-<li><a href="#chunkDirs">chunkDirs</a></li>
-<li><a href="#hydrate">hydrate</a></li>
-<li><a href="#ssr">ssr</a></li>
-</ul>
-</li>
-<li><a href="#webpack.config.react4xp.js">webpack.config.react4xp.js</a>
-<ul class="sectlevel2">
-<li><a href="#webpack_caching">Webpack caching</a></li>
-</ul>
-</li>
-<li><a href="#command_line_arguments">Command line arguments</a>
-<ul class="sectlevel2">
-<li><a href="#NODE_ENV">Build environment</a></li>
-<li><a href="#VERBOSE">Verbosity</a></li>
-</ul>
-</li>
+<li><a href="#to_do">To do</a></li>
+<li><a href="#next">Next</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="react4xp.config.js"><a class="link" href="#react4xp.config.js">react4xp.config.js</a></h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Several aspects of React4xp can be configured with a file <em>react4xp.config.js</em>.</p>
-</div>
-<div class="paragraph">
-<p>If you&#8217;re using the <a href="setup.ahtml#create_project">starter</a> or your project is based on it, this is already set up and you can skip the following section:</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-<div class="sect2">
-<h3 id="including_react4xp_config_js_in_your_project"><a class="link" href="#including_react4xp_config_js_in_your_project">Including react4xp.config.js in your project</a></h3>
-<div class="paragraph">
-<p>Put <em>react4xp.config.js</em> at the root of your XP project. A template can be copied from <a href="https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js">here</a>, or from <em>node_modules/@enonic/react4xp/examples/react4xp.config.js</em> after installing the React4xp NPM package.</p>
-</div>
-<div class="paragraph">
-<p><strong>In order to take effect, it must be handled by gradle during the build:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Add this to your <em>build.gradle</em>:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-groovy" data-lang="groovy">task react4xp(type: NpmTask, dependsOn: npmInstall) {
-  args = [
-    'run',
-    'build:react4xp' // This script must exist in the package.json file
-  ]
-  description 'Compile react4xp resources'
-  environment = [
-    'R4X_APP_NAME': "${appName}",
-    'R4X_BUILD_LOG_LEVEL': gradle.startParameter.logLevel.toString(),
-    'R4X_DIR_PATH_ABSOLUTE_PROJECT': project.projectDir.toString(),
-    'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
-  ]
-  group 'react4xp'
-  // It also watches package.json and package-lock.json :)
-  inputs.dir 'node_modules/@enonic/react4xp'
-  inputs.dir 'src/main/resources'
-  outputs.dir 'build/resources/main'
-}
-jar.dependsOn 'react4xp'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This will not only make sure <em>react4xp.config.js</em> is handled, but also give a full react4xp build setup.</p>
-</div>
-</li>
-<li>
-<p>Add this to your <em>package.json</em>:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "scripts": {
-    "build:react4xp": "npm explore @enonic/react4xp -- npm run build:react4xp",
-  }
-}</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="entryDirs"><a class="link" href="#entryDirs">entryDirs</a></h3>
-<div class="listingblock">
-<div class="title">react4xp.config.js:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-js" data-lang="js">entryDirs: ['myComponents', '../otherComponents']</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>By default, React4xp will look for (ie. sets up webpack to look for) .TSX/.JSX files to turn into <a href="entries.ahtml">entries</a> below <em>src/main/resources/site/</em>.</p>
-</div>
-<div class="paragraph">
-<p>Adding comma separated values under <code>entryDirs</code> adds <em>more</em> folder names/paths (relative to <em>src/main/resources/react4xp/</em>) where TSX/JSX files will also become entries.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="chunkDirs"><a class="link" href="#chunkDirs">chunkDirs</a></h3>
-<div class="paragraph">
-<p>By default, React4xp will look for (ie. sets up webpack to look for) resources <em>imported by</em> the entries. These are <a href="https://webpack.js.org/concepts/">bundled</a> into separate assets that React4xp automatically loads at both server- and clientside rendering: <a href="chunks.ahtml">chunks</a>, by this pattern:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>If they are react and reactDOM, they are bundled separately into <code>globals.*.js</code> (where the * is a content-dependent hash).</p>
-</li>
-<li>
-<p><em>node_modules/@enonic/react-components/</em> is bundled into <code>templates.*.js</code></p>
-</li>
-<li>
-<p>Other packages under <em>node_modules</em> are bundled into <code>vendors.*.js</code></p>
-</li>
-<li>
-<p>And everything else that&#8217;s <em>not under a <code>chunkDir</code> marked here</em> is bundled into <code>react4xp.*.js</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>(Of course, non-JS bundles split out by webpack will have different extensions, such as .css)</p>
-</div>
-<div class="paragraph">
-<p>The idea is to use <code>chunkDirs</code> to add a comma-separated list of names/paths of directories (relative to <em>src/main/resources/react4xp/</em>) that will be bundled into chunks of their own. The chunk name will be the name of the last directory in the path:</p>
-</div>
-<div class="listingblock">
-<div class="title">react4xp.config.js:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-js" data-lang="js">chunkDirs: ['chunk1', 'bundle2', 'other/stuff']</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This example adds these folders as chunkDirs, and anything the entries import from below them is bundled separately into:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><em>src/main/resources/react4xp/chunk1/</em> ➔ <code>chunk1.*.js</code></p>
-</li>
-<li>
-<p><em>src/main/resources/react4xp/bundle2/</em> ➔ <code>bundle2.*.js</code></p>
-</li>
-<li>
-<p><em>src/main/resources/react4xp/other/stuff/</em> ➔ <code>stuff.*.js</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="hydrate"><a class="link" href="#hydrate">hydrate</a></h3>
-<div class="paragraph">
-<p>Hydration is enabled by default, to change the default to disabled add the line
-below to ${XP_HOME}/config/${app}.cfg. One can still enable hydration in
-specific components.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-${XP_HOME}/config/${app}.cfg" data-lang="${XP_HOME}/config/${app}.cfg">	react4xp.hydrate = false</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="ssr"><a class="link" href="#ssr">ssr</a></h3>
-<div class="paragraph">
-<p>SSR is enabled by default, to change the default to disabled add the line below
-to ${XP_HOME}/config/${app}.cfg. One can still enable ssr in specific
-components.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-${XP_HOME}/config/${app}.cfg" data-lang="${XP_HOME}/config/${app}.cfg">	react4xp.ssr = false</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-React4xp doesn&#8217;t fully support clientSide rendering of components in regions. So the default for pages and layouts will still be ssr. You can test how your page of layout renders clientSide by passing ssr: false as an option to the render function in your page or layout controller.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
+<p>In this chapter you will add header and footer components.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="webpack.config.react4xp.js"><a class="link" href="#webpack.config.react4xp.js">webpack.config.react4xp.js</a></h2>
+<h2 id="to_do"><a class="link" href="#to_do">To do</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>React4xp comes with a minimal set of webpack rules built-in, for compiling react components in TSX/JSX files into vanilla JS.</p>
-</div>
-<div class="paragraph">
-<p>If you need to change/expand this setup, write a custom webpack config file &lt;Project.Dir&gt;/webpack.config.react4xp.js</p>
-</div>
-<div class="paragraph">
-<p>There can be several reasons to this:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Most commonly, the built-in webpack setup is pretty minimal, only adding <a href="https://webpack.js.org/loaders/">loaders</a> for compiling react from TSX/JSX. It&#8217;s likely you will need to add loaders of your own, maybe use additional plugins etc</p>
-</li>
-<li>
-<p>You may want to adjust other aspects of the compilation rules, or even replace the built-in rules entirely</p>
-</li>
-<li>
-<p>The assets that are built during the compilation are the same ones that are run on the server and in the browser. It&#8217;s possible you may need adjustments here to account for corner cases - if the problem is missing feature support in the server, perhaps you can polyfill them.</p>
-</li>
-</ul>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p><strong>Config file shape: syntax variation!</strong></p>
-</div>
-<div class="paragraph">
-<p>Usually, <em>webpack.config.js</em> files tend to have a certain shape, something like:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">module.exports = function(env) {
-    var config = {
-        entry: (...)
-        output: (...)
-        resolve: (...)
-        module: {
-            rules: (...)
-        }
-    };
-
-    return config;
-};
-// ...etc, etc</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><code>webpack.config.react4xp.js</code> can follow the same shape, but the exported function can also take <strong>a second <code>config</code> argument:</strong></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">module.exports = function(env, config) {
-    // ...
-};</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The extra incoming <code>config</code> object contains the built-in rules from React4xp. This enables you to both manipulate those rules and/or add your own, or entirely replace them by returning a different object.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="webpack_caching"><a class="link" href="#webpack_caching">Webpack caching</a></h3>
-<div class="paragraph">
-<p>It is possible to decrease build time by using Webpack filesystem caching. The
-first build after clean, may be slower, but the subsequent (incremental) builds
-(without clean) should be faster.</p>
-</div>
-<div class="listingblock">
-<div class="title">webpack.config.react4xp.js</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">module.exports = function(env, config) {
-		if (process.env.NODE_ENV === 'development') {
-		config.cache = {
-			type: 'filesystem'
-		}
-	}
-  return config;
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Read more <a href="https://webpack.js.org/configuration/cache/" class="bare">https://webpack.js.org/configuration/cache/</a></p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br>
-&#8203;<br>
-&#8203;<br></p>
-</div>
+<p>The Headless Movie DB contains sample content, and content types. One of these is <code>Person</code>. From Content Studio, you may find and list persons. By selecting the JSON preview, you can also study the properties of a person:</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="command_line_arguments"><a class="link" href="#command_line_arguments">Command line arguments</a></h2>
+<h2 id="next"><a class="link" href="#next">Next</a></h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="NODE_ENV"><a class="link" href="#NODE_ENV">Build environment</a></h3>
 <div class="paragraph">
-<p>Use the gradle commandline flag <code>-Pdev</code> or <code>-Pdevelopment</code> to enable building in development mode.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">enonic project gradle build deploy -Pdev</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This switches between React4xp <strong>build</strong> modes (not to be confused with XP&#8217;s <a href="https://developer.enonic.com/docs/enonic-cli/master/dev#start">run modes</a>).</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>production</code>: assets are compiled more compact (and faster), with source maps</p>
-</li>
-<li>
-<p><code>development</code>: assets are compiled for more human-readability, without minification, making errors easier to track down.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Default value is <code>production</code>.</p>
-</div>
-<div class="paragraph">
-<p>&#8203;<br></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="VERBOSE"><a class="link" href="#VERBOSE">Verbosity</a></h3>
-<div class="paragraph">
-<p>Use the gradle commandline flag -i or --info to enable a more verbose output when compiling React4xp components and globals.</p>
-</div>
+<p>You are on a roll, next - lets look into how we may pass editorial content to the component via <a href="props.ahtml">props</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-03-18 08:51:03 UTC
+Last updated 2025-03-18 08:51:04 UTC
 </div>
 </div>
 </body>

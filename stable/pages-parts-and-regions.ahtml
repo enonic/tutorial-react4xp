@@ -954,7 +954,7 @@ export function get(request) {
 <div class="olist arabic">
 <ol class="arabic" start="3">
 <li>
-<p>Drag <em>"Part"</em> from the config panel into the Region. In the dropdown menu (<em>"Type to search&#8230;&#8203;"</em>) that appears in the Region (or the <em>"Part"</em> dropdown menu now on the right), select your new <em>color</em> Part. It should now appear correctly rendered in the preview panel (occasionally, you might need to <em>Save</em> and refresh the page). And the config panel for editing the settings of that particular part should appear on the far right (if it doesn&#8217;t, click the part itself: <em>"Hey, I&#8217;m pretty red"</em>):</p>
+<p>Drag <em>"Part"</em> from the config panel into the Region. In the dropdown menu (<em>"Type to search&#8230;&#8203;"</em>) that appears in the Region (or the <em>"Part"</em> dropdown menu now on the right), select your new <em>color</em> Part. It should now appear correctly rendered in the preview panel (occasionally, you might need to <em>Save</em> and refresh the page). The config panel for editing the settings of that particular part should appear on the far right (if it doesn&#8217;t, click the part itself: <em>"Hey, I&#8217;m pretty red"</em>):</p>
 </li>
 </ol>
 </div>
@@ -964,7 +964,7 @@ export function get(request) {
 <div class="olist arabic">
 <ol class="arabic" start="4">
 <li>
-<p>Try experimenting with dragging other XP components from the <em>"Insert"</em> tab into the Region. Say, a Text component, and/or adding another instance of the same <em>color</em> Part but with a different (HTML-compliant) color value in the Part config panel. You&#8217;ll see that the react-rendered Region accepts all regular XP components, and that multiple instances of the same <em>color</em> Part remain independent from each other.</p>
+<p>Try experimenting with dragging other XP components from the <em>"Insert"</em> tab into the Region. Say, a Text component, and/or adding another instance of the same <em>color</em> Part but with a different (HTML-compliant) color value in the Part config panel. You&#8217;ll see that the react-rendered Region accepts all regular XP components and that multiple instances of the same <em>color</em> Part remain independent of each other.</p>
 </li>
 <li>
 <p>As usual, clicking <em>Preview</em> on the top will open a new Preview tab for your page.</p>
@@ -990,10 +990,10 @@ export function get(request) {
 <p>Each time the client calls <code>render</code> or <code>hydrate</code>, it will spawn a <strong>separate root react app</strong>. For this to happen a controller usually calls <code>React4xp.render</code> (*). So in this example, there will be one independent react app in the client for each of the <em>color</em> Parts you added to the Region.</p>
 </div>
 <div class="paragraph">
-<p>(*) Remember from the code explanation of <a href="#page_controller">our Page controller</a> that <code>React4xp.render</code> needs the <code>request</code> argument to generate page contributions. Omitting <code>request</code> forces a pure serverside rendering without hydration - so our page controller is not starting a separate react app in the client.</p>
+<p>(*) Remember from the code explanation of <a href="#page_controller">our Page controller</a> that <code>React4xp.render</code> needs the <code>request</code> argument to generate page contributions. Omitting a <code>request</code> forces a pure serverside rendering without hydration, so our page controller is not starting a separate react app in the client.</p>
 </div>
 <div class="paragraph">
-<p>(And just for the record, there is an alternative renderer: <code>renderPageContributions</code>. It also starts a new react app, but never needs <code>request</code>. More on that in a <a href="../custom-flow-syntax.ahtml">later lesson</a>)</p>
+<p>(And just for the record, there is an alternative renderer: <code>renderPageContributions</code>. It also starts a new react app, but never needs <code>request</code>. More on that in a <a href="custom-flow-syntax.ahtml">later lesson</a>)</p>
 </div>
 </td>
 </tr>
@@ -1010,7 +1010,7 @@ export function get(request) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-01-28 09:50:08 UTC
+Last updated 2025-03-18 08:51:03 UTC
 </div>
 </div>
 </body>
