@@ -16,12 +16,14 @@ export const Movie = (props) => {
                         {/* First Photo */}
                         {props.photo && (
                             <section className={styles.firstPhoto}>
+                                <a href={props.trailer}>
                                 <img
                                     src={props.photo.imageUrl}
                                     alt={props.photo.title}
                                     title={props.photo.title}
                                     className={styles.featuredImage}
                                 />
+                                </a>
                             </section>
                         )}
 

@@ -1,93 +1,107 @@
 html {
-    background-color: #071622;
-    color: ghostwhite;
-    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+  background-color: #071622;
+  color: ghostwhite;
+  font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+  padding: 0;
+}
+
+.wrapper {
 }
 
 body {
-    max-width: 1400px;
-    margin: 0 auto 0 auto;
-    width: 90%;
+  margin: 0 auto 0 auto;
 
 }
 
 #PageView {
-    width: 100%;
+  width: 100%;
 }
 
 .contentContainer > div {
-    min-height: 87vh;
+  margin-bottom: calc(6vh - 16px);
+  min-height: 86vh;
+  padding: 8px;
+  max-width: 1400px;
+  padding-inline: 2.5vw;
+  margin-inline: auto;
 }
 
 h1 {
-    color: #0892D4;
-    font-size: 3rem;
-    margin-block: 3rem;
-    text-align: left;
-    line-height: normal;
+  color: #0892D4;
+  font-size: 3rem;
+  margin: 0 0 3rem 0;
+  padding-top: 3rem;
+  text-align: left;
+  line-height: normal;
 }
 
 h2 {
-    color: #EF82F0;
-    font-size: 2rem;
+  color: #EF82F0;
+  font-size: 2rem;
 }
 
 h3 {
-    color: #61DBFB;
-    font-size: 1.4rem;
+  color: #61DBFB;
+  font-size: 1.4rem;
 }
 
 a {
-    color: #61DBFB;
+  color: #61DBFB;
 }
 
 img {
-    object-fit: cover;
-    object-position: 50% 50%;
-    max-width: 1600px;
+  object-fit: cover;
+  object-position: 50% 50%;
+  max-width: 1600px;
 }
 
-
 p {
-    font-size: 22px;
+  font-size: 22px;
 }
 
 @media screen and (max-width: 900px) {
 
-    h1 {
-        font-size: 2.8rem;
-    }
+  h1 {
+    font-size: 2.8rem;
+    padding-top: 2rem;
+  }
 
-    h2 {
-        font-size: 1.8rem;
-    }
+  h2 {
+    font-size: 1.8rem;
+  }
 
-    h3 {
-        font-size: 1.3rem;
-    }
+  h3 {
+    font-size: 1.3rem;
+  }
 
-    p {
-        font-size: 20px;
-    }
+  p {
+    font-size: 20px;
+  }
 
 }
 
 @media screen and (max-width: 720px) {
 
-    h1 {
-        font-size: 2.6rem;
-    }
+  h1 {
+    font-size: 2.6rem;
+    padding-top: 1rem;
+  }
 
-    h2 {
-        font-size: 1.6rem;
-    }
+  h2 {
+    font-size: 1.6rem;
+  }
 
-    h3 {
-        font-size: 1.2rem;
-    }
+  h3 {
+    font-size: 1.2rem;
+  }
 
-    p {
-        font-size: 18px;
-    }
+  p {
+    font-size: 18px;
+  }
+
+  .contentContainer > div {
+    min-height: 82vh;
+  }
 
 }
+

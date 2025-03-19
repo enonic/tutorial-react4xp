@@ -9,7 +9,7 @@ export const Person = (props) => {
     const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
     return (
         <div className={styles.person}>
-                <h1>{displayName}</h1>
+            <h1>{displayName}</h1>
             <p>{birthDate}</p>
             <div>
                 {
@@ -27,25 +27,24 @@ export const Person = (props) => {
                     )
                 }
                 {restPhotos && restPhotos.length > 0 && (
-                    <div className={styles.restPhotosContainer}>
-                        <div className={styles.restPhotos}>
-                            {restPhotos.map((photo, index) => (
-                                <img key={index}
-                                     src={photo.imageUrl}
-                                     title={photo.title}
-                                     alt={photo.title}
-                                     className={styles.restImg}
-                                />
-                            ))}
+                    <div className={styles.photoContainer}>
+                        <div className={styles.photoGrid}>
+                            <div className={styles.photoScroll}>
+                                {restPhotos.map((photo, index) => (
+                                    <img key={index}
+                                         src={photo.imageUrl}
+                                         title={photo.title}
+                                         alt={photo.title}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 )}
             </div>
             <div className={styles.richText}>
                 <RichText data={bioHtml} componentRegistry={componentRegistry}/>
-
             </div>
-
         </div>
     )
 }
