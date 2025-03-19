@@ -1,15 +1,14 @@
 import React from 'react';
 import styles from './FactBox.module.css';
+import {MacroComponentParams} from '@enonic/react-components';
 
 
-export const Factbox = ({header, body, children}) => {
+export const Factbox = ({config, children}: MacroComponentParams) => {
     // Creating an object for dangerouslySetInnerHTML
     return (
         <ins className={styles.factbox}>
             <i className={styles.icon}/>
-            <strong className={styles.header}>{header}</strong>
-            {/* Using dangerouslySetInnerHTML to render the HTML content */}
-            <div className={styles.bodyContent} dangerouslySetInnerHTML={{__html: body}}/>
+            <strong className={styles.header}>{config.header as string}</strong>
             <div className={styles.bodyContent}> {children}</div>
         </ins>
     );
