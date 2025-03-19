@@ -29,16 +29,17 @@ export function get(request: Request): Response {
         request,
     });
 
-	const props: AppProps = {
-		component,
-		url
-	}
-	const react4xpId = `react4xp_${content._id}`;
-	const htmlBody = `<!DOCTYPE html>
+    const props: AppProps = {
+        component,
+        url
+    }
+    const react4xpId = `react4xp_${content._id}`;
+    const htmlBody = `<!DOCTYPE html>
 	<html lang="en">
 		<head>
 			<meta charset="UTF-8">
 			<title>${content.displayName}</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		</head>
 		<body>
 			<div id="${react4xpId}" class="contentContainer"></div>

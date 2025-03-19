@@ -22,9 +22,41 @@
     justify-content: space-between;
 }
 
+.photoContainer {
+    position: relative;
+    max-width: 90vw;
+    display: flex;
+    margin: 1rem 0 .5rem 0;
+
+    ::-webkit-scrollbar {
+        -webkit-appearance: none;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background-color: ghostwhite;
+    }
+}
+
+.photoGrid {
+    overflow-x: auto;
+}
+
+.photoScroll {
+    display: flex;
+    gap: 25px;
+    white-space: nowrap;
+    padding: 0;
+    margin: .5rem 0 .5rem 0;
+}
+
+.photoScroll img {
+    border-radius: 5px;
+}
+
 .photos {
-    padding-block: 20px;
-    display: grid;
+    margin-block: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-gap: 50px;
     gap: 50px;

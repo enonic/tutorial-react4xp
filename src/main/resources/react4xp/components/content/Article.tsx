@@ -8,8 +8,7 @@ export const Article = (props) => {
     const {title, blocks, coverImage, preface, author, tags, spotlight} = props; // Include new props
 
     return (
-        <div className={styles.article}>
-
+        <div className={`wrapper ${styles.article}`}>
         {/* Article Header */}
             <header className={styles.header}>
                 <h1>{title}</h1>

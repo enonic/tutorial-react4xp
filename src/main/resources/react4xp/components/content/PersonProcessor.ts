@@ -1,10 +1,10 @@
-import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
-import {imageUrl} from '/lib/xp/portal';
 import {processHtml} from '/lib/enonic/react4xp';
 import {get as getContentByKey} from '/lib/xp/content';
+import {imageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import {PageDescriptor} from '@enonic-types/core';
+import type {Content} from '@enonic-types/lib-content';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 
 function fetchAdditionalPhotos(photosIds) {
@@ -13,7 +13,7 @@ function fetchAdditionalPhotos(photosIds) {
         return {
             _id: photoContent._id,
             title: photoContent.displayName,
-            imageUrl: imageUrl({id: photoContent._id, scale: 'width(300)'})
+            imageUrl: imageUrl({id: photoContent._id, scale: 'block(150, 150)'})
         };
     });
 }

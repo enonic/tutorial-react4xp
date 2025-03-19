@@ -1,7 +1,7 @@
 .playlist {
     margin: 0 auto -5rem auto;
     max-width: 90%;
-    height: 105rem;
+    height: 100rem;
 }
 
 .photoBanner img {
@@ -14,8 +14,6 @@
 
 
 .titleContainer {
-    width: 1400px;
-    margin-inline: auto;
     padding-bottom: 1rem;
 }
 
@@ -33,7 +31,7 @@
     overflow-x: auto;
     list-style: none;
     position: absolute;
-    width: 100vw;
+    width: calc(100vw - 1rem);
     left: 0;
     padding-left: 1rem;
     background-color: #0b0425;
@@ -134,10 +132,4 @@
         margin: 0 auto -5rem auto;
     }
 
-    .titleContainer {
-        background: none;
-        max-width: 90%;
-        left: 0;
-
-    }
 }
