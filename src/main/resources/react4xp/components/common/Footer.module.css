@@ -14,11 +14,16 @@
 .footer a {
     color: #61dbfb; /* Light purple for links */
     text-decoration: none;
+    font-weight: 500;
 }
 
 .footer a:hover {
     color: #0892D4; /* Change to white on hover */
     text-decoration: underline;
+}
+
+.footer p {
+    margin: 0;
 }
 
 
@@ -40,7 +45,7 @@
     }
 
     .footer {
-        height: 12vh;
+        height: 14vh;
         margin: auto;
     }
 }
