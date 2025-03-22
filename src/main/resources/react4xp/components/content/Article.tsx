@@ -132,7 +132,7 @@ export const Article = (props) => {
                 {/* spotlight */}
                 {spotlight.length > 0 && (
                     <>
-                        <h3>Spotlight</h3>
+                        <h2>Spotlight</h2>
                         <section className={styles.spotlight}>
                             <div className={styles.spotlightGrid}>
                                 <ul className={styles.spotlightScroll}>
