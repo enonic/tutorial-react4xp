@@ -46,6 +46,7 @@ export const Playlist = (props: any) => {
                             )}
                             <p className={styles.movieDescription}>{movie.description}</p>
                             {movie.restPhotos && movie.restPhotos.length > 0 && (
+                                <div className={styles.photoContainer}>
                                 <div className={styles.additionalPhotos}>
                                     {movie.restPhotos.map((photo: any, photoIndex: number) => (
                                         <a href={movie.movieUrl}>
@@ -57,6 +58,7 @@ export const Playlist = (props: any) => {
                                         />
                                         </a>
                                     ))}
+                                </div>
                                 </div>
                             )}
                         </li>
