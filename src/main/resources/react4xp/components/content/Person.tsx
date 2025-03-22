@@ -27,24 +27,32 @@ export const Person = (props) => {
                     )
                 }
                 {restPhotos && restPhotos.length > 0 && (
-                    <div className={styles.photoContainer}>
-                        <div className={styles.photoGrid}>
-                            <div className={styles.photoScroll}>
-                                {restPhotos.map((photo, index) => (
-                                    <img key={index}
-                                         src={photo.imageUrl}
-                                         title={photo.title}
-                                         alt={photo.title}
-                                    />
-                                ))}
+                    <>
+                        <h2>Photos</h2>
+                        <div className={styles.photoContainer}>
+                            <div className={styles.photoGrid}>
+                                <div className={styles.photoScroll}>
+                                    {restPhotos.map((photo, index) => (
+                                        <img key={index}
+                                             src={photo.imageUrl}
+                                             title={photo.title}
+                                             alt={photo.title}
+                                        />
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </>
                 )}
             </div>
-            <div className={styles.richText}>
-                <RichText data={bioHtml} componentRegistry={componentRegistry}/>
-            </div>
+            {bioHtml && (
+                <>
+                    <h2>Bio</h2>
+                    <div className={styles.richText}>
+                        <RichText data={bioHtml} componentRegistry={componentRegistry}/>
+                    </div>
+                </>
+            )}
         </div>
     )
 }
