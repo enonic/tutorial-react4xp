@@ -15,7 +15,7 @@ header {
   border: solid 1px #0892D4;
   box-shadow: 0 0 4px #0892D4;
   border-radius: 8px;
-  max-width: 90vw;
+  max-width: 100%;
 }
 
 .photoImg {
@@ -25,8 +25,12 @@ header {
   margin-block: 5px;
 }
 
+.director a {
+  margin-top: -1rem;
+}
+
 .directorImg {
-  width: 100%;
+  width: calc(100% - 2px);
   border: solid 1px #0892D4;
   box-shadow: 0 0 4px #0892D4;
   border-radius: 8px;
@@ -108,7 +112,7 @@ header {
 
 .blocky {
   display: block;
-  width: 300px;
+  width: 400px;
   max-width: 100%;
   margin-top: -.8rem;
 }
@@ -119,15 +123,21 @@ header {
 
 .sneakyLink {
   text-decoration: none;
+  display: inline-block; /* Now it can accept width and max-width */
+  max-width: 100%; /* Prevents it from going outside its container */
+  text-overflow: ellipsis; /* Optional: Adds '...' if text is too long */
+  overflow: hidden; /* Required for text-overflow to work */
+  white-space: nowrap;
 }
 
 .website {
-  margin-top: -2rem;
+  margin-top: -1rem;
   max-width: 100%;
 }
 
 .sneakyLink H3 {
   margin-inline: 0rem;
+  margin-top: 0;
 }
 
 .sneakyTitle {
@@ -143,6 +153,7 @@ header {
 
 .date {
   font-size: 24px;
+  margin-top: -1rem;
 }
 
 @media screen and (max-width: 1150px) {

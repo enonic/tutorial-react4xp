@@ -39,12 +39,17 @@ export const Movie = (props) => {
                                         <p className={styles.website}>
                                             <a href={props.website} className={styles.sneakyLink} target="_blank"
                                                rel="noopener noreferrer">
-                                                Click to visit
+                                                {props.website}
                                             </a>
                                         </p>
                                     </>
                                 )}
-                                {props.release && <p className={styles.date}>Release Date: {props.release}</p>}
+                                {props.release && (
+                                    <>
+                                        <h2>Release Date:</h2>
+                                        <p className={styles.date}>{props.release}</p>
+                                    </>
+                                )}
                             </div>
 
                             {/* Cast */}
@@ -70,7 +75,7 @@ export const Movie = (props) => {
                             <div>
                             {/* Director */}
                             {props.director && (
-                                <section>
+                                <section className={styles.director}>
                                     <h2>Director</h2>
                                     <a href={props.director.url} className={styles.sneakyLink}>
                                         <h3>{props.director.name}</h3>
