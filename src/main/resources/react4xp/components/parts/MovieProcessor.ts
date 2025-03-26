@@ -29,13 +29,13 @@ export const movieProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:mov
                        ? {
             _id: firstPhotoContent._id,
             title: firstPhotoContent.displayName,
-            imageUrl: imageUrl({id: firstPhotoContent._id, scale: 'width(800)'}), // Larger scale for first photo
+            imageUrl: imageUrl({id: firstPhotoContent._id, scale: 'block(800, 1200)'}), // Larger scale for first photo
             id: firstPhotoContent._id
         }
                        : null;
 
     // Fetch remaining photos
-    const restPhotos = fetchAdditionalPhotos(remainingPhotoIds);
+    const restphotos = fetchAdditionalPhotos(remainingPhotoIds);
 
 
     // Process the cast
@@ -84,7 +84,7 @@ export const movieProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:mov
         abstract: data.abstract,
         release: data.release,
         photo: firstPhoto, // First photo
-        restPhotos, // Remaining photos
+        restphotos, // Remaining photos
         website: data.website,
         cast, // Cast members,
         director // Only include director if it exists

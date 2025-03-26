@@ -40,6 +40,7 @@ export function get(request: Request): Response {
 			<meta charset="UTF-8">
 			<title>${content.displayName}</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="description" content="This page is a home movie database developed with React4XP 6.">
 		</head>
 		<body>
 			<div id="${react4xpId}" class="contentContainer"></div>

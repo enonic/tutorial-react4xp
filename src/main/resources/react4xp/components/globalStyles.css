@@ -83,6 +83,7 @@ p {
 
 }
 
+
 @media screen and (max-width: 720px) {
 
   h1 {
@@ -108,6 +109,7 @@ p {
 
   figure {
     margin-inline: 0.5rem;
+    width: 45%;
   }
 
 }

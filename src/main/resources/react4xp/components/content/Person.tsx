@@ -17,8 +17,11 @@ export const Person = (props) => {
                         <>
                             <div className={styles.photos}>
                                 <img src={photo.imageUrl}
-                                     title={photo.displayName}
-                                     alt={photo.displayName}
+                                     title={photo.title}
+                                     alt={photo.title}
+                                     height={675}
+                                     width={1200}
+                                     loading="eager"
                                 />
                             </div>
                         </>
@@ -37,6 +40,8 @@ export const Person = (props) => {
                                              src={photo.imageUrl}
                                              title={photo.title}
                                              alt={photo.title}
+                                             height={175}
+                                             width={175}
                                         />
                                     ))}
                                 </div>
@@ -49,7 +54,11 @@ export const Person = (props) => {
                 <>
                     <h2>Bio</h2>
                     <div className={styles.richText}>
-                        <RichText data={bioHtml} componentRegistry={componentRegistry}/>
+                        <RichText
+                            data={bioHtml}
+                            componentRegistry={componentRegistry}
+                            loading="lazy"
+                        />
                     </div>
                 </>
             )}

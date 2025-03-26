@@ -4,8 +4,25 @@ import styles from './MoviePage.module.css';
 
 export const Movie = (props) => {
     // All properties are accessed via props object
+    const {
+        names,
+        paths,
+        componentRegistry,
+        trailer,
+        name,
+        photo,
+        website,
+        release,
+        cast,
+        director,
+        subtitle,
+        abstract,
+        restphotos,
+        ...extraProps
+    } = props;
+
     return (
-        <Part {...props}>
+        <Part {...extraProps}>
             <div className={styles.moviePage}>
                 <header>
                     <h1><a href={props.trailer} className={styles.sneakyTitle}>{props.name}</a></h1>
@@ -17,73 +34,84 @@ export const Movie = (props) => {
                         {props.photo && (
                             <section className={styles.firstPhoto}>
                                 <a href={props.trailer}>
-                                <img
-                                    src={props.photo.imageUrl}
-                                    alt={props.photo.title}
-                                    title={props.photo.title}
-                                    className={styles.featuredImage}
-                                />
+                                    <img
+                                        src={props.photo.imageUrl}
+                                        alt={props.photo.title}
+                                        title={props.photo.title}
+                                        className={styles.featuredImage}
+                                        loading="eager"
+                                        height={1200}
+                                        width={800}
+                                    />
                                 </a>
                             </section>
                         )}
 
                         <div className={styles.blocky}>
                             <div>
-                            {/* Release Date and Website */}
-                            <div>
-                                {props.website && (
-                                    <>
-                                    <h2>
-                                            Official Website
-                                    </h2>
-                                        <p className={styles.website}>
-                                            <a href={props.website} className={styles.sneakyLink} target="_blank"
-                                               rel="noopener noreferrer">
-                                                {props.website}
-                                            </a>
-                                        </p>
-                                    </>
-                                )}
-                                {props.release && (
-                                    <>
-                                        <h2>Release Date:</h2>
-                                        <p className={styles.date}>{props.release}</p>
-                                    </>
-                                )}
-                            </div>
+                                {/* Release Date and Website */}
+                                <div>
+                                    {props.website && (
+                                        <>
+                                            <h2>
+                                                Official Website
+                                            </h2>
+                                            <p className={styles.website}>
+                                                <a href={props.website} className={styles.sneakyLink} target="_blank"
+                                                   rel="noopener noreferrer">
+                                                    {props.website}
+                                                </a>
+                                            </p>
+                                        </>
+                                    )}∫
+                                    {props.release && (
+                                        <>
+                                            <h2>Release Date:</h2>
+                                            <p className={styles.date}>{props.release}</p>
+                                        </>
+                                    )}
+                                </div>
 
-                            {/* Cast */}
-                            {props.cast.length > 0 && (
-                                <section className={styles.cast}>
-                                    <h2>Cast</h2>
-                                    <ul>
-                                        {props.cast.map((member, index) => (
-                                            <li key={index}>
-                                                <a className={styles.sneakyLink} href={member.castUrl}><img
-                                                    src={member.photoUrl} alt={member.actorName}/></a>
-                                                <p>
-                                                    <a className={styles.sneakyCastLink}
-                                                       href={member.castUrl}><strong>{member.actorName}</strong> as {member.character}
+                                {/* Cast */}
+                                {props.cast.length > 0 && (
+                                    <section className={styles.cast}>
+                                        <h2>Cast</h2>
+                                        <ul>
+                                            {props.cast.map((member, index) => (
+                                                <li key={index}>
+                                                    <a href={member.castUrl} className={styles.sneakyCastLink}>
+                                                        <img
+                                                            src={member.photoUrl}
+                                                            alt={member.actorName}
+                                                            height={150}
+                                                            width={150}
+                                                        />
+                                                        <p><strong>{member.actorName}</strong> as {member.character}
+                                                        </p>
                                                     </a>
-                                                </p>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </section>
-                            )}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </section>
+                                )}
                             </div>
                             <div>
-                            {/* Director */}
-                            {props.director && (
-                                <section className={styles.director}>
-                                    <h2>Director</h2>
-                                    <a href={props.director.url} className={styles.sneakyLink}>
-                                        <h3>{props.director.name}</h3>
-                                        <img className={styles.directorImg} src={props.director.photo}
-                                             alt={props.director.name}/>
-                                    </a>
-                                </section>
-                            )}
+                                {/* Director */}
+                                {props.director && (
+                                    <section className={styles.director}>
+                                        <h2>Director</h2>
+                                        <a href={props.director.url} className={styles.sneakyLink}>
+                                            <h3>{props.director.name}</h3>
+                                            <img
+                                                className={styles.directorImg}
+                                                src={props.director.photo}
+                                                alt={"Director"}
+                                                height={200}
+                                                width={300}
+                                            />
+                                        </a>
+                                    </section>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -96,20 +124,23 @@ export const Movie = (props) => {
                     </section>
 
                     {/* Additional Photos */}
-                    {props.restPhotos && props.restPhotos.length > 0 && (
+                    {props.restphotos && props.restphotos.length > 0 && (
                         <section className={styles.photos}>
                             <div className={styles.photoGrid}>
                                 <div className={styles.photoScroll}>
-                                {props.restPhotos.map((photo, index) => (
-                                    <img
-                                        key={index}
-                                        src={photo.imageUrl}
-                                        alt={photo.title}
-                                        title={photo.title}
-                                        className={styles.photoImg}
-                                    />
-                                ))}
-                            </div>
+                                    {props.restphotos.map((photo, index) => (
+                                        <img
+                                            key={index}
+                                            src={photo.imageUrl}
+                                            alt={photo.title}
+                                            title={photo.title}
+                                            className={styles.photoImg}
+                                            loading="lazy"
+                                            height={220}
+                                            width={340}
+                                        />
+                                    ))}
+                                </div>
                             </div>
                         </section>
                     )}

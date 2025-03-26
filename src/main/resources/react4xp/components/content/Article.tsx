@@ -22,6 +22,9 @@ export const Article = (props) => {
                             src={coverImage}
                             alt={title}
                             className={styles.coverImage}
+                            height={800}
+                            width={1400}
+                            loading="eager"
                         />
                     </div>
                 )}
@@ -78,6 +81,9 @@ export const Article = (props) => {
                                         src={block.banner.imageUrl}
                                         title={block.banner.text}
                                         alt={block.banner.text}
+                                        loading="lazy"
+                                        width={1000}
+                                        height={350}
                                     />
                                     <p className={styles.bannerText}>{block.banner.text}</p>
                                 </div>
@@ -113,6 +119,9 @@ export const Article = (props) => {
                                                 <img
                                                     src={panel.imageUrl}
                                                     alt={panel.storyline}
+                                                    loading="lazy"
+                                                    height={220}
+                                                    width={340}
                                                 />
                                                 <div>
                                                     <p className={styles.storyline}>{panel.storyline}</p>
@@ -138,8 +147,13 @@ export const Article = (props) => {
                                 <ul className={styles.spotlightScroll}>
                                 {spotlight.map((spotlight, index) => (
                                     <li key={index}>
-                                        <a className={styles.sneakyLink} href={spotlight.url}><img
-                                            src={spotlight.photoUrl} alt={spotlight.name}/></a>
+                                        <a className={styles.sneakyLink}
+                                           href={spotlight.url}><img
+                                            src={spotlight.photoUrl}
+                                            alt={spotlight.name}
+                                            loading="lazy"
+                                            height={200}
+                                            width={200}/></a>
                                         <p>
                                             <a className={styles.sneakyLink}
                                                href={spotlight.url}><strong>{spotlight.name}</strong></a>

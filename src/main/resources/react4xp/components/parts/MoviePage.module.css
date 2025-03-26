@@ -12,8 +12,8 @@ header {
 .featuredImage {
   display: block;
   margin: 0 auto 2.5rem auto;
-  border: solid 1px #0892D4;
-  box-shadow: 0 0 4px #0892D4;
+  border: solid 1px #61DBFB;
+  box-shadow: 0 0 4px #61DBFB;
   border-radius: 8px;
   max-width: 100%;
 }
@@ -26,13 +26,14 @@ header {
 }
 
 .director a {
+  overflow: visible;
   margin-top: -1rem;
 }
 
 .directorImg {
   width: calc(100% - 2px);
-  border: solid 1px #0892D4;
-  box-shadow: 0 0 4px #0892D4;
+  border: solid 1px #61DBFB;
+  box-shadow: 0 0 4px #61DBFB;
   border-radius: 8px;
 }
 
@@ -100,6 +101,9 @@ header {
   border-radius: 8px;
 }
 
+.cast a {
+  overflow: unset;
+}
 .flexy {
   display: flex;
   gap: 10px;
@@ -149,6 +153,7 @@ header {
   text-decoration: none;
   color: ghostwhite;
   font-size: 18px;
+  display: flex;
 }
 
 .date {
