@@ -13,7 +13,7 @@ function fetchAdditionalPhotos(photosIds) {
         return {
             _id: photoContent._id,
             title: photoContent.displayName,
-            imageUrl: imageUrl({id: photoContent._id, scale: 'block(150, 150)'})
+            imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
         };
     });
 }

@@ -1,9 +1,11 @@
-import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import {assetUrl} from '/lib/enonic/asset';
 import {get as getContentByKey} from '/lib/xp/content';
 import {imageUrl, pageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import {PageDescriptor} from '@enonic-types/core';
+import type {Content} from '@enonic-types/lib-content';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+
 
 // Function to fetch additional photos and return their image URLs
 function fetchAdditionalPhotos(photoIds: string[]) {
@@ -13,7 +15,7 @@ function fetchAdditionalPhotos(photoIds: string[]) {
                ? {
                 _id: photoContent._id,
                 title: photoContent.displayName,
-                imageUrl: imageUrl({id: photoContent._id, scale: 'width(250)'}) // Smaller images for additional photos
+                imageUrl: imageUrl({id: photoContent._id, scale: 'block(238, 150)'}) // Smaller images for additional photos
             }
                : null;
     }).filter(Boolean); // Filter out null entries in case a photo is missing
@@ -66,6 +68,7 @@ function fetchMovies(movieIds: string[]) {
 }
 
 export const playlistProcessor: ComponentProcessorFunction<PageDescriptor> = params => {
+    const url = assetUrl({path: 'images/React4XP.svg'});
     const content = params.content;
     const playlistData = content.data;
 
@@ -84,7 +87,8 @@ export const playlistProcessor: ComponentProcessorFunction<PageDescriptor> = par
             _id: content._id,
             displayName: content.displayName,
             description: playlistData.description || 'No description available.',
-            movies: movies // Movies with image data included
+            movies: movies, // Movies with image data included
+            url
         }
     };
 };

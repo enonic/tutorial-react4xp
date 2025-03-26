@@ -1,135 +1,164 @@
 .playlist {
-    margin: 0 auto -5rem auto;
-    max-width: 90%;
-    height: 100rem;
+  margin: 0 auto -5rem auto;
+  max-width: 90%;
+  height: 88rem;
 }
 
 .photoBanner img {
-    max-width: 90vw;
-    border: solid 1px #09C0F0;
-    box-shadow: 0 0 4px #09C0F0;
+  max-width: 90vw;
+  border: solid 1px #09C0F0;
+  box-shadow: 0 0 4px #09C0F0;
 }
 
 /* Playlist title styling */
 
 
 .titleContainer {
-    padding-bottom: 1rem;
+  padding-bottom: 1rem;
 }
 
 .title {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 /* Playlist description styling */
 .description {
-    margin-block: 1rem;
+  margin-block: 1rem;
 }
 
 .flowX {
-    display: flex;
-    overflow-x: auto;
-    list-style: none;
-    position: absolute;
-    width: calc(100vw - 1rem);
-    left: 0;
-    padding-left: 1rem;
-    background-color: #0b0425;
+  display: flex;
+  overflow-x: auto;
+  list-style: none;
+  position: absolute;
+  width: calc(100vw - 1rem);
+  left: 0;
+  padding-left: 1rem;
+  background-color: #0b0425;
 }
 
 /* Individual movie item */
 .movieItem {
-    padding: 8px 3rem 2rem 8px;
-    min-width: fit-content;
-    min-height: 100%;
+  padding: 8px 3rem 3rem 8px;
+  min-width: fit-content;
 }
 
 /* Heading for each movie */
 .movieItem h3 {
-    margin-bottom: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: initial;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+  margin-bottom: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .movieItem p {
-    width: 550px;
-    max-width: 90vw;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: initial;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+  width: 550px;
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 
 /* Container for additional photos */
+.photoContainer {
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: ghostwhite;
+  }
+}
+
 .additionalPhotos {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-top: 8px;
-    max-width: 90vw;
-    width: 500px;
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+  max-width: 90vw;
+  width: 500px;
+  overflow-x: auto;
+  padding-bottom: 4px;
 }
 
 .additionalPhotos img {
-    height: 160px;
-    width: 238px;
-    border-radius: 8px;
-    border: solid 1px #09C0F0;
-    box-shadow: 0 0 4px #09C0F0;
-    max-width: 100%;
+  border-radius: 8px;
+  border: solid 1px #09C0F0;
+  box-shadow: 0 0 4px #09C0F0;
 }
 
 
 /* Message when no photo is available */
 .noPhoto {
-    font-size: 14px;
-    color: #e74c3c;
-    font-style: italic;
-    margin-bottom: 12px;
+  font-size: 14px;
+  color: #e74c3c;
+  font-style: italic;
+  margin-bottom: 12px;
 }
 
 /* Message when no movies are available */
 .noMovies {
-    font-size: 16px;
-    color: #c0392b;
-    text-align: center;
-    font-style: italic;
+  font-size: 16px;
+  color: #c0392b;
+  text-align: center;
+  font-style: italic;
 }
 
-.link {
-    text-decoration: none;
-    font-size: 2rem;
-    color: #EF82F0;
+.movie {
+  text-decoration: none;
+  color: unset;
 }
 
 .subTitle {
-    font-size: 1.5rem;
-    max-width: 500px;
-    min-height: 3.5rem;
+  max-width: 500px;
+  min-height: 3.5rem;
+  margin-top: -1rem;
 }
 
 .photoBanner {
-    max-width: 90vw;
-    align-items: center;
-    display: flex;
-    width: 500px;
+  max-width: 90vw;
+  align-items: center;
+  display: flex;
+  width: 500px;
 }
 
 .photoBanner img {
-    border-radius: 8px;
+  border-radius: 8px;
+}
+
+.mobileFooter {
+  display: none;
 }
 
 @media screen and (max-width: 1400px) {
 
-    .playlist {
-        margin: 0 auto -5rem auto;
-    }
+  .playlist {
+    margin: 0 auto -5rem auto;
+  }
+
+}
+
+
+@media screen and (max-width: 720px) {
+  .mobileFooter {
+    display: block;
+  }
+
+  .flowX {
+    display: block;
+    z-index: 10;
+  }
+
+  .movieItem {
+    padding: 0 0 2rem 0;
+  }
 
 }

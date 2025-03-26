@@ -1,11 +1,23 @@
-import React from 'react';
+import Footer from '/react4xp/components/common/Footer';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from './Playlist.module.css';
 
+
 export const Playlist = (props: any) => {
-    const {displayName, description, movies} = props.playlist;
+    const playlistRef = useRef(null);
+    const [playlistHeight, setPlaylistHeight] = useState(0);
+
+    useEffect(() => {
+        if (playlistRef.current) {
+            const height = playlistRef.current.offsetHeight;
+            setPlaylistHeight(height); // Set the height in the state
+        }
+    }, [props]);
+
+    const {displayName, description, movies, url} = props.playlist;
 
     return (
-
+        <>
 
         <div className={styles.playlist}>
 
@@ -25,40 +37,45 @@ export const Playlist = (props: any) => {
             <p className={styles.description}>{description}</p>
             </div>
             {movies && movies.length > 0 ? (
-                <ul className={styles.flowX}>
+                <ul ref={playlistRef} className={styles.flowX}>
                     {movies.map((movie: any, index: number) => (
                         <li className={styles.movieItem} key={movie._id || index}>
-                            <h2><a className={styles.link} href={movie.movieUrl}>{movie.title}</a></h2>
+                            <a className={styles.movie} href={movie.movieUrl}>
+                                <h2>{movie.title}</h2>
                             <p className={styles.subTitle}>{movie.subtitle}</p>
                             {movie.photo ? (
                                 <div className={styles.photoBanner}>
-                                    <a href={movie.movieUrl}>
                                         <img
                                             src={movie.photo.imageUrl}
                                             alt={movie.photo.title}
                                             title={movie.photo.title}
-
+                                            height={740}
+                                            width={500}
+                                            loading="eager"
                                         />
-                                    </a>
                                 </div>
                             ) : (
                                  <p className={styles.noPhoto}> No image available</p>
                             )}
                             <p className={styles.movieDescription}>{movie.description}</p>
                             {movie.restPhotos && movie.restPhotos.length > 0 && (
+                                <div className={styles.photoContainer}>
                                 <div className={styles.additionalPhotos}>
                                     {movie.restPhotos.map((photo: any, photoIndex: number) => (
-                                        <a href={movie.movieUrl}>
                                         <img
                                             key={photoIndex}
                                             src={photo.imageUrl}
                                             alt={photo.title}
                                             title={photo.title}
+                                            height={150}
+                                            width={238}
+                                            loading="lazy"
                                         />
-                                        </a>
                                     ))}
                                 </div>
+                                </div>
                             )}
+                            </a>
                         </li>
                     ))}
                 </ul>
@@ -66,5 +83,10 @@ export const Playlist = (props: any) => {
                  <p className={styles.noMovies}>No movies in this playlist.</p>
             )}
         </div>
+            <div className={styles.mobileFooter}
+                 style={{position: 'absolute', top: `calc(${playlistHeight}px + 300px)`, minHeight: 'fit-content'}}>
+                <Footer logoUrl={url}/>
+            </div>
+        </>
     );
 };

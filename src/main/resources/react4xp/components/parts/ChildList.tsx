@@ -1,6 +1,6 @@
+import {Part} from "@enonic/react-components";
 import React from "react";
 import styles from "./ChildList.module.css";
-import {Part} from "@enonic/react-components";
 
 
 export const ChildList = (props) => {
@@ -11,7 +11,7 @@ export const ChildList = (props) => {
             <ul>
                 {names.map((name, index) => (
                     <li className={styles.listItem} key={index}>
-                        <a className={styles.listLink} href={paths[index]}>{name}</a>
+                        <a className={styles.listLink} href={paths[index]}><p>{name}</p></a>
                     </li>
                 ))}
             </ul>

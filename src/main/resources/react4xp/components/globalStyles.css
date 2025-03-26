@@ -59,6 +59,9 @@ p {
   font-size: 22px;
 }
 
+.editor-align-justify {
+  margin-inline: auto;
+}
 @media screen and (max-width: 900px) {
 
   h1 {
@@ -80,6 +83,7 @@ p {
 
 }
 
+
 @media screen and (max-width: 720px) {
 
   h1 {
@@ -100,7 +104,12 @@ p {
   }
 
   .contentContainer > div {
-    min-height: 82vh;
+    min-height: 80vh;
+  }
+
+  figure {
+    margin-inline: 0.5rem;
+    width: 45%;
   }
 
 }

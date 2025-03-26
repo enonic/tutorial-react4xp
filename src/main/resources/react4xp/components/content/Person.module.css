@@ -24,9 +24,7 @@
 
 .photoContainer {
     position: relative;
-    max-width: 90vw;
     display: flex;
-    margin: 1rem 0 .5rem 0;
 
     ::-webkit-scrollbar {
         -webkit-appearance: none;
@@ -77,9 +75,6 @@
 .photos img {
     width: 100%;
     height: auto; /* Ensures images scale properly */
-    max-width: 90vw;
-    border: solid 1px #EF82F0;
-    box-shadow: 0 0 4px #EF82F0;
     border-radius: 8px;
 }
 
@@ -93,7 +88,6 @@
 
 
 .richText {
-    max-width: 90vw;
     font-size: 24px;
 }
 
