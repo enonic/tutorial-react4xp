@@ -63,7 +63,7 @@ export const Movie = (props) => {
                                                 </a>
                                             </p>
                                         </>
-                                    )}∫
+                                    )}
                                     {props.release && (
                                         <>
                                             <h2>Release Date:</h2>
