@@ -11,7 +11,6 @@ export const Playlist = (props: any) => {
         if (playlistRef.current) {
             const height = playlistRef.current.offsetHeight;
             setPlaylistHeight(height); // Set the height in the state
-            document.documentElement.style.setProperty('--playlist-height', `${height}px`);
         }
     }, [props]);
 
