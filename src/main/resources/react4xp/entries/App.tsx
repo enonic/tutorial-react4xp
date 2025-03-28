@@ -1,9 +1,9 @@
-import Footer from "/react4xp/components/common/Footer";
 import type {AppProps} from '/types/AppProps';
 import '../components/globalStyles.css'
 import {BaseComponent} from '@enonic/react-components';
 import * as React from 'react';
 import {componentRegistry} from '../componentRegistry';
+import Footer from "../components/common/Footer";
 
 const App: React.FC<AppProps> = (props) => {
     return (

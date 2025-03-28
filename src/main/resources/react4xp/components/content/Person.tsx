@@ -1,7 +1,7 @@
 //import type { PersonProps } from '/types/PersonProps';
-import {componentRegistry} from '/react4xp/componentRegistry';
 import {RichText} from '@enonic/react-components';
 import React from 'react'
+import {componentRegistry} from '../../componentRegistry';
 //import * as React from 'react';
 import styles from './Person.module.css';
 

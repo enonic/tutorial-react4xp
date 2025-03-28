@@ -1,5 +1,5 @@
-import Footer from '/react4xp/components/common/Footer';
 import React, {useEffect, useRef, useState} from 'react';
+import Footer from '../common/Footer';
 import styles from './Playlist.module.css';
 
 

@@ -123,13 +123,12 @@ This example adds these folders as chunkDirs, and anything the entries import fr
 - _src/main/resources/react4xp/bundle2/_ ➔ `bundle2.*.js`
 - _src/main/resources/react4xp/other/stuff/_ ➔ `stuff.*.js`
 
-
-[[webpack.config.react4xp.js]]
-== webpack.config.react4xp.js
+[[somethingElse.js]]
+== somethingElse.js
 
 React4xp uses Webpack to build. The starter comes with a minimal set of webpack rules built-in, for compiling react components in TSX/JSX files into vanilla JS.
 
-If you need to change/expand this setup, simply place a custom `webpack.config.react4xp.js` in your project folder.
+If you need to change/expand this setup, simply place a custom `somethingElse.js` in your project folder.
 
 Possible reasons to change the webpack config:
 
@@ -160,7 +159,7 @@ module.exports = function(env) {
 // ...etc, etc
 ----
 
-`webpack.config.react4xp.js` can follow the same shape, but the exported function can also take *a second `config` argument:*
+`somethingElse.js` can follow the same shape, but the exported function can also take *a second `config` argument:*
 
 [source,javascript]
 ----
@@ -177,7 +176,7 @@ The extra incoming `config` object contains the built-in rules from React4xp. Th
 To improve the speed of incremental builds, you may also enable webpack caching.
 
 [source,javascript]
-.webpack.config.react4xp.js
+.somethingElse.js
 ----
 module.exports = function(env, config) {
 		if (process.env.NODE_ENV === 'development') {

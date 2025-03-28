@@ -1,6 +1,6 @@
-import {componentRegistry} from '/react4xp/componentRegistry';
 import {RichText} from "@enonic/react-components";
 import React from 'react';
+import {componentRegistry} from '../../componentRegistry';
 import styles from './Article.module.css';
 
 

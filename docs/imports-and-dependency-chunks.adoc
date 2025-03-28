@@ -35,7 +35,7 @@ react4xp/
         shared-styles.scss
 
 react4xp.config.js
-webpack.config.react4xp.js
+somethingElse.js
 ----
 
 
@@ -240,10 +240,10 @@ Adding paths like e.g. `foo/bar/baz` or `../../hey/ho/lets/go` is perfectly fine
 === Adding webpack rules
 Next, we'll add some *custom webpack rules to handle the style imports*.
 
-.webpack.config.react4xp.js:
+.somethingElse.js:
 [source,javascript,options="nowrap"]
 ----
-include::../webpack.config.react4xp.js[]
+include::../somethingElse.js[]
 ----
 <1> Currently, the whole file *must export a function* where the arguments are a standard webpack `env` object, and `config` which is the existing webpack config object from React4xp.
 <2> That function may *mutate (or replace!) the React4xp webpack `config` object* (on this line and later: "take any incoming `config.module.rules` and add this style-compilation-rule object"). So previously existing attributes will be overwritten by the new ones from this file.
