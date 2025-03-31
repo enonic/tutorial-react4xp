@@ -128,12 +128,15 @@ tasks.register('react4xp', NpmTask) {
         'R4X_APP_NAME': "${appName}",
         'R4X_BUILD_LOG_LEVEL': gradle.startParameter.logLevel.toString(),
         'R4X_DIR_PATH_ABSOLUTE_PROJECT': project.projectDir.toString(),
-        'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
+        //'NODE_ENV' : (project.findProperty('env') ?: 'prod' == 'prod') ? 'production' : 'development',
+        'NODE_ENV': ( project.hasProperty( 'env' ) ? ( project.property( 'env' ) == 'prod' ? 'production' : 'development' ) : 'production' )
     ]
     group 'react4xp'
     inputs.dir 'node_modules/@enonic/react4xp'
     inputs.dir 'src/main/resources'
     outputs.dir 'build/resources/main'
+    println '!!!!!!!! env !!!!!!!!!! ' +
+                ( project.hasProperty( 'env' ) ? ( project.property( 'env' ) == 'prod' ? 'production' : 'development' ) : 'production' )
 }
 
 tasks.register('dev', Exec) {

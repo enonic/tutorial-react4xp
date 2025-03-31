@@ -6,7 +6,6 @@ export interface FooterProps {
     logoUrl: string;
 }
 
-
 const Footer = ({logoUrl}: FooterProps) => (
     <footer className={styles.footer}>
         <div className={styles.footerContainer}>
