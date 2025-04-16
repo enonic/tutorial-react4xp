@@ -15,7 +15,7 @@ To avoid this we have introduced import restrictions on the site folder and entr
 
 We have also introduced a configurable `entryExtensionWhitelist`.
 
-This is a list of file extensions that are allowed to be imported from under site and entryDirs. There is a default list, but you can override it in react4xp.config.json.
+This is a list of file extensions that are allowed to be imported from under site and entryDirs. There is a default list, but you can override it in react4xp.config.js.
 
 === @enonic/react-components
 
@@ -40,9 +40,9 @@ dependencies {
 }
 ----
 
-=== react4xp.config.json
+=== react4xp.config.js
 
-.react4xp.config.json
+.react4xp.config.js
 [source,gradle]
 ----
 entryExtensionWhitelist: [
