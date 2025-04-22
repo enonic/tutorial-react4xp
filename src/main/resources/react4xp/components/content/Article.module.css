@@ -242,6 +242,7 @@
 .spotlight li {
   align-items: center;
   padding-inline: 10px;
+  max-width: 202px;
 }
 
 .spotlight img {
@@ -251,11 +252,16 @@
   border: 1px solid #61dbfb;
 }
 
-.spotlight p {
-  margin-block-start: 0;
-}
-
 .sneakyLink {
   text-decoration: none;
   color: inherit;
+
+  p {
+    font-weight: bolder;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-block-start: 0;
+  }
+
 }
