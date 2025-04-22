@@ -49,5 +49,6 @@ export const personProcessor: ComponentProcessorFunction<PageDescriptor>
         }),
         birthDate: params.content.data.dateofbirth,
         restPhotos: extraPhotos,
+        parent: params.request.path.split('/').slice(0, -1).join('/'),
     };
 };

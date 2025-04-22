@@ -88,7 +88,8 @@ export const playlistProcessor: ComponentProcessorFunction<PageDescriptor> = par
             displayName: content.displayName,
             description: playlistData.description || 'No description available.',
             movies: movies, // Movies with image data included
-            url
+            url,
+            parent: params.request.path.split('/').slice(0, -1).join('/'),
         }
     };
 };

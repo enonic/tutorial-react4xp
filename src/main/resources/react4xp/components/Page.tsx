@@ -16,7 +16,13 @@ export const Page = (props: any) => {
     const regionsProps = {componentRegistry, regions: page.regions}
     return (
         <div className={styles.page}>
-
+            {props.parent && (
+                <div className={"back"}>
+                    <a href={props.parent}>
+                        <p>Back</p>
+                    </a>
+                </div>
+            )}
             <Regions {...regionsProps} />
         </div>
     );

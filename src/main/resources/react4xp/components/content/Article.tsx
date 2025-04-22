@@ -5,10 +5,14 @@ import styles from './Article.module.css';
 
 
 export const Article = (props) => {
-    const {title, blocks, coverImage, preface, author, tags, spotlight} = props; // Include new props
-
+    const {parent, title, blocks, coverImage, preface, author, tags, spotlight} = props; // Include new props
     return (
         <div className={`wrapper ${styles.article}`}>
+            <div className={"back"}>
+                <a href={parent}>
+                    <p>Back</p>
+                </a>
+            </div>
         {/* Article Header */}
             <header className={styles.header}>
                 <h1>{title}</h1>
@@ -154,10 +158,8 @@ export const Article = (props) => {
                                             loading="lazy"
                                             height={200}
                                             width={200}/></a>
-                                        <p>
                                             <a className={styles.sneakyLink}
-                                               href={spotlight.url}><strong>{spotlight.name}</strong></a>
-                                        </p>
+                                               href={spotlight.url}><p>{spotlight.name}</p></a>
                                     </li>
                                 ))}
                             </ul>

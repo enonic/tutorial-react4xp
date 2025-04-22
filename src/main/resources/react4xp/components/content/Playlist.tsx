@@ -14,14 +14,17 @@ export const Playlist = (props: any) => {
         }
     }, [props]);
 
-    const {displayName, description, movies, url} = props.playlist;
-
+    const {parent, displayName, description, movies, url} = props.playlist;
     return (
         <>
-
         <div className={styles.playlist}>
 
 
+            <div className={"back"}>
+                <a href={parent}>
+                    <p>Back</p>
+                </a>
+            </div>
             <style>
                 {`
                 body {

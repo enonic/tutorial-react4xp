@@ -6,9 +6,14 @@ import React from 'react'
 import styles from './Person.module.css';
 
 export const Person = (props) => {
-    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+    const {parent, displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
     return (
         <div className={styles.person}>
+            <div className={"back"}>
+                <a href={parent}>
+                    <p>Back</p>
+                </a>
+            </div>
             <h1>{displayName}</h1>
             <p>{birthDate}</p>
             <div>

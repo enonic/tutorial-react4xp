@@ -1,5 +1,5 @@
 import {DataFetcher} from '/lib/enonic/react4xp';
-import {articleProcessor} from "/react4xp/components/content/ArticleProcessor";
+import {articleProcessor} from "./components/content/ArticleProcessor";
 import {personProcessor} from './components/content/PersonProcessor';
 import {playlistProcessor} from './components/content/PlaylistProcessor';
 import {layoutProcessor} from './components/layouts/TwoColumnProcessor';
