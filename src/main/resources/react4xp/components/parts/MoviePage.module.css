@@ -16,6 +16,7 @@ header {
   box-shadow: 0 0 4px #61DBFB;
   border-radius: 8px;
   max-width: 100%;
+  height: auto;
 }
 
 .photoImg {
