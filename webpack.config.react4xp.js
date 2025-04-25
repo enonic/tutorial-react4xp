@@ -12,7 +12,6 @@ const rspack = require('@rspack/core');
 
 module.exports = function(env, config) {
 
-
 	// Comment in and customize the lines below to improve incremental builds in
 	// development mode. (see https://webpack.js.org/configuration/cache/)
 	//
