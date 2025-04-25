@@ -119,6 +119,7 @@ tasks.register('buildXpResources', NpmTask) {
 }
 
 tasks.register('react4xp', NpmTask) {
+    def envMode = project.hasProperty( 'env' ) ? ( project.property( 'env' ) == 'prod' ? 'production' : 'development' ) : 'production'
     args = [
         'run', 'build:react4xp'
     ]
@@ -128,12 +129,13 @@ tasks.register('react4xp', NpmTask) {
         'R4X_APP_NAME': "${appName}",
         'R4X_BUILD_LOG_LEVEL': gradle.startParameter.logLevel.toString(),
         'R4X_DIR_PATH_ABSOLUTE_PROJECT': project.projectDir.toString(),
-        'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
+        'NODE_ENV': envMode
     ]
     group 'react4xp'
     inputs.dir 'node_modules/@enonic/react4xp'
     inputs.dir 'src/main/resources'
     outputs.dir 'build/resources/main'
+    println "Environment set to: $envMode"
 }
 
 tasks.register('dev', Exec) {
