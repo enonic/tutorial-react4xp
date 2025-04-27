@@ -83,6 +83,7 @@ p {
 .editor-align-justify {
   margin-inline: auto;
 }
+
 @media screen and (max-width: 900px) {
 
   h1 {
