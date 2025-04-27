@@ -14,7 +14,7 @@ export const Playlist = (props: any) => {
         }
     }, [props]);
 
-    const {parent, displayName, description, movies, url} = props.playlist;
+    const {parent, displayName, description, movies, footerUrl} = props.playlist;
     return (
         <>
         <div className={styles.playlist}>
@@ -88,7 +88,7 @@ export const Playlist = (props: any) => {
         </div>
             <div className={styles.mobileFooter}
                  style={{position: 'absolute', top: `calc(${playlistHeight}px + 300px)`, minHeight: 'fit-content'}}>
-                <Footer logoUrl={url}/>
+                <Footer logoUrl={footerUrl}/>
             </div>
         </>
     );
