@@ -26,6 +26,27 @@ body {
   margin-inline: auto;
 }
 
+.back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  a {
+    color: #EF82F0;
+    text-decoration: none;
+  }
+
+  p {
+    margin: 0;
+    background-color: #071622;
+    padding-inline: 0.2rem;
+    font-size: 1.6rem;
+    font-weight: bolder;
+    border-bottom-right-radius: 5px;
+  }
+}
+
 h1 {
   color: #0892D4;
   font-size: 3rem;
@@ -62,6 +83,7 @@ p {
 .editor-align-justify {
   margin-inline: auto;
 }
+
 @media screen and (max-width: 900px) {
 
   h1 {
@@ -109,8 +131,20 @@ p {
 
   figure {
     margin-inline: 0.5rem;
-    width: 45%;
   }
 
 }
 
+@media screen and (max-width: 500px) {
+  .back {
+    top: auto;
+    bottom: 0;
+    left: auto;
+    right: 0;
+    z-index: 20;
+
+    p {
+      border-top-left-radius: 5px;
+    }
+  }
+}

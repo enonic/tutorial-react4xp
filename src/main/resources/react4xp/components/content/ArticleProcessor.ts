@@ -2,13 +2,12 @@ import {processHtml} from '/lib/enonic/react4xp';
 import {get as getContentByKey} from "/lib/xp/content";
 import {imageUrl, pageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
+import {parentPath} from '/react4xp/utils/path';
 import {PageDescriptor} from '@enonic-types/core';
 import type {Content} from '@enonic-types/lib-content';
 import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
-
 export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (params) => {
-
     const {content} = params;
     const {data} = content;
 
@@ -96,5 +95,6 @@ export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (par
         tags: data.tags || [],
         blocks: processedBlocks,
         spotlight,
+        parent: parentPath(params.request.path),
     };
 };

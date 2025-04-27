@@ -1,9 +1,9 @@
-import {Article} from "/react4xp/components/content/Article";
-import {Factbox} from '/react4xp/components/macro/FactBox';
 import {ComponentRegistry} from '@enonic/react-components';
+import {Article} from "./components/content/Article";
 import {Person} from './components/content/Person';
 import {Playlist} from './components/content/Playlist';
 import {TwoColumnLayout} from './components/layouts/TwoColumn';
+import {Factbox} from './components/macro/FactBox';
 import {Page} from './components/Page';
 import {ChildList} from './components/parts/ChildList';
 import {Heading} from './components/parts/Heading';
@@ -21,5 +21,5 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); 
 componentRegistry.addPart('com.enonic.app.hmdb:movie-details', {View: Movie}); // <5>
 componentRegistry.addLayout('com.enonic.app.hmdb:2-column', {View: TwoColumnLayout}); // <6>
 componentRegistry.addPart('com.enonic.app.hmdb:child-list', {View: ChildList}); // <7>
-componentRegistry.addContentType('com.enonic.app.hmdb:playlist', {View: Playlist});
-componentRegistry.addContentType('com.enonic.app.hmdb:article', {View: Article});
+componentRegistry.addContentType('com.enonic.app.hmdb:playlist', {View: Playlist}); // <8>
+componentRegistry.addContentType('com.enonic.app.hmdb:article', {View: Article}); // <9>
