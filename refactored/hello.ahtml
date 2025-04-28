@@ -527,14 +527,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">react4xp/components/Hello.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {HelloProps} from '/types/HelloProps';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">// File: src/main/resources/react4xp/components/Hello.tsx
+import type {HelloProps} from '/types/HelloProps';
 import * as React from 'react';
 
-export const Hello = ({title, text}: HelloProps) =&gt; {
+export const Hello = ({title, text, initialCount}: HelloProps) =&gt; {
+    const [count, setCount] = React.useState(initialCount);
+
     return (
         &lt;div&gt;
             &lt;h1&gt;{title}&lt;/h1&gt;
-            &lt;p&gt;{text}&lt;/p&gt;
+            &lt;h2&gt;{text}&lt;/h2&gt;
+            &lt;div&gt;
+                {count &gt; 0 ?
+                 &lt;&gt;
+                     &lt;p&gt;&lt;span className={"helloBottles"}&gt;{count}&lt;/span&gt;{' '}bottles of beer on the wall&lt;/p&gt;
+                     &lt;button className={"helloButton"} onClick={() =&gt; setCount(count - 1)}&gt;Drink beer&lt;/button&gt;
+                 &lt;/&gt; :
+                 &lt;h3&gt;Error 204: No beer&lt;/h3&gt;}
+
+            &lt;/div&gt;
         &lt;/div&gt;
     );
 };</code></pre>
@@ -549,6 +561,7 @@ export const Hello = ({title, text}: HelloProps) =&gt; {
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">export interface HelloProps {
     title: string
     text: string
+    initialCount: number
 }</code></pre>
 </div>
 </div>
@@ -558,12 +571,12 @@ export const Hello = ({title, text}: HelloProps) =&gt; {
 <div class="listingblock">
 <div class="title">react4xp/componentRegistry.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Article} from "/react4xp/components/content/Article";
-import {Factbox} from '/react4xp/components/macro/FactBox';
-import {ComponentRegistry} from '@enonic/react-components';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {ComponentRegistry} from '@enonic/react-components';
+import {Article} from "./components/content/Article";
 import {Person} from './components/content/Person';
 import {Playlist} from './components/content/Playlist';
 import {TwoColumnLayout} from './components/layouts/TwoColumn';
+import {Factbox} from './components/macro/FactBox';
 import {Page} from './components/Page';
 import {ChildList} from './components/parts/ChildList';
 import {Heading} from './components/parts/Heading';
@@ -581,8 +594,8 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); 
 componentRegistry.addPart('com.enonic.app.hmdb:movie-details', {View: Movie}); <i class="conum" data-value="5"></i><b>(5)</b>
 componentRegistry.addLayout('com.enonic.app.hmdb:2-column', {View: TwoColumnLayout}); <i class="conum" data-value="6"></i><b>(6)</b>
 componentRegistry.addPart('com.enonic.app.hmdb:child-list', {View: ChildList}); <i class="conum" data-value="7"></i><b>(7)</b>
-componentRegistry.addContentType('com.enonic.app.hmdb:playlist', {View: Playlist});
-componentRegistry.addContentType('com.enonic.app.hmdb:article', {View: Article});</code></pre>
+componentRegistry.addContentType('com.enonic.app.hmdb:playlist', {View: Playlist}); <i class="conum" data-value="8"></i><b>(8)</b>
+componentRegistry.addContentType('com.enonic.app.hmdb:article', {View: Article}); <i class="conum" data-value="9"></i><b>(9)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -614,14 +627,16 @@ Try clicking other content items in Content Studio, and you should simply see an
 <div class="listingblock">
 <div class="title">react4xp/components/HelloProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">// File: src/main/resources/react4xp/components/HelloProcessor.ts
 import {PageDescriptor} from '@enonic-types/core';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 export const helloProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt; = (params) =&gt; {
-
-    return /*&lt;HelloProps&gt;*/{
-        title: `React4XP: ${params.content.displayName}`,
+    return {
+        title: `${params.content.displayName}`,
         text: 'Welcome to the React4XP starter!',
+        // Added a new property for the bottle count
+        initialCount: 99,
     };
 };</code></pre>
 </div>
@@ -633,7 +648,7 @@ export const helloProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt; = 
 <div class="title">react4xp/dataProcessor.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {DataFetcher} from '/lib/enonic/react4xp';
-import {articleProcessor} from "/react4xp/components/content/ArticleProcessor";
+import {articleProcessor} from "./components/content/ArticleProcessor";
 import {personProcessor} from './components/content/PersonProcessor';
 import {playlistProcessor} from './components/content/PlaylistProcessor';
 import {layoutProcessor} from './components/layouts/TwoColumnProcessor';
@@ -671,7 +686,7 @@ Great, you rendered your first page, next up how about &lt;&lt;person#, adding y
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-03-18 09:38:25 UTC
+Last updated 2025-04-28 10:58:13 UTC
 </div>
 </div>
 </body>

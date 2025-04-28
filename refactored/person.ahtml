@@ -515,13 +515,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/content/PersonProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
-import {imageUrl} from '/lib/xp/portal';
-import {processHtml} from '/lib/enonic/react4xp';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {processHtml} from '/lib/enonic/react4xp';
 import {get as getContentByKey} from '/lib/xp/content';
+import {imageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
+import {parentPath} from '/react4xp/utils/path';
 import {PageDescriptor} from '@enonic-types/core';
+import type {Content} from '@enonic-types/lib-content';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 
 function fetchAdditionalPhotos(photosIds) {
@@ -530,7 +531,7 @@ function fetchAdditionalPhotos(photosIds) {
         return {
             _id: photoContent._id,
             title: photoContent.displayName,
-            imageUrl: imageUrl({id: photoContent._id, scale: 'width(300)'})
+            imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
         };
     });
 }
@@ -566,6 +567,7 @@ export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
         }),
         birthDate: params.content.data.dateofbirth,
         restPhotos: extraPhotos,
+        parent: parentPath(params.request.path)
     };
 };</code></pre>
 </div>
@@ -606,10 +608,15 @@ import React from 'react'
 import styles from './Person.module.css';
 
 export const Person = (props) =&gt; {
-    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+    const {parent, displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
     return (
         &lt;div className={styles.person}&gt;
-                &lt;h1&gt;{displayName}&lt;/h1&gt;
+            &lt;div className={"back"}&gt;
+                &lt;a href={parent}&gt;
+                    &lt;p&gt;Back&lt;/p&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;h1&gt;{displayName}&lt;/h1&gt;
             &lt;p&gt;{birthDate}&lt;/p&gt;
             &lt;div&gt;
                 {
@@ -617,8 +624,11 @@ export const Person = (props) =&gt; {
                         &lt;&gt;
                             &lt;div className={styles.photos}&gt;
                                 &lt;img src={photo.imageUrl}
-                                     title={photo.displayName}
-                                     alt={photo.displayName}
+                                     title={photo.title}
+                                     alt={photo.title}
+                                     height={675}
+                                     width={1200}
+                                     loading="eager"
                                 /&gt;
                             &lt;/div&gt;
                         &lt;/&gt;
@@ -627,25 +637,38 @@ export const Person = (props) =&gt; {
                     )
                 }
                 {restPhotos &amp;&amp; restPhotos.length &gt; 0 &amp;&amp; (
-                    &lt;div className={styles.restPhotosContainer}&gt;
-                        &lt;div className={styles.restPhotos}&gt;
-                            {restPhotos.map((photo, index) =&gt; (
-                                &lt;img key={index}
-                                     src={photo.imageUrl}
-                                     title={photo.title}
-                                     alt={photo.title}
-                                     className={styles.restImg}
-                                /&gt;
-                            ))}
+                    &lt;&gt;
+                        &lt;h2&gt;Photos&lt;/h2&gt;
+                        &lt;div className={styles.photoContainer}&gt;
+                            &lt;div className={styles.photoGrid}&gt;
+                                &lt;div className={styles.photoScroll}&gt;
+                                    {restPhotos.map((photo, index) =&gt; (
+                                        &lt;img key={index}
+                                             src={photo.imageUrl}
+                                             title={photo.title}
+                                             alt={photo.title}
+                                             height={175}
+                                             width={175}
+                                        /&gt;
+                                    ))}
+                                &lt;/div&gt;
+                            &lt;/div&gt;
                         &lt;/div&gt;
-                    &lt;/div&gt;
+                    &lt;/&gt;
                 )}
             &lt;/div&gt;
-            &lt;div className={styles.richText}&gt;
-                &lt;RichText data={bioHtml} componentRegistry={componentRegistry}/&gt;
-
-            &lt;/div&gt;
-
+            {bioHtml &amp;&amp; (
+                &lt;&gt;
+                    &lt;h2&gt;Bio&lt;/h2&gt;
+                    &lt;div className={styles.richText}&gt;
+                        &lt;RichText
+                            data={bioHtml}
+                            componentRegistry={componentRegistry}
+                            loading="lazy"
+                        /&gt;
+                    &lt;/div&gt;
+                &lt;/&gt;
+            )}
         &lt;/div&gt;
     )
 }</code></pre>
@@ -665,6 +688,7 @@ export const Person = (props) =&gt; {
     display: flex;
     flex-direction: column;
     margin-inline: auto;
+    min-height: 1600px;
 }
 
 .person h1 {
@@ -680,9 +704,39 @@ export const Person = (props) =&gt; {
     justify-content: space-between;
 }
 
+.photoContainer {
+    position: relative;
+    display: flex;
+
+    ::-webkit-scrollbar {
+        -webkit-appearance: none;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background-color: ghostwhite;
+    }
+}
+
+.photoGrid {
+    overflow-x: auto;
+}
+
+.photoScroll {
+    display: flex;
+    gap: 25px;
+    white-space: nowrap;
+    padding: 0;
+    margin: .5rem 0 .5rem 0;
+}
+
+.photoScroll img {
+    border-radius: 5px;
+}
+
 .photos {
-    padding-block: 20px;
-    display: grid;
+    margin-block: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-gap: 50px;
     gap: 50px;
@@ -703,9 +757,6 @@ export const Person = (props) =&gt; {
 .photos img {
     width: 100%;
     height: auto; /* Ensures images scale properly */
-    max-width: 90vw;
-    border: solid 1px #09C0F0;
-    box-shadow: 0 0 5px #09C0F0;
     border-radius: 8px;
 }
 
@@ -714,21 +765,16 @@ export const Person = (props) =&gt; {
     aspect-ratio: 1 / 1;
     object-fit: cover;
     object-position: 50% 50%;
-    border: solid 1px #EF82F0;
-    box-shadow: 0 0 5px #EF82F0;
     border-radius: 5px;
 }
 
 
 .richText {
-    max-width: 90vw;
     font-size: 24px;
 }
 
 
 .richText figure img {
-    border: solid 1px #09C0F0;
-    box-shadow: 0 0 5px #09C0F0;
     border-radius: 5px;
 }
 
@@ -818,7 +864,7 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', { View: Person })
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-03-18 09:38:25 UTC
+Last updated 2025-04-28 10:58:13 UTC
 </div>
 </div>
 </body>

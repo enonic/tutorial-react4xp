@@ -592,7 +592,8 @@ const App: React.FC&lt;AppProps&gt; = (props) =&gt; {
     return (
         &lt;&gt;
             &lt;BaseComponent componentRegistry={componentRegistry} {...props}/&gt;
-            {props.component.type == "page" &amp;&amp; &lt;Footer logoUrl={props.url}/&gt;}
+            {(props.component.type == "page" || props.component.type == "contentType")
+             &amp;&amp; &lt;Footer logoUrl={props.url}/&gt;}
         &lt;/&gt;
     );
 }
@@ -701,7 +702,7 @@ Most of these static assets are content-hashed, and optimized for client-side ca
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-03-18 09:38:25 UTC
+Last updated 2025-04-28 10:58:13 UTC
 </div>
 </div>
 </body>
