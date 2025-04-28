@@ -140,9 +140,9 @@ tasks.register('react4xp', NpmTask) {
 
 tasks.register('dev', Exec) {
     if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-        commandLine 'gradlew.bat', 'deploy', '-t'
+        commandLine 'gradlew.bat', 'deploy', '-Penv=dev', '-t'
     } else {
-        commandLine './gradlew', 'deploy', '-t'
+        commandLine './gradlew', 'deploy', '-Penv=dev', '-t'
     }
 }
 
