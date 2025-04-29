@@ -7,7 +7,6 @@ import {PageDescriptor} from '@enonic-types/core';
 import type {Content} from '@enonic-types/lib-content';
 import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
-
 function fetchAdditionalPhotos(photosIds) {
     return photosIds.map(photoId => {
         const photoContent = getContentByKey<Content>({key: photoId});
@@ -19,11 +18,6 @@ function fetchAdditionalPhotos(photosIds) {
     });
 }
 
-/* interface Photo {
-	_id: string;
-	displayName: string;
-  } */
-
 export const personProcessor: ComponentProcessorFunction<PageDescriptor>
     = (params) => {
 
@@ -31,12 +25,11 @@ export const personProcessor: ComponentProcessorFunction<PageDescriptor>
     const firstPhotoId = photos[0] || '';
     const remainingPhotoIds = photos.slice(1) || '';
 
-    // Fetch the first photo
     const {_id, displayName} = getContentByKey<Content>({key: firstPhotoId});
 
     const extraPhotos = fetchAdditionalPhotos(remainingPhotoIds);
 
-    return /*<PersonProps>*/{
+    return {
         displayName: `${params.content.displayName}`,
         photo: {
             _id,

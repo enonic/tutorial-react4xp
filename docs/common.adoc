@@ -2,11 +2,122 @@
 :toc: right
 :imagesdir: media/
 
-In this chapter you will add header and footer components.
+In this chapter you will add footer components.
 
-== To do
+A footer component is like an autograph, it is a signature of the author.
+It is a good idea to add a footer component to your application.
+The footer component will be added to all pages in the application.
 
-The Headless Movie DB contains sample content, and content types. One of these is `Person`. From Content Studio, you may find and list persons. By selecting the JSON preview, you can also study the properties of a person:
+== Footer component
+
+Add the footer component within a common directory:
+
+.react4xp/components/common/Footer.tsx
+[source,TypeScript]
+----
+include::../src/main/resources/react4xp/components/common/Footer.tsx[]
+----
+
+== CSS module
+
+The footer component also has a dedicated CSS module, which allows targeted styling without conflicts with other components and classes.
+
+Add the CSS module to the common directory:
+
+.react4xp/components/common/Footer.module.css
+[source,CSS]
+----
+include::../src/main/resources/react4xp/components/common/Footer.module.css[]
+----
+
+Add the footer to your app:
+
+.react4xp/entries/App.tsx
+[source,TypeScript]
+----
+import Footer from "../components/common/Footer"
+import type {AppProps} from '/types/AppProps';
+import {BaseComponent} from '@enonic/react-components';
+import * as React from 'react';
+import {componentRegistry} from '../componentRegistry';
+
+const App: React.FC<AppProps> = (props) => {
+    return (
+        <>
+            <BaseComponent componentRegistry={componentRegistry} {...props}/>
+            {(props.component.type == "page" || props.component.type == "contentType")
+             && <Footer logoUrl={props.url}/>}
+        </>
+    );
+}
+
+App.displayName = 'App';
+
+export default App;
+
+----
+
+== Global CSS
+
+You might notice the placement is a bit off, this is because we need some general styling.
+For this we are going to add a global CSS file, this allows us to avoid repeating general styling in each component.
+
+Add global CSS file to the component directory:
+
+.react4xp/components/globalStyles.css
+[source,CSS]
+----
+include::../src/main/resources/react4xp/components/globalStyles.css[]
+----
+
+Add your global CSS file to the app:
+
+.react4xp/entries/App.tsx
+[source,TypeScript]
+----
+import './components/globalStyles.css';
+----
+
+== Asset URL
+
+Lastly we need to be able to display our cool React4XP logo!
+To do this we use assetUrl which is a function that generates a URL pointing to a static file.
+
+Update your app.ts in your site directory to include assetUrl and define a prop for it:
+
+.react4xp/site/app.ts
+[source,TypeScript]
+----
+import {assetUrl} from '/lib/enonic/asset';
+...
+
+export function get(request: Request): Response {
+    const url = assetUrl({path: 'images/React4XP.svg'});
+    ...
+
+    const props: AppProps = {
+        component,
+        url
+    }
+...
+----
+
+define prop for the url:
+
+.react4xp/types/AppProps.ts
+[source,TypeScript]
+----
+import type {RenderableComponent} from '@enonic/react-components';
+
+export interface AppProps {
+    component: RenderableComponent,
+    url?: string
+}
+----
+
+Sweet!
+Now we have a footer component that is displayed on all pages in the application.
+The footer component is styled with a CSS module, and the global CSS file is used to style the app.
 
 == Next
 
