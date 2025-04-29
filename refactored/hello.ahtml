@@ -448,6 +448,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#helloprocessor">HelloProcessor</a></li>
 </ul>
 </li>
+<li><a href="#next">Next</a></li>
 </ul>
 </div>
 </div>
@@ -509,11 +510,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-Files" data-lang="Files">-&gt; site/dataFetcher.ts (Map of data processors)
- -&gt; site/helloProcessor.ts (props for the Hello component)
- -&gt; react4xp/entries/App.tsx (React entry)
-  -&gt; react4xp/componentRegistry.tsx (R4XP component list)
-   -&gt; react4xp/components/Hello.tsx (Welcome page)</code></pre>
+<pre class="highlight"><code class="language-Files" data-lang="Files">-&gt; react4xp/entries/App.tsx (React entry)
+-&gt; react4xp/components/Hello.tsx (Welcome page)
+-&gt; types/HelloProps.ts (TypeScript type for props)
+-&gt; react4xp/componentRegistry.tsx (R4XP component list)
+-&gt; site/components/helloProcessor.ts (props for the Hello component)
+-&gt; react4xp/dataFetcher.ts (Map of data processors)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -572,30 +574,11 @@ export const Hello = ({title, text, initialCount}: HelloProps) =&gt; {
 <div class="title">react4xp/componentRegistry.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {ComponentRegistry} from '@enonic/react-components';
-import {Article} from "./components/content/Article";
-import {Person} from './components/content/Person';
-import {Playlist} from './components/content/Playlist';
-import {TwoColumnLayout} from './components/layouts/TwoColumn';
-import {Factbox} from './components/macro/FactBox';
-import {Page} from './components/Page';
-import {ChildList} from './components/parts/ChildList';
-import {Heading} from './components/parts/Heading';
-import {Movie} from './components/parts/Movie';
+import {Hello} from './components/Hello';
 
 export const componentRegistry = new ComponentRegistry;
 
-
-componentRegistry.addMacro('factbox', {View: Factbox});
-
-//componentRegistry.addContentType('portal:site', { View: Hello }); <i class="conum" data-value="1"></i><b>(1)</b>
-componentRegistry.addPart('com.enonic.app.hmdb:heading', {View: Heading}); <i class="conum" data-value="2"></i><b>(2)</b>
-componentRegistry.addPage('com.enonic.app.hmdb:main', {View: Page}); <i class="conum" data-value="3"></i><b>(3)</b>
-componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); <i class="conum" data-value="4"></i><b>(4)</b>
-componentRegistry.addPart('com.enonic.app.hmdb:movie-details', {View: Movie}); <i class="conum" data-value="5"></i><b>(5)</b>
-componentRegistry.addLayout('com.enonic.app.hmdb:2-column', {View: TwoColumnLayout}); <i class="conum" data-value="6"></i><b>(6)</b>
-componentRegistry.addPart('com.enonic.app.hmdb:child-list', {View: ChildList}); <i class="conum" data-value="7"></i><b>(7)</b>
-componentRegistry.addContentType('com.enonic.app.hmdb:playlist', {View: Playlist}); <i class="conum" data-value="8"></i><b>(8)</b>
-componentRegistry.addContentType('com.enonic.app.hmdb:article', {View: Article}); <i class="conum" data-value="9"></i><b>(9)</b></code></pre>
+componentRegistry.addContentType('portal:site', { View: Hello }); <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -622,7 +605,8 @@ Try clicking other content items in Content Studio, and you should simply see an
 <div class="sect2">
 <h3 id="helloprocessor"><a class="link" href="#helloprocessor">HelloProcessor</a></h3>
 <div class="paragraph">
-<p>The responsiblity of HelloProcessor is to produce the props required by a component. A processor may also intercept the request, for instance by producing a redirect.</p>
+<p>The responsiblity of HelloProcessor is to produce the props required by a component.
+A processor may also intercept the request, for instance by producing a redirect.</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/components/HelloProcessor.ts</div>
@@ -642,51 +626,49 @@ export const helloProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt; = 
 </div>
 </div>
 <div class="paragraph">
-<p>Similar to a component, a processor is invoked because it is registered in the dataProcessor:</p>
+<p>Similar to a component, a processor is invoked because it is registered in the dataFetcher:</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/dataProcessor.ts</div>
+<div class="title">react4xp/dataFetcher.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {DataFetcher} from '/lib/enonic/react4xp';
-import {articleProcessor} from "./components/content/ArticleProcessor";
-import {personProcessor} from './components/content/PersonProcessor';
-import {playlistProcessor} from './components/content/PlaylistProcessor';
-import {layoutProcessor} from './components/layouts/TwoColumnProcessor';
-import {pageProcessor} from './components/PageProcessor';
-import {childListProcessor} from './components/parts/ChildListProcessor';
-import {headingProcessor} from './components/parts/HeadingProcessor';
-import {movieProcessor} from "./components/parts/MovieProcessor";
+import {helloProcessor} from './components/HelloProcessor';
 
 export const dataFetcher = new DataFetcher();
-//dataFetcher.addContentType('portal:site', { processor: helloProcessor });
 
-
-dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor});
-dataFetcher.addPage('com.enonic.app.hmdb:main', {processor: pageProcessor});
-dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});
-dataFetcher.addPart('com.enonic.app.hmdb:movie-details', {processor: movieProcessor});
-dataFetcher.addLayout('com.enonic.app.hmdb:2-column', {processor: layoutProcessor});
-dataFetcher.addPart('com.enonic.app.hmdb:child-list', {processor: childListProcessor});
-dataFetcher.addContentType('com.enonic.app.hmdb:playlist', {processor: playlistProcessor});
-dataFetcher.addContentType('com.enonic.app.hmdb:article', {processor: articleProcessor});
-
-
-That is basically it. Throughout the tutorial, you'll be using this extensively.
-
-TIP: Dive deeper into this topic by visiting the &lt;&lt;appendix/controller#, app controller appendix&gt;&gt;.
-
-== Next
-
-Great, you rendered your first page, next up how about &lt;&lt;person#, adding your own components&gt;&gt;.</code></pre>
+dataFetcher.addContentType('portal:site', { processor: helloProcessor });</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>That is basically it. Throughout the tutorial, you&#8217;ll be using this extensively.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Dive deeper into this topic by visiting the <a href="appendix/controller.ahtml">app controller appendix</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="next"><a class="link" href="#next">Next</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Great, you rendered your first page, next up how about <a href="person.ahtml">adding your own components</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-04-28 10:58:13 UTC
+Last updated 2025-04-29 10:19:55 UTC
 </div>
 </div>
 </body>
