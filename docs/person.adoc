@@ -54,7 +54,50 @@ To implement the rendering we need to add code that will perform a two-step oper
 ./src/main/resources/react4xp/components/content/PersonProcessor.ts
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/components/content/PersonProcessor.ts[]
+import {processHtml} from '/lib/enonic/react4xp';
+import {get as getContentByKey} from '/lib/xp/content';
+import {imageUrl} from '/lib/xp/portal';
+import {toArray} from "/react4xp/utils/arrayUtils";
+import {parentPath} from '/react4xp/utils/path';
+import {PageDescriptor} from '@enonic-types/core';
+import type {Content} from '@enonic-types/lib-content';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+
+function fetchAdditionalPhotos(photosIds) {
+    return photosIds.map(photoId => {
+        const photoContent = getContentByKey<Content>({key: photoId});
+        return {
+            _id: photoContent._id,
+            title: photoContent.displayName,
+            imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
+        };
+    });
+}
+
+export const personProcessor: ComponentProcessorFunction<PageDescriptor>
+    = (params) => {
+
+    const photos: string[] = toArray<string>(params.content.data.photos as string | string[])
+    const firstPhotoId = photos[0] || '';
+    const remainingPhotoIds = photos.slice(1) || '';
+
+    const {_id, displayName} = getContentByKey<Content>({key: firstPhotoId});
+
+    const extraPhotos = fetchAdditionalPhotos(remainingPhotoIds);
+
+    return{
+        displayName: `${params.content.displayName}`,
+        photo: {
+            _id,
+            title: displayName,
+            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
+        },
+        birthDate: params.content.data.dateofbirth,
+        restPhotos: extraPhotos,
+        parent: parentPath(params.request.path)
+    };
+};
+
 ----
 +
 . Then *add it to the dataFetcher*, with these lines:
@@ -62,9 +105,9 @@ include::../src/main/resources/react4xp/components/content/PersonProcessor.ts[]
 .dataFetcher 
 [source,TypeScript]
 ----
-import { personProcessor } from './components/PersonProcessor';
+import {personProcessor} from './components/content/PersonProcessor';
 
-dataFetcher.addContentType('com.enonic.app.hmdb:person', { processor: personProcessor });
+dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});
 ----
 
 We are now able to fetch the Person data, next up we need to render it. 
@@ -76,7 +119,65 @@ The component consists of two files:
 ./src/main/resources/react4xp/components/content/Person.tsx (React component)
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/components/content/Person.tsx[]
+import {componentRegistry} from '/react4xp/componentRegistry';
+import {RichText} from '@enonic/react-components';
+import React from 'react'
+import styles from './Person.module.css';
+
+export const Person = (props) => {
+    const {parent, displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+    return (
+        <div className={styles.person}>
+            <div className={"back"}>
+                <a href={parent}>
+                    <p>Back</p>
+                </a>
+            </div>
+            <h1>{displayName}</h1>
+            <p>{birthDate}</p>
+            <div>
+                {
+                    photo ? (
+                        <>
+                            <div className={styles.photos}>
+                                <img src={photo.imageUrl}
+                                     title={photo.title}
+                                     alt={photo.title}
+                                     height={675}
+                                     width={1200}
+                                     loading="eager"
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <p>No photo available</p>
+                    )
+                }
+                {restPhotos && restPhotos.length > 0 && (
+                    <>
+                        <h2>Photos</h2>
+                        <div className={styles.photoContainer}>
+                            <div className={styles.photoGrid}>
+                                <div className={styles.photoScroll}>
+                                    {restPhotos.map((photo, index) => (
+                                        <img key={index}
+                                             src={photo.imageUrl}
+                                             title={photo.title}
+                                             alt={photo.title}
+                                             height={175}
+                                             width={175}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
+            </div>
+        </div>
+    )
+}
+
 ----
 +
 ./src/main/resources/react4xp/components/content/Person.module.css (CSS module)
@@ -90,9 +191,9 @@ Once they are created *register the component in the componentRegistry*, by addi
 .componentRegistry 
 [source,TypeScript]
 ----
-import { Person } from './components/Person';
+import {Person} from './components/content/Person';
 
-componentRegistry.addContentType('com.enonic.app.hmdb:person', { View: Person });
+componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});
 ----
 
 == Result

@@ -6,7 +6,7 @@ Render your first React4XP page
 
 == Add to site
 
-In a few steps we connect the application to the Headless Movie DB, and should be rewarded gloriously. 
+In a few steps we connect the application to the Headless Movie DB, and should be rewarded gloriously.
 
 . Visit http://localhost:8080/admin^[localhost:8080/admin]. Log in to XP and open Content Studio.
 +
@@ -35,11 +35,12 @@ These are the main files involved:
 
 [source,Files]
 ----
--> site/dataFetcher.ts (Map of data processors)
- -> site/helloProcessor.ts (props for the Hello component)
- -> react4xp/entries/App.tsx (React entry)
-  -> react4xp/componentRegistry.tsx (R4XP component list) 
-   -> react4xp/components/Hello.tsx (Welcome page)
+-> react4xp/entries/App.tsx (React entry)
+-> react4xp/components/Hello.tsx (Welcome page)
+-> types/HelloProps.ts (TypeScript type for props)
+-> react4xp/componentRegistry.tsx (R4XP component list)
+-> site/components/helloProcessor.ts (props for the Hello component)
+-> react4xp/dataFetcher.ts (Map of data processors)
 ----
 
 Below we backtrack what happened:
@@ -67,7 +68,13 @@ The component is rendered because it has been added to the componentRegistry:
 .react4xp/componentRegistry.ts
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/componentRegistry.tsx[]
+import {ComponentRegistry} from '@enonic/react-components';
+import {Hello} from './components/Hello';
+
+export const componentRegistry = new ComponentRegistry;
+
+componentRegistry.addContentType('portal:site', { View: Hello }); //<1>
+
 ----
 
 <1> The Hello component is mapped to the content type `portal:site`, which means it will be executed when the URL matches a site.
@@ -77,7 +84,8 @@ NOTE: Try clicking other content items in Content Studio, and you should simply 
 
 === HelloProcessor
 
-The responsiblity of HelloProcessor is to produce the props required by a component. A processor may also intercept the request, for instance by producing a redirect. 
+The responsiblity of HelloProcessor is to produce the props required by a component.
+A processor may also intercept the request, for instance by producing a redirect.
 
 .react4xp/components/HelloProcessor.ts
 [source,TypeScript]
@@ -85,13 +93,18 @@ The responsiblity of HelloProcessor is to produce the props required by a compon
 include::../src/main/resources/react4xp/components/HelloProcessor.ts[]
 ----
 
-Similar to a component, a processor is invoked because it is registered in the dataProcessor:
+Similar to a component, a processor is invoked because it is registered in the dataFetcher:
 
-.react4xp/dataProcessor.ts
+.react4xp/dataFetcher.ts
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/dataFetcher.ts[]
+import {DataFetcher} from '/lib/enonic/react4xp';
+import {helloProcessor} from './components/HelloProcessor';
 
+export const dataFetcher = new DataFetcher();
+
+dataFetcher.addContentType('portal:site', { processor: helloProcessor });
+----
 
 That is basically it. Throughout the tutorial, you'll be using this extensively.
 
