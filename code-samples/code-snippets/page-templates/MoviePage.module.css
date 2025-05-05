@@ -105,6 +105,7 @@ header {
 .cast a {
   overflow: unset;
 }
+
 .flexy {
   display: flex;
   gap: 10px;
@@ -160,20 +161,4 @@ header {
 .date {
   font-size: 24px;
   margin-top: -1rem;
-}
-
-@media screen and (max-width: 1150px) {
-  .blocky {
-    display: flex;
-    width: 800px;
-    max-width: 90vw;
-    justify-content: space-between;
-    gap: 25px;
-  }
-}
-
-@media screen and (max-width: 550px) {
-  .blocky {
-    display: block;
-  }
 }

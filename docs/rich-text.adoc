@@ -1,0 +1,81 @@
+= Rendering a person
+:toc: right
+:imagesdir: media/
+:sourcedir: ../src/main/resources/
+:snippet: ../code-samples/code-snippets/
+
+In this chapter you'll learn how to render rich text content.
+
+== Intro
+
+Enonic boasts a https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea[rich text input type].
+Unlike basic text fields, rich text may contain more complex concepts such as tables, images, links and custom components.
+Each of these will typically need to be processed during rendering in order to provide a contextually correct URL, ideal image sizes etc.
+
+== Sample content
+
+Luckily, the sample data set contains everyting we need to get going.
+The `Bio` field for persons is rich text, and some of the content is even populated with relevant content, like you see below:
+
+image::rich-text-bio.png[title="Rich text bio field for Lea Seydoux",width=662px]
+
+== Rich text rendering
+
+. *Update the Person processor*
++
+./src/main/resources/react4xp/components/content/PersonProcessor.ts
+[source,TypeScript]
+----
+include::{snippet}Rich-text/PersonProcessor.ts[]
+----
+
+. *add it to your component*
++
+[source,TypeScript]
+----
+include::{snippet}Rich-text/Person.tsx[]
+----
+
+. *Et voila!*
++
+And just like that we have a fully functional rich text renderer.
++
+The page should look something like this:
++
+image::rich-text-result.png[title="Person content rendered with rich text",width=720px]
+
+If you have a sharp eye, you might notice there is something missing, we need to add a macro component to render factbox!
+
+== Macro component
+
+Adding the Fact-Box is easy, we just need to add a new component that will be used to render the macro:
+
+. *Component*
++
+./src/main/resources/react4xp/components/macro/Factbox.tsx
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/macro/FactBox.tsx[]
+----
+
+. *Styling*
++
+./src/main/resources/react4xp/components/macro/Factbox.module.css
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/macro/FactBox.module.css[]
+----
+
+. *Register the component*
++
+./src/main/resources/react4xp/componentRegistry.tsx
+[source,TypeScript]
+----
+include::{snippet}Rich-text/componentRegistry.tsx[]
+----
+
+. *Factbox complete!*
++
+You should now see Lea Seydoux updated with the FactBox macro:
++
+image::rich-text-with-macro.png[title="Person content rendered with rich text and macro",width=720px]

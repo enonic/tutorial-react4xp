@@ -1,0 +1,88 @@
+= Custom pages
+:toc: right
+:imagesdir: media/
+:sourcedir: ../src/main/resources/
+:snippet: ../code-samples/code-snippets/
+
+Hardcoded content is nice, but letting the editor create content is even better!
+
+This is where the real power of React4XP comes into play, we can easily make a page component which allows the editor to drag and drop components into the page!
+
+== Task: Set up page rendering
+
+Content types need to exist in Enonic before an editor can create content.
+Similarly, page components must be defined before Content Studio can enable editors to create pages.
+
+. *Add a page component* to the app:
++
+./src/main/resources/react4xp/components/page/Page.tsx
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/page/Page.tsx[]
+----
+
+. *Add a page processor* to the app:
++
+./src/main/resources/react4xp/components/page/PageProcessor.ts
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/page/PageProcessor.ts[]
+----
+
+. *Style the page component*:
++
+./src/main/resources/react4xp/components/page/Page.module.css
+[source,CSS]
+----
+include::{sourcedir}react4xp/components/page/Page.module.css[]
+----
+
+. *Fetch the data*:
++
+./src/main/resources/react4xp/dataFetcher.ts
+[source,TypeScript]
+----
+include::{snippet}pages/dataFetcher.ts[]
+----
+
+
+. *Register the page component* in the component registry:
++
+./src/main/resources/componentRegistry.tsx
+[source,TypeScript]
+----
+include::{snippet}pages/componentRegistry.tsx[]
+----
+
+Now you can create pages!
+
+== Task: Create your first page!
+
+It is time to build a custom page.
+
+. *Turn the landing-site into a page*
++
+Before we can continue we need to remove the hello component from the `componentRegistry` and `dataFetcher`.
++
+From Content Studio, select and edit the `/hmdb` content item.
+From the edit view, activate the page editor by clicking the monitor icon in the top right corner.
++
+You should now see the following:
+image:empty-site.png[title="Empty site",width=647px]
++
+Now that we have a page component with a single "dropzone" inside (the region we specified earlier).
+We can give it some content.
+
+== *Use the text component*
+
+Content Studio ships with a built-in Text component which can be handy when composing pages.
+
+. From the Insert tab (on the right hand side), drag a Text component into the region.
++
+. Text mode will now be activated, and you can use the rich-text editor to write and format text, but also insert images.
++
+image:entry-site-complete.png[width=647px]
++
+. You may also click the Preview button in Content Studio for a full screen version.
+
+That concludes the introduction to page rendering, coming up we’ll add some configurable page components to play with.

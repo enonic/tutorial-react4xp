@@ -1,6 +1,8 @@
-= Common components
+= Rendering a person
 :toc: right
 :imagesdir: media/
+:sourcedir: ../src/main/resources/
+:snippet: ../code-samples/code-snippets/
 
 In this chapter you will add footer components.
 
@@ -15,7 +17,7 @@ Add the footer component within a common directory:
 .react4xp/components/common/Footer.tsx
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/components/common/Footer.tsx[]
+include::{sourcedir}react4xp/components/common/Footer.tsx[]
 ----
 
 == CSS module
@@ -27,7 +29,7 @@ Add the CSS module to the common directory:
 .react4xp/components/common/Footer.module.css
 [source,CSS]
 ----
-include::../src/main/resources/react4xp/components/common/Footer.module.css[]
+include::{snippet}App-layout/Footer.module.css[]
 ----
 
 Add the footer to your app:
@@ -54,7 +56,6 @@ const App: React.FC<AppProps> = (props) => {
 App.displayName = 'App';
 
 export default App;
-
 ----
 
 == Global CSS
@@ -67,7 +68,7 @@ Add global CSS file to the component directory:
 .react4xp/components/globalStyles.css
 [source,CSS]
 ----
-include::../src/main/resources/react4xp/components/globalStyles.css[]
+include::../code-samples/code-snippets/App-layout/globalStyles.css[]
 ----
 
 Add your global CSS file to the app:

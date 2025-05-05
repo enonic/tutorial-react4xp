@@ -2,9 +2,9 @@ import {assetUrl} from '/lib/enonic/asset';
 import {render} from '/lib/enonic/react4xp';
 import {type Content, get as getContentByKey} from '/lib/xp/content';
 import {getContent, pageUrl} from '/lib/xp/portal';
+import {dataFetcher} from '/react4xp/dataFetcher';
 import type {AppProps} from '/types/AppProps';
 import type {Request, Response} from '@enonic-types/core';
-import {dataFetcher} from '../react4xp/dataFetcher';
 
 export function get(request: Request): Response {
     const url = assetUrl({path: 'images/React4XP.svg'});

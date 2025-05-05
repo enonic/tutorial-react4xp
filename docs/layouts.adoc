@@ -1,0 +1,57 @@
+= Layouts
+:toc: right
+:imagesdir: media/
+:sourcedir: ../src/main/resources/
+:snippet: ../code-samples/code-snippets/
+
+Layouts are essentially parts, with an extra trick up their sleve.
+Regions.
+This means that layouts may host other components, and build rich page structures.
+
+== Task: Add layout to your application
+
+Adding layouts is more or less identical to pages and parts.
+Simply follow the steps below:
+
+. *Add the `2-column`layout* to your application:
++
+./src/main/resources/react4xp/components/layouts/TwoColumn.tsx
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/layouts/TwoColumn.tsx[]
+----
+. *Add the `2-column` processor* to your application:
++
+./src/main/resources/react4xp/components/layouts/TwoColumnProcessor.ts
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/layouts/TwoColumnProcessor.ts[]
+----
+. *Add the `2-column` CSS module* to your application:
++
+./src/main/resources/react4xp/components/layouts/TwoColumn.module.css
+[source,CSS]
+----
+include::{sourcedir}react4xp/components/layouts/TwoColumn.module.css[]
+----
+. *Add the `2-column` layout to your component registry and data fetcher*:
++
+./src/main/resources/react4xp/componentRegistry.ts
+[source,TypeScript]
+----
+include::{snippet}layout/ComponentRegistry.tsx[]
+----
++
+./src/main/resources/react4xp/dataFetcher.ts
+[source,TypeScript]
+----
+include::{snippet}layout/DataFetcher.ts[]
+----
+. *Now you should be able to see something like this*:
+image:layout-blank.png[title="2-column layout",width=720px]
++
+By combining layout, part and text we are starting to see the potential of the page editor:
+image:layout-filled.png[title="2-column layout with text",width=720px]
++
+In the next chapter we will look into <<templates#, page templates>>.
+Page templates allow us to reuse a page definition across multiple content items.

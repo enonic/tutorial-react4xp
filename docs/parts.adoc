@@ -1,0 +1,97 @@
+= Parts
+:toc: right
+:imagesdir: media/
+:sourcedir: ../src/main/resources/
+:snippet: ../code-samples/code-snippets/
+
+Enonic provides a highly customizable component type called link:https://developer.enonic.com/docs/xp/stable/cms/pages/parts[parts^].
+
+If you take a look at the person folder you might see something like this:
+image:child-list-no-render.png[title="Parts in the person folder",width=720px]
+
+== Task: Add a part
+
+We’ll start off by adding a simple component that lists child items in the tree structure.
+
+. *Add the `child-list` component* to your application:
++
+./src/main/resources/react4xp/components/parts/ChildList.tsx
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/parts/ChildList.tsx[]
+----
+
+. *Add the `child-list` processor* to your application:
++
+./src/main/resources/react4xp/components/parts/ChildListProcessor.ts
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/parts/ChildListProcessor.ts[]
+----
+
+. *Add the `child-list` CSS module* to your application:
++
+./src/main/resources/react4xp/components/parts/ChildList.module.css
+[source,CSS]
+----
+include::{sourcedir}react4xp/components/parts/ChildList.module.css[]
+----
+
+. Add the `child-list` part to your *component registry and data fetcher*:
++
+./src/main/resources/react4xp/componentRegistry.ts
+[source,TypeScript]
+----
+include::{snippet}/parts/ComponentRegistry.tsx[]
+----
++
+./src/main/resources/react4xp/dataFetcher.ts
+[source,TypeScript]
+----
+include::{snippet}/parts/DataFetcher.ts[]
+----
+
+. *Now you should be able to see something like this:*
+image:child-list-render.png[title="Child list part",width=720px]
++
+Try updating it by customizing the page and changing order, adding or removing items in the tree structure.
+
+== Bonus task: Heading
+
+Since we are working with react4XP and not guillotine, we should have a head.
+
+Add a heading to the page
+
+. *Add the `heading` component* to your application:
++
+./src/main/resources/react4xp/components/parts/Heading.tsx
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/parts/Heading.tsx[]
+----
+. *Add the `heading` processor* to your application:
++
+./src/main/resources/react4xp/components/parts/HeadingProcessor.ts
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/parts/HeadingProcessor.ts[]
+----
++
+Since we are using globalStyles.css to style the heading, we don’t need to add a CSS module for it.
+. *Add the `heading` part to your component registry and data fetcher*:
++
+./src/main/resources/react4xp/componentRegistry.ts
+[source,TypeScript]
+----
+include::{snippet}/parts/ComponentRegistry.tsx[]
+----
++
+./src/main/resources/react4xp/dataFetcher.ts
+[source,TypeScript]
+----
+include::{snippet}/parts/DataFetcher.ts[]
+----
+. *Now you should be able to see something like this:*
+image:header.png[title="Heading part",width=720px]
+
+In the next chapter you will make page composition even more interesting, with the introduction of <<layouts#, layouts>>.
