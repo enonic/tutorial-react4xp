@@ -105,6 +105,7 @@ header {
 .cast a {
   overflow: unset;
 }
+
 .flexy {
   display: flex;
   gap: 10px;

@@ -9,7 +9,7 @@ import {ChildList} from './components/parts/ChildList';
 import {Heading} from './components/parts/Heading';
 import {Movie} from './components/parts/Movie';
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 
 componentRegistry.addMacro('factbox', {View: Factbox});

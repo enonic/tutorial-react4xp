@@ -1,4 +1,4 @@
-= Rendering a person
+= Rich text
 :toc: right
 :imagesdir: media/
 :sourcedir: ../src/main/resources/
@@ -28,6 +28,8 @@ image::rich-text-bio.png[title="Rich text bio field for Lea Seydoux",width=662px
 ----
 include::{snippet}Rich-text/PersonProcessor.ts[]
 ----
++
+ProcessHtml is a function to prepare data for the RichText component that already comes with react4xp.
 
 . *add it to your component*
 +
@@ -36,7 +38,7 @@ include::{snippet}Rich-text/PersonProcessor.ts[]
 include::{snippet}Rich-text/Person.tsx[]
 ----
 
-. *Et voila!*
+. *Et voilà!*
 +
 And just like that we have a fully functional rich text renderer.
 +

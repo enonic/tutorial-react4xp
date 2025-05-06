@@ -1,12 +1,13 @@
 .listItem {
-    margin-block: .25rem;
+  margin-block: .25rem;
 }
+
 .listLink {
-    color: #61DBFB;
-    text-decoration: none;
-    font-weight: 500;
+  color: #61DBFB;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .listLink p {
-    margin-block: 0;
+  margin-block: 0;
 }

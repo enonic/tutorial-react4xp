@@ -13,10 +13,9 @@ export const Article = (props) => {
                     <p>Back</p>
                 </a>
             </div>
-        {/* Article Header */}
+            {/* Article Header */}
             <header className={styles.header}>
                 <h1>{title}</h1>
-
 
 
                 {/* Cover Image */}
@@ -42,23 +41,23 @@ export const Article = (props) => {
                                 <span key={index} className={styles.tag}>
                                 {tag}
                             </span>
-                                ))}
+                            ))}
                         </div>
                     )}
-                        {/* Preface */}
-                        {preface && (
-                            <p className={styles.preface}>
-                                {preface}
-                            </p>
-                        )}
+                    {/* Preface */}
+                    {preface && (
+                        <p className={styles.preface}>
+                            {preface}
+                        </p>
+                    )}
 
-                        {/* Author */}
-                        {author && (
-                            <p className={styles.author}>
-                                <strong>By:</strong> {author}
-                            </p>
-                        )}
-                    </div>
+                    {/* Author */}
+                    {author && (
+                        <p className={styles.author}>
+                            <strong>By:</strong> {author}
+                        </p>
+                    )}
+                </div>
 
             </header>
 
@@ -117,22 +116,22 @@ export const Article = (props) => {
                             <>
                                 <section key={index} className={styles.storyBlock}>
                                     <div className={styles.storyBlockContainer}>
-                                    <div className={styles.storyScroll}>
-                                        {block.story.map((panel, panelIndex) => (
-                                            <div key={panelIndex} className={styles.storyPanel}>
-                                                <img
-                                                    src={panel.imageUrl}
-                                                    alt={panel.storyline}
-                                                    loading="lazy"
-                                                    height={220}
-                                                    width={340}
-                                                />
-                                                <div>
-                                                    <p className={styles.storyline}>{panel.storyline}</p>
+                                        <div className={styles.storyScroll}>
+                                            {block.story.map((panel, panelIndex) => (
+                                                <div key={panelIndex} className={styles.storyPanel}>
+                                                    <img
+                                                        src={panel.imageUrl}
+                                                        alt={panel.storyline}
+                                                        loading="lazy"
+                                                        height={220}
+                                                        width={340}
+                                                    />
+                                                    <div>
+                                                        <p className={styles.storyline}>{panel.storyline}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </section>
                             </>
@@ -149,22 +148,22 @@ export const Article = (props) => {
                         <section className={styles.spotlight}>
                             <div className={styles.spotlightGrid}>
                                 <ul className={styles.spotlightScroll}>
-                                {spotlight.map((spotlight, index) => (
-                                    <li key={index}>
-                                        <a className={styles.sneakyLink}
-                                           href={spotlight.url}><img
-                                            src={spotlight.photoUrl}
-                                            alt={spotlight.name}
-                                            loading="lazy"
-                                            height={200}
-                                            width={200}/></a>
+                                    {spotlight.map((spotlight, index) => (
+                                        <li key={index}>
+                                            <a className={styles.sneakyLink}
+                                               href={spotlight.url}><img
+                                                src={spotlight.photoUrl}
+                                                alt={spotlight.name}
+                                                loading="lazy"
+                                                height={200}
+                                                width={200}/></a>
                                             <a className={styles.sneakyLink}
                                                href={spotlight.url}><p>{spotlight.name}</p></a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </section>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </section>
                     </>
                 )}
 

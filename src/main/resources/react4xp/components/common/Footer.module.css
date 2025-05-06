@@ -1,51 +1,51 @@
 /* Footer.module.css */
 .footer {
-    margin: 1vh auto auto auto;
-    width: 100vw;
-    text-align: center;
-    background-color: black; /* Dark theme */
-    position: absolute;
-    left: 0;
-    font-size: 18px;
-    height: 7vh;
-    align-content: center;
+  margin: 1vh auto auto auto;
+  width: 100vw;
+  text-align: center;
+  background-color: black; /* Dark theme */
+  position: absolute;
+  left: 0;
+  font-size: 18px;
+  height: 7vh;
+  align-content: center;
 }
 
 .footer a {
-    color: #61dbfb; /* Light purple for links */
-    text-decoration: none;
-    font-weight: 500;
+  color: #61dbfb; /* Light purple for links */
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .footer a:hover {
-    color: #0892D4; /* Change to white on hover */
-    text-decoration: underline;
+  color: #0892D4; /* Change to white on hover */
+  text-decoration: underline;
 }
 
 .footer p {
-    margin: 0;
+  margin: 0;
 }
 
 
 .logoContainer {
-    position: absolute;
-    bottom: 1.5vh;
-    right: 1.5rem;
+  position: absolute;
+  bottom: 1.5vh;
+  right: 1.5rem;
 }
 
 .logoContainer img {
-    max-height: 3.5vh;
-    max-width: 2.6vh;
+  max-height: 3.5vh;
+  max-width: 2.6vh;
 }
 
 @media screen and (max-width: 720px) {
-    .logoContainer {
-        position: initial;
-        margin-top: .5rem;
-    }
+  .logoContainer {
+    position: initial;
+    margin-top: .5rem;
+  }
 
-    .footer {
-        height: 14vh;
-        margin: auto;
-    }
+  .footer {
+    height: 14vh;
+    margin: auto;
+  }
 }

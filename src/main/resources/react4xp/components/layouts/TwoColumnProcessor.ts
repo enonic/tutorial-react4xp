@@ -1,5 +1,5 @@
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 import {LayoutComponent} from '@enonic-types/core';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 
 export const layoutProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:2-column'> = ({component}) => {
@@ -23,4 +23,3 @@ export const layoutProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:2-
         regions: regions,
     };
 };
-

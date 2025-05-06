@@ -65,7 +65,7 @@ It takes a single parameter, HelloProps. The type is declared like this:
 include::{sourcedir}types/HelloProps.ts[]
 ----
 
-The component is rendered because it has been added to the componentRegistry:
+As soon as a component is added to ComponentRegistry which is a registry of React views organized by type, it becomes renderable.
 
 .react4xp/componentRegistry.ts
 [source,TypeScript]
@@ -86,8 +86,10 @@ NOTE: Try clicking other content items in Content Studio, and you should simply 
 
 === HelloProcessor
 
-The responsiblity of HelloProcessor is to produce the props required by a component.
-A processor may also intercept the request, for instance by producing a redirect.
+The responsibility of HelloProcessor is to produce the props required by a component.
+
+DataFetcher is a registry of data fetching functions for components by their type.
+It is used in the backend to get props for rendering component views from ComponentRegistry.
 
 .react4xp/components/hello/HelloProcessor.ts
 [source,TypeScript]
