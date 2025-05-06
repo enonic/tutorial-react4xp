@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Hello React4XP</title>
+<title>Rendering a person</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,7 +437,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Hello React4XP</h1>
+<h1>Rendering a person</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -511,10 +511,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-Files" data-lang="Files">-&gt; react4xp/entries/App.tsx (React entry)
--&gt; react4xp/components/Hello.tsx (Welcome page)
+-&gt; react4xp/components/hello/Hello.tsx (Welcome page)
 -&gt; types/HelloProps.ts (TypeScript type for props)
 -&gt; react4xp/componentRegistry.tsx (R4XP component list)
--&gt; site/components/helloProcessor.ts (props for the Hello component)
+-&gt; site/components/hello/helloProcessor.ts (props for the Hello component)
 -&gt; react4xp/dataFetcher.ts (Map of data processors)</code></pre>
 </div>
 </div>
@@ -527,28 +527,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>The Hello component that rendered the actual page is very simple:</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/components/Hello.tsx</div>
+<div class="title">react4xp/hello/components/Hello.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">// File: src/main/resources/react4xp/components/Hello.tsx
-import type {HelloProps} from '/types/HelloProps';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {HelloProps} from '/types/HelloProps';
 import * as React from 'react';
+import styles from './Hello.module.css';
 
-export const Hello = ({title, text, initialCount}: HelloProps) =&gt; {
+export const Hello = ({title, initialCount}: HelloProps) =&gt; {
     const [count, setCount] = React.useState(initialCount);
 
     return (
         &lt;div&gt;
-            &lt;h1&gt;{title}&lt;/h1&gt;
-            &lt;h2&gt;{text}&lt;/h2&gt;
-            &lt;div&gt;
-                {count &gt; 0 ?
-                 &lt;&gt;
-                     &lt;p&gt;&lt;span className={"helloBottles"}&gt;{count}&lt;/span&gt;{' '}bottles of beer on the wall&lt;/p&gt;
-                     &lt;button className={"helloButton"} onClick={() =&gt; setCount(count - 1)}&gt;Drink beer&lt;/button&gt;
-                 &lt;/&gt; :
-                 &lt;h3&gt;Error 204: No beer&lt;/h3&gt;}
-
-            &lt;/div&gt;
+            &lt;section className={styles.helloContainer}&gt;
+                &lt;h1&gt;{title}&lt;/h1&gt;
+                &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count} Clicks!&lt;/button&gt;
+            &lt;/section&gt;
         &lt;/div&gt;
     );
 };</code></pre>
@@ -562,13 +555,12 @@ export const Hello = ({title, text, initialCount}: HelloProps) =&gt; {
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">export interface HelloProps {
     title: string
-    text: string
     initialCount: number
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The component is rendered because it has been added to the componentRegistry:</p>
+<p>As soon as a component is added to ComponentRegistry which is a registry of React views organized by type, it becomes renderable.</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/componentRegistry.ts</div>
@@ -605,22 +597,22 @@ Try clicking other content items in Content Studio, and you should simply see an
 <div class="sect2">
 <h3 id="helloprocessor"><a class="link" href="#helloprocessor">HelloProcessor</a></h3>
 <div class="paragraph">
-<p>The responsiblity of HelloProcessor is to produce the props required by a component.
-A processor may also intercept the request, for instance by producing a redirect.</p>
+<p>The responsibility of HelloProcessor is to produce the props required by a component.</p>
+</div>
+<div class="paragraph">
+<p>DataFetcher is a registry of data fetching functions for components by their type.
+It is used in the backend to get props for rendering component views from ComponentRegistry.</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/components/HelloProcessor.ts</div>
+<div class="title">react4xp/components/hello/HelloProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">// File: src/main/resources/react4xp/components/HelloProcessor.ts
-import {PageDescriptor} from '@enonic-types/core';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {PageDescriptor} from '@enonic-types/core';
 import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 export const helloProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt; = (params) =&gt; {
     return {
         title: `${params.content.displayName}`,
-        text: 'Welcome to the React4XP starter!',
-        // Added a new property for the bottle count
-        initialCount: 99,
+        initialCount: 0,
     };
 };</code></pre>
 </div>
@@ -661,14 +653,14 @@ Dive deeper into this topic by visiting the <a href="appendix/controller.ahtml">
 <h2 id="next"><a class="link" href="#next">Next</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Great, you rendered your first page, next up how about <a href="person.ahtml">adding your own components</a>.</p>
+<p>Great, you rendered your first page, next up how about <a href="rendering-basics.ahtml">adding your own components</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-04-29 10:19:55 UTC
+Last updated 2025-05-06 12:47:31 UTC
 </div>
 </div>
 </body>

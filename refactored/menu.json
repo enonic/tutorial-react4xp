@@ -13,12 +13,12 @@
       "document": "hello"
     },
     {
-      "title": "3 - Common Components",
-      "document": "common"
+      "title": "3 - Rendering basics",
+      "document": "rendering-basics"
     },
     {
-      "title": "4 - Person component",
-      "document": "person"
+      "title": "4 - App layout",
+      "document": "app-layout"
     },
     {
       "title": "5 - Rich text",
@@ -42,6 +42,48 @@
     },
     {
       "title": "Appendix",
+      "document": "appendix",
+      "menuItems": [
+        {
+          "title": "App controller",
+          "document": "appendix/controller"
+        },
+        {
+          "title": "Build",
+          "document": "appendix/build"
+        },
+        {
+          "title": "Dependency chunks",
+          "document": "appendix/chunks"
+        },
+        {
+          "title": "Configuration",
+          "document": "appendix/config"
+        },
+        {
+          "title": "Entries",
+          "document": "appendix/entries"
+        },
+        {
+          "title": "JsxPath",
+          "document": "appendix/jsxpath"
+        },
+        {
+          "title": "API",
+          "document": "appendix/api"
+        },
+        {
+          "title": "Upgrade",
+          "document": "appendix/upgrade"
+        }
+      ]
+    },
+    {
+      "title": "Demo",
+      "document": "demo"
+    },
+    {
+      "title": "Release Notes",
       "document": "appendix",
       "menuItems": [
         {

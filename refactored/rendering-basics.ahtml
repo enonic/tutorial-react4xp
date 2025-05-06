@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Common components</title>
+<title>Rendering a person</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,14 +437,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Common components</h1>
+<h1>Rendering a person</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#footer_component">Footer component</a></li>
-<li><a href="#css_module">CSS module</a></li>
-<li><a href="#global_css">Global CSS</a></li>
-<li><a href="#asset_url">Asset URL</a></li>
+<li><a href="#person_content_type">Person content type</a></li>
+<li><a href="#fetch_the_data">Fetch the data</a></li>
+<li><a href="#register_component">Register component</a></li>
+<li><a href="#result">Result</a></li>
 <li><a href="#next">Next</a></li>
 </ul>
 </div>
@@ -453,374 +453,333 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you will add footer components.</p>
-</div>
-<div class="paragraph">
-<p>A footer component is like an autograph, it is a signature of the author.
-It is a good idea to add a footer component to your application.
-The footer component will be added to all pages in the application.</p>
+<p>In this chapter you will add a new component that renders persons</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="footer_component"><a class="link" href="#footer_component">Footer component</a></h2>
+<h2 id="person_content_type"><a class="link" href="#person_content_type">Person content type</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Add the footer component within a common directory:</p>
+<p>The Headless Movie DB contains sample content, and content types.
+One of these is <code>Person</code>.
+From Content Studio, you may find and list persons.
+By selecting the JSON preview, you can also study the properties of a person:</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/components/common/Footer.tsx</div>
+<div class="title">Person JSON</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react';
-import styles from './Footer.module.css';
-
-
-export interface FooterProps {
-    logoUrl: string;
-}
-
-const Footer = ({logoUrl}: FooterProps) =&gt; (
-    &lt;footer className={styles.footer}&gt;
-        &lt;div className={styles.footerContainer}&gt;
-            &lt;p&gt;
-            {`© ${new Date().getFullYear()}, Built with `}
-            &lt;a href="https://reactjs.org"&gt;React&lt;/a&gt;
-            {` and Powered by `}
-            &lt;a href="https://enonic.com"&gt;Enonic XP&lt;/a&gt;
-            &lt;/p&gt;
-        &lt;/div&gt;
-        {/* Render logo if available */}
-        {logoUrl &amp;&amp; (
-            &lt;div className={styles.logoContainer}&gt;
-                &lt;img src={logoUrl}
-                     width={32}
-                     height={42}
-                     alt="Enonic XP logo"/&gt;
-            &lt;/div&gt;
-        )}
-    &lt;/footer&gt;
-);
-
-export default Footer;</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="css_module"><a class="link" href="#css_module">CSS module</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The footer component also has a dedicated CSS module, which allows targeted styling without conflicts with other components and classes.</p>
-</div>
-<div class="paragraph">
-<p>Add the CSS module to the common directory:</p>
-</div>
-<div class="listingblock">
-<div class="title">react4xp/components/common/Footer.module.css</div>
-<div class="content">
-<pre class="highlight"><code class="language-CSS" data-lang="CSS">/* Footer.module.css */
-.footer {
-    margin: 1vh auto auto auto;
-    width: 100vw;
-    text-align: center;
-    background-color: black; /* Dark theme */
-    position: absolute;
-    left: 0;
-    font-size: 18px;
-    height: 7vh;
-    align-content: center;
-}
-
-.footer a {
-    color: #61dbfb; /* Light purple for links */
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.footer a:hover {
-    color: #0892D4; /* Change to white on hover */
-    text-decoration: underline;
-}
-
-.footer p {
-    margin: 0;
-}
-
-
-.logoContainer {
-    position: absolute;
-    bottom: 1.5vh;
-    right: 1.5rem;
-}
-
-.logoContainer img {
-    max-height: 3.5vh;
-    max-width: 2.6vh;
-}
-
-@media screen and (max-width: 720px) {
-    .logoContainer {
-        position: initial;
-        margin-top: .5rem;
-    }
-
-    .footer {
-        height: 14vh;
-        margin: auto;
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+    "_id": "a8b374a2-c532-45eb-9aa1-73d1c37cd681",
+    "_name": "lea-seydoux",
+    "_path": "/hmdb/persons/lea-seydoux",
+    "creator": "user:system:su",
+    "modifier": "user:system:su",
+    "createdTime": "2021-11-23T10:01:16.711Z",
+    "modifiedTime": "2021-11-23T13:06:38.493Z",
+    "owner": "user:system:su",
+    "type": "com.enonic.app.hmdb:person",
+    "displayName": "Léa Seydoux",
+    "hasChildren": true,
+    "language": "en",
+    "valid": true,
+    "childOrder": "modifiedtime DESC",
+    "data": {
+        "photos": "09b3af0e-6da3-4bcf-88d9-11cbe9c41283",
+        "bio": "French actress Léa Seydoux was born in 1985 in Paris, France, to Valérie Schlumberger, a philanthropist, and Henri Seydoux, a businessman.",
+        "dateofbirth": "1985-07-01"
+    },
+    "x": {},
+    "page": {},
+    "attachments": {},
+    "publish": {
+        "from": "2024-11-13T13:32:39.427Z",
+        "first": "2024-11-13T13:32:39.427Z"
+    },
+    "workflow": {
+        "state": "READY",
+        "checks": {}
     }
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Add the footer to your app:</p>
-</div>
-<div class="listingblock">
-<div class="title">react4xp/entries/App.tsx</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import Footer from "../components/common/Footer"
-import type {AppProps} from '/types/AppProps';
-import {BaseComponent} from '@enonic/react-components';
-import * as React from 'react';
-import {componentRegistry} from '../componentRegistry';
-
-const App: React.FC&lt;AppProps&gt; = (props) =&gt; {
-    return (
-        &lt;&gt;
-            &lt;BaseComponent componentRegistry={componentRegistry} {...props}/&gt;
-            {(props.component.type == "page" || props.component.type == "contentType")
-             &amp;&amp; &lt;Footer logoUrl={props.url}/&gt;}
-        &lt;/&gt;
-    );
-}
-
-App.displayName = 'App';
-
-export default App;</code></pre>
-</div>
+<p>To implement the rendering we need to add code that will perform a two-step operation:</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="global_css"><a class="link" href="#global_css">Global CSS</a></h2>
+<h2 id="fetch_the_data"><a class="link" href="#fetch_the_data">Fetch the data</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create a data fetcher</p>
+<div class="listingblock">
+<div class="title">/src/main/resources/react4xp/components/content/PersonProcessor.ts</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {get as getContentByKey} from '/lib/xp/content';
+import {imageUrl} from '/lib/xp/portal';
+import {toArray} from "/react4xp/utils/arrayUtils";
+import {parentPath} from '/react4xp/utils/path';
+import {PageDescriptor} from '@enonic-types/core';
+import type {Content} from '@enonic-types/lib-content';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+
+function fetchAdditionalPhotos(photosIds) {
+    return photosIds.map(photoId =&gt; {
+        const photoContent = getContentByKey&lt;Content&gt;({key: photoId});
+        return {
+            _id: photoContent._id,
+            title: photoContent.displayName,
+            imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
+        };
+    });
+}
+
+export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
+    = (params) =&gt; {
+
+    const photos: string[] = toArray&lt;string&gt;(params.content.data.photos as string | string[])
+    const firstPhotoId = photos[0] || '';
+    const remainingPhotoIds = photos.slice(1) || '';
+
+    const {_id, displayName} = getContentByKey&lt;Content&gt;({key: firstPhotoId});
+
+    const extraPhotos = fetchAdditionalPhotos(remainingPhotoIds);
+
+    return {
+        displayName: `${params.content.displayName}`,
+        photo: {
+            _id,
+            title: displayName,
+            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
+        },
+        birthDate: params.content.data.dateofbirth,
+        restPhotos: extraPhotos,
+        parent: parentPath(params.request.path)
+    };
+};</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Then <strong>add it to the dataFetcher</strong>, with these lines:</p>
+<div class="listingblock">
+<div class="title">dataFetcher</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {personProcessor} from './components/content/PersonProcessor';
+
+dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>We are now able to fetch the Person data, next up we need to render it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="register_component"><a class="link" href="#register_component">Register component</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You might notice the placement is a bit off, this is because we need some general styling.
-For this we are going to add a global CSS file, this allows us to avoid repeating general styling in each component.</p>
-</div>
-<div class="paragraph">
-<p>Add global CSS file to the component directory:</p>
+<p>The component consists of two files:</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/components/globalStyles.css</div>
+<div class="title">/src/main/resources/react4xp/components/content/Person.tsx (React component)</div>
 <div class="content">
-<pre class="highlight"><code class="language-CSS" data-lang="CSS">html {
-  background-color: #071622;
-  color: ghostwhite;
-  font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
-  padding: 0;
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react'
+import styles from './Person.module.css';
+
+export const Person = (props) =&gt; {
+    const {parent, displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+    return (
+        &lt;div className={styles.person}&gt;
+            &lt;div className={"back"}&gt;
+                &lt;a href={parent}&gt;
+                    &lt;p&gt;Back&lt;/p&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;h1&gt;{displayName}&lt;/h1&gt;
+            &lt;p&gt;{birthDate}&lt;/p&gt;
+            &lt;div&gt;
+                {
+                    photo ? (
+                        &lt;&gt;
+                            &lt;div className={styles.photos}&gt;
+                                &lt;img src={photo.imageUrl}
+                                     title={photo.title}
+                                     alt={photo.title}
+                                     height={675}
+                                     width={1200}
+                                     loading="eager"
+                                /&gt;
+                            &lt;/div&gt;
+                        &lt;/&gt;
+                    ) : (
+                        &lt;p&gt;No photo available&lt;/p&gt;
+                    )
+                }
+                {restPhotos &amp;&amp; restPhotos.length &gt; 0 &amp;&amp; (
+                    &lt;&gt;
+                        &lt;h2&gt;Photos&lt;/h2&gt;
+                        &lt;div className={styles.photoContainer}&gt;
+                            &lt;div className={styles.photoGrid}&gt;
+                                &lt;div className={styles.photoScroll}&gt;
+                                    {restPhotos.map((photo, index) =&gt; (
+                                        &lt;img key={index}
+                                             src={photo.imageUrl}
+                                             title={photo.title}
+                                             alt={photo.title}
+                                             height={175}
+                                             width={175}
+                                        /&gt;
+                                    ))}
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/&gt;
+                )}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    )
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+
+./src/main/resources/react4xp/components/content/Person.module.css (CSS module)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-CSS" data-lang="CSS">.person .bio {
+  font-family: sans-serif;
 }
 
-.wrapper {
-}
-
-body {
-  margin: 0 auto 0 auto;
-
-}
-
-#PageView {
-  width: 100%;
-}
-
-.contentContainer &gt; div {
-  margin-bottom: calc(6vh - 16px);
-  min-height: 86vh;
-  padding: 8px;
-  max-width: 1400px;
-  padding-inline: 2.5vw;
+.person {
+  display: flex;
+  flex-direction: column;
   margin-inline: auto;
+  min-height: 1600px;
 }
 
-.back {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;
+.person h1 {
+  margin-bottom: 0;
+}
 
-  a {
-    color: #EF82F0;
-    text-decoration: none;
+.person p {
+  margin-top: 0;
+}
+
+.flexBlock {
+  display: flex;
+  justify-content: space-between;
+}
+
+.photoContainer {
+  position: relative;
+  display: flex;
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    height: 6px;
   }
 
-  p {
-    margin: 0;
-    background-color: #071622;
-    padding-inline: 0.2rem;
-    font-size: 1.6rem;
-    font-weight: bolder;
-    border-bottom-right-radius: 5px;
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: ghostwhite;
   }
 }
 
-h1 {
-  color: #0892D4;
-  font-size: 3rem;
-  margin: 0 0 3rem 0;
-  padding-top: 3rem;
-  text-align: left;
-  line-height: normal;
+.photoGrid {
+  overflow-x: auto;
 }
 
-h2 {
-  color: #EF82F0;
-  font-size: 2rem;
+.photoScroll {
+  display: flex;
+  gap: 25px;
+  white-space: nowrap;
+  padding: 0;
+  margin: .5rem 0 .5rem 0;
 }
 
-h3 {
-  color: #61DBFB;
-  font-size: 1.4rem;
+.photoScroll img {
+  border-radius: 5px;
 }
 
-a {
-  color: #61DBFB;
+.photos {
+  margin-block: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 50px;
+  gap: 50px;
 }
 
-img {
+.restPhotosContainer {
+  padding: 1rem 0;
+  max-width: calc(90vw - 1rem);
+}
+
+.restPhotos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15%, 1fr));
+  gap: 5%;
+  margin-block: 1rem;
+}
+
+.photos img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.restImg {
+  width: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   object-position: 50% 50%;
-  max-width: 1600px;
-}
-
-p {
-  font-size: 22px;
-}
-
-.editor-align-justify {
-  margin-inline: auto;
-}
-
-@media screen and (max-width: 900px) {
-
-  h1 {
-    font-size: 2.8rem;
-    padding-top: 2rem;
-  }
-
-  h2 {
-    font-size: 1.8rem;
-  }
-
-  h3 {
-    font-size: 1.3rem;
-  }
-
-  p {
-    font-size: 20px;
-  }
-
+  border-radius: 5px;
 }
 
 
-@media screen and (max-width: 720px) {
-
-  h1 {
-    font-size: 2.6rem;
-    padding-top: 1rem;
-  }
-
-  h2 {
-    font-size: 1.6rem;
-  }
-
-  h3 {
-    font-size: 1.2rem;
-  }
-
-  p {
-    font-size: 18px;
-  }
-
-  .contentContainer &gt; div {
-    min-height: 80vh;
-  }
-
-  figure {
-    margin-inline: 0.5rem;
-  }
-
+.richText {
+  font-size: 24px;
 }
 
-@media screen and (max-width: 500px) {
-  .back {
-    top: auto;
-    bottom: 0;
-    left: auto;
-    right: 0;
-    z-index: 20;
 
-    p {
-      border-top-left-radius: 5px;
-    }
-  }
+.richText figure img {
+  border-radius: 5px;
+}
+
+.photosHeader {
+  margin-top: 0;
+  color: #EF82F0;
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Add your global CSS file to the app:</p>
+<p>+
+Once they are created <strong>register the component in the componentRegistry</strong>, by adding the following lines:</p>
+</div>
+<div class="paragraph">
+<p>+
+.componentRegistry</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/entries/App.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import './components/globalStyles.css';</code></pre>
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Person} from './components/content/Person';
+
+componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="asset_url"><a class="link" href="#asset_url">Asset URL</a></h2>
+<h2 id="result"><a class="link" href="#result">Result</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Lastly we need to be able to display our cool React4XP logo!
-To do this we use assetUrl which is a function that generates a URL pointing to a static file.</p>
-</div>
-<div class="paragraph">
-<p>Update your app.ts in your site directory to include assetUrl and define a prop for it:</p>
-</div>
-<div class="listingblock">
-<div class="title">react4xp/site/app.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {assetUrl} from '/lib/enonic/asset';
-...
-
-export function get(request: Request): Response {
-    const url = assetUrl({path: 'images/React4XP.svg'});
-    ...
-
-    const props: AppProps = {
-        component,
-        url
-    }
-...</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>define prop for the url:</p>
-</div>
-<div class="listingblock">
-<div class="title">react4xp/types/AppProps.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {RenderableComponent} from '@enonic/react-components';
-
-export interface AppProps {
-    component: RenderableComponent,
-    url?: string
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Sweet!
-Now we have a footer component that is displayed on all pages in the application.
-The footer component is styled with a CSS module, and the global CSS file is used to style the app.</p>
+<p>Back in Content Studio, select a random person to see the glorious result.</p>
 </div>
 </div>
 </div>
@@ -835,7 +794,7 @@ The footer component is styled with a CSS module, and the global CSS file is use
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-04-29 10:19:55 UTC
+Last updated 2025-05-06 12:47:31 UTC
 </div>
 </div>
 </body>

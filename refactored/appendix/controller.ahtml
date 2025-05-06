@@ -469,15 +469,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-XML" data-lang="XML">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;site&gt;
-    &lt;form/&gt;
-    &lt;mappings&gt;
-        &lt;mapping controller="/site/app.js" order="10"&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-            &lt;pattern&gt;/.*&lt;/pattern&gt;
-        &lt;/mapping&gt;
-        &lt;mapping controller="/site/component.js" order="10"&gt; <i class="conum" data-value="2"></i><b>(2)</b>
-            &lt;service&gt;component&lt;/service&gt;
-        &lt;/mapping&gt;
-    &lt;/mappings&gt;
+  &lt;form/&gt;
+  &lt;mappings&gt;
+    &lt;mapping controller="/site/app.js" order="10"&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+      &lt;pattern&gt;/.*&lt;/pattern&gt;
+    &lt;/mapping&gt;
+    &lt;mapping controller="/site/component.js" order="10"&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+      &lt;service&gt;component&lt;/service&gt;
+    &lt;/mapping&gt;
+  &lt;/mappings&gt;
 &lt;/site&gt;</code></pre>
 </div>
 </div>
@@ -702,7 +702,7 @@ Most of these static assets are content-hashed, and optimized for client-side ca
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-04-29 10:19:55 UTC
+Last updated 2025-05-06 12:47:31 UTC
 </div>
 </div>
 </body>
