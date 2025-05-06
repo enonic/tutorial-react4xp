@@ -42,13 +42,13 @@ include::{sourcedir}react4xp/components/parts/ChildList.module.css[]
 ./src/main/resources/react4xp/componentRegistry.ts
 [source,TypeScript]
 ----
-include::{snippet}/parts/ComponentRegistry.tsx[]
+include::{snippet}/parts/componentRegistry.tsx[]
 ----
 +
 ./src/main/resources/react4xp/dataFetcher.ts
 [source,TypeScript]
 ----
-include::{snippet}/parts/DataFetcher.ts[]
+include::{snippet}/parts/dataFetcher.ts[]
 ----
 
 . *Now you should be able to see something like this:*
@@ -83,13 +83,13 @@ Since we are using globalStyles.css to style the heading, we don’t need to add
 ./src/main/resources/react4xp/componentRegistry.ts
 [source,TypeScript]
 ----
-include::{snippet}/parts/ComponentRegistry.tsx[]
+include::{snippet}/parts/componentRegistry.tsx[]
 ----
 +
 ./src/main/resources/react4xp/dataFetcher.ts
 [source,TypeScript]
 ----
-include::{snippet}/parts/DataFetcher.ts[]
+include::{snippet}/parts/dataFetcher.ts[]
 ----
 . *Now you should be able to see something like this:*
 image:header.png[title="Heading part",width=720px]

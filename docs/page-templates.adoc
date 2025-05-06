@@ -38,13 +38,13 @@ include::{snippet}/page-templates/MoviePage.module.css[]
 ./src/main/resources/react4xp/componentRegistry.ts
 [source,TypeScript]
 ----
-include::{snippet}/page-templates/ComponentRegistry.tsx[]
+include::{snippet}/page-templates/componentRegistry.tsx[]
 ----
 +
 ./src/main/resources/react4xp/dataFetcher.ts
 [source,TypeScript]
 ----
-include::{snippet}/page-templates/DataFetcher.ts[]
+include::{snippet}/page-templates/dataFetcher.ts[]
 ----
 
 == Task: Create template

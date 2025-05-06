@@ -39,13 +39,13 @@ include::{sourcedir}react4xp/components/layouts/TwoColumn.module.css[]
 ./src/main/resources/react4xp/componentRegistry.ts
 [source,TypeScript]
 ----
-include::{snippet}layout/ComponentRegistry.tsx[]
+include::{snippet}layout/componentRegistry.tsx[]
 ----
 +
 ./src/main/resources/react4xp/dataFetcher.ts
 [source,TypeScript]
 ----
-include::{snippet}layout/DataFetcher.ts[]
+include::{snippet}layout/dataFetcher.ts[]
 ----
 . *Now you should be able to see something like this*:
 image:layout-blank.png[title="2-column layout",width=720px]
