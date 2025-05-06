@@ -1,5 +1,5 @@
-import React from 'react'
 import {Layout} from '@enonic/react-components';
+import React from 'react'
 import styles from './TwoColumn.module.css';
 
 

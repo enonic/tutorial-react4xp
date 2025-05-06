@@ -3,7 +3,7 @@ import {articleProcessor} from "./components/content/ArticleProcessor";
 import {personProcessor} from './components/content/PersonProcessor';
 import {playlistProcessor} from './components/content/PlaylistProcessor';
 import {layoutProcessor} from './components/layouts/TwoColumnProcessor';
-import {pageProcessor} from './components/PageProcessor';
+import {pageProcessor} from './components/page/PageProcessor';
 import {childListProcessor} from './components/parts/ChildListProcessor';
 import {headingProcessor} from './components/parts/HeadingProcessor';
 import {movieProcessor} from "./components/parts/MovieProcessor";

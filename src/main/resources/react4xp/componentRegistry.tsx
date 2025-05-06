@@ -4,12 +4,12 @@ import {Person} from './components/content/Person';
 import {Playlist} from './components/content/Playlist';
 import {TwoColumnLayout} from './components/layouts/TwoColumn';
 import {Factbox} from './components/macro/FactBox';
-import {Page} from './components/Page';
+import {Page} from './components/page/Page';
 import {ChildList} from './components/parts/ChildList';
 import {Heading} from './components/parts/Heading';
 import {Movie} from './components/parts/Movie';
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 
 componentRegistry.addMacro('factbox', {View: Factbox});

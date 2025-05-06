@@ -1,6 +1,8 @@
-= Hello React4XP
+= Rendering a person
 :toc: right
 :imagesdir: media/
+:sourcedir: ../src/main/resources/
+:snippet: ../code-samples/code-snippets/
 
 Render your first React4XP page
 
@@ -36,10 +38,10 @@ These are the main files involved:
 [source,Files]
 ----
 -> react4xp/entries/App.tsx (React entry)
--> react4xp/components/Hello.tsx (Welcome page)
+-> react4xp/components/hello/Hello.tsx (Welcome page)
 -> types/HelloProps.ts (TypeScript type for props)
 -> react4xp/componentRegistry.tsx (R4XP component list)
--> site/components/helloProcessor.ts (props for the Hello component)
+-> site/components/hello/helloProcessor.ts (props for the Hello component)
 -> react4xp/dataFetcher.ts (Map of data processors)
 ----
 
@@ -49,10 +51,10 @@ Below we backtrack what happened:
 
 The Hello component that rendered the actual page is very simple:
 
-.react4xp/components/Hello.tsx
+.react4xp/hello/components/Hello.tsx
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/components/Hello.tsx[]
+include::{sourcedir}react4xp/components/hello/Hello.tsx[]
 ----
 
 It takes a single parameter, HelloProps. The type is declared like this:
@@ -60,10 +62,10 @@ It takes a single parameter, HelloProps. The type is declared like this:
 .types/HelloProps.ts
 [source,TypeScript]
 ----
-include::../src/main/resources/types/HelloProps.ts[]
+include::{sourcedir}types/HelloProps.ts[]
 ----
 
-The component is rendered because it has been added to the componentRegistry:
+As soon as a component is added to ComponentRegistry which is a registry of React views organized by type, it becomes renderable.
 
 .react4xp/componentRegistry.ts
 [source,TypeScript]
@@ -84,13 +86,15 @@ NOTE: Try clicking other content items in Content Studio, and you should simply 
 
 === HelloProcessor
 
-The responsiblity of HelloProcessor is to produce the props required by a component.
-A processor may also intercept the request, for instance by producing a redirect.
+The responsibility of HelloProcessor is to produce the props required by a component.
 
-.react4xp/components/HelloProcessor.ts
+DataFetcher is a registry of data fetching functions for components by their type.
+It is used in the backend to get props for rendering component views from ComponentRegistry.
+
+.react4xp/components/hello/HelloProcessor.ts
 [source,TypeScript]
 ----
-include::../src/main/resources/react4xp/components/HelloProcessor.ts[]
+include::{sourcedir}react4xp/components/hello/HelloProcessor.ts[]
 ----
 
 Similar to a component, a processor is invoked because it is registered in the dataFetcher:
@@ -112,5 +116,5 @@ TIP: Dive deeper into this topic by visiting the <<appendix/controller#, app con
 
 == Next
 
-Great, you rendered your first page, next up how about <<person#, adding your own components>>.
+Great, you rendered your first page, next up how about <<rendering-basics.adoc#, adding your own components>>.
 

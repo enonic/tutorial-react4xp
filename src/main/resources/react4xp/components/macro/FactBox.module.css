@@ -1,22 +1,12 @@
 @font-face {
   font-family: 'icomoon';
   src: url('../../public/fonts/icomoon.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
 }
 
 .icon {
-  /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon', 'sans-serif' !important;
-  speak: none;
   font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .factbox {
@@ -24,45 +14,22 @@
   color: #151d4e;
   display: block;
   text-decoration: none;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
   border-radius: 5px;
   clear: both;
-  -webkit-box-shadow: 0 2px 3px #b6b6b6;
-  -moz-box-shadow: 0 2px 3px #b6b6b6;
   box-shadow: 0 2px 3px #b6b6b6;
-  min-height: 24px;
-  line-height: 24px;
   padding: 10px 20px;
   max-width: fit-content;
-  margin: 1rem .5rem;
+  margin: 1rem;
   position: relative;
 }
 
 .factbox .header {
   font-size: 20px;
-  font-weight: bold;
   line-height: 24px;
-  margin: 0 0 0 1.3rem;
-}
-
-.factbox .icon {
-  display: block;
-  position: absolute;
-  font-size: 24px;
-  top: 12px;
-  left: 12px;
+  margin: 0 0 0 1rem;
 }
 
 .factbox .icon:before {
   content: "\e0c9";
   color: #4b93bd;
-}
-
-.factbox .body ul {
-  padding-left: 0;
-}
-
-.factbox .body ul li {
-  margin: 5px 0;
 }

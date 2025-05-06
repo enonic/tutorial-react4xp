@@ -53,10 +53,10 @@ export function get(request: Request) {
         request,
     });
     const component = dataFetcher.process({
-		component: origComponent,
-		content,
-		request
-	});
+        component: origComponent,
+        content,
+        request
+    });
 
     const props: AppProps = {
         component

@@ -1,6 +1,6 @@
 import {Regions,} from '@enonic/react-components';
 import React from 'react'
-import {componentRegistry} from '../componentRegistry';
+import {componentRegistry} from '../../componentRegistry';
 import styles from './Page.module.css';
 
 export const Page = (props: any) => {
