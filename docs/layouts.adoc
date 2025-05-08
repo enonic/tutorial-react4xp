@@ -53,5 +53,5 @@ image:layout-blank.png[title="2-column layout",width=720px]
 By combining layout, part and text we are starting to see the potential of the page editor:
 image:layout-filled.png[title="2-column layout with text",width=720px]
 +
-In the next chapter we will look into <<templates#, page templates>>.
+In the next chapter we will look into <<page-templates#, page templates>>.
 Page templates allow us to reuse a page definition across multiple content items.

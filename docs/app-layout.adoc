@@ -37,25 +37,7 @@ Add the footer to your app:
 .react4xp/entries/App.tsx
 [source,TypeScript]
 ----
-import Footer from "../components/common/Footer"
-import type {AppProps} from '/types/AppProps';
-import {BaseComponent} from '@enonic/react-components';
-import * as React from 'react';
-import {componentRegistry} from '../componentRegistry';
-
-const App: React.FC<AppProps> = (props) => {
-    return (
-        <>
-            <BaseComponent componentRegistry={componentRegistry} {...props}/>
-            {(props.component.type == "page" || props.component.type == "contentType")
-             && <Footer logoUrl={props.url}/>}
-        </>
-    );
-}
-
-App.displayName = 'App';
-
-export default App;
+include::{snippet}App-layout/App.tsx[]
 ----
 
 == Global CSS
@@ -76,7 +58,7 @@ Add your global CSS file to the app:
 .react4xp/entries/App.tsx
 [source,TypeScript]
 ----
-import './components/globalStyles.css';
+import '../components/globalStyles.css';
 ----
 
 == Asset URL
@@ -89,18 +71,7 @@ Update your app.ts in your site directory to include assetUrl and define a prop 
 .react4xp/site/app.ts
 [source,TypeScript]
 ----
-import {assetUrl} from '/lib/enonic/asset';
-...
-
-export function get(request: Request): Response {
-    const url = assetUrl({path: 'images/React4XP.svg'});
-    ...
-
-    const props: AppProps = {
-        component,
-        url
-    }
-...
+include::../code-samples/code-snippets/App-layout/app.ts[]
 ----
 
 define prop for the url:
@@ -108,12 +79,7 @@ define prop for the url:
 .react4xp/types/AppProps.ts
 [source,TypeScript]
 ----
-import type {RenderableComponent} from '@enonic/react-components';
-
-export interface AppProps {
-    component: RenderableComponent,
-    url?: string
-}
+include::../code-samples/code-snippets/App-layout/AppProps.ts[]
 ----
 
 Sweet!
@@ -122,4 +88,4 @@ The footer component is styled with a CSS module, and the global CSS file is use
 
 == Next
 
-You are on a roll, next - lets look into how we may pass editorial content to the component via <<props#, props>>.
+You are on a roll, next - lets look into <<rich-text#, Rich text>>.
