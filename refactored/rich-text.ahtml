@@ -496,23 +496,27 @@ The <code>Bio</code> field for persons is rich text, and some of the content is 
 ...
 
 
-return {
+export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
+    = (params) =&gt; {
+...
 
-    ...
-
-        bio
-:
-`${params.content.data.bio}`,
-    bioHtml
-:
-processHtml({
-    value: params.content.data.bio as string,
-    imageWidths: [200, 400, 800],
-})
-}
-;
-}
-;</code></pre>
+    return {
+        displayName: `${params.content.displayName}`,
+        photo: {
+            _id,
+            title: displayName,
+            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
+        },
+        birthDate: params.content.data.dateofbirth,
+        restPhotos: extraPhotos,
+        parent: parentPath(params.request.path),
+        bio: `${params.content.data.bio}`,
+        bioHtml: processHtml({
+            value: params.content.data.bio as string,
+            imageWidths: [200, 400, 800],
+        })
+    };
+};</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -522,6 +526,7 @@ processHtml({
 <li>
 <p><strong>add it to your component</strong></p>
 <div class="listingblock">
+<div class="title">/src/main/resources/react4xp/components/content/Person.tsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {componentRegistry} from '/react4xp/componentRegistry';
 import {RichText} from '@enonic/react-components';
@@ -586,7 +591,7 @@ export const Person = (props) =&gt; {
 <li>
 <p><strong>Component</strong></p>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/macro/Factbox.tsx</div>
+<div class="title">/src/main/resources/react4xp/components/macro/FactBox.tsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {MacroComponentParams} from '@enonic/react-components';
 import React from 'react';
@@ -609,7 +614,7 @@ export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
 <li>
 <p><strong>Styling</strong></p>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/macro/Factbox.module.css</div>
+<div class="title">/src/main/resources/react4xp/components/macro/FactBox.module.css</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">@font-face {
   font-family: 'icomoon';
@@ -654,10 +659,10 @@ export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/componentRegistry.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Factbox} from '/react4xp/components/macro/FactBox';
-import {ComponentRegistry} from '@enonic/react-components';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {ComponentRegistry} from '@enonic/react-components';
 import {Person} from './components/content/Person';
 import {Hello} from './components/hello/Hello';
+import {Factbox} from './components/macro/FactBox';
 
 export const componentRegistry = new ComponentRegistry;
 
@@ -681,12 +686,15 @@ componentRegistry.addMacro('factbox', {View: Factbox});</code></pre>
 </li>
 </ol>
 </div>
+<div class="paragraph">
+<p>Sweet! next up <a href="pages.ahtml">pages</a>.</p>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-06 12:47:31 UTC
+Last updated 2025-05-08 12:10:54 UTC
 </div>
 </div>
 </body>

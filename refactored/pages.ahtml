@@ -561,34 +561,33 @@ export const pageProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:m
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/dataFetcher.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Factbox} from '/react4xp/components/macro/FactBox';
-import {ComponentRegistry, Page} from '@enonic/react-components';
-import {Person} from './components/content/Person';
-import {Hello} from './components/hello/Hello';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {DataFetcher} from '/lib/enonic/react4xp';
+//import {helloProcessor} from './components/hello/HelloProcessor';
+import {personProcessor} from './components/content/PersonProcessor';
+import {pageProcessor} from './components/page/PageProcessor';
 
-export const componentRegistry = new ComponentRegistry;
+export const dataFetcher = new DataFetcher();
 
-componentRegistry.addContentType('portal:site', {View: Hello});
-componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});
-componentRegistry.addMacro('factbox', {View: Factbox});
-componentRegistry.addPage('com.enonic.app.hmdb:main', {View: Page});</code></pre>
+//dataFetcher.addContentType('portal:site', {processor: helloProcessor});
+dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});
+dataFetcher.addPage('com.enonic.app.hmdb:main', {processor: pageProcessor});</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p><strong>Register the page component</strong> in the component registry:</p>
+<p><strong>Register the page component</strong> in the component registry(and remove the old hello component):</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/componentRegistry.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Factbox} from '/react4xp/components/macro/FactBox';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">//import {Hello} from './components/hello/Hello';
+import {Factbox} from '/react4xp/components/macro/FactBox';
 import {Page} from '/react4xp/components/page/Page';
 import {ComponentRegistry} from '@enonic/react-components';
 import {Person} from './components/content/Person';
-import {Hello} from './components/hello/Hello';
 
 export const componentRegistry = new ComponentRegistry;
 
-componentRegistry.addContentType('portal:site', {View: Hello});
+//componentRegistry.addContentType('portal:site', {View: Hello});
 componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});
 componentRegistry.addMacro('factbox', {View: Factbox});
 componentRegistry.addPage('com.enonic.app.hmdb:main', {View: Page});</code></pre>
@@ -655,14 +654,14 @@ We can give it some content.</p>
 </ol>
 </div>
 <div class="paragraph">
-<p>That concludes the introduction to page rendering, coming up we’ll add some configurable page components to play with.</p>
+<p>That concludes the introduction to page rendering, coming up we’ll add some configurable page components to play with using <a href="parts.ahtml">parts</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-06 12:47:31 UTC
+Last updated 2025-05-08 12:10:54 UTC
 </div>
 </div>
 </body>

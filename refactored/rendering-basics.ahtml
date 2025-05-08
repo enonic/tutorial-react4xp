@@ -759,14 +759,10 @@ export const Person = (props) =&gt; {
 </div>
 </div>
 <div class="paragraph">
-<p>+
-Once they are created <strong>register the component in the componentRegistry</strong>, by adding the following lines:</p>
-</div>
-<div class="paragraph">
-<p>+
-.componentRegistry</p>
+<p>Once they are created <strong>register the component in the componentRegistry</strong>, by adding the following lines:</p>
 </div>
 <div class="listingblock">
+<div class="title">componentRegistry</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Person} from './components/content/Person';
 
@@ -787,14 +783,14 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});<
 <h2 id="next"><a class="link" href="#next">Next</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are on a roll, next - lets look into how we may pass editorial content to the component via <a href="props.ahtml">props</a>.</p>
+<p>You are on a roll, next - lets look into <a href="app-layout.ahtml">app layout</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-06 12:47:31 UTC
+Last updated 2025-05-08 12:10:54 UTC
 </div>
 </div>
 </body>

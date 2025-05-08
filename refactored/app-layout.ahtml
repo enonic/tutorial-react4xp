@@ -563,11 +563,11 @@ export default Footer;</code></pre>
 <div class="listingblock">
 <div class="title">react4xp/entries/App.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import Footer from "../components/common/Footer"
-import type {AppProps} from '/types/AppProps';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {AppProps} from '/types/AppProps';
 import {BaseComponent} from '@enonic/react-components';
 import * as React from 'react';
 import {componentRegistry} from '../componentRegistry';
+import Footer from "../components/common/Footer"
 
 const App: React.FC&lt;AppProps&gt; = (props) =&gt; {
     return (
@@ -688,7 +688,7 @@ p {
 <div class="listingblock">
 <div class="title">react4xp/entries/App.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import './components/globalStyles.css';</code></pre>
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import '../components/globalStyles.css';</code></pre>
 </div>
 </div>
 </div>
@@ -707,11 +707,12 @@ To do this we use assetUrl which is a function that generates a URL pointing to 
 <div class="title">react4xp/site/app.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {assetUrl} from '/lib/enonic/asset';
+
 ...
 
 export function get(request: Request): Response {
     const url = assetUrl({path: 'images/React4XP.svg'});
-    ...
+...
 
     const props: AppProps = {
         component,
@@ -745,14 +746,14 @@ The footer component is styled with a CSS module, and the global CSS file is use
 <h2 id="next"><a class="link" href="#next">Next</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are on a roll, next - lets look into how we may pass editorial content to the component via <a href="props.ahtml">props</a>.</p>
+<p>You are on a roll, next - lets look into <a href="rich-text.ahtml">Rich text</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-06 12:47:31 UTC
+Last updated 2025-05-08 12:10:54 UTC
 </div>
 </div>
 </body>
