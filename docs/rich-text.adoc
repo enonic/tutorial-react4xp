@@ -33,6 +33,7 @@ ProcessHtml is a function to prepare data for the RichText component that alread
 
 . *add it to your component*
 +
+./src/main/resources/react4xp/components/content/Person.tsx
 [source,TypeScript]
 ----
 include::{snippet}Rich-text/Person.tsx[]
@@ -54,7 +55,7 @@ Adding the Fact-Box is easy, we just need to add a new component that will be us
 
 . *Component*
 +
-./src/main/resources/react4xp/components/macro/Factbox.tsx
+./src/main/resources/react4xp/components/macro/FactBox.tsx
 [source,TypeScript]
 ----
 include::{sourcedir}react4xp/components/macro/FactBox.tsx[]
@@ -62,7 +63,7 @@ include::{sourcedir}react4xp/components/macro/FactBox.tsx[]
 
 . *Styling*
 +
-./src/main/resources/react4xp/components/macro/Factbox.module.css
+./src/main/resources/react4xp/components/macro/FactBox.module.css
 [source,TypeScript]
 ----
 include::{sourcedir}react4xp/components/macro/FactBox.module.css[]
@@ -81,3 +82,5 @@ include::{snippet}Rich-text/componentRegistry.tsx[]
 You should now see Lea Seydoux updated with the FactBox macro:
 +
 image::rich-text-with-macro.png[title="Person content rendered with rich text and macro",width=720px]
+
+Sweet! next up <<pages#, pages>>.

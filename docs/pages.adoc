@@ -46,7 +46,7 @@ include::{snippet}pages/dataFetcher.ts[]
 ----
 
 
-. *Register the page component* in the component registry:
+. *Register the page component* in the component registry(and remove the old hello component):
 +
 ./src/main/resources/componentRegistry.tsx
 [source,TypeScript]
@@ -85,4 +85,4 @@ image:entry-site-complete.png[width=647px]
 +
 . You may also click the Preview button in Content Studio for a full screen version.
 
-That concludes the introduction to page rendering, coming up we’ll add some configurable page components to play with.
+That concludes the introduction to page rendering, coming up we’ll add some configurable page components to play with using <<parts#,parts>>.

@@ -1,7 +1,7 @@
-import {Factbox} from '/react4xp/components/macro/FactBox';
 import {ComponentRegistry} from '@enonic/react-components';
 import {Person} from './components/content/Person';
 import {Hello} from './components/hello/Hello';
+import {Factbox} from './components/macro/FactBox';
 
 export const componentRegistry = new ComponentRegistry;
 

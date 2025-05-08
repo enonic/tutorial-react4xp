@@ -89,9 +89,9 @@ include::{snippet}Rendering-basics/Person.tsx[]
 ----
 include::{snippet}Rendering-basics/Person.module.css[]
 ----
-+
+
 Once they are created *register the component in the componentRegistry*, by adding the following lines:
-+
+
 .componentRegistry
 [source,TypeScript]
 ----
@@ -108,4 +108,4 @@ Back in Content Studio, select a random person to see the glorious result.
 
 == Next
 
-You are on a roll, next - lets look into how we may pass editorial content to the component via <<props#, props>>.
+You are on a roll, next - lets look into <<app-layout#, app layout>>.

@@ -1,11 +1,10 @@
-import {Factbox} from '/react4xp/components/macro/FactBox';
-import {ComponentRegistry, Page} from '@enonic/react-components';
-import {Person} from './components/content/Person';
-import {Hello} from './components/hello/Hello';
+import {DataFetcher} from '/lib/enonic/react4xp';
+//import {helloProcessor} from './components/hello/HelloProcessor';
+import {personProcessor} from './components/content/PersonProcessor';
+import {pageProcessor} from './components/page/PageProcessor';
 
-export const componentRegistry = new ComponentRegistry;
+export const dataFetcher = new DataFetcher();
 
-componentRegistry.addContentType('portal:site', {View: Hello});
-componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});
-componentRegistry.addMacro('factbox', {View: Factbox});
-componentRegistry.addPage('com.enonic.app.hmdb:main', {View: Page});
+//dataFetcher.addContentType('portal:site', {processor: helloProcessor});
+dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});
+dataFetcher.addPage('com.enonic.app.hmdb:main', {processor: pageProcessor});
