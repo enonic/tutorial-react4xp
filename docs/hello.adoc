@@ -16,7 +16,7 @@ In a few steps we connect the application to the Headless Movie DB, and should b
 +
 . Select the root item in the tree structure, and you should see something like this:
 +
-image:hmdb.png[title="HMDB welcome page", width=855px]
+image:hmdb.png[title="HMDB welcome page",width=900px]
 +
 . Click btn:[Edit], and connect the React4xp app to the site.
 +
@@ -73,7 +73,7 @@ As soon as a component is added to ComponentRegistry which is a registry of Reac
 import {ComponentRegistry} from '@enonic/react-components';
 import {Hello} from './components/Hello';
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 componentRegistry.addContentType('portal:site', { View: Hello }); //<1>
 

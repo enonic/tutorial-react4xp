@@ -48,10 +48,10 @@ include::{snippet}layout/componentRegistry.tsx[]
 include::{snippet}layout/dataFetcher.ts[]
 ----
 . *Now you should be able to see something like this*:
-image:layout-blank.png[title="2-column layout",width=720px]
+image:layout-blank.png[title="2-column layout",width=900px]
 +
 By combining layout, part and text we are starting to see the potential of the page editor:
-image:layout-filled.png[title="2-column layout with text",width=720px]
+image:layout-filled.png[title="2-column layout with text",width=900px]
 +
 In the next chapter we will look into <<page-templates#, page templates>>.
 Page templates allow us to reuse a page definition across multiple content items.

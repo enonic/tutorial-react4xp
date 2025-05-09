@@ -7,7 +7,7 @@
 Enonic provides a highly customizable component type called link:https://developer.enonic.com/docs/xp/stable/cms/pages/parts[parts^].
 
 If you take a look at the person folder you might see something like this:
-image:child-list-no-render.png[title="Parts in the person folder",width=720px]
+image:child-list-no-render.png[title="Parts in the person folder",width=900px]
 
 == Task: Add a part
 
@@ -52,7 +52,7 @@ include::{snippet}/parts/dataFetcher.ts[]
 ----
 
 . *Now you should be able to see something like this:*
-image:child-list-render.png[title="Child list part",width=720px]
+image:child-list-render.png[title="Child list part",width=900px]
 +
 Try updating it by customizing the page and changing order, adding or removing items in the tree structure.
 
@@ -92,6 +92,6 @@ include::{snippet}/parts/bonus/componentRegistry.tsx[]
 include::{snippet}/parts/bonus/dataFetcher.ts[]
 ----
 . *Now you should be able to see something like this:*
-image:header.png[title="Heading part",width=720px]
+image:header.png[title="Heading part",width=900px]
 
 In the next chapter you will make page composition even more interesting, with the introduction of <<layouts#, layouts>>.

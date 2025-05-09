@@ -3,7 +3,7 @@ import {Heading} from './components/parts/Heading';
 
 ...
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 ...
 

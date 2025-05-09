@@ -18,12 +18,10 @@ function fetchAdditionalPhotos(photoIds: string[]) {
 export const movieProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:movie-details'> = (params) => {
     const data = params.content.data;
 
-    // Extract the photos from content.data
     const photos: string[] = toArray<string>(data.photos as string | string[]);
     const firstPhotoId = photos[0] || ''; // First photo ID
     const remainingPhotoIds: string[] = photos.slice(1); // Remaining photo IDs
 
-    // Fetch the first photo
     const firstPhotoContent = getContentByKey<Content>({key: firstPhotoId});
     const firstPhoto = firstPhotoContent
                        ? {
@@ -34,11 +32,8 @@ export const movieProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:mov
         }
                        : null;
 
-    // Fetch remaining photos
     const restphotos = fetchAdditionalPhotos(remainingPhotoIds);
 
-
-    // Process the cast
     const cast = toArray<any>(data.cast).map(castMember => {
         const actorContent = getContentByKey<Content>({key: castMember.actor});
 
@@ -56,11 +51,9 @@ export const movieProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:mov
         };
     });
 
-    // Handle director only if it exists
-    let director = null; // Default case if no director is available
+    let director = null;
     if (data.director) {
-        // Execute lines 92-114 here
-        const directorId = data.director as string; // Director ID from the "data" object
+        const directorId = data.director as string;
 
         const result = getContentByKey<Content>({key: directorId});
 
@@ -83,11 +76,11 @@ export const movieProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:mov
         trailer: data.trailer,
         abstract: data.abstract,
         release: data.release,
-        photo: firstPhoto, // First photo
-        restphotos, // Remaining photos
+        photo: firstPhoto,
+        restphotos,
         website: data.website,
-        cast, // Cast members,
-        director // Only include director if it exists
+        cast,
+        director
     };
 };
 
