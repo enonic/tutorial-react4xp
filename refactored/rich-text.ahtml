@@ -475,7 +475,7 @@ The <code>Bio</code> field for persons is rich text, and some of the content is 
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="media/rich-text-bio.png" alt="rich text bio" width="662px">
+<img src="media/rich-text-bio.png" alt="rich text bio" width="720px">
 </div>
 <div class="title">Figure 1. Rich text bio field for Lea Seydoux</div>
 </div>
@@ -664,7 +664,7 @@ import {Person} from './components/content/Person';
 import {Hello} from './components/hello/Hello';
 import {Factbox} from './components/macro/FactBox';
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 componentRegistry.addContentType('portal:site', {View: Hello});
 componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});
@@ -694,7 +694,7 @@ componentRegistry.addMacro('factbox', {View: Factbox});</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-08 12:10:54 UTC
+Last updated 2025-05-09 10:36:42 UTC
 </div>
 </div>
 </body>

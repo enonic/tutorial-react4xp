@@ -454,7 +454,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph">
 <p>If you take a look at the person folder you might see something like this:
-<span class="image"><img src="media/child-list-no-render.png" alt="child list no render" width="720px" title="Parts in the person folder"></span></p>
+<span class="image"><img src="media/child-list-no-render.png" alt="child list no render" width="900px" title="Parts in the person folder"></span></p>
 </div>
 </div>
 </div>
@@ -552,7 +552,7 @@ export const childListProcessor: ComponentProcessorFunction&lt;'com.enonic.app.h
 
 ...
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 ...
 
@@ -576,7 +576,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:child-list', {processor: childListProce
 </li>
 <li>
 <p><strong>Now you should be able to see something like this:</strong>
-<span class="image"><img src="media/child-list-render.png" alt="child list render" width="720px" title="Child list part"></span></p>
+<span class="image"><img src="media/child-list-render.png" alt="child list render" width="900px" title="Child list part"></span></p>
 <div class="paragraph">
 <p>Try updating it by customizing the page and changing order, adding or removing items in the tree structure.</p>
 </div>
@@ -651,7 +651,7 @@ import {Heading} from './components/parts/Heading';
 
 ...
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 ...
 
@@ -678,7 +678,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor}
 </li>
 <li>
 <p><strong>Now you should be able to see something like this:</strong>
-<span class="image"><img src="media/header.png" alt="header" width="720px" title="Heading part"></span></p>
+<span class="image"><img src="media/header.png" alt="header" width="900px" title="Heading part"></span></p>
 </li>
 </ol>
 </div>
@@ -690,7 +690,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-08 12:10:54 UTC
+Last updated 2025-05-09 10:36:42 UTC
 </div>
 </div>
 </body>

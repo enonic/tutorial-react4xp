@@ -585,7 +585,7 @@ import {Page} from '/react4xp/components/page/Page';
 import {ComponentRegistry} from '@enonic/react-components';
 import {Person} from './components/content/Person';
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 //componentRegistry.addContentType('portal:site', {View: Hello});
 componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});
@@ -620,7 +620,7 @@ From the edit view, activate the page editor by clicking the monitor icon in the
 </div>
 <div class="paragraph">
 <p>You should now see the following:
-<span class="image"><img src="media/empty-site.png" alt="empty site" width="647px" title="Empty site"></span></p>
+<span class="image"><img src="media/empty-site.png" alt="empty site" width="900px" title="Empty site"></span></p>
 </div>
 <div class="paragraph">
 <p>Now that we have a page component with a single "dropzone" inside (the region we specified earlier).
@@ -645,7 +645,7 @@ We can give it some content.</p>
 <li>
 <p>Text mode will now be activated, and you can use the rich-text editor to write and format text, but also insert images.</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/entry-site-complete.png" alt="entry site complete" width="647px"></span></p>
+<p><span class="image"><img src="media/entry-site-complete.png" alt="entry site complete" width="900px"></span></p>
 </div>
 </li>
 <li>
@@ -661,7 +661,7 @@ We can give it some content.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-08 12:10:54 UTC
+Last updated 2025-05-09 10:36:42 UTC
 </div>
 </div>
 </body>

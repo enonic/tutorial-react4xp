@@ -465,432 +465,32 @@ This is especially useful for sites with a lot of similar pages, such as blogs o
 <ol class="arabic">
 <li>
 <p><strong>Add the <code>movie-details</code> part</strong> to your application:</p>
+<div class="paragraph">
+<p>For this task we have the files prepared in the <code>code-samples</code> folder, you just need to move them from the <code>code-samples</code> folder:</p>
+</div>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/parts/MovieDetails.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Part} from "@enonic/react-components";
-import React from 'react';
-import styles from './MoviePage.module.css';
-
-export const Movie = (props) =&gt; {
-    // All properties are accessed via props object
-    const {
-        names,
-        paths,
-        componentRegistry,
-        trailer,
-        name,
-        photo,
-        website,
-        release,
-        cast,
-        director,
-        subtitle,
-        abstract,
-        restphotos,
-        ...extraProps
-    } = props;
-
-    return (
-        &lt;Part {...extraProps}&gt;
-            &lt;div className={styles.moviePage}&gt;
-                &lt;header&gt;
-                    &lt;h1&gt;&lt;a href={props.trailer} className={styles.sneakyTitle}&gt;{props.name}&lt;/a&gt;&lt;/h1&gt;
-                &lt;/header&gt;
-
-                &lt;main className={styles.main}&gt;
-                    &lt;div className={styles.flexy}&gt;
-                        {/* First Photo */}
-                        {props.photo &amp;&amp; (
-                            &lt;section className={styles.firstPhoto}&gt;
-                                &lt;a href={props.trailer}&gt;
-                                    &lt;img
-                                        src={props.photo.imageUrl}
-                                        alt={props.photo.title}
-                                        title={props.photo.title}
-                                        className={styles.featuredImage}
-                                        loading="eager"
-                                        height={1200}
-                                        width={800}
-                                    /&gt;
-                                &lt;/a&gt;
-                            &lt;/section&gt;
-                        )}
-
-                        &lt;div className={styles.blocky}&gt;
-                            &lt;div&gt;
-                                {/* Release Date and Website */}
-                                &lt;div&gt;
-                                    {props.website &amp;&amp; (
-                                        &lt;&gt;
-                                            &lt;h2&gt;
-                                                Official Website
-                                            &lt;/h2&gt;
-                                            &lt;p className={styles.website}&gt;
-                                                &lt;a href={props.website} className={styles.sneakyLink} target="_blank"
-                                                   rel="noopener noreferrer"&gt;
-                                                    {props.website}
-                                                &lt;/a&gt;
-                                            &lt;/p&gt;
-                                        &lt;/&gt;
-                                    )}
-                                    {props.release &amp;&amp; (
-                                        &lt;&gt;
-                                            &lt;h2&gt;Release Date:&lt;/h2&gt;
-                                            &lt;p className={styles.date}&gt;{props.release}&lt;/p&gt;
-                                        &lt;/&gt;
-                                    )}
-                                &lt;/div&gt;
-
-                                {/* Cast */}
-                                {props.cast.length &gt; 0 &amp;&amp; (
-                                    &lt;section className={styles.cast}&gt;
-                                        &lt;h2&gt;Cast&lt;/h2&gt;
-                                        &lt;ul&gt;
-                                            {props.cast.map((member, index) =&gt; (
-                                                &lt;li key={index}&gt;
-                                                    &lt;a href={member.castUrl} className={styles.sneakyCastLink}&gt;
-                                                        &lt;img
-                                                            src={member.photoUrl}
-                                                            alt={member.actorName}
-                                                            height={150}
-                                                            width={150}
-                                                        /&gt;
-                                                        &lt;p&gt;&lt;strong&gt;{member.actorName}&lt;/strong&gt; as {member.character}
-                                                        &lt;/p&gt;
-                                                    &lt;/a&gt;
-                                                &lt;/li&gt;
-                                            ))}
-                                        &lt;/ul&gt;
-                                    &lt;/section&gt;
-                                )}
-                            &lt;/div&gt;
-                            &lt;div&gt;
-                                {/* Director */}
-                                {props.director &amp;&amp; (
-                                    &lt;section className={styles.director}&gt;
-                                        &lt;h2&gt;Director&lt;/h2&gt;
-                                        &lt;a href={props.director.url} className={styles.sneakyLink}&gt;
-                                            &lt;h3&gt;{props.director.name}&lt;/h3&gt;
-                                            &lt;img
-                                                className={styles.directorImg}
-                                                src={props.director.photo}
-                                                alt={"Director"}
-                                                height={200}
-                                                width={300}
-                                            /&gt;
-                                        &lt;/a&gt;
-                                    &lt;/section&gt;
-                                )}
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-
-                    &lt;h2&gt;{props.subtitle}&lt;/h2&gt;
-
-                    {/* Abstract */}
-                    &lt;section className={styles.abstract}&gt;
-                        &lt;p&gt;{props.abstract}&lt;/p&gt;
-                    &lt;/section&gt;
-
-                    {/* Additional Photos */}
-                    {props.restphotos &amp;&amp; props.restphotos.length &gt; 0 &amp;&amp; (
-                        &lt;section className={styles.photos}&gt;
-                            &lt;div className={styles.photoGrid}&gt;
-                                &lt;div className={styles.photoScroll}&gt;
-                                    {props.restphotos.map((photo, index) =&gt; (
-                                        &lt;img
-                                            key={index}
-                                            src={photo.imageUrl}
-                                            alt={photo.title}
-                                            title={photo.title}
-                                            className={styles.photoImg}
-                                            loading="lazy"
-                                            height={220}
-                                            width={340}
-                                        /&gt;
-                                    ))}
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/section&gt;
-                    )}
-                &lt;/main&gt;
-            &lt;/div&gt;
-        &lt;/Part&gt;
-    );
-};</code></pre>
+<pre class="highlight"><code class="language-files" data-lang="files">code-samples/
+    parts/
+        Movie.tsx
+        MovieProcessor.ts
+        MoviePage.module.css</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p><strong>Add the <code>movie-details</code> processor</strong> to your application:</p>
+<div class="paragraph">
+<p>To the <code>parts</code> folder:</p>
+</div>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/parts/MovieProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {get as getContentByKey} from '/lib/xp/content';
-import {imageUrl, pageUrl} from '/lib/xp/portal';
-import {toArray} from "/react4xp/utils/arrayUtils";
-import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
-
-function fetchAdditionalPhotos(photoIds: string[]) {
-    return photoIds.map(photoId =&gt; {
-        const photoContent = getContentByKey&lt;Content&gt;({key: photoId});
-        return {
-            _id: photoContent._id,
-            title: photoContent.displayName,
-            imageUrl: imageUrl({id: photoContent._id, scale: 'block(340, 220)'}) // Image scaled for remaining photos
-        };
-    });
-}
-
-export const movieProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:movie-details'&gt; = (params) =&gt; {
-    const data = params.content.data;
-
-    // Extract the photos from content.data
-    const photos: string[] = toArray&lt;string&gt;(data.photos as string | string[]);
-    const firstPhotoId = photos[0] || ''; // First photo ID
-    const remainingPhotoIds: string[] = photos.slice(1); // Remaining photo IDs
-
-    // Fetch the first photo
-    const firstPhotoContent = getContentByKey&lt;Content&gt;({key: firstPhotoId});
-    const firstPhoto = firstPhotoContent
-                       ? {
-            _id: firstPhotoContent._id,
-            title: firstPhotoContent.displayName,
-            imageUrl: imageUrl({id: firstPhotoContent._id, scale: 'block(800, 1200)'}), // Larger scale for first photo
-            id: firstPhotoContent._id
-        }
-                       : null;
-
-    // Fetch remaining photos
-    const restphotos = fetchAdditionalPhotos(remainingPhotoIds);
-
-
-    // Process the cast
-    const cast = toArray&lt;any&gt;(data.cast).map(castMember =&gt; {
-        const actorContent = getContentByKey&lt;Content&gt;({key: castMember.actor});
-
-
-        const photos: string[] = toArray&lt;string&gt;(actorContent.data.photos as string | string[])
-        const firstPhotoId = photos[0] || ''; // Safely access the first ID
-
-
-        return {
-            actorName: actorContent.displayName,
-            photoUrl: imageUrl({id: firstPhotoId, scale: 'block(150, 150)'}),
-            character: castMember.character,
-            id: actorContent._id,
-            castUrl: pageUrl({path: actorContent._path})
-        };
-    });
-
-    // Handle director only if it exists
-    let director = null; // Default case if no director is available
-    if (data.director) {
-        // Execute lines 92-114 here
-        const directorId = data.director as string; // Director ID from the "data" object
-
-        const result = getContentByKey&lt;Content&gt;({key: directorId});
-
-
-        const directorPhotos: string[] = toArray&lt;string&gt;(result.data.photos as string | string[])
-        const firstDirectorPhoto = directorPhotos[0];
-        const directorTitle = result.displayName;
-        const directorUrl = pageUrl({path: result._path});
-
-        director = {
-            name: directorTitle,
-            url: directorUrl,
-            photo: imageUrl({id: firstDirectorPhoto, scale: 'block(300, 200)'})
-        };
-    }
-
-    return {
-        name: params.content.displayName,
-        subtitle: data.subtitle,
-        trailer: data.trailer,
-        abstract: data.abstract,
-        release: data.release,
-        photo: firstPhoto, // First photo
-        restphotos, // Remaining photos
-        website: data.website,
-        cast, // Cast members,
-        director // Only include director if it exists
-    };
-};</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p><strong>Add the <code>movie-details</code> CSS module</strong> to your application:</p>
-<div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/parts/Movie.module.css</div>
-<div class="content">
-<pre class="highlight"><code class="language-CSS" data-lang="CSS">.moviePage {
-  line-height: 1.6;
-  margin-inline: auto;
-}
-
-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-
-.featuredImage {
-  display: block;
-  margin: 0 auto 2.5rem auto;
-  border: solid 1px #61DBFB;
-  box-shadow: 0 0 4px #61DBFB;
-  border-radius: 8px;
-  max-width: 100%;
-  height: auto;
-}
-
-.photoImg {
-  margin-right: 25px;
-  max-width: 100%;
-  border-radius: 8px;
-  margin-block: 5px;
-}
-
-.director a {
-  overflow: visible;
-  margin-top: -1rem;
-}
-
-.directorImg {
-  width: calc(100% - 2px);
-  border: solid 1px #61DBFB;
-  box-shadow: 0 0 4px #61DBFB;
-  border-radius: 8px;
-}
-
-.photos {
-  padding: 1rem 0;
-  background: #000121;
-  position: relative;
-  width: 100vw;
-  display: flex;
-  left: 50%;
-  right: 50%;
-  transform: translateX(-50%);
-  overflow-x: auto;
-
-  ::-webkit-scrollbar {
-    -webkit-appearance: none;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background-color: ghostwhite;
-  }
-}
-
-.photoGrid {
-  max-width: 1400px;
-  margin: 1rem auto 1rem auto;
-  width: 95%;
-  border-radius: 8px;
-  overflow-x: auto;
-}
-
-.photoScroll {
-  display: flex;
-  gap: 25px;
-  white-space: nowrap;
-}
-
-.cast h2 {
-  color: #EF82F0
-}
-
-.cast ul {
-  list-style: none;
-  padding: 0;
-}
-
-.cast li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.cast h3 {
-  color: #EF82F0;
-}
-
-.cast img {
-  width: 75px;
-  height: 75px;
-  margin-right: 10px;
-  border: 1px solid #61DBFB;
-  box-shadow: 0 0 4px #61DBFB;
-  border-radius: 8px;
-}
-
-.cast a {
-  overflow: unset;
-}
-
-.flexy {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-  width: 100%;
-  justify-content: space-between;
-}
-
-
-.blocky {
-  display: block;
-  width: 400px;
-  max-width: 100%;
-  margin-top: -.8rem;
-}
-
-.blocky h2 {
-  margin-top: 0;
-}
-
-.sneakyLink {
-  text-decoration: none;
-  display: inline-block;
-  max-width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.website {
-  margin-top: -1rem;
-  max-width: 100%;
-}
-
-.sneakyLink H3 {
-  margin-inline: 0rem;
-  margin-top: 0;
-}
-
-.sneakyTitle {
-  text-decoration: none;
-  color: #0892D4;
-}
-
-.sneakyCastLink {
-  text-decoration: none;
-  color: ghostwhite;
-  font-size: 18px;
-  display: flex;
-}
-
-.date {
-  font-size: 24px;
-  margin-top: -1rem;
-}</code></pre>
+<pre class="highlight"><code class="language-files" data-lang="files">src/
+    main/
+        resources/
+            react4xp/
+                components/
+                    parts/
+                        Movie.tsx
+                        MoviePage.module.css
+                        MovieProcessor.ts</code></pre>
 </div>
 </div>
 </li>
@@ -903,7 +503,7 @@ header {
 
 ...
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 ...
 
@@ -943,7 +543,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:movie-details', {processor: movieProces
 <li>
 <p><strong>Activate the page editor</strong> by pressing <strong>Display</strong> icon in the top right screen corner, select the "Main page" descriptor and <strong>add the "Movie details" part</strong> to the page.</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/page-template.png" alt="page template" width="720px" title="Movie details part"></span></p>
+<p><span class="image"><img src="media/page-template.png" alt="page template" width="900px" title="Movie details part"></span></p>
 </div>
 <div class="paragraph">
 <p>We now have a single movie nicely presented, but it would be cumbersome to manually configure each movie like this - page templates to the rescue.</p>
@@ -951,7 +551,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:movie-details', {processor: movieProces
 </li>
 <li>
 <p>In the page editor, <strong>select the page (root) component</strong> (for instance by clicking on the header).
-<span class="image"><img src="media/page-template-save.png" alt="page template save" width="720px" title="Select page component"></span></p>
+<span class="image"><img src="media/page-template-save.png" alt="page template save" width="900px" title="Select page component"></span></p>
 </li>
 <li>
 <p>Click <strong>Save as template</strong> from the right hand panel.</p>
@@ -972,7 +572,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:movie-details', {processor: movieProces
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-08 12:10:54 UTC
+Last updated 2025-05-09 10:36:42 UTC
 </div>
 </div>
 </body>

@@ -551,7 +551,7 @@ export const layoutProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb
 
 ...
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 ...
 
@@ -575,10 +575,10 @@ dataFetcher.addLayout('com.enonic.app.hmdb:2-column', {processor: layoutProcesso
 </li>
 <li>
 <p><strong>Now you should be able to see something like this</strong>:
-<span class="image"><img src="media/layout-blank.png" alt="layout blank" width="720px" title="2-column layout"></span></p>
+<span class="image"><img src="media/layout-blank.png" alt="layout blank" width="900px" title="2-column layout"></span></p>
 <div class="paragraph">
 <p>By combining layout, part and text we are starting to see the potential of the page editor:
-<span class="image"><img src="media/layout-filled.png" alt="layout filled" width="720px" title="2-column layout with text"></span></p>
+<span class="image"><img src="media/layout-filled.png" alt="layout filled" width="900px" title="2-column layout with text"></span></p>
 </div>
 <div class="paragraph">
 <p>In the next chapter we will look into <a href="page-templates.ahtml">page templates</a>.
@@ -592,7 +592,7 @@ Page templates allow us to reuse a page definition across multiple content items
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-08 12:10:54 UTC
+Last updated 2025-05-09 10:36:42 UTC
 </div>
 </div>
 </body>
