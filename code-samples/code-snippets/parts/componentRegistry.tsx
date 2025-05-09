@@ -2,7 +2,7 @@ import {ChildList} from './components/parts/ChildList';
 
 ...
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 ...
 

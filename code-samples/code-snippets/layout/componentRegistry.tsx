@@ -2,7 +2,7 @@ import {TwoColumnLayout} from './components/layouts/TwoColumn';
 
 ...
 
-export const componentRegistry = new ComponentRegistry;
+export const componentRegistry = new ComponentRegistry();
 
 ...
 

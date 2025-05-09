@@ -3,7 +3,6 @@ import React from 'react';
 import styles from './MoviePage.module.css';
 
 export const Movie = (props) => {
-    // All properties are accessed via props object
     const {
         names,
         paths,
@@ -30,7 +29,6 @@ export const Movie = (props) => {
 
                 <main className={styles.main}>
                     <div className={styles.flexy}>
-                        {/* First Photo */}
                         {props.photo && (
                             <section className={styles.firstPhoto}>
                                 <a href={props.trailer}>
@@ -49,7 +47,6 @@ export const Movie = (props) => {
 
                         <div className={styles.blocky}>
                             <div>
-                                {/* Release Date and Website */}
                                 <div>
                                     {props.website && (
                                         <>
@@ -72,7 +69,6 @@ export const Movie = (props) => {
                                     )}
                                 </div>
 
-                                {/* Cast */}
                                 {props.cast.length > 0 && (
                                     <section className={styles.cast}>
                                         <h2>Cast</h2>
@@ -96,7 +92,6 @@ export const Movie = (props) => {
                                 )}
                             </div>
                             <div>
-                                {/* Director */}
                                 {props.director && (
                                     <section className={styles.director}>
                                         <h2>Director</h2>
@@ -118,12 +113,10 @@ export const Movie = (props) => {
 
                     <h2>{props.subtitle}</h2>
 
-                    {/* Abstract */}
                     <section className={styles.abstract}>
                         <p>{props.abstract}</p>
                     </section>
 
-                    {/* Additional Photos */}
                     {props.restphotos && props.restphotos.length > 0 && (
                         <section className={styles.photos}>
                             <div className={styles.photoGrid}>

@@ -17,7 +17,7 @@ Each of these will typically need to be processed during rendering in order to p
 Luckily, the sample data set contains everyting we need to get going.
 The `Bio` field for persons is rich text, and some of the content is even populated with relevant content, like you see below:
 
-image::rich-text-bio.png[title="Rich text bio field for Lea Seydoux",width=662px]
+image::rich-text-bio.png[title="Rich text bio field for Lea Seydoux",width=720px]
 
 == Rich text rendering
 

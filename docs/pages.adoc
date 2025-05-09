@@ -68,7 +68,7 @@ From Content Studio, select and edit the `/hmdb` content item.
 From the edit view, activate the page editor by clicking the monitor icon in the top right corner.
 +
 You should now see the following:
-image:empty-site.png[title="Empty site",width=647px]
+image:empty-site.png[title="Empty site",width=900px]
 +
 Now that we have a page component with a single "dropzone" inside (the region we specified earlier).
 We can give it some content.
@@ -81,7 +81,7 @@ Content Studio ships with a built-in Text component which can be handy when comp
 +
 . Text mode will now be activated, and you can use the rich-text editor to write and format text, but also insert images.
 +
-image:entry-site-complete.png[width=647px]
+image:entry-site-complete.png[width=900px]
 +
 . You may also click the Preview button in Content Studio for a full screen version.
 
