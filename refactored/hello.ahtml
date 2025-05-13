@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Rendering a person</title>
+<title>Hello React4XP</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,17 +437,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Rendering a person</h1>
+<h1>Hello React4XP</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#add_to_site">Add to site</a></li>
-<li><a href="#request_handling">Request handling</a>
-<ul class="sectlevel2">
+<li><a href="#movie_db_dataset">Movie DB dataset</a></li>
+<li><a href="#add_app_to_site">Add app to site</a></li>
+<li><a href="#request_handling">Request handling</a></li>
 <li><a href="#hello_component">Hello component</a></li>
+<li><a href="#the_component_registry">The Component Registry</a></li>
 <li><a href="#helloprocessor">HelloProcessor</a></li>
-</ul>
-</li>
+<li><a href="#data_fetcher">Data Fetcher</a></li>
+<li><a href="#app_component_and_controller">App component and controller</a></li>
 <li><a href="#next">Next</a></li>
 </ul>
 </div>
@@ -456,23 +457,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Render your first React4XP page</p>
+<p>Your first React4XP page - and how it works</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="add_to_site"><a class="link" href="#add_to_site">Add to site</a></h2>
+<h2 id="movie_db_dataset"><a class="link" href="#movie_db_dataset">Movie DB dataset</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In a few steps we connect the application to the Headless Movie DB, and should be rewarded gloriously.</p>
+<p>This tutorial is dedicated to front-end development. To make it as compact as possible, we have pre-installed an application called the <a href="https://market.enonic.com/vendors/enonic/headless-movie-site">Headless Movie DB</a>. It contains pre-defined CMS schemas as well as sample content and previews. We&#8217;ll be using this dataset extensively throughout the tutorial.</p>
+</div>
+<div class="paragraph">
+<p>Visit our <a href="https://developer.enonic.com/start" target="_blank" rel="noopener">getting started guide</a>, or the <a href="https://developer.enonic.com/docs/developer-101" target="_blank" rel="noopener">developer 101 tutorial</a> to learn about schemas and content creation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="add_app_to_site"><a class="link" href="#add_app_to_site">Add app to site</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Follow these steps to make your application a front-end for the Headless Movie DB.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Visit <a href="http://localhost:8080/admin^">localhost:8080/admin</a>. Log in to XP and open Content Studio.</p>
+<p>Visit <a href="http://localhost:8080/admin^">localhost:8080/admin</a>. Log in and open Content Studio.</p>
 </li>
 <li>
-<p>The "Headless Movie Database" project should automatically be selected</p>
+<p>The "Headless Movie Database" project should automatically be visible</p>
 </li>
 <li>
 <p>Select the root item in the tree structure, and you should see something like this:</p>
@@ -481,7 +493,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </li>
 <li>
-<p>Click btn:[Edit], and connect the React4xp app to the site.</p>
+<p>Click btn:[Edit], and connect your React4xp app to the site.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/add-to-site.png" alt="add to site" width="647px" title="Add React4XP application to the site"></span></p>
 </div>
@@ -500,31 +512,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="request_handling"><a class="link" href="#request_handling">Request handling</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>So, what actually happened here?</p>
+<p>What happened?</p>
 </div>
 <div class="paragraph">
-<p>The app runs on top of XP&#8217;s site engine. By adding the application to the site, it is injected into the request pipeline - where it basically hijacks the rendering.</p>
+<p>By adding the application to the site, it is injected into the Site Engine&#8217;s request pipeline - it basically hijacks the rendering - taking presdence over HMDB&#8217;s built-in preview.</p>
 </div>
 <div class="paragraph">
-<p>These are the main files involved:</p>
+<p>This is the basic execution flow that renders the page:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-Files" data-lang="Files">-&gt; react4xp/entries/App.tsx (React entry)
--&gt; react4xp/components/hello/Hello.tsx (Welcome page)
--&gt; types/HelloProps.ts (TypeScript type for props)
--&gt; react4xp/componentRegistry.tsx (R4XP component list)
--&gt; site/components/hello/helloProcessor.ts (props for the Hello component)
--&gt; react4xp/dataFetcher.ts (Map of data processors)</code></pre>
+<pre class="highlight"><code class="language-Files" data-lang="Files">-&gt; site/app.ts (HTML boostrapping)
+  -&gt; react4xp/entries/App.tsx (React entry)
+    -&gt; react4xp/dataFetcher.ts (Map of data processors)
+      -&gt; react4xp/components/hello/helloProcessor.ts (Fetch props for the Hello component)
+    -&gt; react4xp/componentRegistry.tsx (Map of React components)
+      -&gt; react4xp/components/hello/Hello.tsx (The Hello component)</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Below we backtrack what happened:</p>
+<p>Let&#8217;s have a look at the various files</p>
 </div>
-<div class="sect2">
-<h3 id="hello_component"><a class="link" href="#hello_component">Hello component</a></h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hello_component"><a class="link" href="#hello_component">Hello component</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>The Hello component that rendered the actual page is very simple:</p>
+<p>The component that rendered the page is very simple:</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/hello/components/Hello.tsx</div>
@@ -559,8 +574,13 @@ export const Hello = ({title, initialCount}: HelloProps) =&gt; {
 }</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="the_component_registry"><a class="link" href="#the_component_registry">The Component Registry</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>As soon as a component is added to ComponentRegistry which is a registry of React views organized by type, it becomes renderable.</p>
+<p>To be triggered, the component was added to the ComponentRegistry.</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/componentRegistry.ts</div>
@@ -577,7 +597,7 @@ componentRegistry.addContentType('portal:site', { View: Hello }); <i class="conu
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The Hello component is mapped to the content type <code>portal:site</code>, which means it will be executed when the URL matches a site.</td>
+<td>The Hello component is mapped to the content type <code>portal:site</code>, which means it will be executed whenever the URL matches a site.</td>
 </tr>
 </table>
 </div>
@@ -594,14 +614,12 @@ Try clicking other content items in Content Studio, and you should simply see an
 </table>
 </div>
 </div>
-<div class="sect2">
-<h3 id="helloprocessor"><a class="link" href="#helloprocessor">HelloProcessor</a></h3>
-<div class="paragraph">
-<p>The responsibility of HelloProcessor is to produce the props required by a component.</p>
 </div>
+<div class="sect1">
+<h2 id="helloprocessor"><a class="link" href="#helloprocessor">HelloProcessor</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>DataFetcher is a registry of data fetching functions for components by their type.
-It is used in the backend to get props for rendering component views from ComponentRegistry.</p>
+<p>The responsibility of HelloProcessor is to produce the props required by a specific component.</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/components/hello/HelloProcessor.ts</div>
@@ -617,8 +635,16 @@ export const helloProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt; = 
 };</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="data_fetcher"><a class="link" href="#data_fetcher">Data Fetcher</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Similar to a component, a processor is invoked because it is registered in the dataFetcher:</p>
+<p>Similar to the Component Registry, the DataFetcher is a registry of functions that will fetch data for a specific component. Unlike the React Components which can execute both on server and client, the dataFetcher is solely executed on the server, in order to fetch props for the various components.</p>
+</div>
+<div class="paragraph">
+<p>Each processor is only invoked when needed by the current page. In this case if a site content is rendered.</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/dataFetcher.ts</div>
@@ -631,21 +657,16 @@ export const dataFetcher = new DataFetcher();
 dataFetcher.addContentType('portal:site', { processor: helloProcessor });</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="app_component_and_controller"><a class="link" href="#app_component_and_controller">App component and controller</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>That is basically it. Throughout the tutorial, you&#8217;ll be using this extensively.</p>
+<p><code>App.tsx</code> (the app component) is responsible for setting up the application layout, like header and footer, and then invoking the <code>dataFetcher</code> and <code>componentRegistry</code>. We&#8217;ll get back to it later in this tutorial.</p>
 </div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-Dive deeper into this topic by visiting the <a href="appendix/controller.ahtml">app controller appendix</a>.
-</td>
-</tr>
-</table>
-</div>
+<div class="paragraph">
+<p><code>App.ts</code> (the app controller) is responsible for HTML boostrapping and setting up React. We will not dive into this in the tutorial, but more details can be found in the <a href="appendix/controller.ahtml">app controller appendix</a>.</p>
 </div>
 </div>
 </div>
@@ -660,7 +681,7 @@ Dive deeper into this topic by visiting the <a href="appendix/controller.ahtml">
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-09 10:36:42 UTC
+Last updated 2025-05-13 12:53:27 UTC
 </div>
 </div>
 </body>

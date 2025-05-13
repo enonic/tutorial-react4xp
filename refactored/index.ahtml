@@ -452,7 +452,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Build server-side rendered React websites with without introducing a 3rd party front-end framework</p>
+<p>Build, deploy and run server-side rendered React websites in an Enonic app.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>tl;dr</strong> Skip directly to the end of the tutorial by trying out a <a href="demo.ahtml">demo</a> instead.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -467,7 +481,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 <td class="content">
 <div class="paragraph">
-<p>It is recommended that you have had a look at <a href="https://developer.enonic.com/start">My First Site</a>, as well as basic <a href="https://reactjs.org/tutorial/tutorial.html">React</a> knowledge before you dive into this tutorial.</p>
+<p>Basic <a href="https://reactjs.org/tutorial/tutorial.html">React</a> knowledge is recommended before you dive into this tutorial.</p>
 </div>
 </td>
 </tr>
@@ -477,27 +491,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><span class="image"><img src="media/react4xp.svg" alt="react4xp" width="256px" title="React4xp logo"></span></p>
 </div>
 <div class="paragraph">
-<p>React4XP facilitates advanced use of React within Enonic.</p>
+<p>React4XP extends the Enonic JS framework by adding support for advanced use of Server-Side React - similar to how frameworks like Next.js work.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>100% TSX/JSX rendering</p>
+<p>100% TSX/JSX rendering - Single React app</p>
 </li>
 <li>
-<p>Single React app</p>
+<p>Works with CMS Schemas in other apps as well as inline</p>
 </li>
 <li>
 <p>Isomorphic server side and client side rendering through hydration</p>
 </li>
 <li>
-<p>Supports Enonic page templates</p>
+<p>Supports Enonic page templates and components</p>
 </li>
 <li>
 <p>Fast and continuous builds</p>
 </li>
 <li>
-<p>Optimized static asset handling</p>
+<p>Optimized builds and static asset handling</p>
 </li>
 <li>
 <p>Flexible enough to cover many advanced use cases</p>
@@ -518,7 +532,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="dive_deeper"><a class="link" href="#dive_deeper">Dive deeper</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>For details beyond the tutorial, visit the <a href="appendix.ahtml">Appendix section</a>.</p>
+<p>For documentation beyond the tutorial, visit the <a href="appendix.ahtml">Appendix section</a>.</p>
 </div>
 </div>
 </div>
@@ -546,7 +560,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-09 10:36:42 UTC
+Last updated 2025-05-13 12:53:27 UTC
 </div>
 </div>
 </body>

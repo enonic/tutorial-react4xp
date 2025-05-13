@@ -506,7 +506,7 @@ To upgrade, use <code>enonic latest</code>. If there are new versions you will s
 </div>
 </div>
 <div class="paragraph">
-<p>This will create and start a sandbox containig some relevant applications, including the Headless Movie DB sample dataset.</p>
+<p>This will create and start a sandbox containing relevant applications, including the Headless Movie DB sample dataset.</p>
 </div>
 </div>
 </div>
@@ -551,34 +551,49 @@ src/
   main/
     resources/
       react4xp/ <i class="conum" data-value="2"></i><b>(2)</b>
+        dataFetcher.ts <i class="conum" data-value="3"></i><b>(3)</b>
+        componentRegistry.tsx <i class="conum" data-value="4"></i><b>(4)</b>
+        components/
         entries/
-         app.tsx <i class="conum" data-value="3"></i><b>(3)</b>
-      site/
-        controllers <i class="conum" data-value="4"></i><b>(4)</b>
-        site.xml <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+          App.tsx <i class="conum" data-value="5"></i><b>(5)</b>
+      site/ <i class="conum" data-value="6"></i><b>(6)</b>
+        app.ts <i class="conum" data-value="7"></i><b>(7)</b>
+      types/ <i class="conum" data-value="8"></i><b>(8)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Optionally tune common React4xp properties.</td>
+<td>React4XP settings</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>React components <em>must</em> be placed within this folder</td>
+<td>React components must be placed within this folder</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The React app component</td>
+<td>Fetches props for CMS components</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Location of application controller files</td>
+<td>Mapping React components to CMS component</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Site.xml hooks React4XP into the Site Engine rendering pipeline</td>
+<td>Main React component</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Optionally place CMS schemas here</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Boostrapping controller</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>TypeScript types (optional)</td>
 </tr>
 </table>
 </div>
@@ -588,7 +603,7 @@ src/
 <h2 id="dev_mode"><a class="link" href="#dev_mode">Dev mode</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Assuming you did not change any of the values when creating the app, run the following commmands:</p>
+<p>Assuming you did not change any of the default values when creating the app, run the following commmands:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -638,7 +653,7 @@ enonic dev</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-09 10:36:42 UTC
+Last updated 2025-05-13 12:53:27 UTC
 </div>
 </div>
 </body>
