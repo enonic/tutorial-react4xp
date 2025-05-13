@@ -1,24 +1,30 @@
-= Rendering a person
+= Hello React4XP
 :toc: right
 :imagesdir: media/
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
 
-Render your first React4XP page
+Your first React4XP page - and how it works
 
-== Add to site
+== Movie DB dataset
 
-In a few steps we connect the application to the Headless Movie DB, and should be rewarded gloriously.
+This tutorial is dedicated to front-end development. To make it as compact as possible, we have pre-installed an application called the https://market.enonic.com/vendors/enonic/headless-movie-site[Headless Movie DB]. It contains pre-defined CMS schemas as well as sample content and previews. We'll be using this dataset extensively throughout the tutorial.
 
-. Visit http://localhost:8080/admin^[localhost:8080/admin]. Log in to XP and open Content Studio.
+Visit our https://developer.enonic.com/start[getting started guide^], or the https://developer.enonic.com/docs/developer-101[developer 101 tutorial^] to learn about schemas and content creation.
+
+== Add app to site
+
+Follow these steps to make your application a front-end for the Headless Movie DB.
+
+. Visit http://localhost:8080/admin^[localhost:8080/admin]. Log in and open Content Studio.
 +
-. The "Headless Movie Database" project should automatically be selected
+. The "Headless Movie Database" project should automatically be visible
 +
 . Select the root item in the tree structure, and you should see something like this:
 +
 image:hmdb.png[title="HMDB welcome page",width=900px]
 +
-. Click btn:[Edit], and connect the React4xp app to the site.
+. Click btn:[Edit], and connect your React4xp app to the site.
 +
 image:add-to-site.png[title="Add React4XP application to the site", width=647px]
 +
@@ -29,27 +35,27 @@ image:hello.png[title="React4XP starter page", width=647px]
 
 == Request handling
 
-So, what actually happened here?
+What happened?
 
-The app runs on top of XP's site engine. By adding the application to the site, it is injected into the request pipeline - where it basically hijacks the rendering.
+By adding the application to the site, it is injected into the Site Engine's request pipeline - it basically hijacks the rendering - taking presdence over HMDB's built-in preview.
 
-These are the main files involved:
+This is the basic execution flow that renders the page:
 
 [source,Files]
 ----
--> react4xp/entries/App.tsx (React entry)
--> react4xp/components/hello/Hello.tsx (Welcome page)
--> types/HelloProps.ts (TypeScript type for props)
--> react4xp/componentRegistry.tsx (R4XP component list)
--> site/components/hello/helloProcessor.ts (props for the Hello component)
--> react4xp/dataFetcher.ts (Map of data processors)
+-> site/app.ts (HTML boostrapping)
+  -> react4xp/entries/App.tsx (React entry)
+    -> react4xp/dataFetcher.ts (Map of data processors)
+      -> react4xp/components/hello/helloProcessor.ts (Fetch props for the Hello component)
+    -> react4xp/componentRegistry.tsx (Map of React components)
+      -> react4xp/components/hello/Hello.tsx (The Hello component)
 ----
 
-Below we backtrack what happened:
+Let's have a look at the various files
 
-=== Hello component
+== Hello component
 
-The Hello component that rendered the actual page is very simple:
+The component that rendered the page is very simple:
 
 .react4xp/hello/components/Hello.tsx
 [source,TypeScript]
@@ -65,7 +71,10 @@ It takes a single parameter, HelloProps. The type is declared like this:
 include::{sourcedir}types/HelloProps.ts[]
 ----
 
-As soon as a component is added to ComponentRegistry which is a registry of React views organized by type, it becomes renderable.
+
+== The Component Registry
+
+To be triggered, the component was added to the ComponentRegistry.
 
 .react4xp/componentRegistry.ts
 [source,TypeScript]
@@ -79,17 +88,14 @@ componentRegistry.addContentType('portal:site', { View: Hello }); //<1>
 
 ----
 
-<1> The Hello component is mapped to the content type `portal:site`, which means it will be executed when the URL matches a site.
+<1> The Hello component is mapped to the content type `portal:site`, which means it will be executed whenever the URL matches a site.
 
 NOTE: Try clicking other content items in Content Studio, and you should simply see an error message.
 
 
-=== HelloProcessor
+== HelloProcessor
 
-The responsibility of HelloProcessor is to produce the props required by a component.
-
-DataFetcher is a registry of data fetching functions for components by their type.
-It is used in the backend to get props for rendering component views from ComponentRegistry.
+The responsibility of HelloProcessor is to produce the props required by a specific component.
 
 .react4xp/components/hello/HelloProcessor.ts
 [source,TypeScript]
@@ -97,7 +103,12 @@ It is used in the backend to get props for rendering component views from Compon
 include::{sourcedir}react4xp/components/hello/HelloProcessor.ts[]
 ----
 
-Similar to a component, a processor is invoked because it is registered in the dataFetcher:
+
+== Data Fetcher
+
+Similar to the Component Registry, the DataFetcher is a registry of functions that will fetch data for a specific component. Unlike the React Components which can execute both on server and client, the dataFetcher is solely executed on the server, in order to fetch props for the various components.
+
+Each processor is only invoked when needed by the current page. In this case if a site content is rendered.
 
 .react4xp/dataFetcher.ts
 [source,TypeScript]
@@ -110,9 +121,12 @@ export const dataFetcher = new DataFetcher();
 dataFetcher.addContentType('portal:site', { processor: helloProcessor });
 ----
 
-That is basically it. Throughout the tutorial, you'll be using this extensively.
 
-TIP: Dive deeper into this topic by visiting the <<appendix/controller#, app controller appendix>>. 
+== App component and controller
+
+`App.tsx` (the app component) is responsible for setting up the application layout, like header and footer, and then invoking the `dataFetcher` and `componentRegistry`. We'll get back to it later in this tutorial.
+
+`App.ts` (the app controller) is responsible for HTML boostrapping and setting up React. We will not dive into this in the tutorial, but more details can be found in the <<appendix/controller#, app controller appendix>>. 
 
 == Next
 

@@ -26,7 +26,7 @@ We're going to need a sandbox for this tutorial:
 
   enonic sandbox create r4xptutorial -t headless-demo -f
 
-This will create and start a sandbox containig some relevant applications, including the Headless Movie DB sample dataset.
+This will create and start a sandbox containing relevant applications, including the Headless Movie DB sample dataset.
 
 == Create application
 
@@ -51,23 +51,28 @@ src/
   main/
     resources/
       react4xp/ // <2>
+        dataFetcher.ts // <3>
+        componentRegistry.tsx // <4>
+        components/
         entries/
-         app.tsx <3>
-      site/
-        controllers // <4>
-        site.xml // <5>
+          App.tsx // <5>
+      site/ // <6>
+        app.ts // <7>
+      types/ // <8>
 ----
 
-<1> Optionally tune common React4xp properties.
-<2> React components _must_ be placed within this folder
-<3> The React app component
-<4> Location of application controller files
-<5> Site.xml hooks React4XP into the Site Engine rendering pipeline
-
+<1> React4XP settings
+<2> React components must be placed within this folder
+<3> Fetches props for CMS components
+<4> Mapping React components to CMS component
+<5> Main React component
+<6> Optionally place CMS schemas here
+<7> Boostrapping controller
+<8> TypeScript types (optional)
 
 == Dev mode
 
-Assuming you did not change any of the values when creating the app, run the following commmands:
+Assuming you did not change any of the default values when creating the app, run the following commmands:
 
   cd r4xp
   enonic dev
