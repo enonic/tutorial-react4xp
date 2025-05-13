@@ -53,20 +53,16 @@
           "document": "appendix/build"
         },
         {
-          "title": "Dependency chunks",
-          "document": "appendix/chunks"
-        },
-        {
           "title": "Configuration",
           "document": "appendix/config"
         },
         {
-          "title": "Entries",
-          "document": "appendix/entries"
+          "title": "Chunks",
+          "document": "appendix/chunks"
         },
         {
-          "title": "JsxPath",
-          "document": "appendix/jsxpath"
+          "title": "Entries",
+          "document": "appendix/entries"
         },
         {
           "title": "API",
@@ -84,41 +80,7 @@
     },
     {
       "title": "Release Notes",
-      "document": "appendix",
-      "menuItems": [
-        {
-          "title": "App controller",
-          "document": "appendix/controller"
-        },
-        {
-          "title": "Build",
-          "document": "appendix/build"
-        },
-        {
-          "title": "Dependency chunks",
-          "document": "appendix/chunks"
-        },
-        {
-          "title": "Configuration",
-          "document": "appendix/config"
-        },
-        {
-          "title": "Entries",
-          "document": "appendix/entries"
-        },
-        {
-          "title": "JsxPath",
-          "document": "appendix/jsxpath"
-        },
-        {
-          "title": "API",
-          "document": "appendix/api"
-        },
-        {
-          "title": "Upgrade",
-          "document": "appendix/upgrade"
-        }
-      ]
+      "document": "release"
     }
   ]
 }

@@ -1,0 +1,43 @@
+= React4XP 6 Release notes
+:toc: right
+
+== Changes
+
+The most significant changes since version 5 are:
+
+TODO: 
+
+Build system / Dev mode
+Types
+New react components
+Static assets
+more?
+
+
+=== Single React app
+Each page now has a single React application(entry), vs one React app/entry per part in the previous version 
+
+=== Pages and layouts in React
+This version supports implementing pages and layouts using React.
+
+=== Detached front-end
+Previous versions were based on XP's site engine, where rendering was tied together with each CMS component.
+
+This release severs this tie, and takes full control over the rendering - detaching the rendering from the content. This means you may implement the front-end/rendering code separately from the CMS model definition, including the ability to deploy front-end and model in two or more separate applications.
+
+You may still combine your React4XP front-end with other XP apps on the same site. For instance apps that add services, contribute scripts or tags to the response, or even applications that deliver standalone HTML - but only on dedicated URLs.
+
+TIP: Naturally, you may still bundle the model and front-end code in the same application, at your own discretion.
+
+=== Component registry
+
+React4XP follows an MVC approach, where data is first collected into a model (in the form of props), and then passed to the view (React template), even if this is performed iteratively, and on a per-component basis.
+
+To facilitate this, you register server-side controllers that fetches relevant content for each component 
+
+On the view side of things, each CMS component is implemented as a React component, and added to a component registry.
+
+
+== Upgrading
+
+To migrate a standard Enonic app or legacy React4XP application, visit our <<appendix/upgrade#, upgrade notes>>.
