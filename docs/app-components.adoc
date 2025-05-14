@@ -1,4 +1,4 @@
-= Rendering a person
+= General application la
 :toc: right
 :imagesdir: media/
 :sourcedir: ../src/main/resources/
@@ -88,4 +88,4 @@ The footer component is styled with a CSS module, and the global CSS file is use
 
 == Next
 
-You are on a roll, next - lets look into <<rich-text#, Rich text>>.
+You are on a roll, in the next chapter we'll be <<render-content#, rendering content>>.

@@ -108,4 +108,4 @@ Back in Content Studio, select a random person to see the glorious result.
 
 == Next
 
-You are on a roll, next - lets look into <<app-layout#, app layout>>.
+You are on a roll, next - lets look into <<rich-text#, Rich text>>.

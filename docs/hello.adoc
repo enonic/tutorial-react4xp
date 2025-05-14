@@ -130,5 +130,5 @@ dataFetcher.addContentType('portal:site', { processor: helloProcessor });
 
 == Next
 
-Great, you rendered your first page, next up how about <<rendering-basics.adoc#, adding your own components>>.
+Great, you rendered your first page, next up how about <<app-components.adoc#, setting up the application level components>>.
 
