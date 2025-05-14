@@ -674,14 +674,14 @@ dataFetcher.addContentType('portal:site', { processor: helloProcessor });</code>
 <h2 id="next"><a class="link" href="#next">Next</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Great, you rendered your first page, next up how about <a href="rendering-basics.ahtml">adding your own components</a>.</p>
+<p>Great, you rendered your first page, next up how about <a href="app-components.ahtml">setting up the application level components</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-14 13:06:48 UTC
+Last updated 2025-05-14 17:39:44 UTC
 </div>
 </div>
 </body>

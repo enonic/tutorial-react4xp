@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Custom flow syntax</title>
+<title>Rendering basics</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,328 +437,360 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Custom flow syntax</h1>
+<h1>Rendering basics</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#lesson_overview">Lesson overview</a>
-<ul class="sectlevel2">
-<li><a href="#files_involved">Files involved</a></li>
-</ul>
-</li>
-<li><a href="#code">Code</a>
-<ul class="sectlevel2">
-<li><a href="#part_definition">Part definition</a></li>
-<li><a href="#thymeleaf_view">Thymeleaf view</a></li>
-<li><a href="#part_controller">Part controller</a></li>
-</ul>
-</li>
-<li><a href="#setup">Setup</a></li>
-<li><a href="#further_reading">Further reading</a></li>
+<li><a href="#person_content_type">Person content type</a></li>
+<li><a href="#fetch_the_data">Fetch the data</a></li>
+<li><a href="#register_component">Register component</a></li>
+<li><a href="#result">Result</a></li>
+<li><a href="#next">Next</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this example things get a bit more complex. We&#8217;ll make another Part, and re-use the Page controller, Template and Content type we made <a href="pages-parts-and-regions.ahtml#template_with_react_page_controller">previously</a>.</p>
+<p>In this chapter you will add a new component that renders persons</p>
 </div>
-<div class="ulist">
-<ul>
+</div>
+</div>
+<div class="sect1">
+<h2 id="person_content_type"><a class="link" href="#person_content_type">Person content type</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Headless Movie DB contains sample content, and content types.
+One of these is <code>Person</code>.
+From Content Studio, you may find and list persons.
+By selecting the JSON preview, you can also study the properties of a person:</p>
+</div>
+<div class="listingblock">
+<div class="title">Person JSON</div>
+<div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+    "_id": "a8b374a2-c532-45eb-9aa1-73d1c37cd681",
+    "_name": "lea-seydoux",
+    "_path": "/hmdb/persons/lea-seydoux",
+    "creator": "user:system:su",
+    "modifier": "user:system:su",
+    "createdTime": "2021-11-23T10:01:16.711Z",
+    "modifiedTime": "2021-11-23T13:06:38.493Z",
+    "owner": "user:system:su",
+    "type": "com.enonic.app.hmdb:person",
+    "displayName": "Léa Seydoux",
+    "hasChildren": true,
+    "language": "en",
+    "valid": true,
+    "childOrder": "modifiedtime DESC",
+    "data": {
+        "photos": "09b3af0e-6da3-4bcf-88d9-11cbe9c41283",
+        "bio": "French actress Léa Seydoux was born in 1985 in Paris, France, to Valérie Schlumberger, a philanthropist, and Henri Seydoux, a businessman.",
+        "dateofbirth": "1985-07-01"
+    },
+    "x": {},
+    "page": {},
+    "attachments": {},
+    "publish": {
+        "from": "2024-11-13T13:32:39.427Z",
+        "first": "2024-11-13T13:32:39.427Z"
+    },
+    "workflow": {
+        "state": "READY",
+        "checks": {}
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To implement the rendering we need to add code that will perform a two-step operation:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="fetch_the_data"><a class="link" href="#fetch_the_data">Fetch the data</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>However, we won&#8217;t use the <code>render</code> shorthand function from before. Instead, we&#8217;ll look at a more <strong>explicit React4xp syntax</strong>:</p>
-<div class="olist loweralpha">
-<ol class="loweralpha">
-<li>
-<p>It constructs one or more <strong>data-holding React4xp objects</strong>. This gives you better control and opportunities for logic steps when you handle your <a href="appendix/entries.ahtml">entry</a>; you can manipulate the object(s) or extract data from them <em>before</em> rendering.</p>
+<p>Create a data fetcher</p>
+<div class="listingblock">
+<div class="title">/src/main/resources/react4xp/components/content/PersonProcessor.ts</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {get as getContentByKey} from '/lib/xp/content';
+import {imageUrl} from '/lib/xp/portal';
+import {toArray} from "/react4xp/utils/arrayUtils";
+import {parentPath} from '/react4xp/utils/path';
+import {PageDescriptor} from '@enonic-types/core';
+import type {Content} from '@enonic-types/lib-content';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+
+function fetchAdditionalPhotos(photosIds) {
+    return photosIds.map(photoId =&gt; {
+        const photoContent = getContentByKey&lt;Content&gt;({key: photoId});
+        return {
+            _id: photoContent._id,
+            title: photoContent.displayName,
+            imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
+        };
+    });
+}
+
+export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
+    = (params) =&gt; {
+
+    const photos: string[] = toArray&lt;string&gt;(params.content.data.photos as string | string[])
+    const firstPhotoId = photos[0] || '';
+    const remainingPhotoIds = photos.slice(1) || '';
+
+    const {_id, displayName} = getContentByKey&lt;Content&gt;({key: firstPhotoId});
+
+    const extraPhotos = fetchAdditionalPhotos(remainingPhotoIds);
+
+    return {
+        displayName: `${params.content.displayName}`,
+        photo: {
+            _id,
+            title: displayName,
+            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
+        },
+        birthDate: params.content.data.dateofbirth,
+        restPhotos: extraPhotos,
+        parent: parentPath(params.request.path)
+    };
+};</code></pre>
+</div>
+</div>
 </li>
 <li>
-<p>Here, each entry is rendered in <strong>two separate methods</strong>: <code>renderBody</code> and <code>renderPageContributions</code> (full details: <a href="appendix/api.ahtml#react4xp_object">React4xp data object API</a>)</p>
-</li>
-<li>
-<p>You can pretty easily render <strong>multiple entries</strong> from the same controller, by chaining together their rendering.</p>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Rendering multiple entries like we do here will create multiple <a href="appendix/entries.ahtml#assets_and_apps">independent react apps</a> in the browser.
-</td>
-</tr>
-</table>
+<p>Then <strong>add it to the dataFetcher</strong>, with these lines:</p>
+<div class="listingblock">
+<div class="title">dataFetcher</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {personProcessor} from './components/content/PersonProcessor';
+
+dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});</code></pre>
+</div>
 </div>
 </li>
 </ol>
 </div>
-</li>
-<li>
-<p>We will also use a <strong>thymeleaf</strong> template for one of the entries - and take advantage of the React4xp data object to send its ID to the thymeleaf model - just to demonstrate a way to combine react and thymeleaf rendering.</p>
-</li>
-<li>
-<p>In addition to chain-rendering more than one entry, we will use <a href="appendix/jsxpath.ahtml">jsxPaths</a> to point to entries in a different location. Actually, let&#8217;s just recycle the same entries we used before:</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>We are now able to fetch the Person data, next up we need to render it.</p>
 </div>
-<div class="sect2">
-<h3 id="files_involved"><a class="link" href="#files_involved">Files involved</a></h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="register_component"><a class="link" href="#register_component">Register component</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The component consists of two files:</p>
+</div>
 <div class="listingblock">
+<div class="title">/src/main/resources/react4xp/components/content/Person.tsx (React component)</div>
 <div class="content">
-<pre class="highlight"><code class="language-files" data-lang="files">site/parts/
-    custom-flow/            <i class="conum" data-value="1"></i><b>(1)</b>
-        custom-flow.xml
-        custom-flow.ts
-        custom-flow-view.html
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react'
+import styles from './Person.module.css';
 
-    color/
-        color.tsx           <i class="conum" data-value="2"></i><b>(2)</b>
+export const Person = (props) =&gt; {
+    const {parent, displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+    return (
+        &lt;div className={styles.person}&gt;
+            &lt;div className={"back"}&gt;
+                &lt;a href={parent}&gt;
+                    &lt;p&gt;Back&lt;/p&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;h1&gt;{displayName}&lt;/h1&gt;
+            &lt;p&gt;{birthDate}&lt;/p&gt;
+            &lt;div&gt;
+                {
+                    photo ? (
+                        &lt;&gt;
+                            &lt;div className={styles.photos}&gt;
+                                &lt;img src={photo.imageUrl}
+                                     title={photo.title}
+                                     alt={photo.title}
+                                     height={675}
+                                     width={1200}
+                                     loading="eager"
+                                /&gt;
+                            &lt;/div&gt;
+                        &lt;/&gt;
+                    ) : (
+                        &lt;p&gt;No photo available&lt;/p&gt;
+                    )
+                }
+                {restPhotos &amp;&amp; restPhotos.length &gt; 0 &amp;&amp; (
+                    &lt;&gt;
+                        &lt;h2&gt;Photos&lt;/h2&gt;
+                        &lt;div className={styles.photoContainer}&gt;
+                            &lt;div className={styles.photoGrid}&gt;
+                                &lt;div className={styles.photoScroll}&gt;
+                                    {restPhotos.map((photo, index) =&gt; (
+                                        &lt;img key={index}
+                                             src={photo.imageUrl}
+                                             title={photo.title}
+                                             alt={photo.title}
+                                             height={175}
+                                             width={175}
+                                        /&gt;
+                                    ))}
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/&gt;
+                )}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    )
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+
+./src/main/resources/react4xp/components/content/Person.module.css (CSS module)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-CSS" data-lang="CSS">.person .bio {
+  font-family: sans-serif;
+}
 
-site/pages/
-    hello-react/
-        hello-react.tsx     <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+.person {
+  display: flex;
+  flex-direction: column;
+  margin-inline: auto;
+  min-height: 1600px;
+}
+
+.person h1 {
+  margin-bottom: 0;
+}
+
+.person p {
+  margin-top: 0;
+}
+
+.flexBlock {
+  display: flex;
+  justify-content: space-between;
+}
+
+.photoContainer {
+  position: relative;
+  display: flex;
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: ghostwhite;
+  }
+}
+
+.photoGrid {
+  overflow-x: auto;
+}
+
+.photoScroll {
+  display: flex;
+  gap: 25px;
+  white-space: nowrap;
+  padding: 0;
+  margin: .5rem 0 .5rem 0;
+}
+
+.photoScroll img {
+  border-radius: 5px;
+}
+
+.photos {
+  margin-block: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 50px;
+  gap: 50px;
+}
+
+.restPhotosContainer {
+  padding: 1rem 0;
+  max-width: calc(90vw - 1rem);
+}
+
+.restPhotos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15%, 1fr));
+  gap: 5%;
+  margin-block: 1rem;
+}
+
+.photos img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.restImg {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border-radius: 5px;
+}
+
+
+.richText {
+  font-size: 24px;
+}
+
+
+.richText figure img {
+  border-radius: 5px;
+}
+
+.photosHeader {
+  margin-top: 0;
+  color: #EF82F0;
+}</code></pre>
 </div>
 </div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The new Part we&#8217;re making, <em>custom-flow</em>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The already existing entry <a href="pages-parts-and-regions.ahtml#color_jsx"><em>color.tsx</em></a>: a different folder from our <em>custom-flow</em> Part, and different name.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>We&#8217;re also reusing another existing entry <a href="editorial-data-and-props.ahtml#hello_react_jsx_modified"><em>hello-react.tsx</em></a> (with props, not the first hardcoded one), located under <em>site/<strong>pages</strong>/hello-react/</em>. So even though what we&#8217;re making here is a Part, an entry from a Page, or anywhere, is fine: when using jsxPaths, all entries are equal.</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>Once they are created <strong>register the component in the componentRegistry</strong>, by adding the following lines:</p>
+</div>
+<div class="listingblock">
+<div class="title">componentRegistry</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Person} from './components/content/Person';
+
+componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="code"><a class="link" href="#code">Code</a></h2>
+<h2 id="result"><a class="link" href="#result">Result</a></h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="part_definition"><a class="link" href="#part_definition">Part definition</a></h3>
 <div class="paragraph">
-<p>The Part definition again defines some base data for us to play with. This is exactly the same definitions as before, just merged together into one Part: the greeting and bottle/thing counter from <em>hello-react.xml</em>, and the color from <em>color.xml</em>.</p>
-</div>
-<div class="listingblock">
-<div class="title">custom-flow.xml:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/parts/custom-flow/custom-flow.xml[]</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="thymeleaf_view"><a class="link" href="#thymeleaf_view">Thymeleaf view</a></h3>
-<div class="paragraph">
-<p>Next, we&#8217;re adding a regular <strong>thymeleaf view template file</strong>.</p>
-</div>
-<div class="paragraph">
-<p>This forms the initial HTML base, with <code>color</code> and <code>targetId</code> inserted by thymeleaf. This is actually not different from before: <a href="hello-react.ahtml#first_helloreact_jsx">previously</a> we&#8217;ve used a hardcoded string as the HTML base that react is rendered into. Now we&#8217;re just letting thymeleaf make it. Same thing, the base HTML string can come from anywhere.</p>
-</div>
-<div class="paragraph">
-<p>The controller will render <em>two</em> entries into this base HTML. To be clear: even though we&#8217;re using two entries, this is still <em>one single XP Part</em>. The first entry is <em>color.jsx</em> which will be inserted into the element <code>&lt;div data-th-id="${targetId}"&gt;&lt;/div&gt;</code>. The second one, <em>hello-react.jsx</em> will also be rendered and inserted into this base HTML, but it will have a React4xp-ID that does not match any element ID here. This will cause React4xp to revert to the default behavior: generate a new container <code>&lt;div&gt;</code> and insert it right at the end of the root element: after <code>&lt;/section&gt;</code> here:</p>
-</div>
-<div class="listingblock">
-<div class="title">custom-flow-view.html:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-html" data-lang="html">## include::../src/main/resources/site/parts/custom-flow/custom-flow-view.html[]</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="part_controller"><a class="link" href="#part_controller">Part controller</a></h3>
-<div class="paragraph">
-<p><strong>The controller</strong> now has more complexity than before, so here&#8217;s an overview:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Each entry is used to set up a data-holding reactxp object, in steps <em>before the rendering</em> is called. In these steps, data (options and props) can be both injected into the React4xp objects, and extracted from them.</p>
-</li>
-<li>
-<p>The output of one rendering is used as the base for the next; chaining them together and gradually building up a final multi-entry output.</p>
-</li>
-<li>
-<p>HTML body and page contributions are rendered/chained separately from each other: there&#8217;s one flow that repeats <code>renderBody</code> across multiple entries and builds one HTML body for all the entries. And another chain that repeates <code>renderPageContributions</code>.</p>
-</li>
-<li>
-<p>Just for demonstration, one entry will be client-side rendered and the other one server-side rendered. Both entries include a <code>request</code> option to easily automate correct behavior for inside-Content-Studio context. This is most important for the clientRendered one.</p>
-</li>
-</ul>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>When client-side rendering an entry, it&#8217;s recommended to add a <code>request</code> option (for both of the entry&#8217;s rendering calls - see below).</p>
-</div>
-<div class="paragraph">
-<p>One reason to also add <code>request</code> for SSR however, is that in cases of react component errors, React4xp will visualize the entry with an error placeholder. And  <code>request</code> adds some clarity: allows it to add the actual error messages (except in live view mode - where the messages are always held back).</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="title">custom-flow.ts</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/parts/custom-flow/custom-flow.ts[]</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Constructing the data-holding React4xp object <code>helloObj</code> from the same <em>hello-react.jsx</em> entry we made <a href="editorial-data-and-props.ahtml#hello_react_jsx_modified">before</a>. The constructor takes one argument, which is mandatory: an <a href="appendix/entries.ahtml">entry reference</a>. This can be an XP <code>component</code> object like before, OR like we&#8217;re doing here: a <a href="appendix/jsxpath.ahtml">jsxPath</a>.
-<div class="paragraph">
-<p>This entry reference is used the same way as the first argument, <em>entry</em>, in <a href="appendix/api.ahtml#react4xp_render"><code>React.render</code></a> (so just to be clear: a jsxPath reference string like this also works fine there).</p>
-</div></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td><code>setProps</code> modifies <code>helloObj</code>, to add some <code>props</code>. This of course corresponds to the second argument, <code>props</code>, in <code>React4xp.render</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>After creating a React4xp object <code>colorObj</code> for the second entry, <em>color.jsx</em>, we&#8217;re modifying that too, starting with adding props.
-<div class="paragraph">
-<p>Note the <strong>builder-like pattern</strong> here: each of the setter methods (<code>setProps</code>, <code>setId</code> and <code>uniqueId</code>) returns the React4xp object itself. This allows you to run them directly after each other like this, so this example is just a shorter way of writing:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>colorObj.setProps({ color: partConfig.color });
-colorObj.setId("myColorThing");
-colorObj.uniqueId();`.</pre>
-</div>
-</div></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td><code>setId</code> sets the ID of the React4xp object and the target element that the rendering will look for in the HTML. If an ID has previously been set for the React4xp object, <code>setId</code> will overwrite it.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td><code>uniqueId</code> makes sure the React4xp object has a globally unique ID. It can work in two ways. If an ID has not been set previously, a simple random ID is generated. If an ID <em>has</em> been set, like here in step 4, the random number is appended after the existing ID. So the order between <code>setId</code> and <code>uniqueId</code> matters.
-<div class="paragraph">
-<p>The ID ends up as <code>myColorThing-&lt;someRandomNumber&gt;</code>. This gives us something recognizable in the output but still ensures that the element ID is not repeated in cases where this part is used more than once on a page. If <code>setId</code> had been run <em>after</em> <code>uniqueId</code> however, <code>setId</code> would just overwrite the previous unique ID with the supplied string - and risk repeating it.</p>
-</div></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Now there&#8217;s a random component in the ID string of the React4xp object, and we want that ID to match a specific element in the HTML. So we read the ID out from <code>colorObj.react4xpId</code> and inject it into the thymeleaf template as <code>targetId</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>We render <code>colorObj</code> into an HTML string, based on the HTML output of the thymeleaf rendering&#8230;&#8203;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="8"></i><b>8</b></td>
-<td>&#8230;&#8203;and render the page contributions for activating it in the client. We&#8217;ll even add a small extra script just to demonstrate that extra pageContributions can be added in <code>renderPageContributions</code> as well, by passing them through as before. Now we have both the HTML body and page contributions from the first entry, <em>color.jsx</em>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="9"></i><b>9</b></td>
-<td>A best practice is to add <code>request</code> to options in <em>both</em> <code>renderBody</code> and <code>renderPageContributions</code>. This is the easiest way to automatically <a href="appendix/api.ahtml#react4xp_object_request">take care of a couple of corner cases</a>. Using it makes the output clearer in cases of errors.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="10"></i><b>10</b></td>
-<td>We&#8217;re going to add a second react entry to this Part&#8217;s controller. This demonstrates how to <strong>chain the HTML rendering</strong>: we&#8217;re including <code>colorBody</code> as the <code>body</code> option. If added to <code>renderBody</code>, the HTML in <code>body</code> (which is the output from the previous entry, <em>color.jsx</em>) will receive the output from the rendering of the this entry (<em>hello-react.jsx</em>).
-<div class="paragraph">
-<p>Where in <code>colorBody</code> is that HTML added? ID and target element is handled the same way as in <code>React4xp.render</code>: we created <code>helloObj</code> without running <code>.setId</code>, so no ID is set, and therefore <code>helloObj</code> will get a random ID. Since that ID doesn&#8217;t match any ID in the base HTML (<code>colorBody</code>), the rendering will just create a target container element (with a matching ID) inside the root element of <code>colorBody</code>, after all other content. Now that there&#8217;s a matching-ID element, the new HTML is rendered into that.</p>
-</div>
-<div class="paragraph">
-<p>In sum: <em>"Render hello-react.jsx into the HTML from color.jsx, right at the end."</em></p>
-</div></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="11"></i><b>11</b></td>
-<td>This entry will be clientside rendered (even though <em>color.jsx</em> is serverside rendered - this is not a problem for the chain), but we&#8217;re adding <code>request</code> to let React4xp <a href="appendix/api.ahtml#react4xp_object_request">keep it serverside-rendered and static</a> inside Content Studio.
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>What if we didn&#8217;t want to add <code>request</code> here, or we wanted to take explicit control? <code>ssr</code> should still be enabled in Content Studio edit mode, but that&#8217;s easy:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>ssr: request.mode == 'edit' || request.mode == 'preview'</pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="12"></i><b>12</b></td>
-<td><strong>Chaining the page contributions:</strong> the activating page contributions for <code>helloObj</code> are rendered, and by adding to the previous <code>colorPageContributions</code> as a <code>pageContributions</code> option, thay&#8217;re passed through the rendering and added.</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p><strong>The rendering mode (client- or serverside) must match</strong> between <code>renderBody</code> and <code>.renderPageContributions</code> for an entry!</p>
-</div>
-<div class="paragraph">
-<p>This is on an entry-by-entry basis: there&#8217;s no problem mixing multiple entries in the same controller like in this example, where one entry is serverside and the other is clientside rendered - as long as each entry&#8217;s <code>renderBody</code> and <code>renderPageContributions</code> have a matching <code>ssr</code>.</p>
-</div>
-<div class="paragraph">
-<p>(The same goes for <code>request</code>)</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>And we&#8217;re done, our new <em>custom-flow</em> Part is now ready.</p>
-</div>
+<p>Back in Content Studio, select a random person to see the glorious result.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="setup"><a class="link" href="#setup">Setup</a></h2>
+<h2 id="next"><a class="link" href="#next">Next</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>All of this amounted to a new Part, <em>custom-flow</em>. It can be added to any Region, so just follow <a href="pages-parts-and-regions.ahtml#adding_parts_to_new_content">the same setup steps</a> in Content Studio to add and see it.</p>
-</div>
-<div class="paragraph">
-<p>Again, if you add more than one <em>custom-flow</em> Part to a Region, you&#8217;ll see that they are independent both in behavior and output; separated by their unique ID.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="further_reading"><a class="link" href="#further_reading">Further reading</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The API behind the custom flow syntax: <a href="appendix/api.ahtml#react4xp_object">React4xp data objects</a>.</p>
+<p>You are on a roll, next - lets look into <a href="rich-text.ahtml">Rich text</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-14 13:06:48 UTC
+Last updated 2025-05-14 17:39:44 UTC
 </div>
 </div>
 </body>

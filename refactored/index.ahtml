@@ -462,7 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 <td class="content">
 <div class="paragraph">
-<p><strong>tl;dr</strong> Skip directly to the end of the tutorial by trying out a <a href="demo.ahtml">demo</a> instead.</p>
+<p><strong>tl;dr</strong> Skip directly to the end of the tutorial by trying out a <a href="appendix/demo.ahtml">demo</a> instead.</p>
 </div>
 </td>
 </tr>
@@ -488,9 +488,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/react4xp.svg" alt="react4xp" width="256px" title="React4xp logo"></span></p>
-</div>
-<div class="paragraph">
 <p>React4XP extends the Enonic JS framework by adding support for advanced use of Server-Side React - similar to how frameworks like Next.js work.</p>
 </div>
 <div class="ulist">
@@ -514,7 +511,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Optimized builds and static asset handling</p>
 </li>
 <li>
-<p>Flexible enough to cover many advanced use cases</p>
+<p>Flexible enough to cover advanced use cases</p>
 </li>
 </ul>
 </div>
@@ -523,6 +520,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="get_started"><a class="link" href="#get_started">Get started</a></h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p><span class="image"><img src="media/screenshot.png" alt="screenshot" width="1200px" title="React4xp front-end, Headless Movie DB content"></span></p>
+</div>
+<div class="paragraph">
+<p>In this tutorial youy will complete the following steps:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set up the Enonic SDK and sample content</p>
+</li>
+<li>
+<p>Create a new application based on the React4xp starter</p>
+</li>
+<li>
+<p>Render content based on type</p>
+</li>
+<li>
+<p>Render pages using different components</p>
+</li>
+<li>
+<p>Create a page template</p>
+</li>
+<li>
+<p>Deploy to live servers</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p>Get started by <a href="setup.ahtml">setting up the developer environment</a>.</p>
 </div>
@@ -560,7 +585,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-14 13:06:48 UTC
+Last updated 2025-05-14 17:39:44 UTC
 </div>
 </div>
 </body>

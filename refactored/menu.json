@@ -13,12 +13,12 @@
       "document": "hello"
     },
     {
-      "title": "3 - Rendering basics",
-      "document": "rendering-basics"
+      "title": "3 - App components",
+      "document": "app-components"
     },
     {
-      "title": "4 - App layout",
-      "document": "app-layout"
+      "title": "4 - Rendering content",
+      "document": "render-content"
     },
     {
       "title": "5 - Rich text",
@@ -44,6 +44,10 @@
       "title": "Appendix",
       "document": "appendix",
       "menuItems": [
+        {
+          "title": "Demo",
+          "document": "appendix/demo"
+        },
         {
           "title": "App controller",
           "document": "appendix/controller"
@@ -73,10 +77,6 @@
           "document": "appendix/upgrade"
         }
       ]
-    },
-    {
-      "title": "Demo",
-      "document": "demo"
     },
     {
       "title": "Release Notes",

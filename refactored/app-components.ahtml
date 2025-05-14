@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Editorial content and props</title>
+<title>General application la</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,18 +437,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Editorial content and props</h1>
+<h1>General application la</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#content_type">Content type</a></li>
-<li><a href="#controller">Controller</a>
-<ul class="sectlevel2">
-<li><a href="#hello_props_component">Hello props component</a></li>
-</ul>
-</li>
-<li><a href="#create_a_pub">Create a Pub</a></li>
-<li><a href="#further_reading">Further reading</a></li>
+<li><a href="#footer_component">Footer component</a></li>
+<li><a href="#css_module">CSS module</a></li>
+<li><a href="#global_css">Global CSS</a></li>
+<li><a href="#asset_url">Asset URL</a></li>
 <li><a href="#next">Next</a></li>
 </ul>
 </div>
@@ -457,109 +453,292 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter we&#8217;ll have a closer look at how content may be passed to your React component via props.</p>
+<p>In this chapter you will add footer components.</p>
+</div>
+<div class="paragraph">
+<p>A footer component is like an autograph, it is a signature of the author.
+It is a good idea to add a footer component to your application.
+The footer component will be added to all pages in the application.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="content_type"><a class="link" href="#content_type">Content type</a></h2>
+<h2 id="footer_component"><a class="link" href="#footer_component">Footer component</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To create some interesting content, start off by adding a new content type. To stay on topic, we&#8217;ll call the new content type <code>Pub</code>.</p>
-</div>
-<div class="paragraph">
-<p>Add the following file to your app:</p>
+<p>Add the footer component within a common directory:</p>
 </div>
 <div class="listingblock">
-<div class="title">/src/main/resources/site/content-types/pub/pub.xml:</div>
+<div class="title">react4xp/components/common/Footer.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/content-types/pub/pub.xml[]</code></pre>
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react';
+import styles from './Footer.module.css';
+
+
+export interface FooterProps {
+    logoUrl: string;
+}
+
+const Footer = ({logoUrl}: FooterProps) =&gt; (
+    &lt;footer className={styles.footer}&gt;
+        &lt;div className={styles.footerContainer}&gt;
+            &lt;p&gt;
+                {`© ${new Date().getFullYear()}, Built with `}
+                &lt;a href="https://reactjs.org"&gt;React&lt;/a&gt;
+                {` and Powered by `}
+                &lt;a href="https://enonic.com"&gt;Enonic XP&lt;/a&gt;
+            &lt;/p&gt;
+        &lt;/div&gt;
+        {/* Render logo if available */}
+        {logoUrl &amp;&amp; (
+            &lt;div className={styles.logoContainer}&gt;
+                &lt;img src={logoUrl}
+                     width={32}
+                     height={42}
+                     alt="Enonic XP logo"/&gt;
+            &lt;/div&gt;
+        )}
+    &lt;/footer&gt;
+);
+
+export default Footer;</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="controller"><a class="link" href="#controller">Controller</a></h2>
+<h2 id="css_module"><a class="link" href="#css_module">CSS module</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Next, we&#8217;ll modify our controller. It needs to fetch the content, and pass it as <code>props</code> to the React component:</p>
+<p>The footer component also has a dedicated CSS module, which allows targeted styling without conflicts with other components and classes.</p>
 </div>
-<div id="controller_with_props" class="listingblock">
-<div class="title">react4xp/hello-react.ts:</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">## include::../src/main/resources/react4xp/hello-react.ts[]</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>We&#8217;ll use a new React component this time</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Fetches the contextual content</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The <code>props</code> object is just any standard <strong>serializable</strong> JS object</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Pass the props to the component</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="hello_props_component"><a class="link" href="#hello_props_component">Hello props component</a></h3>
 <div class="paragraph">
-<p>Finally, add a new React template that makes use of the props object.</p>
+<p>Add the CSS module to the common directory:</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/entries/hello-props.tsx</div>
+<div class="title">react4xp/components/common/Footer.module.css</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">## include::../src/main/resources/react4xp/entries/hello-props.tsx[]</code></pre>
+<pre class="highlight"><code class="language-CSS" data-lang="CSS">.footer {
+  margin: 1vh auto auto auto;
+  width: 100vw;
+  text-align: center;
+  background-color: black;
+  position: absolute;
+  left: 0;
+  font-size: 18px;
+  height: 7vh;
+  align-content: center;
+}
+
+.footer a {
+  color: #61dbfb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer a:hover {
+  color: #0892D4;
+  text-decoration: underline;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.logoContainer {
+  position: absolute;
+  bottom: 1.5vh;
+  right: 1.5rem;
+}
+
+.logoContainer img {
+  max-height: 3.5vh;
+  max-width: 2.6vh;
+}</code></pre>
 </div>
 </div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
 <div class="paragraph">
-<p><code>props</code> are of course the standard react way to do this. It all is. As long as a <em>props &#8658; reactComponent</em> function is default-exported, React4xp accepts standard valid TSX/JSX/TS/JS/ES6.</p>
+<p>Add the footer to your app:</p>
 </div>
-<div class="paragraph">
-<p>Although, if you think that the <em>makeObjectDropper</em> closure thing is a strange way to do something react itself could do better&#8230;&#8203; sure. Just trying to stay focused on one thing at a time.</p>
-</div>
-</td>
-</tr>
-</table>
+<div class="listingblock">
+<div class="title">react4xp/entries/App.tsx</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {AppProps} from '/types/AppProps';
+import {BaseComponent} from '@enonic/react-components';
+import * as React from 'react';
+import {componentRegistry} from '../componentRegistry';
+import Footer from "../components/common/Footer"
+
+const App: React.FC&lt;AppProps&gt; = (props) =&gt; {
+    return (
+        &lt;&gt;
+            &lt;BaseComponent componentRegistry={componentRegistry} {...props}/&gt;
+            {(props.component.type == "page" || props.component.type == "contentType")
+             &amp;&amp; &lt;Footer logoUrl={props.url}/&gt;}
+        &lt;/&gt;
+    );
+}
+
+App.displayName = 'App';
+
+export default App;</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="create_a_pub"><a class="link" href="#create_a_pub">Create a Pub</a></h2>
+<h2 id="global_css"><a class="link" href="#global_css">Global CSS</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Setting up a new Pub has never been easier. Back in Content Studio, click new - and select <code>Pub</code>, which should now be available in the list of content you can create.</p>
+<p>You might notice the placement is a bit off, this is because we need some general styling.
+For this we are going to add a global CSS file, this allows us to avoid repeating general styling in each component.</p>
 </div>
 <div class="paragraph">
-<p>Fill in the form, and press save to see the glorious result.</p>
+<p>Add global CSS file to the component directory:</p>
 </div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/hello_cs.png" alt="hello cs" width="720px" title="Editing Hello World, same as before."></span></p>
+<div class="listingblock">
+<div class="title">react4xp/components/globalStyles.css</div>
+<div class="content">
+<pre class="highlight"><code class="language-CSS" data-lang="CSS">html {
+  background-color: #071622;
+  color: ghostwhite;
+  font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+  padding: 0;
+}
+
+body {
+  margin: 0 auto 0 auto;
+}
+
+#PageView {
+  width: 100%;
+}
+
+.contentContainer &gt; div {
+  margin-bottom: calc(6vh - 16px);
+  min-height: 86vh;
+  padding: 8px;
+  max-width: 1400px;
+  padding-inline: 2.5vw;
+  margin-inline: auto;
+}
+
+.back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  a {
+    color: #EF82F0;
+    text-decoration: none;
+  }
+
+  p {
+    margin: 0;
+    background-color: #071622;
+    padding-inline: 0.2rem;
+    font-size: 1.6rem;
+    font-weight: bolder;
+    border-bottom-right-radius: 5px;
+  }
+}
+
+h1 {
+  color: #0892D4;
+  font-size: 3rem;
+  margin: 0 0 3rem 0;
+  padding-top: 3rem;
+  text-align: left;
+  line-height: normal;
+}
+
+h2 {
+  color: #EF82F0;
+  font-size: 2rem;
+}
+
+h3 {
+  color: #61DBFB;
+  font-size: 1.4rem;
+}
+
+a {
+  color: #61DBFB;
+}
+
+img {
+  object-fit: cover;
+  object-position: 50% 50%;
+  max-width: 1600px;
+}
+
+p {
+  font-size: 22px;
+}
+
+.editor-align-justify {
+  margin-inline: auto;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Add your global CSS file to the app:</p>
+</div>
+<div class="listingblock">
+<div class="title">react4xp/entries/App.tsx</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import '../components/globalStyles.css';</code></pre>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="further_reading"><a class="link" href="#further_reading">Further reading</a></h2>
+<h2 id="asset_url"><a class="link" href="#asset_url">Asset URL</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Now might be a good time to take a closer look at <a href="appendix/api.ahtml#react4xp_render">the API overview of the .render call</a> from the ES6 controller in the example above.</p>
+<p>Lastly we need to be able to display our cool React4XP logo!
+To do this we use assetUrl which is a function that generates a URL pointing to a static file.</p>
+</div>
+<div class="paragraph">
+<p>Update your app.ts in your site directory to include assetUrl and define a prop for it:</p>
+</div>
+<div class="listingblock">
+<div class="title">react4xp/site/app.ts</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {assetUrl} from '/lib/enonic/asset';
+
+...
+
+export function get(request: Request): Response {
+    const url = assetUrl({path: 'images/React4XP.svg'});
+...
+
+    const props: AppProps = {
+        component,
+        url
+    }
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>define prop for the url:</p>
+</div>
+<div class="listingblock">
+<div class="title">react4xp/types/AppProps.ts</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {RenderableComponent} from '@enonic/react-components';
+
+export interface AppProps {
+    component: RenderableComponent,
+    url?: string
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Sweet!
+Now we have a footer component that is displayed on all pages in the application.
+The footer component is styled with a CSS module, and the global CSS file is used to style the app.</p>
 </div>
 </div>
 </div>
@@ -567,14 +746,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="next"><a class="link" href="#next">Next</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>TODO</p>
+<p>You are on a roll, in the next chapter we&#8217;ll be <a href="render-content.ahtml">rendering content</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-14 13:06:48 UTC
+Last updated 2025-05-14 17:39:44 UTC
 </div>
 </div>
 </body>

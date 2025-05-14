@@ -451,10 +451,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Hardcoded content is nice, but letting the editor create content is even better!</p>
+<p>Content types are nice, but letting the editor compose his on pages is even better.</p>
 </div>
 <div class="paragraph">
-<p>This is where the real power of React4XP comes into play, we can easily make a page component which allows the editor to drag and drop components into the page!</p>
+<p>This is where the real power of React4XP comes into play, by defining a page, editors may drag&#8217;n drop cms components into the page!</p>
 </div>
 </div>
 </div>
@@ -661,7 +661,7 @@ We can give it some content.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-14 13:06:48 UTC
+Last updated 2025-05-14 17:39:44 UTC
 </div>
 </div>
 </body>
