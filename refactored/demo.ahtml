@@ -5,7 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Editorial content and props</title>
+<meta name="author" content="Skip straight to the end of this tutorial.">
+<title>React4XP Demo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,89 +438,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Editorial content and props</h1>
+<h1>React4XP Demo</h1>
+<div class="details">
+<span id="author" class="author">Skip straight to the end of this tutorial.</span><br>
+</div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#content_type">Content type</a></li>
-<li><a href="#controller">Controller</a>
-<ul class="sectlevel2">
-<li><a href="#hello_props_component">Hello props component</a></li>
-</ul>
-</li>
-<li><a href="#create_a_pub">Create a Pub</a></li>
-<li><a href="#further_reading">Further reading</a></li>
-<li><a href="#next">Next</a></li>
+<li><a href="#what">What?</a></li>
+<li><a href="#1_setup_enonic">1 - Setup Enonic</a></li>
+<li><a href="#3_install_the_front_end">3 - Install the Front-end</a></li>
+<li><a href="#4_activate_preview">4 - Activate preview</a></li>
+<li><a href="#how_does_it_work">How does it work?</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>In this chapter we&#8217;ll have a closer look at how content may be passed to your React component via props.</p>
-</div>
-</div>
-</div>
 <div class="sect1">
-<h2 id="content_type"><a class="link" href="#content_type">Content type</a></h2>
+<h2 id="what"><a class="link" href="#what">What?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To create some interesting content, start off by adding a new content type. To stay on topic, we&#8217;ll call the new content type <code>Pub</code>.</p>
-</div>
-<div class="paragraph">
-<p>Add the following file to your app:</p>
-</div>
-<div class="listingblock">
-<div class="title">/src/main/resources/site/content-types/pub/pub.xml:</div>
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/content-types/pub/pub.xml[]</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="controller"><a class="link" href="#controller">Controller</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Next, we&#8217;ll modify our controller. It needs to fetch the content, and pass it as <code>props</code> to the React component:</p>
-</div>
-<div id="controller_with_props" class="listingblock">
-<div class="title">react4xp/hello-react.ts:</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">## include::../src/main/resources/react4xp/hello-react.ts[]</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>We&#8217;ll use a new React component this time</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Fetches the contextual content</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The <code>props</code> object is just any standard <strong>serializable</strong> JS object</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Pass the props to the component</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="hello_props_component"><a class="link" href="#hello_props_component">Hello props component</a></h3>
-<div class="paragraph">
-<p>Finally, add a new React template that makes use of the props object.</p>
-</div>
-<div class="listingblock">
-<div class="title">react4xp/entries/hello-props.tsx</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">## include::../src/main/resources/react4xp/entries/hello-props.tsx[]</code></pre>
-</div>
+<p>You will run an XP server with a sample dataset, then deploy a R4XP front-end on top of it</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -528,46 +467,110 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<div class="paragraph">
-<p><code>props</code> are of course the standard react way to do this. It all is. As long as a <em>props &#8658; reactComponent</em> function is default-exported, React4xp accepts standard valid TSX/JSX/TS/JS/ES6.</p>
-</div>
-<div class="paragraph">
-<p>Although, if you think that the <em>makeObjectDropper</em> closure thing is a strange way to do something react itself could do better&#8230;&#8203; sure. Just trying to stay focused on one thing at a time.</p>
-</div>
+Want to learn what is really happening? Head on to the <a href="enonic-setup.ahtml">first chapter</a> of the tutorial instead.
 </td>
 </tr>
 </table>
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
-<h2 id="create_a_pub"><a class="link" href="#create_a_pub">Create a Pub</a></h2>
+<h2 id="1_setup_enonic"><a class="link" href="#1_setup_enonic">1 - Setup Enonic</a></h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Setting up a new Pub has never been easier. Back in Content Studio, click new - and select <code>Pub</code>, which should now be available in the list of content you can create.</p>
-</div>
-<div class="paragraph">
-<p>Fill in the form, and press save to see the glorious result.</p>
-</div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/hello_cs.png" alt="hello cs" width="720px" title="Editing Hello World, same as before."></span></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="further_reading"><a class="link" href="#further_reading">Further reading</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Now might be a good time to take a closer look at <a href="appendix/api.ahtml#react4xp_render">the API overview of the .render call</a> from the ES6 controller in the example above.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Sign up for a free Enonic account</strong>: on <a href="https://www.enonic.com/sign-up" class="bare">https://www.enonic.com/sign-up</a></p>
+</li>
+<li>
+<p>After logging in to your account, <strong>create a new solution</strong> from <code>Solutions &#8594; Create &#8594; Next.js Demo</code>. This will install all required Enonic apps and setup the routes needed.</p>
+</li>
+<li>
+<p>From your new solution, click <code>Environments</code> - Notice the URL to the <code>API</code> ingress, you will need it later.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="next"><a class="link" href="#next">Next</a></h2>
+<h2 id="3_install_the_front_end"><a class="link" href="#3_install_the_front_end">3 - Install the Front-end</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>TODO</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="4_activate_preview"><a class="link" href="#4_activate_preview">4 - Activate preview</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With the front-end running, it is time to enable preview in Content Studio.</p>
+</div>
+<div class="paragraph">
+<p>The fastest way to try it out goes as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Launch Enonic XP admin</strong> from the solution dashboard.</p>
+</li>
+<li>
+<p><strong>Open Content Studio</strong> from the top right <code>XP menu &#8594; Content Studio</code>.</p>
+</li>
+<li>
+<p>Choose the <code>Headless Movie DB</code> project, then click the root item in the tree structure <code>/hmdb</code> and click <code>Edit</code>.</p>
+<div class="paragraph">
+<p><span class="image"><img src="media/content-studio-edit-site.png" alt="content studio edit site" width="650px" title="Select and edit the site"></span></p>
+</div>
+</li>
+<li>
+<p>Add the <code>Next.XP</code> app to the list of applications on the site.
+It will override the default preview for the content within the site.</p>
+<div class="paragraph">
+<p><span class="image"><img src="media/content-studio-add-nextxp.png" alt="content studio add nextxp" width="779px" title="Add the Next.XP application to the site."></span></p>
+</div>
+</li>
+<li>
+<p>Now, instruct Next.XP where to find the frontend server:</p>
+<div class="paragraph">
+<div class="title">Go to Applications tab in Enonic Cloud and select Next.XP app:</div>
+<p><span class="image"><img src="media/cloud-next-app-edit.png" alt="cloud next app edit" width="937px" title="Select the Next.XP application"></span></p>
+</div>
+<div class="paragraph">
+<div class="title">Press <code>Edit&#8230;&#8203;</code> button in the app context menu and add the URL and secret of the Vercel app you deployed in step 3:</div>
+<p><span class="image"><img src="media/cloud-next-app-config.png" alt="cloud next app config" width="872px" title="Add the Next.XP application to the site."></span></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We are overriding default preview configuration for all sites using the Next.XP app. Use a different keyword than <code>default</code> to define multiple front-ends.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>After saving and going back to Content Studio, the preview should update to show your front-end.</p>
+<div class="paragraph">
+<p><span class="image"><img src="media/cloud-preview.png" alt="cloud preview" width="1419px" title="Front page as seen from Content Studio"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="how_does_it_work"><a class="link" href="#how_does_it_work">How does it work?</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Front-end app steps into the Site Engine pipeline and replaces HMDB&#8217;s standard preview.</p>
+</div>
+<div class="paragraph">
+<p>Congratulations, you now have a React site powered by Enonic! 🚀</p>
 </div>
 </div>
 </div>
