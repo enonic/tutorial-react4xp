@@ -1,0 +1,53 @@
+= React4XP Demo
+Skip straight to the end of this tutorial. 
+:toc: right
+:imagesdir: media/
+
+== What?
+You will run an XP server with a sample dataset, then deploy a R4XP front-end on top of it
+
+TIP: Want to learn what is really happening? Head on to the <<enonic-setup#, first chapter>> of the tutorial instead.
+
+== 1 - Setup Enonic
+
+. **Sign up for a free Enonic account**: on https://www.enonic.com/sign-up
+. After logging in to your account, **create a new solution** from `Solutions -> Create -> Next.js Demo`. This will install all required Enonic apps and setup the routes needed. 
+. From your new solution, click `Environments` - Notice the URL to the `API` ingress, you will need it later.
+
+== 3 - Install the Front-end
+TODO
+
+== 4 - Activate preview
+With the front-end running, it is time to enable preview in Content Studio.
+
+The fastest way to try it out goes as follows:
+
+. **Launch Enonic XP admin** from the solution dashboard.
+. **Open Content Studio** from the top right `XP menu -> Content Studio`.
+. Choose the `Headless Movie DB` project, then click the root item in the tree structure `/hmdb` and click `Edit`.
++
+image:content-studio-edit-site.png[title="Select and edit the site",width=650px]
++
+. Add the `Next.XP` app to the list of applications on the site.
+It will override the default preview for the content within the site.
++
+image:content-studio-add-nextxp.png[title="Add the Next.XP application to the site.",width=779px]
++
+. Now, instruct Next.XP where to find the frontend server:
++
+.Go to Applications tab in Enonic Cloud and select Next.XP app:
+image:cloud-next-app-edit.png[title="Select the Next.XP application",width=937px]
++
+.Press `Edit...` button in the app context menu and add the URL and secret of the Vercel app you deployed in step 3:
+image:cloud-next-app-config.png[title="Add the Next.XP application to the site.",width=872px]
++
+NOTE: We are overriding default preview configuration for all sites using the Next.XP app. Use a different keyword than `default` to define multiple front-ends.
++
+. After saving and going back to Content Studio, the preview should update to show your front-end.
++
+image:cloud-preview.png[title="Front page as seen from Content Studio",width=1419px]
+
+== How does it work?
+The Front-end app steps into the Site Engine pipeline and replaces HMDB's standard preview.
+
+Congratulations, you now have a React site powered by Enonic! 🚀
