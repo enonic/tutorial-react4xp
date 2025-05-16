@@ -1,5 +1,8 @@
 = Upgrading to v6
 :toc: right
+:imagesdir: media/
+:sourcedir: ../src/main/resources/
+:snippet: ../../code-samples/code-snippets/
 
 == Background
 
@@ -35,7 +38,189 @@ To facilitate this, you register server-side controllers that fetches relevant c
 
 On the view side of things, each CMS component is implemented as a React component, and added to a component registry.
 
+== Complete upgrade
 
-== Migration steps
+This describes upgrading to the full feature set of react4xp 6 including migrating pages and layouts to react.
 
-TODO
+. Create an app using the starter and give it a new name
+. Migrate each react component to the new app (Following the steps below)
+. Migrate your page and layout to react components
+. Deploy the application on your existing site
+
+You will now have one application with your schemas, and one containing your frontend.
+If you prefer having a single application, follow these steps:
+
+. Move the cms schemas and other files you want to keep to the new application
+. Rename it to the same name as your old application
+. Make a production build and deploy it
+. The old application can now be discarded
+
+== Partial upgrade
+
+Version 6 is still compatible with how components are rendered in version 5(each part is a separate react app/entry).
+
+As such, you may upgrade your existing react4xp application with minimal changes to the code.
+
+This means you will upgrade to newer versions of dependencies, without changing how your components work.
+
+Follow these steps:
+
+* Set your app xp version 7.15 or newer
++
+.gradle.properties
+`xpVersion=7.15.0`
+
+* Use latest lib react4xp
++
+.package.json
+"@enonic-types/lib-react4xp": "^6.0.0-B7",
+* Add @enonic-types/core from npm (Package.json)
+* Add @enonic/react-components from npm (Package.json)
++
+.package.json
+"@enonic/react-components": "^6.0.0-B4",
+* Folder structure
+* Upgrade Build.gradle
+* Upgrade webpack config
+* Upgrade types for parts
+* Make a production build and deploy
+
+*  ?
+
+== Migrating parts
+
+=== Partial migration
+
+In react4xp v5 the example controller looks like this:
+
+.src/main/resources/site/parts/example/example.ts
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/example.ts[]
+----
+
+V6 uses @enonic/types-core so you need to replace the old js-utils Request with the new one.
+
+* Replace "Enonic.Xp.Http.Request" from '@enonic/js-utils/types/Request' with “Request” from @enonic/types-core.
+
+This is how the upgraded component looks like:
+.src/main/resources/site/parts/example/example.ts
+
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/upgradedExample.ts[]
+----
+
+So far in this tutorial we have used componentRegistry to render and dataFetcher to invoke the processor for all components.
+
+Since our old component does not have any processor and is rendered outside componentRegistry we need to exclude it so it becomes available for XP.
+We do this by updating site.xml:
+
+.src/main/resources/site/site.xml
+[code,xml]
+----
+include::{snippet}appendix/upgrade/site.xml[]
+----
+
+Now we can use the v5 component with react4xp v6, we just need to make sure the url contains `/r4xp5`
+
+=== Complete migration
+
+Now let’s go a little bit deeper and use the example component as a part along with our new components.
+To do this we need to do the following:
+
+. Make an xml file for it so XP knows that it exists, here we can also give it a good description.
++
+.src/main/resources/site/parts/example/example.xml
+[code,xml]
+----
+include::{snippet}appendix/upgrade/example.xml[]
+----
+
+. Move the example component to the parts folder, where we update it by wrapping it in a `Part` tag instead of `div`.
+Then we add extraProps to it, this is important because react4xp v6 uses this to add necessary props to the parts component so it is possible to view and edit it within the page editor.
++
+.src/main/resources/react4xp/components/parts/example/example.tsx
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/example.tsx[]
+----
+
+. Instead of fetching in get(), create a processor that returns its props—React4xp will forward them (plus its own metadata) into <Part> via extraProps.
++
+.src/main/resources/react4xp/components/parts/example/exampleProcessor.ts
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/exampleProcessor.ts[]
+----
+
+. Add it to the componentRegistry and dataFetcher with the same descriptor as in previous task.
++
+.src/main/resources/react4xp/componentRegistry.ts
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/componentRegistry.tsx[]
+----
++
+.src/main/resources/react4xp/dataFetcher.ts
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/dataFetcher.ts[]
+----
+
+== Migrating pages and layouts
+
+Unlike parts, pages and layouts can not be partially migrated in react4xp v6 because layouts and pages are dependent on component registry to render child components.
+
+This means that we need to completely migrate the page and layout.
+
+=== Pages
+
+Your current page part might look something like this:
+
+.src/main/resources/site/pages/default/default.tsx
+[code,typeScript]
+----
+include::{snippet}appendix/upgrade/pages/pagev5/default.tsx[]
+----
+
+with a controller like this:
+.src/main/resources/site/pages/default/default.ts
+
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/pages/pagev5/default.ts[]
+----
+
+And an xml like this:
+.src/main/resources/site/pages/default/default.xml
+
+[code,xml]
+----
+include::{snippet}appendix/upgrade/pages/pagev5/default.xml[]
+----
+
+This is how we migrate it to a react4xp v6 component:
+
+First let's handle the controller which becomes a processor, the most important prop to pass from the processor is the regionsData.
+Notice how we change `regionsData` to `regions`, this is because the new Regions React component is expecting it along with componentRegistry.
+
+.src/main/resources/react4xp/components/page/PageProcessor.ts
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/pages/pagev6/PageProcessor.ts[]
+----
+
+Next we need to change out the part `default.tsx` with a component `page.tsx`, which is very similar except that we pass `regions` and `componentRegistry` to the `Regions` react component.
+
+.src/main/resources/react4xp/components/page/Page.tsx
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/pages/pagev6/Page.tsx[]
+----
+
+=== Layouts
+
+(Migrate thymeleaf etc, minimal example)
+
+And just like that we have not only upgraded the old component, but also made it compatible with the new ones!
