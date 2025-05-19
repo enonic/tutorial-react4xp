@@ -211,7 +211,7 @@ Notice how we change `regionsData` to `regions`, this is because the new Regions
 include::{snippet}appendix/upgrade/pages/pagev6/PageProcessor.ts[]
 ----
 
-Next we need to change out the part `default.tsx` with a component `page.tsx`, which is very similar except that we pass `regions` and `componentRegistry` to the `Regions` react component.
+Next we need to change out the part `default.tsx` with a component `page.tsx`, which is very similar except that we pass `regions` to the `Regions` react component.
 
 .src/main/resources/react4xp/components/page/Page.tsx
 [code,TypeScript]
@@ -219,7 +219,106 @@ Next we need to change out the part `default.tsx` with a component `page.tsx`, w
 include::{snippet}appendix/upgrade/pages/pagev6/Page.tsx[]
 ----
 
+For XP to see it we need to keep the xml file, but we will change the name to `Page.xml` and add a description to it.
+This way we can call on it using a descriptor in the component registry and data fetcher.
+
+.src/main/resources/site/pages/Page/Page.xml
+[code,xml]
+----
+include::{snippet}appendix/upgrade/pages/pagev6/Page.xml[]
+----
+
+Let's add it to componentRegistry and dataFetcher, this is done in the same way as we did with the part.
+.src/main/resources/react4xp/componentRegistry.ts
+
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/pages/pagev6/componentRegistry.tsx[]
+----
++
+.src/main/resources/react4xp/dataFetcher.ts
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/pages/pagev6/dataFetcher.ts[]
+----
+
+Now we have a fully functional page component that is using the new regions and component registry.
+
 === Layouts
+
+Lastly we need to migrate the layout, this is done in a similar way to the page.
+
+Your current layout part might look something like this:
+.src/main/resources/site/layouts/twoColumns/twoColumns.tsx
+
+[code,typeScript]
+----
+include::{snippet}appendix/upgrade/layouts/layoutv5/twoColumns.tsx[]
+----
+
+with a controller like this:
+.src/main/resources/site/layouts/twoColumns/twoColumns.ts
+
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/layouts/layoutv5/twoColumns.ts[]
+----
+
+And an xml like this:
+.src/main/resources/site/layouts/twoColumns/twoColumns.xml
+
+[code,xml]
+----
+include::{snippet}appendix/upgrade/layouts/layoutv5/twoColumns.xml[]
+----
+
+Similar to the page, we need to implement a processor, and a component.
+
+.src/main/resources/react4xp/components/layouts/TwoColumnProcessor.ts
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/layouts/layoutv6/TwoColumnProcessor.ts[]
+----
+
+The Layout component is depending on the `Regions` like the page, so we need to pass the `regions` prop to it.
+
+.src/main/resources/react4xp/components/layouts/TwoColumn.tsx
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/layouts/layoutv6/TwoColumn.tsx[]
+----
+
+We are keeping one more prop for layout, we use this `tags: 'section'` to target the layout with our css module.
+
+.src/main/resources/components/layouts/twoColumn.css
+[code,css]
+----
+include::{snippet}appendix/upgrade/layouts/layoutv6/TwoColumn.module.css[]
+----
+
+We need to add the layout to the component registry and data fetcher, this is done in the same way as we did with the part and page.
+
+.src/main/resources/react4xp/componentRegistry.ts
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/layouts/layoutv6/componentRegistry.tsx[]
+----
+
+.src/main/resources/react4xp/dataFetcher.ts
+[code,TypeScript]
+----
+include::{snippet}appendix/upgrade/layouts/layoutv6/dataFetcher.ts[]
+----
+
+And finally we need to update the xml file to match the descriptor, this is done in the same way as the page.
+
+.src/main/resources/site/layouts/TwoColumn/TwoColumn.xml
+[code,xml]
+----
+include::{snippet}appendix/upgrade/layouts/layoutv6/TwoColumns.xml[]
+----
+
+Now we have a fully functional layout component that is using the new regions and component registry.
 
 (Migrate thymeleaf etc, minimal example)
 
