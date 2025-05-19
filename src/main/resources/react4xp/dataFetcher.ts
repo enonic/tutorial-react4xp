@@ -7,6 +7,7 @@ import {pageProcessor} from './components/page/PageProcessor';
 import {childListProcessor} from './components/parts/ChildListProcessor';
 import {headingProcessor} from './components/parts/HeadingProcessor';
 import {movieProcessor} from "./components/parts/MovieProcessor";
+import {commonProcessor} from '/react4xp/components/common/CommonProcessor';
 
 export const dataFetcher = new DataFetcher();
 //dataFetcher.addContentType('portal:site', { processor: helloProcessor });
@@ -18,3 +19,5 @@ dataFetcher.addLayout('com.enonic.app.hmdb:2-column', {processor: layoutProcesso
 dataFetcher.addPart('com.enonic.app.hmdb:child-list', {processor: childListProcessor});
 dataFetcher.addContentType('com.enonic.app.hmdb:playlist', {processor: playlistProcessor});
 dataFetcher.addContentType('com.enonic.app.hmdb:article', {processor: articleProcessor});
+dataFetcher['addCommon']({processor: commonProcessor});   // TODO: change to function notation when react-components types are up to date
+

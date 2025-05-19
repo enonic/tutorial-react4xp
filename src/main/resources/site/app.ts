@@ -1,13 +1,11 @@
-import {assetUrl} from '/lib/enonic/asset';
 import {render} from '/lib/enonic/react4xp';
 import {type Content, get as getContentByKey} from '/lib/xp/content';
 import {getContent, pageUrl} from '/lib/xp/portal';
 import {dataFetcher} from '/react4xp/dataFetcher';
-import type {AppProps} from '/types/AppProps';
 import type {Request, Response} from '@enonic-types/core';
 
 export function get(request: Request): Response {
-    const url = assetUrl({path: 'images/React4XP.svg'});
+
     let content = getContent();
     if (content.type == "base:shortcut") {
         const targetId: string = content.data.target as string
@@ -24,15 +22,11 @@ export function get(request: Request): Response {
             status: 404
         }
     }
-    const component = dataFetcher.process({
+    const data = dataFetcher.process({
         content, // Since it's already gotten, pass it along, so DataFetcher doesn't have to get it again.
         request,
     });
 
-    const props: AppProps = {
-        component,
-        url
-    }
     const react4xpId = `react4xp_${content._id}`;
     const htmlBody = `<!DOCTYPE html>
 	<html lang="en">
@@ -47,15 +41,13 @@ export function get(request: Request): Response {
 		</body>
 	</html>`;
 
-    const output = render(
+    return render(
         'App',
-        props,
+        data,
         request,
         {
             body: htmlBody,
             id: react4xpId,
         }
     );
-
-    return output;
 }
