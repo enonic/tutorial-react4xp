@@ -74,14 +74,6 @@ Update your app.ts in your site directory to include assetUrl and define a prop 
 include::../code-samples/code-snippets/App-layout/app.ts[]
 ----
 
-define prop for the url:
-
-.react4xp/types/AppProps.ts
-[source,TypeScript]
-----
-include::../code-samples/code-snippets/App-layout/AppProps.ts[]
-----
-
 Sweet!
 Now we have a footer component that is displayed on all pages in the application.
 The footer component is styled with a CSS module, and the global CSS file is used to style the app.

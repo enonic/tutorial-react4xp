@@ -1,6 +1,5 @@
 import {render} from '/lib/enonic/react4xp';
 import {getContent} from '/lib/xp/portal';
-import type {AppProps} from '/types/AppProps';
 import type {Component, Content, Request, Response} from '@enonic-types/core';
 
 import {getIn} from '@enonic/js-utils/object/getIn';
@@ -52,20 +51,16 @@ export function get(request: Request) {
         content,
         request,
     });
-    const component = dataFetcher.process({
+    const data = dataFetcher.process({
         component: origComponent,
         content,
         request
     });
 
-    const props: AppProps = {
-        component
-    }
-
     const react4xpId = `react4xp_${content._id}`;
     const output = render(
         'App',
-        props,
+        data,
         request,
         {
             body: `<div id="${react4xpId}"></div>`,
