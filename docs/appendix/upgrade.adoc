@@ -23,18 +23,20 @@ In v6, each page only has a single React entry/application, vs one entry/app per
 In v5, pages and parts could not be implemented as TSX, because React did not support nested apps/entries.
 
 === Detached front-end
+
 v5 was based on XP's traditional site engine, where rendering is bundled together with each CMS component.
 
-React4XP severs this tie, and takes full control over the rendering, via a controller mapping. This means you may implement the front-end/rendering code separately from the CMS model definition - even via a separate XP application than where your model is defined.
+React4XP severs this tie, and takes full control over the rendering, via a controller mapping.
+This means you may implement the front-end/rendering code separately from the CMS model definition - even via a separate XP application than where your model is defined.
 
 You may still add the front-end code in the same application as your model, at your own discretion.
 
-IMPORTANT: You may still combine React4XP apps with other XP apps on the same site. For instance apps that add services, or contribute scripts or tags to the response.
+IMPORTANT: You may still combine React4XP apps with other XP apps on the same site.
+For instance apps that add services, or contribute scripts or tags to the response.
 
 === Component registry
 
-TODO: Move
-React4XP follows a traditional MVC approach, where data is first collected into a model (in the form of props), and then passed to the view (React template)
+TODO: Move React4XP follows a traditional MVC approach, where data is first collected into a model (in the form of props), and then passed to the view (React template)
 
 To facilitate this, you register server-side controllers that fetches relevant content for each component
 
