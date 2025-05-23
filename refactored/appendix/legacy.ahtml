@@ -926,14 +926,14 @@ We do this by updating site.xml:</p>
 <h2 id="migrating_pages_and_layouts"><a class="link" href="#migrating_pages_and_layouts">Migrating pages and layouts</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As this is a breaking change you need to follow the recommended <a href="./recommended.adoc#page-layout" target="_blank" rel="noopener">guide</a> for migrating pages and layouts as these are dependent on the component registry.</p>
+<p>As this is a breaking change you need to follow the recommended <a href="./recommended#page-layout" target="_blank" rel="noopener">guide</a> for migrating pages and layouts as these are dependent on the component registry.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-23 08:19:57 UTC
+Last updated 2025-05-23 08:28:35 UTC
 </div>
 </div>
 </body>

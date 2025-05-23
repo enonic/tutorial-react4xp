@@ -458,7 +458,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Create an app using the <a href="../setup.adoc#create-starter" target="_blank" rel="noopener">starter</a> and give it a new name.</p>
+<p>Create an app using the <a href="../setup#create-starter" target="_blank" rel="noopener">starter</a> and give it a new name.</p>
 </li>
 <li>
 <p><a href="#migrating-parts">Migrate</a> each react component to the new app.</p>
@@ -467,7 +467,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Migrate your <a href="#migrate-page">page</a> and <a href="#migrate-layout">layout</a> to react components</p>
 </li>
 <li>
-<p><a href="./legacy.adoc#build-deploy" target="_blank" rel="noopener">Deploy</a> the application on your existing site.</p>
+<p><a href="./legacy#build-deploy" target="_blank" rel="noopener">Deploy</a> the application on your existing site.</p>
 </li>
 </ol>
 </div>
@@ -484,7 +484,7 @@ If you prefer having a single application, follow these steps:</p>
 <p>Rename it to the same name as your old application.</p>
 </li>
 <li>
-<p>Make a production build and <a href="./legacy.adoc#build-deploy" target="_blank" rel="noopener">Deploy</a> it.</p>
+<p>Make a production build and <a href="./legacy#build-deploy" target="_blank" rel="noopener">Deploy</a> it.</p>
 </li>
 <li>
 <p>The old application can now be discarded.</p>
@@ -997,7 +997,7 @@ dataFetcher.addLayout('com.enonic.app.react4xp:TwoColumns', {processor: layoutPr
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-23 08:19:57 UTC
+Last updated 2025-05-23 08:28:35 UTC
 </div>
 </div>
 </body>
