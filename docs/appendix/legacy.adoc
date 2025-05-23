@@ -326,4 +326,4 @@ Now we can use the v5 component with react4xp v6, we just need to make sure the 
 
 == Migrating pages and layouts
 
-As this is a breaking change you need to follow the recommended link:./recommended.adoc#page-layout[guide^] for migrating pages and layouts as these are dependent on the component registry.
+As this is a breaking change you need to follow the recommended link:./recommended#page-layout[guide^] for migrating pages and layouts as these are dependent on the component registry.

@@ -8,17 +8,17 @@
 
 This describes upgrading to the full feature set of react4xp 6 including migrating pages and layouts to react.
 
-. Create an app using the link:../setup.adoc#create-starter[starter^] and give it a new name.
+. Create an app using the link:../setup#create-starter[starter^] and give it a new name.
 . <<migrating-parts, Migrate>> each react component to the new app.
 . Migrate your <<migrate-page, page>> and <<migrate-layout, layout>> to react components
-. link:./legacy.adoc#build-deploy[Deploy^] the application on your existing site.
+. link:./legacy#build-deploy[Deploy^] the application on your existing site.
 
 You will now have one application with your schemas, and one containing your frontend.
 If you prefer having a single application, follow these steps:
 
 . Move the cms schemas and other files you want to keep to the new application.
 . Rename it to the same name as your old application.
-. Make a production build and link:./legacy.adoc#build-deploy[Deploy^] it.
+. Make a production build and link:./legacy#build-deploy[Deploy^] it.
 . The old application can now be discarded.
 
 [[migrating-parts]]
