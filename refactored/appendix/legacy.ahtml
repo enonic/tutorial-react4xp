@@ -491,7 +491,7 @@ But you can can upgrade you existing react4xp application if you want to.</p>
 <p>Use latest React4XP types</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"@enonic-types/lib-react4xp": "^6.0.0-B7",</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">"@enonic-types/lib-react4xp": "^6.0.0",</code></pre>
 </div>
 </div>
 </li>
@@ -499,7 +499,7 @@ But you can can upgrade you existing react4xp application if you want to.</p>
 <p>Use latest React4XP runtime library</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"@enonic/react4xp":       "^6.0.0-B2",</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">"@enonic/react4xp":       "^6.0.0",</code></pre>
 </div>
 </div>
 </li>
@@ -507,7 +507,7 @@ But you can can upgrade you existing react4xp application if you want to.</p>
 <p>Add global Enonic types (includes core transitively)</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"@enonic-types/global":   "^7.15.0-A2",</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">"@enonic-types/global":   "^7.15.0",</code></pre>
 </div>
 </div>
 <div class="literalblock">
@@ -525,7 +525,7 @@ But you can can upgrade you existing react4xp application if you want to.</p>
 <p>Add React component library</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"@enonic/react-components": "^6.0.0-B4",</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">"@enonic/react-components": "^6.0.0",</code></pre>
 </div>
 </div>
 </li>
@@ -628,7 +628,7 @@ But you can can upgrade you existing react4xp application if you want to.</p>
 <div class="content">
 <pre class="highlight"><code class="language-groovy" data-lang="groovy">    include "com.enonic.xp:lib-schema:${xpVersion}"
     include 'com.enonic.lib:lib-asset:1.0.1'
-    include 'com.enonic.lib:lib-react4xp:6.0.0-SNAPSHOT'</code></pre>
+    include 'com.enonic.lib:lib-react4xp:6.0.0'</code></pre>
 </div>
 </div>
 </li>
@@ -933,7 +933,7 @@ We do this by updating site.xml:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-23 08:28:35 UTC
+Last updated 2025-05-23 08:57:41 UTC
 </div>
 </div>
 </body>
