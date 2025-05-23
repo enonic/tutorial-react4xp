@@ -3,9 +3,9 @@ import '../components/globalStyles.css'
 import {BaseComponent} from '@enonic/react-components';
 import * as React from 'react';
 import {componentRegistry} from '../componentRegistry';
+import type {AppProps} from '/types/AppProps';
 
-//TODO: update to ProcessResult when react-components types are up to date
-const App: React.FC<any> = (props) => {
+const App: React.FC<AppProps> = (props) => {
     return (
         <>
             <BaseComponent componentRegistry={componentRegistry} data={props}/>

@@ -19,5 +19,5 @@ dataFetcher.addLayout('com.enonic.app.hmdb:2-column', {processor: layoutProcesso
 dataFetcher.addPart('com.enonic.app.hmdb:child-list', {processor: childListProcessor});
 dataFetcher.addContentType('com.enonic.app.hmdb:playlist', {processor: playlistProcessor});
 dataFetcher.addContentType('com.enonic.app.hmdb:article', {processor: articleProcessor});
-dataFetcher['addCommon']({processor: commonProcessor});   // TODO: change to function notation when react-components types are up to date
+dataFetcher.addCommon({processor: commonProcessor});
 
