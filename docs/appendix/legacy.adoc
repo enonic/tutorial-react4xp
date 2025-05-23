@@ -27,21 +27,21 @@ xpVersion = 7.15.1
 +
 [source,json]
 ----
-"@enonic-types/lib-react4xp": "^6.0.0-B7",
+"@enonic-types/lib-react4xp": "^6.0.0",
 ----
 
 * Use latest React4XP runtime library
 +
 [source,json]
 ----
-"@enonic/react4xp":       "^6.0.0-B2",
+"@enonic/react4xp":       "^6.0.0",
 ----
 
 * Add global Enonic types (includes core transitively)
 +
 [source,json]
 ----
-"@enonic-types/global":   "^7.15.0-A2",
+"@enonic-types/global":   "^7.15.0",
 ----
 
   NOTE: this brings in `@enonic-types/core`:
@@ -55,7 +55,7 @@ xpVersion = 7.15.1
 +
 [source,json]
 ----
-"@enonic/react-components": "^6.0.0-B4",
+"@enonic/react-components": "^6.0.0",
 ----
 
 * Add small utility deps
@@ -142,7 +142,7 @@ This layout ensures XP can discover your React4XP assets (under react4xp/), site
 ----
     include "com.enonic.xp:lib-schema:${xpVersion}"
     include 'com.enonic.lib:lib-asset:1.0.1'
-    include 'com.enonic.lib:lib-react4xp:6.0.0-SNAPSHOT'
+    include 'com.enonic.lib:lib-react4xp:6.0.0'
 ----
 
 * Inject npm-based type-checks
