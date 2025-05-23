@@ -28,6 +28,7 @@ We're going to need a sandbox for this tutorial:
 
 This will create and start a sandbox containing relevant applications, including the Headless Movie DB sample dataset.
 
+[[create-starter]]
 == Create application
 
 From a **new terminal window**, run the following command to create the application that will contain the React4XP front-end. 
