@@ -56,7 +56,7 @@ If you prefer having a single application, follow these steps:
 
 . Move the cms schemas and other files you want to keep to the new application.
 . Rename it to the same name as your old application.
-. Make a production build and deploy it.
+. Make a production <<build-deploy, build and deploy>> it.
 . The old application can now be discarded.
 
 == Partial upgrade
@@ -315,7 +315,7 @@ type: 'asset/resource'
 	]
 ----
 
-* Upgrade types for parts
+* Upgrade to new types
 
 ** V6 uses @enonic/types-core so you need to replace the old js-utils Request with the new one.
 
@@ -326,22 +326,27 @@ type: 'asset/resource'
 +
 [source,shell]
 ----
-./gradlew build
+enonic project build
 ----
 +
 [source,shell]
 ----
-./gradlew deploy
+enonic project deploy
 ----
 +
-You can alter development environment by adding a `-Penv=dev` or `-Penv=prod` flag.
+You can also run the project in development mode, which will watch for changes and automatically deploy them to the sandbox:
 +
 [source,shell]
 ----
-./gradlew deploy -Penv=prod
+enonic dev
+----
++
+[source,shell]
+----
+enonic project dev
 ----
 
-[[migrating-parts]]
+
 == Migrating parts
 
 === Partial migration
@@ -379,6 +384,7 @@ include::{snippet}appendix/upgrade/site.xml[]
 
 Now we can use the v5 component with react4xp v6, we just need to make sure the url contains `/r4xp5`
 
+[[migrating-parts]]
 === Complete migration
 
 Now let’s go a little bit deeper and use the example component as a part along with our new components.
