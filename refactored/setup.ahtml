@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#install_enonic_cli">Install Enonic CLI</a></li>
 <li><a href="#create_a_sandbox">Create a sandbox</a></li>
-<li><a href="#create_application">Create application</a></li>
+<li><a href="#create-starter">Create application</a></li>
 <li><a href="#project_structure">Project structure</a></li>
 <li><a href="#dev_mode">Dev mode</a></li>
 </ul>
@@ -511,7 +511,7 @@ To upgrade, use <code>enonic latest</code>. If there are new versions you will s
 </div>
 </div>
 <div class="sect1">
-<h2 id="create_application"><a class="link" href="#create_application">Create application</a></h2>
+<h2 id="create-starter"><a class="link" href="#create-starter">Create application</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>From a <strong>new terminal window</strong>, run the following command to create the application that will contain the React4XP front-end.</p>
@@ -653,7 +653,7 @@ enonic dev</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-14 17:39:44 UTC
+Last updated 2025-05-23 08:12:42 UTC
 </div>
 </div>
 </body>

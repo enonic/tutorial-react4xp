@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Cheat sheet: Making a React4xp entry</title>
+<title>Recommended upgrade</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,22 +435,569 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article">
+<body class="article toc2 toc-right">
 <div id="header">
-<h1>Cheat sheet: Making a React4xp entry</h1>
+<h1>Recommended upgrade</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#step_by_step">Step by step</a></li>
+<li><a href="#migrating-parts">Migrating parts</a></li>
+<li><a href="#migrate-page">Pages</a></li>
+<li><a href="#migrate-layout">Layouts</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
+<div class="sect1">
+<h2 id="step_by_step"><a class="link" href="#step_by_step">Step by step</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p><span class="image"><img src="media/entries_howto.png" alt="entries howto" title="Downloadable cheat sheet: how to make a React4xp entry"></span></p>
+<p>This describes upgrading to the full feature set of react4xp 6 including migrating pages and layouts to react.</p>
 </div>
-<hr>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create an app using the <a href="../setup.adoc#create-starter" target="_blank" rel="noopener">starter</a> and give it a new name.</p>
+</li>
+<li>
+<p><a href="#migrating-parts">Migrate</a> each react component to the new app.</p>
+</li>
+<li>
+<p>Migrate your <a href="#migrate-page">page</a> and <a href="#migrate-layout">layout</a> to react components</p>
+</li>
+<li>
+<p><a href="./legacy.adoc#build-deploy" target="_blank" rel="noopener">Deploy</a> the application on your existing site.</p>
+</li>
+</ol>
+</div>
 <div class="paragraph">
-<p><a href="entries.ahtml#howto">&#8592; Back</a></p>
+<p>You will now have one application with your schemas, and one containing your frontend.
+If you prefer having a single application, follow these steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Move the cms schemas and other files you want to keep to the new application.</p>
+</li>
+<li>
+<p>Rename it to the same name as your old application.</p>
+</li>
+<li>
+<p>Make a production build and <a href="./legacy.adoc#build-deploy" target="_blank" rel="noopener">Deploy</a> it.</p>
+</li>
+<li>
+<p>The old application can now be discarded.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="migrating-parts"><a class="link" href="#migrating-parts">Migrating parts</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now let’s go a little bit deeper and use the example component as a part along with our new components.
+To do this we need to do the following:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Make an xml file for it so XP knows that it exists, here we can also give it a good description.</p>
+<div class="listingblock">
+<div class="title">src/main/resources/site/parts/example/example.xml</div>
+<div class="content">
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;part&gt;
+  &lt;display-name&gt;Example part&lt;/display-name&gt;
+  &lt;description&gt;Example part description&lt;/description&gt;
+&lt;/part&gt;</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Move the example component to the parts folder, where we update it by wrapping it in a <code>Part</code> tag instead of <code>div</code>.
+Then we add extraProps to it, this is important because react4xp v6 uses this to add necessary props to the parts component so it is possible to view and edit it within the page editor.</p>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/components/parts/example/example.tsx</div>
+<div class="content">
+<pre>import Hello from '/lib/myReactComponents/Hello';
+import {Part} from '@enonic/react-components';
+import dayjs from 'dayjs';
+import React, {useState} from 'react';
+
+export const Example = (props: any) =&gt; {
+
+    const {componentRegistry, ...extraProps} = props;
+    const [count, setCount] = useState(0);
+
+    return (
+        &lt;Part {...extraProps}&gt;
+            &lt;Hello/&gt;
+            &lt;div&gt;Part: {dayjs().format()}&lt;/div&gt;
+            &lt;button onClick={() =&gt; setCount(prev =&gt; prev + 1)}&gt;{count}&lt;/button&gt;
+        &lt;/Part&gt;
+    );
+};
+
+
+export default Example;</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Instead of fetching in get(), create a processor that returns its props—React4xp will forward them (plus its own metadata) into &lt;Part&gt; via extraProps.</p>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/components/parts/example/exampleProcessor.ts</div>
+<div class="content">
+<pre>import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+
+export const partProcessor: ComponentProcessorFunction&lt;'com.enonic.app.react4xp:example'&gt; = (props) =&gt; {
+    return {};
+};</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add it to the componentRegistry and dataFetcher with the same descriptor as in previous task.</p>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/componentRegistry.ts</div>
+<div class="content">
+<pre>import {ComponentRegistry} from '@enonic/react-components';
+import Example from './components/parts/example/example';
+
+...
+
+export const componentRegistry = new ComponentRegistry();
+
+...
+
+componentRegistry.addPart('com.enonic.app.react4xp:example', {View: Example});</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/dataFetcher.ts</div>
+<div class="content">
+<pre>import {DataFetcher} from '/lib/enonic/react4xp';
+import {partProcessor} from './components/parts/example/exampleProcessor';
+
+...
+
+export const dataFetcher = new DataFetcher();
+
+...
+
+dataFetcher.addPart('com.enonic.app.react4xp:example', {processor: partProcessor});</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="migrate-page"><a class="link" href="#migrate-page">Pages</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Your current page part might look something like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/site/pages/default/default.tsx</div>
+<div class="content">
+<pre>import {Regions} from '@enonic/react-components';
+import dayjs from 'dayjs';
+import React from 'react';
+import type {PageComponentProps} from './default.d';
+
+function Page(props: PageComponentProps) {
+    return (
+        &lt;div className="default-page"&gt;
+            &lt;Regions {...props} /&gt;
+            &lt;div&gt;Page: {dayjs().format()}&lt;/div&gt;
+        &lt;/div&gt;
+    );
+}
+
+export default (props: PageComponentProps) =&gt; &lt;Page {...props}/&gt;;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>with a controller like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/site/pages/default/default.ts</div>
+<div class="content">
+<pre>import {render} from '/lib/enonic/react4xp';
+import {getContent} from '/lib/xp/portal';
+import type {Enonic} from '@enonic/js-utils/types/Request';
+import type {PageComponentProps} from './default.d';
+
+
+export function get(request: Enonic.Xp.Http.Request) {
+    const content = getContent();
+
+    const {page: entry} = content;
+
+    const react4xpId = `react4xp_${content._id}`;
+
+    const props: PageComponentProps = {
+        regionsData: content.page.regions,
+        names: "main",
+        tag: "main",
+    };
+
+    const htmlBody = `&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;
+	&lt;head&gt;
+		&lt;meta charset="UTF-8"&gt;
+		&lt;title&gt;${content.displayName}&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body class="xp-page"&gt;
+		&lt;div id="${react4xpId}"&gt;&lt;/div&gt;
+	&lt;/body&gt;
+&lt;/html&gt;`;
+
+    const output = render(
+        entry,
+        props,
+        request,
+        {
+            body: htmlBody,
+            hydrate: false,
+            id: react4xpId,
+        }
+    );
+
+    return output;
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And an xml like this:
+.src/main/resources/site/pages/default/default.xml</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;page&gt;
+  &lt;display-name&gt;Default page&lt;/display-name&gt;
+  &lt;description&gt;R4xp5 react-rendered page controller&lt;/description&gt;
+  &lt;form/&gt;
+  &lt;regions&gt;
+    &lt;region name="main"/&gt;
+  &lt;/regions&gt;
+&lt;/page&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is how we migrate it to a react4xp v6 component:</p>
+</div>
+<div class="paragraph">
+<p>First let&#8217;s handle the controller which becomes a processor, the most important prop to pass from the processor is the regionsData.
+Notice how we change <code>regionsData</code> to <code>regions</code>, this is because the new Regions React component is expecting it along with componentRegistry.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/components/page/PageProcessor.ts</div>
+<div class="content">
+<pre>import {PageComponent} from "@enonic-types/core";
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+
+export const pageProcessor: ComponentProcessorFunction&lt;'com.enonic.app.react4xp:Page'&gt; = (props) =&gt; {
+    const component = props.component as PageComponent;
+
+    const regions = component?.regions || {};
+    return {
+        regions,
+        name: "main"
+    };
+};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next we need to change out the part <code>default.tsx</code> with a component <code>page.tsx</code>, which is very similar except that we pass <code>regions</code> to the <code>Regions</code> react component.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/components/page/Page.tsx</div>
+<div class="content">
+<pre>import {Regions,} from '@enonic/react-components';
+import dayjs from 'dayjs';
+import React from 'react'
+import styles from './Page.module.css';
+
+export const Page = (props: any) =&gt; {
+
+
+    return (
+        &lt;div className={styles[props.name]}&gt;
+            &lt;Regions {...props} /&gt;
+            &lt;div&gt;Page: {dayjs().format()}&lt;/div&gt;
+        &lt;/div&gt;
+    );
+};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For XP to see it we need to keep the xml file, but we will change the name to <code>Page.xml</code> and add a description to it.
+This way we can call on it using a descriptor in the component registry and data fetcher.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/site/pages/Page/Page.xml</div>
+<div class="content">
+<pre>&lt;page&gt;
+  &lt;display-name&gt;Upgraded page&lt;/display-name&gt;
+  &lt;description&gt;Upgraded page component&lt;/description&gt;
+  &lt;form/&gt;
+  &lt;regions&gt;
+    &lt;region name="main"/&gt;
+  &lt;/regions&gt;
+&lt;/page&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s add it to componentRegistry and dataFetcher, this is done in the same way as we did with the part.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/componentRegistry.ts</div>
+<div class="content">
+<pre>import {ComponentRegistry} from '@enonic/react-components';
+import {Page} from './components/page/Page';
+
+...
+
+export const componentRegistry = new ComponentRegistry();
+
+...
+
+componentRegistry.addPage('com.enonic.app.react4xp:Page', {View: Page});</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/dataFetcher.ts</div>
+<div class="content">
+<pre>import {DataFetcher} from '/lib/enonic/react4xp';
+import {pageProcessor} from './components/page/PageProcessor';
+
+...
+
+export const dataFetcher = new DataFetcher();
+
+...
+
+dataFetcher.addPage('com.enonic.app.react4xp:Page', {processor: pageProcessor});</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we have a fully functional page component that is using the new regions and component registry.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="migrate-layout"><a class="link" href="#migrate-layout">Layouts</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lastly we need to migrate the layout, this is done in a similar way to the page.</p>
+</div>
+<div class="paragraph">
+<p>Your current layout part might look something like this:
+.src/main/resources/site/layouts/twoColumns/twoColumns.tsx</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>import {Regions} from '@enonic/react-components';
+import dayjs from 'dayjs';
+import React from 'react';
+
+export default (props: Parameters&lt;typeof Regions&gt;[0]) =&gt; {
+    return &lt;div style={{
+        columnGap: '1em',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr'
+    }}&gt;
+        &lt;Regions {...props}/&gt;
+        &lt;div&gt;{dayjs().format()}&lt;/div&gt;
+    &lt;/div&gt;;
+};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>with a controller like this:
+.src/main/resources/site/layouts/twoColumns/twoColumns.ts</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>import {render} from '/lib/enonic/react4xp';
+import {getComponent} from '/lib/xp/portal';
+import type {Enonic} from '@enonic/js-utils/types/Request';
+import type {Regions} from '@enonic/react-components';
+
+
+export function get(request: Enonic.Xp.Http.Request) {
+
+    const component = getComponent();
+
+    const props: Parameters&lt;typeof Regions&gt;[0] = {
+        classes: true,
+        names: ['left', 'right'],
+        regionsData: component.regions,
+        tags: 'section',
+    };
+
+    return render(
+        component,
+        props,
+        request,
+        {
+            hydrate: false,
+        }
+    );</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And an xml like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/site/layouts/twoColumns/twoColumns.xml</div>
+<div class="content">
+<pre>&lt;layout&gt;
+  &lt;display-name&gt;Two columns&lt;/display-name&gt;
+  &lt;description&gt;Two columns react-rendered layout controller&lt;/description&gt;
+  &lt;form/&gt;
+  &lt;regions&gt;
+    &lt;region name="left"/&gt;
+    &lt;region name="right"/&gt;
+  &lt;/regions&gt;
+&lt;/layout&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similar to the page, we need to implement a processor, and a component.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/components/layouts/TwoColumnProcessor.ts</div>
+<div class="content">
+<pre>import {LayoutComponent} from '@enonic-types/core';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+
+
+export const layoutProcessor: ComponentProcessorFunction&lt;'com.enonic.app.react4xp:TwoColumns'&gt; = ({component}) =&gt; {
+    const {regions} = component as LayoutComponent;
+
+    return {
+        regions: regions,
+        tags: 'section'
+    };
+};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Layout component is depending on the <code>Regions</code> like the page, so we need to pass the <code>regions</code> prop to it.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/components/layouts/TwoColumn.tsx</div>
+<div class="content">
+<pre>import {Layout} from '@enonic/react-components';
+import dayjs from 'dayjs';
+import React from 'react'
+import styles from './TwoColumn.module.css';
+
+
+export const TwoColumnLayout = (props: any,) =&gt; {
+
+    return (
+        &lt;&gt;
+            &lt;Layout className={styles[props.tags]} {...props}/&gt;
+            &lt;div&gt;Layout:{dayjs().format()}&lt;/div&gt;
+        &lt;/&gt;
+    );
+};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We are keeping one more prop for layout, we use this <code>tags: 'section'</code> to target the layout with our css module.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/components/layouts/twoColumn.css</div>
+<div class="content">
+<pre>.section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.section :global(&gt; div) {
+  flex: 1;
+  min-width: 200px;
+}
+
+.section :global(.xp-page-editor-region-placeholder) {
+  margin-bottom: 0;
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We need to add the layout to the component registry and data fetcher, this is done in the same way as we did with the part and page.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/componentRegistry.ts</div>
+<div class="content">
+<pre>import {ComponentRegistry} from '@enonic/react-components';
+import {TwoColumnLayout} from './components/layouts/TwoColumn';
+
+...
+
+export const componentRegistry = new ComponentRegistry();
+
+...
+
+componentRegistry.addLayout('com.enonic.app.react4xp:TwoColumns', {View: TwoColumnLayout});</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/react4xp/dataFetcher.ts</div>
+<div class="content">
+<pre>import {DataFetcher} from '/lib/enonic/react4xp';
+import {layoutProcessor} from './components/layouts/TwoColumnProcessor';
+
+...
+
+export const dataFetcher = new DataFetcher();
+
+...
+
+dataFetcher.addLayout('com.enonic.app.react4xp:TwoColumns', {processor: layoutProcessor});</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And finally we need to update the xml file to match the descriptor, this is done in the same way as the page.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/site/layouts/TwoColumn/TwoColumn.xml</div>
+<div class="content">
+<pre>&lt;layout&gt;
+  &lt;display-name&gt;Two columns&lt;/display-name&gt;
+  &lt;description&gt;Upgraded Two columns controller&lt;/description&gt;
+  &lt;form/&gt;
+  &lt;regions&gt;
+    &lt;region name="left"/&gt;
+    &lt;region name="right"/&gt;
+  &lt;/regions&gt;
+&lt;/layout&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we have a fully functional layout component that is using the new regions and component registry.</p>
+</div>
+<div class="paragraph">
+<p>(Migrate thymeleaf etc, minimal example) 0</p>
+</div>
+<div class="paragraph">
+<p>And just like that we have not only upgraded the old component, but also made it compatible with the new ones!</p>
+</div>
+</div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-23 08:12:41 UTC
+Last updated 2025-05-23 08:12:42 UTC
 </div>
 </div>
 </body>
