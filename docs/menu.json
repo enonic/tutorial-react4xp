@@ -73,8 +73,12 @@
           "document": "appendix/api"
         },
         {
-          "title": "Upgrade",
-          "document": "appendix/upgrade"
+          "title": "Recommended upgrade",
+          "document": "appendix/recommended"
+        },
+        {
+          "title": "Legacy mode upgrade",
+          "document": "appendix/legacy"
         }
       ]
     },
