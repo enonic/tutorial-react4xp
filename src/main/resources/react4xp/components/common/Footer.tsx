@@ -16,7 +16,6 @@ const Footer = ({logoUrl}: FooterProps) => (
                 <a href="https://enonic.com">Enonic XP</a>
             </p>
         </div>
-        {/* Render logo if available */}
         {logoUrl && (
             <div className={styles.logoContainer}>
                 <img src={logoUrl}

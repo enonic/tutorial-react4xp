@@ -13,7 +13,7 @@ This means that layouts may host other components, and build rich page structure
 Adding layouts is more or less identical to pages and parts.
 Simply follow the steps below:
 
-. *Add the `2-column`layout* to your application:
+. *Add the `2-column` layout* to your application:
 +
 ./src/main/resources/react4xp/components/layouts/TwoColumn.tsx
 [source,TypeScript]

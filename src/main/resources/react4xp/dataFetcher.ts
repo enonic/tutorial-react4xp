@@ -1,4 +1,5 @@
 import {DataFetcher} from '/lib/enonic/react4xp';
+import {commonProcessor} from '/react4xp/components/common/CommonProcessor';
 import {articleProcessor} from "./components/content/ArticleProcessor";
 import {personProcessor} from './components/content/PersonProcessor';
 import {playlistProcessor} from './components/content/PlaylistProcessor';
@@ -7,10 +8,10 @@ import {pageProcessor} from './components/page/PageProcessor';
 import {childListProcessor} from './components/parts/ChildListProcessor';
 import {headingProcessor} from './components/parts/HeadingProcessor';
 import {movieProcessor} from "./components/parts/MovieProcessor";
-import {commonProcessor} from '/react4xp/components/common/CommonProcessor';
 
 export const dataFetcher = new DataFetcher();
 //dataFetcher.addContentType('portal:site', { processor: helloProcessor });
+dataFetcher.addCommon({processor: commonProcessor});
 dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor});
 dataFetcher.addPage('com.enonic.app.hmdb:main', {processor: pageProcessor});
 dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});
@@ -19,5 +20,4 @@ dataFetcher.addLayout('com.enonic.app.hmdb:2-column', {processor: layoutProcesso
 dataFetcher.addPart('com.enonic.app.hmdb:child-list', {processor: childListProcessor});
 dataFetcher.addContentType('com.enonic.app.hmdb:playlist', {processor: playlistProcessor});
 dataFetcher.addContentType('com.enonic.app.hmdb:article', {processor: articleProcessor});
-dataFetcher.addCommon({processor: commonProcessor});
 

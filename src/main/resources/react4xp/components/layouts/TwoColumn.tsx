@@ -6,9 +6,6 @@ import styles from './TwoColumn.module.css';
 export const TwoColumnLayout = (props: any,) => {
 
     return (
-        <>
-            <Layout className={styles.row} {...props}>
-            </Layout>
-        </>
+        <Layout className={styles.row} {...props}/>
     );
 };
