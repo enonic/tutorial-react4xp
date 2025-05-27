@@ -582,18 +582,19 @@ return output;</code></pre>
 <div class="title">/src/main/resources/react4xp/entries/App.tsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-React" data-lang="React">import Footer from "/react4xp/components/common/Footer";
-import type {AppProps} from '/types/AppProps';
 import '../components/globalStyles.css'
 import {BaseComponent} from '@enonic/react-components';
 import * as React from 'react';
 import {componentRegistry} from '../componentRegistry';
+import type {AppProps} from '/types/AppProps';
 
 const App: React.FC&lt;AppProps&gt; = (props) =&gt; {
     return (
         &lt;&gt;
-            &lt;BaseComponent componentRegistry={componentRegistry} {...props}/&gt;
-            {(props.component.type == "page" || props.component.type == "contentType")
-             &amp;&amp; &lt;Footer logoUrl={props.url}/&gt;}
+            &lt;BaseComponent componentRegistry={componentRegistry} data={props}/&gt;
+            {
+                (props.type == "page" || props.type == "contentType") &amp;&amp; &lt;Footer logoUrl={props.commonProps.url as string}/&gt;
+            }
         &lt;/&gt;
     );
 }
@@ -702,7 +703,7 @@ Most of these static assets are content-hashed, and optimized for client-side ca
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-23 08:57:41 UTC
+Last updated 2025-05-27 13:33:24 UTC
 </div>
 </div>
 </body>

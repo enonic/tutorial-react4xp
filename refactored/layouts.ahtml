@@ -465,7 +465,7 @@ Simply follow the steps below:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add the `2-column`layout</strong> to your application:</p>
+<p><strong>Add the <code>2-column</code> layout</strong> to your application:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/layouts/TwoColumn.tsx</div>
 <div class="content">
@@ -477,10 +477,7 @@ import styles from './TwoColumn.module.css';
 export const TwoColumnLayout = (props: any,) =&gt; {
 
     return (
-        &lt;&gt;
-            &lt;Layout className={styles.row} {...props}&gt;
-            &lt;/Layout&gt;
-        &lt;/&gt;
+        &lt;Layout className={styles.row} {...props}/&gt;
     );
 };</code></pre>
 </div>
@@ -497,20 +494,6 @@ import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFe
 
 export const layoutProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:2-column'&gt; = ({component}) =&gt; {
     const {regions} = component as LayoutComponent;
-
-    if (!regions.left) {
-        regions.left = {
-            name: "left",
-            components: []
-        }
-    }
-
-    if (!regions.right) {
-        regions.right = {
-            name: "right",
-            components: []
-        }
-    }
 
     return {
         regions: regions,
@@ -592,7 +575,7 @@ Page templates allow us to reuse a page definition across multiple content items
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-23 08:57:41 UTC
+Last updated 2025-05-27 13:33:24 UTC
 </div>
 </div>
 </body>
