@@ -1,7 +1,7 @@
 import {render} from '/lib/enonic/react4xp';
 import {getContent} from '/lib/xp/portal';
 import type {Request} from '@enonic-types/core';
-import {dataFetcher} from '../react4xp/dataFetcher';
+import {dataFetcher} from '/react4xp/dataFetcher';
 import {handlePermissions, jsonError, getComponent} from '/react4xp/utils/requestUtils';
 
 
