@@ -22,6 +22,7 @@ export const Movie = (props) => {
 
     return (
         <Part {...extraProps}>
+            {abstract?.length > 0 &&
             <div className={styles.moviePage}>
                 <header>
                     <h1><a href={props.trailer} className={styles.sneakyTitle}>{props.name}</a></h1>
@@ -138,7 +139,7 @@ export const Movie = (props) => {
                         </section>
                     )}
                 </main>
-            </div>
+            </div>}
         </Part>
     );
 };
