@@ -10,17 +10,16 @@
 }
 
 .factbox {
-  background-color: ghostwhite;
-  color: #151d4e;
   display: block;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 8px;
   clear: both;
-  box-shadow: 0 2px 3px #b6b6b6;
   padding: 10px 20px;
   max-width: fit-content;
   margin: 1rem;
   position: relative;
+  border: 2px solid ghostwhite;
+  background-color: #081535;
 }
 
 .factbox .header {

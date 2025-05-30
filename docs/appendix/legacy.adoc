@@ -101,36 +101,55 @@ xpVersion = 7.15.1
 }
 ----
 
-== Verify folder structure
+== Folder structure
 
-[source]
+The folder structure of your React4XP application should look similar to this:
+
+[source,files]
 ----
-src/main/resources/
-├─ react4xp/
-│  ├─ components/
-│  │  ├─ common/
-│  │  │  ├ Footer.module.css
-│  │  │  └ Footer.tsx
-│  │  ├ content/
-│  │  ├ layouts/
-│  │  ├ macro/
-│  │  ├ page/
-│  │  └ parts/
-│  ├─ globalStyles.css
-│  ├─ entries/
-│  │  └ App.tsx
-│  ├─ public/
-│  └─ utils/
-│     ├ componentRegistry.tsx
-│     └ dataFetcher.ts
-├─ site/
-│  ├ app.ts
-│  ├ component.ts
-│  └ site.xml
-├─ static/
-└─ types/
-└ HelloProps.ts
+package.json
+react4xp.config.js // <1>
+src/
+  main/
+    resources/
+      react4xp/ // <2>
+        dataFetcher.ts // <3>
+        componentRegistry.tsx // <4>
+        components/
+            common/
+            content/
+            layouts/
+            macro/
+            page/ // <5>
+              Page.module.css
+              Page.tsx
+              PageProcessor.ts
+            parts/
+            globalStyles.css // <6>
+        entries/
+          App.tsx // <7>
+          Site.xml // <8>
+          pages/ // <9>
+            page/ // <9>
+              page.xml // <10>
+      site/ // <11>
+        app.ts // <12>
+      types/ // <13>
 ----
+
+<1> React4XP settings
+<2> React components must be placed within this folder
+<3> Fetches props for CMS components
+<4> Mapping React components to CMS component
+<5> default page component
+<6> Global styles
+<7> Main React component
+<8> Site descriptor
+<9> Folder for descriptor
+<10> Component descriptor XML
+<11> Optionally place CMS schemas here
+<12> Boostrapping controller
+<13> TypeScript types (optional)
 
 This layout ensures XP can discover your React4XP assets (under react4xp/), site controllers (under site/), static files, and shared TS types.
 

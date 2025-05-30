@@ -5,14 +5,9 @@ import styles from './Article.module.css';
 
 
 export const Article = (props) => {
-    const {parent, title, blocks, coverImage, preface, author, tags, spotlight} = props; // Include new props
+    const {title, blocks, coverImage, preface, author, tags, spotlight} = props; // Include new props
     return (
         <div className={`wrapper ${styles.article}`}>
-            <div className={"back"}>
-                <a href={parent}>
-                    <p>Back</p>
-                </a>
-            </div>
             {/* Article Header */}
             <header className={styles.header}>
                 <h1>{title}</h1>

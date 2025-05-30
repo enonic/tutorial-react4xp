@@ -9,13 +9,13 @@ In this chapter you'll learn how to render rich text content.
 == Intro
 
 Enonic boasts a https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea[rich text input type].
-Unlike basic text fields, rich text may contain more complex concepts such as tables, images, links and custom components.
+Unlike basic text fields, rich-text may contain more complex concepts such as tables, images, links and custom components.
 Each of these will typically need to be processed during rendering in order to provide a contextually correct URL, ideal image sizes etc.
 
 == Sample content
 
-Luckily, the sample data set contains everyting we need to get going.
-The `Bio` field for persons is rich text, and some of the content is even populated with relevant content, like you see below:
+Luckily, the sample data set contains everything we need to get going.
+The `Bio` field for persons is rich text, and some content is even populated with relevant content, like you see below:
 
 image::rich-text-bio.png[title="Rich text bio field for Lea Seydoux",width=720px]
 

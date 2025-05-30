@@ -2,7 +2,6 @@ import {assetUrl} from '/lib/enonic/asset';
 import {get as getContentByKey} from '/lib/xp/content';
 import {imageUrl, pageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
-import {parentPath} from '/react4xp/utils/path';
 import {PageDescriptor} from '@enonic-types/core';
 import type {Content} from '@enonic-types/lib-content';
 import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
@@ -88,9 +87,8 @@ export const playlistProcessor: ComponentProcessorFunction<PageDescriptor> = par
             _id: content._id,
             displayName: content.displayName,
             description: playlistData.description || 'No description available.',
-            movies: movies, // Movies with image data included
-            footerUrl,
-            parent: parentPath(params.request.path),
+            movies: movies,
+            footerUrl
         }
     };
 };

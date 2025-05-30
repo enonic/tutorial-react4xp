@@ -1,7 +1,6 @@
 import {get as getContentByKey} from '/lib/xp/content';
 import {imageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
-import {parentPath} from '/react4xp/utils/path';
 import {PageDescriptor} from '@enonic-types/core';
 import type {Content} from '@enonic-types/lib-content';
 import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
@@ -36,7 +35,6 @@ export const personProcessor: ComponentProcessorFunction<PageDescriptor>
             imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
         },
         birthDate: params.content.data.dateofbirth,
-        restPhotos: extraPhotos,
-        parent: parentPath(params.request.path)
+        restPhotos: extraPhotos
     };
 };
