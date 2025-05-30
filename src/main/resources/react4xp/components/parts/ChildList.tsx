@@ -8,13 +8,13 @@ export const ChildList = (props) => {
     const {names, paths, componentRegistry, ...extraProps} = props;
     return (
         <Part {...extraProps}>
-            <ul>
+            {names?.length > 0 && <ul>
                 {names.map((name, index) => (
                     <li className={styles.listItem} key={index}>
                         <a className={styles.listLink} href={paths[index]}><p>{name}</p></a>
                     </li>
                 ))}
-            </ul>
+            </ul>}
         </Part>
     );
 };
