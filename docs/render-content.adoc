@@ -84,6 +84,7 @@ The component consists of two files:
 include::{snippet}Rendering-basics/Person.tsx[]
 ----
 +
+
 ./src/main/resources/react4xp/components/content/Person.module.css (CSS module)
 [source,CSS]
 ----
