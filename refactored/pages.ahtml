@@ -474,21 +474,11 @@ Similarly, page components must be defined before Content Studio can enable edit
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Regions,} from '@enonic/react-components';
 import React from 'react'
-import styles from './Page.module.css';
 
 export const Page = (props: any) =&gt; {
 
     return (
-        &lt;div className={styles.page}&gt;
-            {props.parent &amp;&amp; (
-                &lt;div className={"back"}&gt;
-                    &lt;a href={props.parent}&gt;
-                        &lt;p&gt;Back&lt;/p&gt;
-                    &lt;/a&gt;
-                &lt;/div&gt;
-            )}
             &lt;Regions {...props} /&gt;
-        &lt;/div&gt;
     );
 };</code></pre>
 </div>
@@ -499,28 +489,17 @@ export const Page = (props: any) =&gt; {
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/page/PageProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {getSite, pageUrl} from '/lib/xp/portal';
-import {parentPath} from '/react4xp/utils/path';
-import {PageComponent} from "@enonic-types/core";
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {PageComponent} from "@enonic-types/core";
 import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 export const pageProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:main'&gt; = (props) =&gt; {
     const component = props.component as PageComponent;
 
     const regions = component?.regions || {};
-    const site = getSite();
 
-    const baseUrl = pageUrl({path: site._path});
-    const parentSegment = parentPath(props.request.path);
-    const parentBaseSegment = parentPath(baseUrl);
-
-    const parent = parentSegment !== parentBaseSegment
-                   ? parentSegment
-                   : undefined;
     return {
         regions,
-        name: "main",
-        parent
+        name: "main"
     };
 };</code></pre>
 </div>
@@ -644,7 +623,7 @@ We can give it some content.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-27 13:33:24 UTC
+Last updated 2025-06-02 12:37:29 UTC
 </div>
 </div>
 </body>

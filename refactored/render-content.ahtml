@@ -521,43 +521,46 @@ By selecting the JSON preview, you can also study the properties of a person:</p
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {get as getContentByKey} from '/lib/xp/content';
 import {imageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
-import {parentPath} from '/react4xp/utils/path';
 import {PageDescriptor} from '@enonic-types/core';
 import type {Content} from '@enonic-types/lib-content';
 import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 function fetchAdditionalPhotos(photosIds) {
     return photosIds.map(photoId =&gt; {
-        const photoContent = getContentByKey&lt;Content&gt;({key: photoId});
-        return {
-            _id: photoContent._id,
-            title: photoContent.displayName,
-            imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
-        };
+        if (photoId) {
+            const photoContent = getContentByKey&lt;Content&gt;({key: photoId});
+            return {
+                _id: photoContent._id,
+                title: photoContent.displayName,
+                imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
+            };
+        }
     });
 }
 
 export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
     = (params) =&gt; {
-
     const photos: string[] = toArray&lt;string&gt;(params.content.data.photos as string | string[])
     const firstPhotoId = photos[0] || '';
-    const remainingPhotoIds = photos.slice(1) || '';
+    const remainingPhotoIds = photos.slice(1);
 
-    const {_id, displayName} = getContentByKey&lt;Content&gt;({key: firstPhotoId});
+    let firstPhoto = null;
+    if (firstPhotoId) {
+        const {_id, displayName} = getContentByKey&lt;Content&gt;({key: firstPhotoId});
+        firstPhoto = {
+            _id,
+            title: displayName,
+            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
+        }
+    }
 
     const extraPhotos = fetchAdditionalPhotos(remainingPhotoIds);
 
     return {
         displayName: `${params.content.displayName}`,
-        photo: {
-            _id,
-            title: displayName,
-            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
-        },
+        photo: firstPhoto,
         birthDate: params.content.data.dateofbirth,
-        restPhotos: extraPhotos,
-        parent: parentPath(params.request.path)
+        restPhotos: extraPhotos
     };
 };</code></pre>
 </div>
@@ -594,14 +597,9 @@ dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProce
 import styles from './Person.module.css';
 
 export const Person = (props) =&gt; {
-    const {parent, displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
     return (
         &lt;div className={styles.person}&gt;
-            &lt;div className={"back"}&gt;
-                &lt;a href={parent}&gt;
-                    &lt;p&gt;Back&lt;/p&gt;
-                &lt;/a&gt;
-            &lt;/div&gt;
             &lt;h1&gt;{displayName}&lt;/h1&gt;
             &lt;p&gt;{birthDate}&lt;/p&gt;
             &lt;div&gt;
@@ -790,7 +788,7 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-27 13:33:24 UTC
+Last updated 2025-06-02 12:37:29 UTC
 </div>
 </div>
 </body>

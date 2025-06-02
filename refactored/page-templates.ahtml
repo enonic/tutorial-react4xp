@@ -572,7 +572,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:movie-details', {processor: movieProces
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-27 13:33:24 UTC
+Last updated 2025-06-02 12:37:29 UTC
 </div>
 </div>
 </body>

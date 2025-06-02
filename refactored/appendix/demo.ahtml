@@ -446,10 +446,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#what">What?</a></li>
-<li><a href="#1_setup_enonic">1 - Setup Enonic</a></li>
-<li><a href="#3_install_the_front_end">3 - Install the Front-end</a></li>
-<li><a href="#4_activate_preview">4 - Activate preview</a></li>
-<li><a href="#how_does_it_work">How does it work?</a></li>
+<li><a href="#1_create_a_sandbox">1 - Create a sandbox</a></li>
+<li><a href="#2_create_application">2 - Create application</a></li>
+<li><a href="#3_build_and_deploy">3 - Build and deploy</a></li>
 </ul>
 </div>
 </div>
@@ -475,99 +474,38 @@ Want to learn what is really happening? Head on to the <a href="enonic-setup.aht
 </div>
 </div>
 <div class="sect1">
-<h2 id="1_setup_enonic"><a class="link" href="#1_setup_enonic">1 - Setup Enonic</a></h2>
+<h2 id="1_create_a_sandbox"><a class="link" href="#1_create_a_sandbox">1 - Create a sandbox</a></h2>
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><strong>Sign up for a free Enonic account</strong>: on <a href="https://www.enonic.com/sign-up" class="bare">https://www.enonic.com/sign-up</a></p>
-</li>
-<li>
-<p>After logging in to your account, <strong>create a new solution</strong> from <code>Solutions &#8594; Create &#8594; Next.js Demo</code>. This will install all required Enonic apps and setup the routes needed.</p>
-</li>
-<li>
-<p>From your new solution, click <code>Environments</code> - Notice the URL to the <code>API</code> ingress, you will need it later.</p>
-</li>
-</ol>
+<div class="paragraph">
+<p><strong>Create a sandbox</strong> run the following command in your terminal:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>enonic sandbox create r4xpdemo -t hmdb -f</pre>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="3_install_the_front_end"><a class="link" href="#3_install_the_front_end">3 - Install the Front-end</a></h2>
+<h2 id="2_create_application"><a class="link" href="#2_create_application">2 - Create application</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>TODO</p>
+<p>From a <strong>new terminal window</strong>, run the following command:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>enonic project create my.first.r4xp -r tutorial-react4xp -s r4xpdemo -f</pre>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="4_activate_preview"><a class="link" href="#4_activate_preview">4 - Activate preview</a></h2>
+<h2 id="3_build_and_deploy"><a class="link" href="#3_build_and_deploy">3 - Build and deploy</a></h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>With the front-end running, it is time to enable preview in Content Studio.</p>
+<div class="literalblock">
+<div class="content">
+<pre>enonic project deploy</pre>
 </div>
-<div class="paragraph">
-<p>The fastest way to try it out goes as follows:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><strong>Launch Enonic XP admin</strong> from the solution dashboard.</p>
-</li>
-<li>
-<p><strong>Open Content Studio</strong> from the top right <code>XP menu &#8594; Content Studio</code>.</p>
-</li>
-<li>
-<p>Choose the <code>Headless Movie DB</code> project, then click the root item in the tree structure <code>/hmdb</code> and click <code>Edit</code>.</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-edit-site.png" alt="content studio edit site" width="650px" title="Select and edit the site"></span></p>
-</div>
-</li>
-<li>
-<p>Add the <code>Next.XP</code> app to the list of applications on the site.
-It will override the default preview for the content within the site.</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-add-nextxp.png" alt="content studio add nextxp" width="779px" title="Add the Next.XP application to the site."></span></p>
-</div>
-</li>
-<li>
-<p>Now, instruct Next.XP where to find the frontend server:</p>
-<div class="paragraph">
-<div class="title">Go to Applications tab in Enonic Cloud and select Next.XP app:</div>
-<p><span class="image"><img src="media/cloud-next-app-edit.png" alt="cloud next app edit" width="937px" title="Select the Next.XP application"></span></p>
-</div>
-<div class="paragraph">
-<div class="title">Press <code>Edit&#8230;&#8203;</code> button in the app context menu and add the URL and secret of the Vercel app you deployed in step 3:</div>
-<p><span class="image"><img src="media/cloud-next-app-config.png" alt="cloud next app config" width="872px" title="Add the Next.XP application to the site."></span></p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-We are overriding default preview configuration for all sites using the Next.XP app. Use a different keyword than <code>default</code> to define multiple front-ends.
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>After saving and going back to Content Studio, the preview should update to show your front-end.</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/cloud-preview.png" alt="cloud preview" width="1419px" title="Front page as seen from Content Studio"></span></p>
-</div>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="how_does_it_work"><a class="link" href="#how_does_it_work">How does it work?</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The Front-end app steps into the Site Engine pipeline and replaces HMDB&#8217;s standard preview.</p>
 </div>
 <div class="paragraph">
 <p>Congratulations, you now have a React site powered by Enonic! 🚀</p>
@@ -577,7 +515,7 @@ We are overriding default preview configuration for all sites using the Next.XP 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-27 13:33:24 UTC
+Last updated 2025-06-02 12:37:29 UTC
 </div>
 </div>
 </body>

@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#upgrade_xp">Upgrade XP</a></li>
 <li><a href="#upgrade_package_json">Upgrade package.json</a></li>
-<li><a href="#verify_folder_structure">Verify folder structure</a></li>
+<li><a href="#folder_structure">Folder structure</a></li>
 <li><a href="#upgrade_build_gradle">Upgrade Build.gradle</a></li>
 <li><a href="#upgrade_webpack">Upgrade webpack</a></li>
 <li><a href="#upgrade_to_new_types">Upgrade to new types</a></li>
@@ -581,36 +581,98 @@ But you can can upgrade you existing react4xp application if you want to.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="verify_folder_structure"><a class="link" href="#verify_folder_structure">Verify folder structure</a></h2>
+<h2 id="folder_structure"><a class="link" href="#folder_structure">Folder structure</a></h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>The folder structure of your React4XP application should look similar to this:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>src/main/resources/
-├─ react4xp/
-│  ├─ components/
-│  │  ├─ common/
-│  │  │  ├ Footer.module.css
-│  │  │  └ Footer.tsx
-│  │  ├ content/
-│  │  ├ layouts/
-│  │  ├ macro/
-│  │  ├ page/
-│  │  └ parts/
-│  ├─ globalStyles.css
-│  ├─ entries/
-│  │  └ App.tsx
-│  ├─ public/
-│  └─ utils/
-│     ├ componentRegistry.tsx
-│     └ dataFetcher.ts
-├─ site/
-│  ├ app.ts
-│  ├ component.ts
-│  └ site.xml
-├─ static/
-└─ types/
-└ HelloProps.ts</code></pre>
+<pre class="highlight"><code class="language-files" data-lang="files">package.json
+react4xp.config.js <i class="conum" data-value="1"></i><b>(1)</b>
+src/
+  main/
+    resources/
+      react4xp/ <i class="conum" data-value="2"></i><b>(2)</b>
+        dataFetcher.ts <i class="conum" data-value="3"></i><b>(3)</b>
+        componentRegistry.tsx <i class="conum" data-value="4"></i><b>(4)</b>
+        components/
+            common/
+            content/
+            layouts/
+            macro/
+            page/ <i class="conum" data-value="5"></i><b>(5)</b>
+              Page.module.css
+              Page.tsx
+              PageProcessor.ts
+            parts/
+            globalStyles.css <i class="conum" data-value="6"></i><b>(6)</b>
+        entries/
+          App.tsx <i class="conum" data-value="7"></i><b>(7)</b>
+          Site.xml <i class="conum" data-value="8"></i><b>(8)</b>
+          pages/ <i class="conum" data-value="9"></i><b>(9)</b>
+            page/ <i class="conum" data-value="9"></i><b>(9)</b>
+              page.xml <i class="conum" data-value="10"></i><b>(10)</b>
+      site/ <i class="conum" data-value="11"></i><b>(11)</b>
+        app.ts <i class="conum" data-value="12"></i><b>(12)</b>
+      types/ <i class="conum" data-value="13"></i><b>(13)</b></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>React4XP settings</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>React components must be placed within this folder</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Fetches props for CMS components</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Mapping React components to CMS component</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>default page component</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Global styles</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Main React component</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>Site descriptor</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>Folder for descriptor</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="10"></i><b>10</b></td>
+<td>Component descriptor XML</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="11"></i><b>11</b></td>
+<td>Optionally place CMS schemas here</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="12"></i><b>12</b></td>
+<td>Boostrapping controller</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="13"></i><b>13</b></td>
+<td>TypeScript types (optional)</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>This layout ensures XP can discover your React4XP assets (under react4xp/), site controllers (under site/), static files, and shared TS types.</p>
@@ -933,7 +995,7 @@ We do this by updating site.xml:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-27 13:33:24 UTC
+Last updated 2025-06-02 12:37:29 UTC
 </div>
 </div>
 </body>

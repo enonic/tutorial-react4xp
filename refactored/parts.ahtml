@@ -481,13 +481,13 @@ export const ChildList = (props) =&gt; {
     const {names, paths, componentRegistry, ...extraProps} = props;
     return (
         &lt;Part {...extraProps}&gt;
-            &lt;ul&gt;
+            {names?.length &gt; 0 &amp;&amp; &lt;ul&gt;
                 {names.map((name, index) =&gt; (
                     &lt;li className={styles.listItem} key={index}&gt;
                         &lt;a className={styles.listLink} href={paths[index]}&gt;&lt;p&gt;{name}&lt;/p&gt;&lt;/a&gt;
                     &lt;/li&gt;
                 ))}
-            &lt;/ul&gt;
+            &lt;/ul&gt;}
         &lt;/Part&gt;
     );
 };</code></pre>
@@ -527,7 +527,12 @@ export const childListProcessor: ComponentProcessorFunction&lt;'com.enonic.app.h
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/ChildList.module.css</div>
 <div class="content">
-<pre class="highlight"><code class="language-CSS" data-lang="CSS">.listItem {
+<pre class="highlight"><code class="language-CSS" data-lang="CSS">ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.listItem {
   margin-block: .25rem;
 }
 
@@ -690,7 +695,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-27 13:33:24 UTC
+Last updated 2025-06-02 12:37:29 UTC
 </div>
 </div>
 </body>

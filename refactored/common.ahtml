@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>General application la</title>
+<title>Application commons</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,14 +437,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>General application la</h1>
+<h1>Application commons</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#global_css">Global CSS</a></li>
-<li><a href="#footer_component">Footer component</a></li>
+<li><a href="#footer_component">Footer component</a>
+<ul class="sectlevel2">
 <li><a href="#css_module">CSS module</a></li>
 <li><a href="#asset_url">Asset URL</a></li>
+</ul>
+</li>
 <li><a href="#next">Next</a></li>
 </ul>
 </div>
@@ -453,7 +456,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you will add a footer component and a global styling.</p>
+<p>In this chapter you will add global styling and a footer component to the front-end.</p>
 </div>
 </div>
 </div>
@@ -462,7 +465,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="paragraph">
 <p>Our application looks a bit bland, let&#8217;s add the finishing touches to make it look more appealing.
-For this we are going to add a global CSS file, this allows us to avoid repeating general styling in each component.</p>
+ For this we are going to add a global CSS file, this allows us to avoid repeating general styling in each component.</p>
 </div>
 <div class="paragraph">
 <p>Add global CSS file to the component directory:</p>
@@ -589,7 +592,7 @@ const Footer = ({logoUrl}: FooterProps) =&gt; (
         &lt;div className={styles.footerContainer}&gt;
             &lt;p&gt;
                 {`© ${new Date().getFullYear()}, Built with `}
-                &lt;a href="https://reactjs.org"&gt;React&lt;/a&gt;
+                &lt;a href="https://reactjs.org"&gt;React4XP&lt;/a&gt;
                 {` and Powered by `}
                 &lt;a href="https://enonic.com"&gt;Enonic XP&lt;/a&gt;
             &lt;/p&gt;
@@ -608,11 +611,8 @@ const Footer = ({logoUrl}: FooterProps) =&gt; (
 export default Footer;</code></pre>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="css_module"><a class="link" href="#css_module">CSS module</a></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="css_module"><a class="link" href="#css_module">CSS module</a></h3>
 <div class="paragraph">
 <p>The footer component also has a dedicated CSS module, which allows targeted styling without conflicts with other components and classes.</p>
 </div>
@@ -692,13 +692,11 @@ export default App;</code></pre>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="asset_url"><a class="link" href="#asset_url">Asset URL</a></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="asset_url"><a class="link" href="#asset_url">Asset URL</a></h3>
 <div class="paragraph">
-<p>Lastly we need to be able to display our cool React4XP logo!
-To do this we use assetUrl which is a function that generates a URL pointing to a static file.</p>
+<p>Lastly we need to be able to display a logo in the footer!
+To do this we use assetUrl() which is a function that generates a URL pointing to a static file.</p>
 </div>
 <div class="paragraph">
 <p>You might have noticed that the footer component does not have its own processor as it is a static component, we need to add a commonProcessor to the app to provide the assetUrl function.
@@ -737,8 +735,8 @@ dataFetcher.addCommon({processor: commonProcessor});</code></pre>
 </div>
 <div class="paragraph">
 <p>Sweet!
-Now we have a footer component that is displayed on all pages in the application.
-The footer component is styled with a CSS module, and the global CSS file is used to style the app.</p>
+Now we have a footer component that is visible on all pages in the application, and it is styled using a CSS module.</p>
+</div>
 </div>
 </div>
 </div>
@@ -753,7 +751,7 @@ The footer component is styled with a CSS module, and the global CSS file is use
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-27 13:33:24 UTC
+Last updated 2025-06-02 12:37:29 UTC
 </div>
 </div>
 </body>

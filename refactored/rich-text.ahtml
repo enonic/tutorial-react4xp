@@ -461,7 +461,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="paragraph">
 <p>Enonic boasts a <a href="https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea">rich text input type</a>.
-Unlike basic text fields, rich text may contain more complex concepts such as tables, images, links and custom components.
+Unlike basic text fields, rich-text may contain more complex concepts such as tables, images, links and custom components.
 Each of these will typically need to be processed during rendering in order to provide a contextually correct URL, ideal image sizes etc.</p>
 </div>
 </div>
@@ -470,8 +470,8 @@ Each of these will typically need to be processed during rendering in order to p
 <h2 id="sample_content"><a class="link" href="#sample_content">Sample content</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Luckily, the sample data set contains everyting we need to get going.
-The <code>Bio</code> field for persons is rich text, and some of the content is even populated with relevant content, like you see below:</p>
+<p>Luckily, the sample data set contains everything we need to get going.
+The <code>Bio</code> field for persons is rich text, and some content is even populated with relevant content, like you see below:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -628,17 +628,15 @@ export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
 }
 
 .factbox {
-  background-color: ghostwhite;
-  color: #151d4e;
   display: block;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 8px;
   clear: both;
-  box-shadow: 0 2px 3px #b6b6b6;
   padding: 10px 20px;
   max-width: fit-content;
   margin: 1rem;
   position: relative;
+  background-color: #0b0425;
 }
 
 .factbox .header {
@@ -694,7 +692,7 @@ componentRegistry.addMacro('factbox', {View: Factbox});</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-27 13:33:24 UTC
+Last updated 2025-06-02 12:37:29 UTC
 </div>
 </div>
 </body>
