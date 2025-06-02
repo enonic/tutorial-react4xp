@@ -10,14 +10,14 @@ export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (par
     const {content} = params;
     const {data} = content;
 
-    // Process the cast
+
     const spotlight = toArray<string>(data.spotlight as string | string[]).map(spotlightKey => {
 
         const spotlightContent = getContentByKey<Content>({key: spotlightKey});
 
 
         const photos: string [] = toArray<string>(spotlightContent.data.photos as string | string[])
-        const firstPhotoId = photos[0] || ''; // Safely access the first ID
+        const firstPhotoId = photos[0] || '';
 
 
         return {
@@ -43,7 +43,7 @@ export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (par
         }
 
         if (block._selected === 'text' && block.text?.text) {
-            // Text block, process its HTML
+            // Text block
             return {
                 type: 'text',
                 text: processHtml({
@@ -81,14 +81,12 @@ export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (par
         return null;
     }).filter(Boolean);
 
-    // Return the additional properties for the page
-
 
     const cover = data.coverimage as string
 
     return {
         title: content.displayName,
-        coverImage: imageUrl({id: cover, scale: 'block(1400, 800)'}),// Adjust the scale to your needs
+        coverImage: cover ? imageUrl({id: cover, scale: 'block(1400, 800)'}) : null,
         preface: data.preface || null,
         author: data.author || null,
         tags: data.tags || [],
