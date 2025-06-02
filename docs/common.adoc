@@ -1,15 +1,15 @@
-= General application la
+= Application commons
 :toc: right
 :imagesdir: media/
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
 
-In this chapter you will add a footer component and a global styling.
+In this chapter you will add global styling and a footer component to the front-end.
 
 == Global CSS
 
 Our application looks a bit bland, let's add the finishing touches to make it look more appealing.
-For this we are going to add a global CSS file, this allows us to avoid repeating general styling in each component.
+ For this we are going to add a global CSS file, this allows us to avoid repeating general styling in each component.
 
 Add global CSS file to the component directory:
 
@@ -39,7 +39,7 @@ Add the footer component within a common directory:
 include::{sourcedir}react4xp/components/common/Footer.tsx[]
 ----
 
-== CSS module
+=== CSS module
 
 The footer component also has a dedicated CSS module, which allows targeted styling without conflicts with other components and classes.
 
@@ -60,10 +60,10 @@ include::{snippet}App-layout/App.tsx[]
 ----
 
 
-== Asset URL
+=== Asset URL
 
-Lastly we need to be able to display our cool React4XP logo!
-To do this we use assetUrl which is a function that generates a URL pointing to a static file.
+Lastly we need to be able to display a logo in the footer!
+To do this we use assetUrl() which is a function that generates a URL pointing to a static file.
 
 You might have noticed that the footer component does not have its own processor as it is a static component, we need to add a commonProcessor to the app to provide the assetUrl function.
 You can also add other common functions here if needed.
@@ -83,8 +83,7 @@ include::{snippet}App-layout/dataFetcher.ts[]
 ----
 
 Sweet!
-Now we have a footer component that is displayed on all pages in the application.
-The footer component is styled with a CSS module, and the global CSS file is used to style the app.
+Now we have a footer component that is visible on all pages in the application, and it is styled using a CSS module.
 
 == Next
 
