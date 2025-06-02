@@ -21,14 +21,11 @@ function fetchAdditionalPhotos(photosIds) {
 
 export const personProcessor: ComponentProcessorFunction<PageDescriptor>
     = (params) => {
-
     const photos: string[] = toArray<string>(params.content.data.photos as string | string[])
     const firstPhotoId = photos[0] || '';
     const remainingPhotoIds = photos.slice(1);
 
-
     let firstPhoto = null;
-
     if (firstPhotoId) {
     const {_id, displayName} = getContentByKey<Content>({key: firstPhotoId});
         firstPhoto = {
