@@ -8,12 +8,14 @@ import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFe
 
 function fetchAdditionalPhotos(photosIds) {
     return photosIds.map(photoId => {
+        if (photoId) {
         const photoContent = getContentByKey<Content>({key: photoId});
         return {
             _id: photoContent._id,
             title: photoContent.displayName,
             imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
         };
+        }
     });
 }
 
@@ -22,19 +24,25 @@ export const personProcessor: ComponentProcessorFunction<PageDescriptor>
 
     const photos: string[] = toArray<string>(params.content.data.photos as string | string[])
     const firstPhotoId = photos[0] || '';
-    const remainingPhotoIds = photos.slice(1) || '';
+    const remainingPhotoIds = photos.slice(1);
 
+
+    let firstPhoto = null;
+
+    if (firstPhotoId) {
     const {_id, displayName} = getContentByKey<Content>({key: firstPhotoId});
+        firstPhoto = {
+            _id,
+            title: displayName,
+            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
+        }
+    }
 
     const extraPhotos = fetchAdditionalPhotos(remainingPhotoIds);
 
     return {
         displayName: `${params.content.displayName}`,
-        photo: {
-            _id,
-            title: displayName,
-            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
-        },
+        photo: firstPhoto,
         birthDate: params.content.data.dateofbirth,
         restPhotos: extraPhotos,
         bio: `${params.content.data.bio}`,
