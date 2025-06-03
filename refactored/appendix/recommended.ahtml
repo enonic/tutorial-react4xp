@@ -672,10 +672,10 @@ export function get(request: Enonic.Xp.Http.Request) {
 </div>
 </div>
 <div class="paragraph">
-<p>And an xml like this:
-.src/main/resources/site/pages/default/default.xml</p>
+<p>And an xml like this:</p>
 </div>
 <div class="listingblock">
+<div class="title">src/main/resources/site/pages/default/default.xml</div>
 <div class="content">
 <pre>&lt;page&gt;
   &lt;display-name&gt;Default page&lt;/display-name&gt;
@@ -1010,7 +1010,7 @@ dataFetcher.addLayout('com.enonic.app.react4xp:TwoColumns', {processor: layoutPr
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-03 20:05:27 UTC
+Last updated 2025-06-03 20:09:56 UTC
 </div>
 </div>
 </body>
