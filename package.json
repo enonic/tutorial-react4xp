@@ -10,13 +10,13 @@
     ]
   },
   "bugs": {
-    "url": "https://github.com/enonic/starter-react4xp/issues"
+    "url": "https://github.com/enonic/tutorial-react4xp/issues"
   },
   "contributors": [
-    "Espen Norderud",
-    "Christian Andreas Westgaard",
+    "Mathias Skjulestad",
     "Pavel Milkevich",
-    "Mathias Skjulestad"
+    "Christian Andreas Westgaard",
+    "Espen Norderud"
   ],
   "dependencies": {
     "@enonic/js-utils": "^1",
