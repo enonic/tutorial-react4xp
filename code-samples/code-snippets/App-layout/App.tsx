@@ -11,7 +11,7 @@ const App: React.FC<AppProps> = (props) => {
             <BaseComponent componentRegistry={componentRegistry} data={props}/>
             {
                 (props.type == "page" || props.type == "contentType") &&
-                <Footer logoUrl={props.commonProps.url as string}/>
+                <Footer logoUrl={props.commonProps.logoUrl as string}/>
             }
         </>
     );

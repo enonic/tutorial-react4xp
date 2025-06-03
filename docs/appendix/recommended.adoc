@@ -105,12 +105,20 @@ Notice how we change `regionsData` to `regions`, this is because the new Regions
 include::{snippet}appendix/upgrade/pages/pagev6/PageProcessor.ts[]
 ----
 
-Next we need to change out the part `default.tsx` with a component `page.tsx`, which is very similar except that we pass `regions` to the `Regions` react component.
+Next we need to change out the part `default.tsx` with a component `Page.tsx`, which is very similar except that we pass `regions` to the `Regions` react component.
 
 .src/main/resources/react4xp/components/page/Page.tsx
 [code,TypeScript]
 ----
 include::{snippet}appendix/upgrade/pages/pagev6/Page.tsx[]
+----
+
+In this example there is also a css module that is used to style the page.
+
+.src/main/resources/react4xp/components/page/Page.module.css
+[code,css]
+----
+include::{snippet}appendix/upgrade/pages/pagev6/Page.module.css[]
 ----
 
 For XP to see it we need to keep the xml file, but we will change the name to `Page.xml` and add a description to it.

@@ -10,7 +10,8 @@ const Footer = ({logoUrl}: FooterProps) => (
     <footer className={styles.footer}>
         <div className={styles.footerContainer}>
             <p>
-                <span className={styles.rotateRight}>©</span>{` ${new Date().getFullYear()}, Built with `}
+                <span className={styles.rotateRight}>©</span>
+                {` ${new Date().getFullYear()}, Built with `}
                 <a href="https://reactjs.org">React4XP</a>
             </p>
         </div>

@@ -1,12 +1,13 @@
 .footer {
   margin: 1vh auto auto auto;
-  width: 100vw;
+  width: 100%;
   text-align: center;
   background-color: black;
   position: absolute;
   left: 0;
   font-size: 18px;
   height: 7vh;
+  min-height: 45px;
   align-content: center;
 }
 
@@ -33,6 +34,12 @@
 }
 
 .logoContainer img {
-  max-height: 3.5vh;
   max-width: 2.6vh;
+  min-width: 20px;
+  height: auto;
+}
+
+.rotateRight {
+  display: inline-block;
+  transform: rotate(90deg);
 }
