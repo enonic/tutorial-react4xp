@@ -87,6 +87,7 @@ include::{snippet}appendix/upgrade/pages/pagev5/default.ts[]
 ----
 
 And an xml like this:
+
 .src/main/resources/site/pages/default/default.xml
 
 [code,xml]
