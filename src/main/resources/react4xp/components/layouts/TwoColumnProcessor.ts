@@ -3,6 +3,7 @@ import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFe
 
 
 export const layoutProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:2-column'> = ({component}) => {
+
     const {regions} = component as LayoutComponent;
 
     return {

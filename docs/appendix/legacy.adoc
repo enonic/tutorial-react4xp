@@ -144,7 +144,7 @@ src/
 <5> default page component
 <6> Global styles
 <7> Main React component
-<8> Site descriptor
+<8> link:./controller#site-mapping[Site descriptor^]
 <9> Folder for descriptor
 <10> Component descriptor XML
 <11> Optionally place CMS schemas here

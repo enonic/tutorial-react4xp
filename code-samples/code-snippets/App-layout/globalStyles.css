@@ -7,6 +7,7 @@ html {
 
 body {
   margin: 0 auto 0 auto;
+
 }
 
 #PageView {
@@ -20,27 +21,6 @@ body {
   max-width: 1400px;
   padding-inline: 2.5vw;
   margin-inline: auto;
-}
-
-.back {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;
-
-  a {
-    color: #EF82F0;
-    text-decoration: none;
-  }
-
-  p {
-    margin: 0;
-    background-color: #071622;
-    padding-inline: 0.2rem;
-    font-size: 1.6rem;
-    font-weight: bolder;
-    border-bottom-right-radius: 5px;
-  }
 }
 
 h1 {

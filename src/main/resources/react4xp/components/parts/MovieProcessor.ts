@@ -86,4 +86,3 @@ export const movieProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:mov
         director
     };
 };
-

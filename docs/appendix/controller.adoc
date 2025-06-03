@@ -4,6 +4,7 @@
 
 The app controller is responsible for bootstrapping all important elements of React4XP.
 
+[[site-mapping]]
 == Site mapping
 
 React4XP runs on top of XP's site engine. By adding a React4XP application to a site, it is injected into request pipeline - where it hijackes the rendering. 
