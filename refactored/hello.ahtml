@@ -443,12 +443,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#movie_db_dataset">Movie DB dataset</a></li>
 <li><a href="#add_app_to_site">Add app to site</a></li>
-<li><a href="#request_handling">Request handling</a></li>
+<li><a href="#a_look_at_the_code">A look at the code</a>
+<ul class="sectlevel2">
 <li><a href="#hello_component">Hello component</a></li>
-<li><a href="#the_component_registry">The Component Registry</a></li>
-<li><a href="#helloprocessor">HelloProcessor</a></li>
 <li><a href="#data_fetcher">Data Fetcher</a></li>
-<li><a href="#app_component_and_controller">App component and controller</a></li>
+<li><a href="#component_registry">Component Registry</a></li>
+</ul>
+</li>
 <li><a href="#next">Next</a></li>
 </ul>
 </div>
@@ -509,7 +510,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="request_handling"><a class="link" href="#request_handling">Request handling</a></h2>
+<h2 id="a_look_at_the_code"><a class="link" href="#a_look_at_the_code">A look at the code</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>What happened?</p>
@@ -518,26 +519,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>By adding the application to the site, it is injected into the Site Engine&#8217;s request pipeline - it basically hijacks the rendering - taking presdence over HMDB&#8217;s built-in preview.</p>
 </div>
 <div class="paragraph">
-<p>This is the basic execution flow that renders the page:</p>
+<p>Let&#8217;s have a look at the code:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-Files" data-lang="Files">-&gt; site/app.ts (HTML boostrapping)
-  -&gt; react4xp/entries/App.tsx (React entry)
-    -&gt; react4xp/dataFetcher.ts (Map of data processors)
-      -&gt; react4xp/components/hello/helloProcessor.ts (Fetch props for the Hello component)
-    -&gt; react4xp/componentRegistry.tsx (Map of React components)
-      -&gt; react4xp/components/hello/Hello.tsx (The Hello component)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s have a look at the various files</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="hello_component"><a class="link" href="#hello_component">Hello component</a></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="hello_component"><a class="link" href="#hello_component">Hello component</a></h3>
 <div class="paragraph">
 <p>The component that rendered the page is very simple:</p>
 </div>
@@ -575,12 +560,47 @@ export const Hello = ({title, initialCount}: HelloProps) =&gt; {
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="the_component_registry"><a class="link" href="#the_component_registry">The Component Registry</a></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="data_fetcher"><a class="link" href="#data_fetcher">Data Fetcher</a></h3>
 <div class="paragraph">
-<p>To be triggered, the component was added to the ComponentRegistry.</p>
+<p>To feed the Hello component with props, we can create a data processor:</p>
+</div>
+<div class="listingblock">
+<div class="title">react4xp/components/hello/HelloProcessor.ts</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {PageDescriptor} from '@enonic-types/core';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+
+export const helloProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt; = (params) =&gt; {
+    return {
+        title: `${params.content.displayName}`,
+        initialCount: 0,
+    };
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The processor does not run by itself, it must be added to the dataFetcher. The dataFetcher only solely executes on the server.</p>
+</div>
+<div class="paragraph">
+<p>The dataFetcher will only invoke a processor when needed, in our case when a site content <code>portal:site</code> is rendered.</p>
+</div>
+<div class="listingblock">
+<div class="title">react4xp/dataFetcher.ts</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {DataFetcher} from '/lib/enonic/react4xp';
+import {helloProcessor} from './components/HelloProcessor';
+
+export const dataFetcher = new DataFetcher();
+
+dataFetcher.addContentType('portal:site', { processor: helloProcessor });</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="component_registry"><a class="link" href="#component_registry">Component Registry</a></h3>
+<div class="paragraph">
+<p>Like processors, components must also be registered. The Hello component is added to the ComponentRegistry, also matching content of type <code>portal:site</code>.</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/componentRegistry.ts</div>
@@ -597,76 +617,25 @@ componentRegistry.addContentType('portal:site', { View: Hello }); <i class="conu
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The Hello component is mapped to the content type <code>portal:site</code>, which means it will be executed whenever the URL matches a site.</td>
+<td>The Hello component is mapped to the content type <code>portal:site</code>, which means it will be executed whenever the URL matches a site content.</td>
 </tr>
 </table>
 </div>
-<div class="admonitionblock note">
+<div class="paragraph">
+<p>Try clicking other content items in Content Studio, and you should simply see an error message at this point.</p>
+</div>
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Try clicking other content items in Content Studio, and you should simply see an error message.
+Learn how the basic boot-strapping and routing works in the <a href="appendix/controller.ahtml">app controller section</a>.
 </td>
 </tr>
 </table>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="helloprocessor"><a class="link" href="#helloprocessor">HelloProcessor</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The responsibility of HelloProcessor is to produce the props required by a specific component.</p>
-</div>
-<div class="listingblock">
-<div class="title">react4xp/components/hello/HelloProcessor.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {PageDescriptor} from '@enonic-types/core';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
-
-export const helloProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt; = (params) =&gt; {
-    return {
-        title: `${params.content.displayName}`,
-        initialCount: 0,
-    };
-};</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="data_fetcher"><a class="link" href="#data_fetcher">Data Fetcher</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Similar to the Component Registry, the DataFetcher is a registry of functions that will fetch data for a specific component. Unlike the React Components which can execute both on server and client, the dataFetcher is solely executed on the server, in order to fetch props for the various components.</p>
-</div>
-<div class="paragraph">
-<p>Each processor is only invoked when needed by the current page. In this case if a site content is rendered.</p>
-</div>
-<div class="listingblock">
-<div class="title">react4xp/dataFetcher.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {DataFetcher} from '/lib/enonic/react4xp';
-import {helloProcessor} from './components/HelloProcessor';
-
-export const dataFetcher = new DataFetcher();
-
-dataFetcher.addContentType('portal:site', { processor: helloProcessor });</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="app_component_and_controller"><a class="link" href="#app_component_and_controller">App component and controller</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><code>App.tsx</code> (the app component) is responsible for setting up the application layout, like header and footer, and then invoking the <code>dataFetcher</code> and <code>componentRegistry</code>. We&#8217;ll get back to it later in this tutorial.</p>
-</div>
-<div class="paragraph">
-<p><code>App.ts</code> (the app controller) is responsible for HTML boostrapping and setting up React. We will not dive into this in the tutorial, but more details can be found in the <a href="appendix/controller.ahtml">app controller appendix</a>.</p>
 </div>
 </div>
 </div>
@@ -674,14 +643,14 @@ dataFetcher.addContentType('portal:site', { processor: helloProcessor });</code>
 <h2 id="next"><a class="link" href="#next">Next</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Great, you rendered your first page, next up how about <a href="common.ahtml">setting up the application level components</a>.</p>
+<p>Great, you rendered your first page, next up about <a href="common.ahtml">common processors and components</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-02 12:37:29 UTC
+Last updated 2025-06-03 20:05:27 UTC
 </div>
 </div>
 </body>

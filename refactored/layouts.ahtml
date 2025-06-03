@@ -493,6 +493,7 @@ import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFe
 
 
 export const layoutProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:2-column'&gt; = ({component}) =&gt; {
+
     const {regions} = component as LayoutComponent;
 
     return {
@@ -575,7 +576,7 @@ Page templates allow us to reuse a page definition across multiple content items
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-02 12:37:29 UTC
+Last updated 2025-06-03 20:05:27 UTC
 </div>
 </div>
 </body>

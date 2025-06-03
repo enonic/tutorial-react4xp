@@ -482,6 +482,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 
 body {
   margin: 0 auto 0 auto;
+
 }
 
 #PageView {
@@ -495,27 +496,6 @@ body {
   max-width: 1400px;
   padding-inline: 2.5vw;
   margin-inline: auto;
-}
-
-.back {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;
-
-  a {
-    color: #EF82F0;
-    text-decoration: none;
-  }
-
-  p {
-    margin: 0;
-    background-color: #071622;
-    padding-inline: 0.2rem;
-    font-size: 1.6rem;
-    font-weight: bolder;
-    border-bottom-right-radius: 5px;
-  }
 }
 
 h1 {
@@ -591,10 +571,9 @@ const Footer = ({logoUrl}: FooterProps) =&gt; (
     &lt;footer className={styles.footer}&gt;
         &lt;div className={styles.footerContainer}&gt;
             &lt;p&gt;
-                {`© ${new Date().getFullYear()}, Built with `}
+                &lt;span className={styles.rotateRight}&gt;©&lt;/span&gt;
+                {` ${new Date().getFullYear()}, Built with `}
                 &lt;a href="https://reactjs.org"&gt;React4XP&lt;/a&gt;
-                {` and Powered by `}
-                &lt;a href="https://enonic.com"&gt;Enonic XP&lt;/a&gt;
             &lt;/p&gt;
         &lt;/div&gt;
         {logoUrl &amp;&amp; (
@@ -624,13 +603,14 @@ export default Footer;</code></pre>
 <div class="content">
 <pre class="highlight"><code class="language-CSS" data-lang="CSS">.footer {
   margin: 1vh auto auto auto;
-  width: 100vw;
+  width: 100%;
   text-align: center;
   background-color: black;
   position: absolute;
   left: 0;
   font-size: 18px;
   height: 7vh;
+  min-height: 45px;
   align-content: center;
 }
 
@@ -646,8 +626,9 @@ export default Footer;</code></pre>
 }
 
 .footer p {
-  margin: 0;
+  margin: 0 .5rem;
 }
+
 
 .logoContainer {
   position: absolute;
@@ -656,8 +637,14 @@ export default Footer;</code></pre>
 }
 
 .logoContainer img {
-  max-height: 3.5vh;
   max-width: 2.6vh;
+  min-width: 20px;
+  height: auto;
+}
+
+.rotateRight {
+  display: inline-block;
+  transform: rotate(90deg);
 }</code></pre>
 </div>
 </div>
@@ -680,7 +667,7 @@ const App: React.FC&lt;AppProps&gt; = (props) =&gt; {
             &lt;BaseComponent componentRegistry={componentRegistry} data={props}/&gt;
             {
                 (props.type == "page" || props.type == "contentType") &amp;&amp;
-                &lt;Footer logoUrl={props.commonProps.url as string}/&gt;
+                &lt;Footer logoUrl={props.commonProps.logoUrl as string}/&gt;
             }
         &lt;/&gt;
     );
@@ -705,15 +692,15 @@ You can also add other common functions here if needed.</p>
 <div class="listingblock">
 <div class="title">react4xp/components/common/CommonProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
-import {assetUrl} from '/lib/enonic/asset';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {assetUrl} from '/lib/enonic/asset';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 export const commonProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:main'&gt; = (props) =&gt; {
 
-    const url = assetUrl({path: 'images/React4XP.svg'});
+    const logoUrl = assetUrl({path: 'images/React4XP.svg'});
 
     return {
-        url
+        logoUrl
     };
 };</code></pre>
 </div>
@@ -751,7 +738,7 @@ Now we have a footer component that is visible on all pages in the application, 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-02 12:37:29 UTC
+Last updated 2025-06-03 20:05:27 UTC
 </div>
 </div>
 </body>

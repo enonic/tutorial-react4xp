@@ -650,7 +650,7 @@ src/
 </tr>
 <tr>
 <td><i class="conum" data-value="8"></i><b>8</b></td>
-<td>Site descriptor</td>
+<td><a href="./controller#site-mapping" target="_blank" rel="noopener">Site descriptor</a></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
@@ -995,7 +995,7 @@ We do this by updating site.xml:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-02 12:37:29 UTC
+Last updated 2025-06-03 20:05:27 UTC
 </div>
 </div>
 </body>

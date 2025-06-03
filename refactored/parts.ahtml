@@ -478,9 +478,9 @@ import styles from "./ChildList.module.css";
 
 export const ChildList = (props) =&gt; {
 
-    const {names, paths, componentRegistry, ...extraProps} = props;
+    const {names, paths, componentRegistry, ...partProps} = props;
     return (
-        &lt;Part {...extraProps}&gt;
+        &lt;Part {...partProps}&gt;
             {names?.length &gt; 0 &amp;&amp; &lt;ul&gt;
                 {names.map((name, index) =&gt; (
                     &lt;li className={styles.listItem} key={index}&gt;
@@ -624,18 +624,14 @@ export const Heading = (props: any) =&gt; {
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/HeadingProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
-import {PartComponent} from '@enonic-types/core';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {PartComponent} from '@enonic-types/core';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
 export const headingProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:heading'&gt; = (params) =&gt; {
     const component = params.component as PartComponent;
     const heading = component.config?.heading || params.content.displayName;
 
     return {
-        path: '/',
-        type: 'part',
-        descriptor: 'com.enonic.app.hmdb:heading',
-        config: params.content || {},
         heading: heading,
     };
 
@@ -695,7 +691,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-02 12:37:29 UTC
+Last updated 2025-06-03 20:05:27 UTC
 </div>
 </div>
 </body>
