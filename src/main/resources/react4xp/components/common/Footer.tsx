@@ -12,8 +12,6 @@ const Footer = ({logoUrl}: FooterProps) => (
             <p>
                 {`© ${new Date().getFullYear()}, Built with `}
                 <a href="https://reactjs.org">React4XP</a>
-                {` and Powered by `}
-                <a href="https://enonic.com">Enonic XP</a>
             </p>
         </div>
         {logoUrl && (
