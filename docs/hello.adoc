@@ -33,27 +33,15 @@ After saving, the preview should change to something like this:
 image:hello.png[title="React4XP starter page", width=647px]
 
 
-== Request handling
+== A look at the code
 
 What happened?
 
 By adding the application to the site, it is injected into the Site Engine's request pipeline - it basically hijacks the rendering - taking presdence over HMDB's built-in preview.
 
-This is the basic execution flow that renders the page:
+Let's have a look at the code:
 
-[source,Files]
-----
--> site/app.ts (HTML boostrapping)
-  -> react4xp/entries/App.tsx (React entry)
-    -> react4xp/dataFetcher.ts (Map of data processors)
-      -> react4xp/components/hello/helloProcessor.ts (Fetch props for the Hello component)
-    -> react4xp/componentRegistry.tsx (Map of React components)
-      -> react4xp/components/hello/Hello.tsx (The Hello component)
-----
-
-Let's have a look at the various files
-
-== Hello component
+=== Hello component
 
 The component that rendered the page is very simple:
 
@@ -71,10 +59,34 @@ It takes a single parameter, HelloProps. The type is declared like this:
 include::{sourcedir}types/HelloProps.ts[]
 ----
 
+=== Data Fetcher
 
-== The Component Registry
+To feed the Hello component with props, we can create a data processor:
 
-To be triggered, the component was added to the ComponentRegistry.
+.react4xp/components/hello/HelloProcessor.ts
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/hello/HelloProcessor.ts[]
+----
+
+The processor does not run by itself, it must be added to the dataFetcher. The dataFetcher only solely executes on the server.
+
+The dataFetcher will only invoke a processor when needed, in our case when a site content `portal:site` is rendered.
+
+.react4xp/dataFetcher.ts
+[source,TypeScript]
+----
+import {DataFetcher} from '/lib/enonic/react4xp';
+import {helloProcessor} from './components/HelloProcessor';
+
+export const dataFetcher = new DataFetcher();
+
+dataFetcher.addContentType('portal:site', { processor: helloProcessor });
+----
+
+=== Component Registry
+
+Like processors, components must also be registered. The Hello component is added to the ComponentRegistry, also matching content of type `portal:site`.
 
 .react4xp/componentRegistry.ts
 [source,TypeScript]
@@ -88,47 +100,13 @@ componentRegistry.addContentType('portal:site', { View: Hello }); //<1>
 
 ----
 
-<1> The Hello component is mapped to the content type `portal:site`, which means it will be executed whenever the URL matches a site.
+<1> The Hello component is mapped to the content type `portal:site`, which means it will be executed whenever the URL matches a site content.
 
-NOTE: Try clicking other content items in Content Studio, and you should simply see an error message.
+Try clicking other content items in Content Studio, and you should simply see an error message at this point.
 
-
-== HelloProcessor
-
-The responsibility of HelloProcessor is to produce the props required by a specific component.
-
-.react4xp/components/hello/HelloProcessor.ts
-[source,TypeScript]
-----
-include::{sourcedir}react4xp/components/hello/HelloProcessor.ts[]
-----
-
-
-== Data Fetcher
-
-Similar to the Component Registry, the DataFetcher is a registry of functions that will fetch data for a specific component. Unlike the React Components which can execute both on server and client, the dataFetcher is solely executed on the server, in order to fetch props for the various components.
-
-Each processor is only invoked when needed by the current page. In this case if a site content is rendered.
-
-.react4xp/dataFetcher.ts
-[source,TypeScript]
-----
-import {DataFetcher} from '/lib/enonic/react4xp';
-import {helloProcessor} from './components/HelloProcessor';
-
-export const dataFetcher = new DataFetcher();
-
-dataFetcher.addContentType('portal:site', { processor: helloProcessor });
-----
-
-
-== App component and controller
-
-`App.tsx` (the app component) is responsible for setting up the application layout, like header and footer, and then invoking the `dataFetcher` and `componentRegistry`. We'll get back to it later in this tutorial.
-
-`App.ts` (the app controller) is responsible for HTML boostrapping and setting up React. We will not dive into this in the tutorial, but more details can be found in the <<appendix/controller#, app controller appendix>>. 
+TIP: Learn how the basic boot-strapping and routing works in the <<appendix/controller#, app controller section>>.
 
 == Next
 
-Great, you rendered your first page, next up how about <<common#, setting up the application level components>>.
+Great, you rendered your first page, next up about <<common#, common processors and components>>.
 
