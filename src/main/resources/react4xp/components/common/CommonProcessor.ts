@@ -3,7 +3,7 @@ import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFe
 
 export const commonProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:main'> = (props) => {
 
-    const logoUrl = assetUrl({path: 'images/React4XP.svg'});
+    const logoUrl = assetUrl({path: 'react4xp.svg'});
 
     return {
         logoUrl
