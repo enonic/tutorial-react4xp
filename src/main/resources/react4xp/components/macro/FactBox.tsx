@@ -7,7 +7,7 @@ export const Factbox = ({config, children}: MacroComponentParams) => {
 
     return (
         <ins className={styles.factbox}>
-            <i className={styles.icon}/>
+            <i>💬</i>
             <strong className={styles.header}>{config.header ? config.header as string : "Fact Box"}</strong>
             <div className={styles.bodyContent}> {children}</div>
         </ins>
