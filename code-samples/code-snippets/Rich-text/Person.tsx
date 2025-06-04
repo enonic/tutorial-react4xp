@@ -4,10 +4,11 @@ import {RichText} from '@enonic/react-components';
 ...
 
 export const Person = (props) => {
-    const {parent, displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
 
 ...
 
+</div>
     {
         bioHtml && (
             <>

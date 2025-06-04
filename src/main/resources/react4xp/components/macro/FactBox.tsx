@@ -4,7 +4,7 @@ import styles from './FactBox.module.css';
 
 
 export const Factbox = ({config, children}: MacroComponentParams) => {
-    // Creating an object for dangerouslySetInnerHTML
+
     return (
         <ins className={styles.factbox}>
             <i className={styles.icon}/>

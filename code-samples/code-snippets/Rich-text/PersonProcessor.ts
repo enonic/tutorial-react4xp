@@ -16,7 +16,6 @@ export const personProcessor: ComponentProcessorFunction<PageDescriptor>
         },
         birthDate: params.content.data.dateofbirth,
         restPhotos: extraPhotos,
-        parent: parentPath(params.request.path),
         bio: `${params.content.data.bio}`,
         bioHtml: processHtml({
             value: params.content.data.bio as string,

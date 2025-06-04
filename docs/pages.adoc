@@ -67,7 +67,7 @@ Before we can continue we need to remove the hello component from the `component
 From Content Studio, select and edit the `/hmdb` content item.
 From the edit view, activate the page editor by clicking the monitor icon in the top right corner.
 +
-You should now see the following:
+Now you can edit pages:
 image:empty-site.png[title="Empty site",width=900px]
 +
 Now that we have a page component with a single "dropzone" inside (the region we specified earlier).
