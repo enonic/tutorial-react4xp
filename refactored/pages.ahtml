@@ -524,6 +524,7 @@ export const pageProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:m
 <div class="title">/src/main/resources/react4xp/dataFetcher.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {DataFetcher} from '/lib/enonic/react4xp';
+import {commonProcessor} from '/react4xp/components/common/CommonProcessor';
 //import {helloProcessor} from './components/hello/HelloProcessor';
 import {personProcessor} from './components/content/PersonProcessor';
 import {pageProcessor} from './components/page/PageProcessor';
@@ -531,6 +532,7 @@ import {pageProcessor} from './components/page/PageProcessor';
 export const dataFetcher = new DataFetcher();
 
 //dataFetcher.addContentType('portal:site', {processor: helloProcessor});
+dataFetcher.addCommon({processor: commonProcessor});
 dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});
 dataFetcher.addPage('com.enonic.app.hmdb:main', {processor: pageProcessor});</code></pre>
 </div>
@@ -581,7 +583,7 @@ componentRegistry.addPage('com.enonic.app.hmdb:main', {View: Page});</code></pre
 From the edit view, activate the page editor by clicking the monitor icon in the top right corner.</p>
 </div>
 <div class="paragraph">
-<p>You should now see the following:
+<p>Now you can edit pages:
 <span class="image"><img src="media/empty-site.png" alt="empty site" width="900px" title="Empty site"></span></p>
 </div>
 <div class="paragraph">
@@ -623,7 +625,7 @@ We can give it some content.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-03 20:09:56 UTC
+Last updated 2025-06-05 08:54:15 UTC
 </div>
 </div>
 </body>

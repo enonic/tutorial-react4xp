@@ -697,7 +697,7 @@ import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFe
 
 export const commonProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:main'&gt; = (props) =&gt; {
 
-    const logoUrl = assetUrl({path: 'images/React4XP.svg'});
+    const logoUrl = assetUrl({path: 'react4xp.svg'});
 
     return {
         logoUrl
@@ -738,7 +738,7 @@ Now we have a footer component that is visible on all pages in the application, 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-03 20:09:56 UTC
+Last updated 2025-06-05 08:54:15 UTC
 </div>
 </div>
 </body>

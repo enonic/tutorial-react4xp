@@ -509,7 +509,6 @@ export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
         },
         birthDate: params.content.data.dateofbirth,
         restPhotos: extraPhotos,
-        parent: parentPath(params.request.path),
         bio: `${params.content.data.bio}`,
         bioHtml: processHtml({
             value: params.content.data.bio as string,
@@ -534,10 +533,11 @@ import {RichText} from '@enonic/react-components';
 ...
 
 export const Person = (props) =&gt; {
-    const {parent, displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
 
 ...
 
+&lt;/div&gt;
     {
         bioHtml &amp;&amp; (
             &lt;&gt;
@@ -599,10 +599,10 @@ import styles from './FactBox.module.css';
 
 
 export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
-    // Creating an object for dangerouslySetInnerHTML
+
     return (
         &lt;ins className={styles.factbox}&gt;
-            &lt;i className={styles.icon}/&gt;
+            &lt;i&gt;💬&lt;/i&gt;
             &lt;strong className={styles.header}&gt;{config.header ? config.header as string : "Fact Box"}&lt;/strong&gt;
             &lt;div className={styles.bodyContent}&gt; {children}&lt;/div&gt;
         &lt;/ins&gt;
@@ -616,18 +616,7 @@ export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/macro/FactBox.module.css</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">@font-face {
-  font-family: 'icomoon';
-  src: url('../../public/fonts/icomoon.woff') format('woff');
-}
-
-.icon {
-  font-family: 'icomoon', 'sans-serif' !important;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-}
-
-.factbox {
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">.factbox {
   display: block;
   text-decoration: none;
   border-radius: 8px;
@@ -637,17 +626,16 @@ export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
   margin: 1rem;
   position: relative;
   background-color: #0b0425;
+
+  i {
+    font-style: normal;
+  }
 }
 
 .factbox .header {
   font-size: 20px;
   line-height: 24px;
   margin: 0 0 0 1rem;
-}
-
-.factbox .icon:before {
-  content: "\e0c9";
-  color: #4b93bd;
 }</code></pre>
 </div>
 </div>
@@ -692,7 +680,7 @@ componentRegistry.addMacro('factbox', {View: Factbox});</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-03 20:09:56 UTC
+Last updated 2025-06-05 08:54:15 UTC
 </div>
 </div>
 </body>
