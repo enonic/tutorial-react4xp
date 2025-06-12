@@ -4,13 +4,13 @@
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
 
-Your first React4XP page - and how it works
+Linking React4XP to your content - and how it works
 
 == Movie DB dataset
 
-This tutorial is dedicated to front-end development. To make it as compact as possible, we have pre-installed an application called the https://market.enonic.com/vendors/enonic/headless-movie-site[Headless Movie DB]. It contains pre-defined CMS schemas as well as sample content and previews. We'll be using this dataset extensively throughout the tutorial.
+This tutorial is dedicated to front-end development. To make it as compact as possible, the https://market.enonic.com/vendors/enonic/headless-movie-site[Headless Movie DB] dataset was installed in the setup. This contains several pre-defined content schemas as well as sample content and mock previews. We'll be using this dataset extensively throughout the tutorial.
 
-Visit our https://developer.enonic.com/start[getting started guide^], or the https://developer.enonic.com/docs/developer-101[developer 101 tutorial^] to learn about schemas and content creation.
+To learn about content modeling, visit our https://developer.enonic.com/start[getting started guide^], or the https://developer.enonic.com/docs/developer-101[developer 101 tutorial^].
 
 == Add app to site
 
@@ -24,20 +24,20 @@ Follow these steps to make your application a front-end for the Headless Movie D
 +
 image:hmdb.png[title="HMDB welcome page",width=900px]
 +
-. Click btn:[Edit], and connect your React4xp app to the site.
+. Click btn:[Edit], and add your React4xp app to the site.
 +
 image:add-to-site.png[title="Add React4XP application to the site", width=647px]
 +
-After saving, the preview should change to something like this:
+After saving, the preview should refresh, and look something like this:
 +
 image:hello.png[title="React4XP starter page", width=647px]
 
 
 == A look at the code
 
-What happened?
+What just happened?
 
-By adding the application to the site, it is injected into the Site Engine's request pipeline - it basically hijacks the rendering - taking presdence over HMDB's built-in preview.
+By adding the application to the site, it is injected into Enonic's standard rendering - aka the Site Engine. Here, it basically hijacks the rendering - taking presdence over HMDB's built-in preview.
 
 Let's have a look at the code:
 
@@ -59,9 +59,11 @@ It takes a single parameter, HelloProps. The type is declared like this:
 include::{sourcedir}types/HelloProps.ts[]
 ----
 
-=== Data Fetcher
+NOTE: Typing your props is optional, but recommended for more robust code.
 
-To feed the Hello component with props, we can create a data processor:
+=== Data Processor
+
+To fetch the props for the Hello component, we need a data processor:
 
 .react4xp/components/hello/HelloProcessor.ts
 [source,TypeScript]
@@ -69,9 +71,9 @@ To feed the Hello component with props, we can create a data processor:
 include::{sourcedir}react4xp/components/hello/HelloProcessor.ts[]
 ----
 
-The processor does not run by itself, it must be added to the dataFetcher. The dataFetcher only solely executes on the server.
+The processor does not execute by itself, it must be registered in the dataFetcher. The dataFetcher solely executes on the server side.
 
-The dataFetcher will only invoke a processor when needed, in our case when a site content `portal:site` is rendered.
+The dataFetcher will only invoke a processor if needed, in our case when a content of type `portal:site` (the site content) is rendered.
 
 .react4xp/dataFetcher.ts
 [source,TypeScript]
@@ -81,12 +83,14 @@ import {helloProcessor} from './components/HelloProcessor';
 
 export const dataFetcher = new DataFetcher();
 
-dataFetcher.addContentType('portal:site', { processor: helloProcessor });
+dataFetcher.addContentType('portal:site', { processor: helloProcessor }); // <1>
 ----
+
+<1> helloProcessor is mapped to the content type `portal:site`, which means it will be executed whenever the URL matches a site content.
 
 === Component Registry
 
-Like processors, components must also be registered. The Hello component is added to the ComponentRegistry, also matching content of type `portal:site`.
+Back to the Hello component. Similar to the dataFetcher, this must be added to the ComponentRegistry in order to work.
 
 .react4xp/componentRegistry.ts
 [source,TypeScript]
@@ -97,7 +101,6 @@ import {Hello} from './components/Hello';
 export const componentRegistry = new ComponentRegistry();
 
 componentRegistry.addContentType('portal:site', { View: Hello }); //<1>
-
 ----
 
 <1> The Hello component is mapped to the content type `portal:site`, which means it will be executed whenever the URL matches a site content.

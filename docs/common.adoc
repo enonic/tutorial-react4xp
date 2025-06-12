@@ -1,89 +1,104 @@
-= Application commons
+= Commons components and props
 :toc: right
 :imagesdir: media/
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
 
-In this chapter you will add global styling and a footer component to the front-end.
+In this chapter you will add global styling and a footer component to the site
 
 == Global CSS
 
-Our application looks a bit bland, let's add the finishing touches to make it look more appealing.
- For this we are going to add a global CSS file, this allows us to avoid repeating general styling in each component.
+To make the site more appealing, we'll need some style. By adding a global CSS file, we avoid repeating general styling for each component.
 
-Add global CSS file to the component directory:
+Follow the steps below:
 
+. *Create CSS file* in the component directory:
++
 .react4xp/components/globalStyles.css
 [source,CSS]
 ----
-include::../code-samples/code-snippets/App-layout/globalStyles.css[]
+include::../code-samples/code-snippets/common/globalStyles.css[]
 ----
-
-Add your global CSS file to the app:
-
++
+. *Register the file* in App.tsx by adding the following line
++
 .react4xp/entries/App.tsx
 [source,TypeScript]
 ----
 import '../components/globalStyles.css';
 ----
 
+Refresh the Hello page to see the what happened:
+
+image:hello.png[title="Hello page with styling", width=647px]
+
+
 == Footer component
 
-A footer component is like an autograph, it is a signature of the author usually visible on every page of the application.
+`App.tsx` is the common starting point for all rendering, and can be used for more than simply styling, for instance by adding a footer.
 
-Add the footer component within a common directory:
+Follow the steps below to get a glorious new footer across all pages in the site.
 
+. *Add the footer component*:
++
 .react4xp/components/common/Footer.tsx
 [source,TypeScript]
 ----
 include::{sourcedir}react4xp/components/common/Footer.tsx[]
 ----
-
-=== CSS module
-
-The footer component also has a dedicated CSS module, which allows targeted styling without conflicts with other components and classes.
-
-Add the CSS module to the common directory:
-
++
+. *Add a dedicated CSS module* for the footer.
++
 .react4xp/components/common/Footer.module.css
 [source,CSS]
 ----
-include::{snippet}App-layout/Footer.module.css[]
+include::{snippet}common/Footer.module.css[]
 ----
-
-Add the footer to your app:
-
++
+. *Add the Footer component to App.tsx*:
++
 .react4xp/entries/App.tsx
 [source,TypeScript]
 ----
-include::{snippet}App-layout/App.tsx[]
+include::{snippet}common/App.tsx[]
 ----
 
+We are not entirely done yet, as the Footer component requires some props, in order to work properly (pun intended).
 
-=== Asset URL
+== Static asset
 
-Lastly we need to be able to display a logo in the footer!
-To do this we use assetUrl() which is a function that generates a URL pointing to a static file.
+To make thigs a bit more interesting, the Footer will render the React4XP logo. This means we will need a URL to a static file.
 
-You might have noticed that the footer component does not have its own processor as it is a static component, we need to add a commonProcessor to the app to provide the assetUrl function.
-You can also add other common functions here if needed.
+TIP: The logo already exists in `resources/assets/react4xp.svg`
 
+The Footer is not part of the ComponentRegistry, but it can still use the dataFetcher to get props. For this case, a data processor can be registered as a `common` processor. Props from the common processor can be accessed across components.
+
+. *Create a processor*:
++
 .react4xp/components/common/CommonProcessor.ts
 [source,TypeScript]
 ----
 include::{sourcedir}react4xp/components/common/CommonProcessor.ts[]
 ----
-
-Lastly add the common processor to the data fetcher:
-
++
+It invokes `assetUrl()` to get the URL for the logo, and returns it as a prop.
++
+. *Register the processor* in the data fetcher:
++
 .react4xp/dataFetcher.ts
 [source,TypeScript]
 ----
-include::{snippet}App-layout/dataFetcher.ts[]
+include::{snippet}common/dataFetcher.ts[]
 ----
++
+Using `addCommon` ensures this will be executed for every rendering request.
++
+NOTE: Be careful to only get the props you need, or else this may slow down rendering of all pages.
 
-Sweet!
-Now we have a footer component that is visible on all pages in the application, and it is styled using a CSS module.
+image:hello.png[title="Hello page with styling", width=647px]
+
+*Sweet!*
+You now have a stylish site with a footer component on all pages. The footer also brings it own CSS via a CSS module.
 
 == Next
 
