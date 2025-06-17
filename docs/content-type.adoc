@@ -1,19 +1,20 @@
-= Rendering basics
+= Rendering based on Content Type
 :toc: right
 :imagesdir: media/
 :sourcedir: ../src/main/resources/
-:snippet: ../code-samples/code-snippets/
+:snippet: ../code-samples/code-snippets/content-type/
 
-In this chapter you will add a new component that renders persons
+In this chapter you will create a new component that renders persons
 
 == Person content type
 
 The Headless Movie DB contains sample content, and content types.
-One of these is `Person`.
-From Content Studio, you may find and list persons.
+One of these is `Person` or more specifically `com.enonic.app.hmdb:person`.
+
+From Content Studio, you may easily find and list persons.
 By selecting the JSON preview, you can also study the properties of a person:
 
-.Person JSON
+.Sample JSON for Person
 [source,JSON]
 ----
 {
@@ -50,19 +51,19 @@ By selecting the JSON preview, you can also study the properties of a person:
 }
 ----
 
-To implement the rendering we need to add code that will perform a two-step operation:
+== The Person component
 
-== Fetch the data
+To implement the rendering we need to create a new component, and accompanying data processor:
 
-. Create a data fetcher
+. *Create a processor*:
 +
 ./src/main/resources/react4xp/components/content/PersonProcessor.ts
 [source,TypeScript]
 ----
-include::{snippet}Rendering-basics/PersonProcessor.ts[]
+include::{snippet}PersonProcessor.ts[]
 ----
 +
-. Then *add it to the dataFetcher*, with these lines:
+. *Add it to the dataFetcher*, with the following two lines:
 +
 .dataFetcher
 [source,TypeScript]
@@ -71,42 +72,37 @@ import {personProcessor} from './components/content/PersonProcessor';
 
 dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});
 ----
-
-We are now able to fetch the Person data, next up we need to render it.
-
-== Register component
-
-The component consists of two files:
-
++
+. *Create the Person component*, it consists of two files:
++
 ./src/main/resources/react4xp/components/content/Person.tsx (React component)
 [source,TypeScript]
 ----
-include::{snippet}Rendering-basics/Person.tsx[]
+include::{snippet}Person.tsx[]
 ----
 +
-
 ./src/main/resources/react4xp/components/content/Person.module.css (CSS module)
 [source,CSS]
 ----
-include::{snippet}Rendering-basics/Person.module.css[]
+include::{snippet}Person.module.css[]
 ----
-
-Once they are created *register the component in the componentRegistry*, by adding the following lines:
++
+. *Plaec it in the component to the registry*: by adding the following two lines:
 
 .componentRegistry
 [source,TypeScript]
 ----
 import {Person} from './components/content/Person';
 
-componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});
+componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); // <1>
 ----
++
+<1> By using `addContentType()` we are instructnig the componentRegistry to render this component when the content is of type 'com.enonic.app.hmdb:person'. 
 
-== Result
+Back in Content Studio, select a random person to see what you have made:
 
-Back in Content Studio, select a random person to see the glorious result.
-
-// image:lea-seydoux.png[title="Preview of a Person Content", width=720px]
+image:lea-seydoux.png[title="Preview of a Person Content", width=720px]
 
 == Next
 
-You are on a roll, next - lets look into <<rich-text#, Rich text>>.
+You are on a roll, next - lets have a look at <<rich-text#, Rich text handling>>.

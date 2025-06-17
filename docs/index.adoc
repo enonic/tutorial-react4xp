@@ -6,7 +6,7 @@ Build, deploy and run server-side rendered React websites in an Enonic app.
 
 [TIP]
 ====
-*tl;dr* Skip directly to the end of the tutorial by trying out a <<appendix/demo#, demo>> instead.
+*tl;dr* Try the <<appendix/demo#, R4XP demo>>, to see the completed result of this tutorial.
 ====
 
 == Introduction
@@ -42,11 +42,12 @@ In this tutorial youy will complete the following steps:
 Get started by <<setup#, setting up the developer environment>>.
 
 == Dive deeper
-For documentation beyond the tutorial, visit the <<appendix#, Appendix section>>.
+Beyond the tutorial, visit the <<appendix#, Appendix section>>.
 
-== Issues?
+== Get in touch!
 Questions, bug reports or suggestions are welcome!
 
-- link:https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Abug[Known bugs we're working on] - and a few workarounds
-- link:https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement[Future improvements, requested features]
-- link:https://discuss.enonic.com[The Enonic Forums]
+- link:https://discuss.enonic.com[The Enonic Forum]
+- link:https://slack.enonic.com/react4xp[Enonic's React4XP Slack channel]
+- link:https://github.com/enonic/feature-requests[Feature requests for Enonic]
+- link:https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Abug[Issues we're working on]

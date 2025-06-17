@@ -102,4 +102,4 @@ You now have a stylish site with a footer component on all pages. The footer als
 
 == Next
 
-You are on a roll, in the next chapter we'll be <<render-content#, rendering content>>.
+You are on a roll, in the next chapter we'll be <<content-type#, rendering content>>.

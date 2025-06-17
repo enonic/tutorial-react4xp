@@ -13,31 +13,31 @@ New react components
 Static assets
 more?
 
-
 === Single React app
-Each page now has a single React application(entry), vs one React app/entry per part in the previous version 
+Each page now defaults to a single React app (aka entry), vs one React app/entry per component in version 5. This allows for a cleaner React development approach, and more flexibility.
 
-=== Pages and layouts in React
-This version supports implementing pages and layouts using React.
+=== New region handling
+The <Region> component (part of @enonic/react-components) has changed, and now handles rendering of it's sub-components directly. V5 was based on site engine's placeholder and iterative rendering technique.
+
+This is a breaking change.
 
 === Detached front-end
-Previous versions were based on XP's site engine, where rendering was tied together with each CMS component.
+Previous versions were directly based on XP's site engine, where rendering was defined with each CMS component.
 
-This release severs this tie, and takes full control over the rendering - detaching the rendering from the content. This means you may implement the front-end/rendering code separately from the CMS model definition, including the ability to deploy front-end and model in two or more separate applications.
+V6 severs the tie beween CMS component definitions and the rendering. This means you may implement the front-end (R4XP rendering) code separately from the CMS model definition, including the ability to deploy front-end and back-end/model in two or more separate applications.
 
-You may still combine your React4XP front-end with other XP apps on the same site. For instance apps that add services, contribute scripts or tags to the response, or even applications that deliver standalone HTML - but only on dedicated URLs.
+=== Still modular
 
-TIP: Naturally, you may still bundle the model and front-end code in the same application, at your own discretion.
+React4XP still supports the use of multiple XP apps within the same site. For instance apps that add services, contribute scripts or custom tags to the HTML response. Applications that deliver standalone HTML may also be used - but these naturally need their own mapping.
+
+TIP: You may still bundle the model and front-end code in the same app if desired
 
 === Component registry
 
-React4XP follows an MVC approach, where data is first collected into a model (in the form of props), and then passed to the view (React template), even if this is performed iteratively, and on a per-component basis.
+React4XP uses a Hierarchical MVC pattern, where data is first collected into a model (in the form of props), which are then passed to the view (React templates). This first (normally) happens on the server, then the process may repeat on the client - where the props are normally re-used.
 
-To facilitate this, you register server-side controllers that fetches relevant content for each component 
-
-On the view side of things, each CMS component is implemented as a React component, and added to a component registry.
-
+The process is handled via the Component registry, where you register server-side controllers that fetches relevant content, and then passes it to the respective component(s).
 
 == Upgrading
 
-To migrate a standard Enonic app or legacy React4XP application, visit our <<appendix/upgrade#, upgrade notes>>.
+To migrate a legacy React4XP application we have written detailed <<appendix/upgrade#, upgrade notes>>.
