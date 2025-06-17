@@ -30,7 +30,7 @@ Follow the steps below:
 ./src/main/resources/react4xp/components/content/PersonProcessor.ts
 [source,TypeScript]
 ----
-include::react4xp/components/content/PersonProcessor.ts[]
+include::{sourcedir}react4xp/components/content/PersonProcessor.ts[]
 ----
 +
 ProcessHtml (included in React4XP) outputs a generic format that the RichText component can use later.
@@ -40,7 +40,7 @@ ProcessHtml (included in React4XP) outputs a generic format that the RichText co
 ./src/main/resources/react4xp/components/content/Person.tsx
 [source,TypeScript]
 ----
-include::react4xp/components/content/Person.tsx[]
+include::{sourcedir}react4xp/components/content/Person.tsx[]
 ----
 
  

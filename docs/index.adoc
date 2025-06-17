@@ -16,7 +16,7 @@ Build, deploy and run server-side rendered React websites in an Enonic app.
 Basic https://reactjs.org/tutorial/tutorial.html[React] knowledge is recommended before you dive into this tutorial.
 ====
 
-React4XP extends the Enonic JS framework by adding support for advanced use of Server-Side React - similar to how frameworks like Next.js work.
+React4XP extends Enonic's JS framework by adding support for Server-Side React - similar to how frameworks like Next.js work.
 
 * 100% TSX/JSX rendering - Single React app
 * Works with CMS Schemas in other apps as well as inline 
