@@ -783,14 +783,14 @@ You now have a stylish site with a footer component on all pages. The footer als
 <h2 id="next"><a class="link" href="#next">Next</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are on a roll, in the next chapter we&#8217;ll be <a href="render-content.ahtml">rendering content</a>.</p>
+<p>You are on a roll, in the next chapter we&#8217;ll be <a href="content-type.ahtml">rendering content</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-17 08:08:57 UTC
+Last updated 2025-06-17 08:16:17 UTC
 </div>
 </div>
 </body>

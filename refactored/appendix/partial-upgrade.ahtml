@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Rendering basics</title>
+<title>Legacy mode upgrade</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,15 +437,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Rendering basics</h1>
+<h1>Legacy mode upgrade</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#person_content_type">Person content type</a></li>
-<li><a href="#fetch_the_data">Fetch the data</a></li>
-<li><a href="#register_component">Register component</a></li>
-<li><a href="#result">Result</a></li>
-<li><a href="#next">Next</a></li>
+<li><a href="#upgrade_xp">Upgrade XP</a></li>
+<li><a href="#upgrade_package_json">Upgrade package.json</a></li>
+<li><a href="#folder_structure">Folder structure</a></li>
+<li><a href="#upgrade_build_gradle">Upgrade Build.gradle</a></li>
+<li><a href="#upgrade_webpack">Upgrade webpack</a></li>
+<li><a href="#upgrade_to_new_types">Upgrade to new types</a></li>
+<li><a href="#build-deploy">Make production build and deploy</a></li>
+<li><a href="#migrating_parts">Migrating parts</a></li>
+<li><a href="#migrating_pages_and_layouts">Migrating pages and layouts</a></li>
 </ul>
 </div>
 </div>
@@ -453,342 +457,545 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you will add a new component that renders persons</p>
+<p>Version 6 is still compatible with how components such as parts are rendered in version 5(each part is a separate react app/entry).</p>
+</div>
+<div class="paragraph">
+<p>You still need to update pages and layouts to use the new component registry, as this is a breaking change and regions are now dependent on component registry.
+But you can can upgrade you existing react4xp application if you want to.</p>
+</div>
+<div class="paragraph">
+<p>Follow these steps:</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="person_content_type"><a class="link" href="#person_content_type">Person content type</a></h2>
+<h2 id="upgrade_xp"><a class="link" href="#upgrade_xp">Upgrade XP</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Headless Movie DB contains sample content, and content types.
-One of these is <code>Person</code>.
-From Content Studio, you may find and list persons.
-By selecting the JSON preview, you can also study the properties of a person:</p>
+<p>Set your app xp version 7.15 or newer</p>
 </div>
 <div class="listingblock">
-<div class="title">Person JSON</div>
+<div class="title">gradle.properties</div>
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
-    "_id": "a8b374a2-c532-45eb-9aa1-73d1c37cd681",
-    "_name": "lea-seydoux",
-    "_path": "/hmdb/persons/lea-seydoux",
-    "creator": "user:system:su",
-    "modifier": "user:system:su",
-    "createdTime": "2021-11-23T10:01:16.711Z",
-    "modifiedTime": "2021-11-23T13:06:38.493Z",
-    "owner": "user:system:su",
-    "type": "com.enonic.app.hmdb:person",
-    "displayName": "Léa Seydoux",
-    "hasChildren": true,
-    "language": "en",
-    "valid": true,
-    "childOrder": "modifiedtime DESC",
-    "data": {
-        "photos": "09b3af0e-6da3-4bcf-88d9-11cbe9c41283",
-        "bio": "French actress Léa Seydoux was born in 1985 in Paris, France, to Valérie Schlumberger, a philanthropist, and Henri Seydoux, a businessman.",
-        "dateofbirth": "1985-07-01"
-    },
-    "x": {},
-    "page": {},
-    "attachments": {},
-    "publish": {
-        "from": "2024-11-13T13:32:39.427Z",
-        "first": "2024-11-13T13:32:39.427Z"
-    },
-    "workflow": {
-        "state": "READY",
-        "checks": {}
-    }
-}</code></pre>
+<pre class="highlight"><code class="language-properties" data-lang="properties">xpVersion = 7.15.1</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>To implement the rendering we need to add code that will perform a two-step operation:</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="fetch_the_data"><a class="link" href="#fetch_the_data">Fetch the data</a></h2>
+<h2 id="upgrade_package_json"><a class="link" href="#upgrade_package_json">Upgrade package.json</a></h2>
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
-<p>Create a data fetcher</p>
+<p>Use latest React4XP types</p>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/content/PersonProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {get as getContentByKey} from '/lib/xp/content';
-import {imageUrl} from '/lib/xp/portal';
-import {toArray} from "/react4xp/utils/arrayUtils";
-import {PageDescriptor} from '@enonic-types/core';
-import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
-
-function fetchAdditionalPhotos(photosIds) {
-    return photosIds.map(photoId =&gt; {
-        if (photoId) {
-            const photoContent = getContentByKey&lt;Content&gt;({key: photoId});
-            return {
-                _id: photoContent._id,
-                title: photoContent.displayName,
-                imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
-            };
-        }
-    });
-}
-
-export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
-    = (params) =&gt; {
-    const photos: string[] = toArray&lt;string&gt;(params.content.data.photos as string | string[])
-    const firstPhotoId = photos[0] || '';
-    const remainingPhotoIds = photos.slice(1);
-
-    let firstPhoto = null;
-    if (firstPhotoId) {
-        const {_id, displayName} = getContentByKey&lt;Content&gt;({key: firstPhotoId});
-        firstPhoto = {
-            _id,
-            title: displayName,
-            imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
-        }
-    }
-
-    const extraPhotos = fetchAdditionalPhotos(remainingPhotoIds);
-
-    return {
-        displayName: `${params.content.displayName}`,
-        photo: firstPhoto,
-        birthDate: params.content.data.dateofbirth,
-        restPhotos: extraPhotos
-    };
-};</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">"@enonic-types/lib-react4xp": "^6.0.0",</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Then <strong>add it to the dataFetcher</strong>, with these lines:</p>
+<p>Use latest React4XP runtime library</p>
 <div class="listingblock">
-<div class="title">dataFetcher</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {personProcessor} from './components/content/PersonProcessor';
-
-dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">"@enonic/react4xp":       "^6.0.0",</code></pre>
 </div>
 </div>
 </li>
-</ol>
-</div>
-<div class="paragraph">
-<p>We are now able to fetch the Person data, next up we need to render it.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="register_component"><a class="link" href="#register_component">Register component</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The component consists of two files:</p>
-</div>
+<li>
+<p>Add global Enonic types (includes core transitively)</p>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/content/Person.tsx (React component)</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react'
-import styles from './Person.module.css';
+<pre class="highlight"><code class="language-json" data-lang="json">"@enonic-types/global":   "^7.15.0",</code></pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>NOTE: this brings in `@enonic-types/core`:
+[source]
+----
+├─┬ @enonic-types/global@7.15.1
+│ └── @enonic-types/core@7.15.1
+----</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add React component library</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"@enonic/react-components": "^6.0.0",</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add small utility deps</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"clsx":             "^2.1.1",     // lightweight className helper
+"core-js":          "^3.39.0",    // standard ES polyfills</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add CSS-Modules typing &amp; plugin</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"@types/css-modules":           "^1",
+"typescript-plugin-css-modules": "^5",</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Remove obsolete CSS extractor</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">// delete this line:
+"mini-css-extract-plugin": "^2",</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Consolidate TypeScript checks Replace the old <code>verify:*</code> scripts with the new <code>check:*</code> suite:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"scripts": {
+  // remove these:
+  "verify:types":                 "concurrently -r npm:verify:types:*",
+  "verify:types:guillotineRequest":"npx tsc --noEmit -p tsconfig.guillotineRequest.json",
+  "verify:types:react4xp":         "npx tsc --noEmit -p tsconfig.react4xp.json",
+  "verify:types:xp":               "npx tsc --noEmit -p tsconfig.xp.nashorn.json",
 
-export const Person = (props) =&gt; {
-    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
-    return (
-        &lt;div className={styles.person}&gt;
-            &lt;h1&gt;{displayName}&lt;/h1&gt;
-            &lt;p&gt;{birthDate}&lt;/p&gt;
-            &lt;div&gt;
-                {
-                    photo ? (
-                        &lt;&gt;
-                            &lt;div className={styles.photos}&gt;
-                                &lt;img src={photo.imageUrl}
-                                     title={photo.title}
-                                     alt={photo.title}
-                                     height={675}
-                                     width={1200}
-                                     loading="eager"
-                                /&gt;
-                            &lt;/div&gt;
-                        &lt;/&gt;
-                    ) : (
-                        &lt;p&gt;No photo available&lt;/p&gt;
-                    )
-                }
-                {restPhotos &amp;&amp; restPhotos.length &gt; 0 &amp;&amp; (
-                    &lt;&gt;
-                        &lt;h2&gt;Photos&lt;/h2&gt;
-                        &lt;div className={styles.photoContainer}&gt;
-                            &lt;div className={styles.photoGrid}&gt;
-                                &lt;div className={styles.photoScroll}&gt;
-                                    {restPhotos.map((photo, index) =&gt; (
-                                        &lt;img key={index}
-                                             src={photo.imageUrl}
-                                             title={photo.title}
-                                             alt={photo.title}
-                                             height={175}
-                                             width={175}
-                                        /&gt;
-                                    ))}
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/&gt;
-                )}
-            &lt;/div&gt;
-        &lt;/div&gt;
-    )
+  // add these in their place:
+  "check":                        "concurrently -c auto -g --timings npm:check:types:*",
+  "check:types:node":             "npx tsc --noEmit -p tsconfig.node.json",
+  "check:types:react4xp":         "npx tsc --noEmit -p tsconfig.react4xp.json",
+  "check:types:xp":               "npx tsc --noEmit -p tsconfig.xp.nashorn.json"
 }</code></pre>
 </div>
 </div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="folder_structure"><a class="link" href="#folder_structure">Folder structure</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>+</p>
+<p>The folder structure of your React4XP application should look similar to this:</p>
 </div>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/content/Person.module.css (CSS module)</div>
 <div class="content">
-<pre class="highlight"><code class="language-CSS" data-lang="CSS">.person .bio {
-  font-family: sans-serif;
+<pre class="highlight"><code class="language-files" data-lang="files">package.json
+react4xp.config.js <i class="conum" data-value="1"></i><b>(1)</b>
+src/
+  main/
+    resources/
+      react4xp/ <i class="conum" data-value="2"></i><b>(2)</b>
+        dataFetcher.ts <i class="conum" data-value="3"></i><b>(3)</b>
+        componentRegistry.tsx <i class="conum" data-value="4"></i><b>(4)</b>
+        components/
+            common/
+            content/
+            layouts/
+            macro/
+            page/ <i class="conum" data-value="5"></i><b>(5)</b>
+              Page.module.css
+              Page.tsx
+              PageProcessor.ts
+            parts/
+            globalStyles.css <i class="conum" data-value="6"></i><b>(6)</b>
+        entries/
+          App.tsx <i class="conum" data-value="7"></i><b>(7)</b>
+          Site.xml <i class="conum" data-value="8"></i><b>(8)</b>
+          pages/ <i class="conum" data-value="9"></i><b>(9)</b>
+            page/ <i class="conum" data-value="9"></i><b>(9)</b>
+              page.xml <i class="conum" data-value="10"></i><b>(10)</b>
+      site/ <i class="conum" data-value="11"></i><b>(11)</b>
+        app.ts <i class="conum" data-value="12"></i><b>(12)</b>
+      types/ <i class="conum" data-value="13"></i><b>(13)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>React4XP settings</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>React components must be placed within this folder</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Fetches props for CMS components</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Mapping React components to CMS component</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>default page component</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Global styles</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Main React component</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td><a href="./controller#site-mapping" target="_blank" rel="noopener">Site descriptor</a></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>Folder for descriptor</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="10"></i><b>10</b></td>
+<td>Component descriptor XML</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="11"></i><b>11</b></td>
+<td>Optionally place CMS schemas here</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="12"></i><b>12</b></td>
+<td>Boostrapping controller</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="13"></i><b>13</b></td>
+<td>TypeScript types (optional)</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This layout ensures XP can discover your React4XP assets (under react4xp/), site controllers (under site/), static files, and shared TS types.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="upgrade_build_gradle"><a class="link" href="#upgrade_build_gradle">Upgrade Build.gradle</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Add schema, assets to your dependencies and update lib-react4xp</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">    include "com.enonic.xp:lib-schema:${xpVersion}"
+    include 'com.enonic.lib:lib-asset:1.0.1'
+    include 'com.enonic.lib:lib-react4xp:6.0.0'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Inject npm-based type-checks</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">tasks.register('npmCheck', NpmTask) {
+dependsOn npmInstall
+args        = ['run','check']
+environment = ['FORCE_COLOR':'true']
 }
+check.dependsOn npmCheck</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Enhance React4XP build task with NODE_ENV logic</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">tasks.register('react4xp', NpmTask) {
+    def envMode = project.hasProperty( 'env' ) ? ( project.property( 'env' ) == 'prod' ? 'production' : 'development' ) : 'production'
+    args = [
+        'run', 'build:react4xp'
+    ]
+    dependsOn( npmInstall )
+    description 'Compile react4xp resources'
+    environment = [
 
-.person {
-  display: flex;
-  flex-direction: column;
-  margin-inline: auto;
-  min-height: 1600px;
-}
+        ...
+        'NODE_ENV': envMode
+    ]
 
-.person h1 {
-  margin-bottom: 0;
-}
-
-.person p {
-  margin-top: 0;
-}
-
-.flexBlock {
-  display: flex;
-  justify-content: space-between;
-}
-
-.photoContainer {
-  position: relative;
-  display: flex;
-
-  ::-webkit-scrollbar {
-    -webkit-appearance: none;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background-color: ghostwhite;
-  }
-}
-
-.photoGrid {
-  overflow-x: auto;
-}
-
-.photoScroll {
-  display: flex;
-  gap: 25px;
-  white-space: nowrap;
-  padding: 0;
-  margin: .5rem 0 .5rem 0;
-}
-
-.photoScroll img {
-  border-radius: 5px;
-}
-
-.photos {
-  margin-block: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-gap: 50px;
-  gap: 50px;
-}
-
-.restPhotosContainer {
-  padding: 1rem 0;
-  max-width: calc(90vw - 1rem);
-}
-
-.restPhotos {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15%, 1fr));
-  gap: 5%;
-  margin-block: 1rem;
-}
-
-.photos img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.restImg {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  object-position: 50% 50%;
-  border-radius: 5px;
-}
-
-
-.richText {
-  font-size: 24px;
-}
-
-
-.richText figure img {
-  border-radius: 5px;
-}
-
-.photosHeader {
-  margin-top: 0;
-  color: #EF82F0;
+    ...
+    println "Environment set to: $envMode"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Pass <code>-Penv=dev</code> flag in the dev task</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">tasks.register('dev', Exec) {
+    if (System.getProperty('os.name').toLowerCase().contains('windows')) {
+        commandLine 'gradlew.bat', 'deploy', '-Penv=dev', '-t'
+    } else {
+        commandLine './gradlew', 'deploy', '-Penv=dev', '-t'
+    }
 }</code></pre>
 </div>
 </div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="upgrade_webpack"><a class="link" href="#upgrade_webpack">Upgrade webpack</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<div class="title">webpack.config.react4xp.js</div>
+<ul>
+<li>
+<p>Remove old CSS-extract plugin import and pull in Rspack core</p>
 <div class="paragraph">
-<p>Once they are created <strong>register the component in the componentRegistry</strong>, by adding the following lines:</p>
+<p>Old:</p>
 </div>
 <div class="listingblock">
-<div class="title">componentRegistry</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Person} from './components/content/Person';
+<pre class="highlight"><code class="language-js" data-lang="js">  // const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+  const rspack = require('@rspack/core');</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Swap out the loader reference in your SCSS rule</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">// MiniCssExtractPlugin.loader,
+rspack.CssExtractRspackPlugin.loader,</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Update your CSS-loader options to disable ES-module output</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">{
+loader: 'css-loader',
+options: {
+importLoaders: 1,
+modules: { auto: true },
+esModule: false
+}
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>esModule: false</code> makes the loader emit CommonJS rather than ES-module exports.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Add a font-asset rule for WOFF/TTF/etc.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">config.module.rules = [
 
-componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});</code></pre>
+...
+
+{
+test: /\.(woff|woff2|eot|ttf|otf)$/i,
+type: 'asset/resource'
+},
+]</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Replace the plugin instantiation with Rspack’s CSS extractor</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">	config.plugins = [
+		...(config.plugins || []),
+		new rspack.CssExtractRspackPlugin({
+			chunkFilename: '[id].[contenthash:9].css',
+			filename: '[name].[contenthash:9].css',
+		})
+	]</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="upgrade_to_new_types"><a class="link" href="#upgrade_to_new_types">Upgrade to new types</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>V6 uses @enonic/types-core so you need to replace the old js-utils Request with the new one.</p>
+</li>
+<li>
+<p><a href="#update-request">Replace</a> "Enonic.Xp.Http.Request" from '@enonic/js-utils/types/Request' with “Request” from @enonic/types-core.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="build-deploy"><a class="link" href="#build-deploy">Make production build and deploy</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">enonic project build</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">enonic project deploy</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also run the project in development mode, which will watch for changes and automatically deploy them to the sandbox:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">enonic dev</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">enonic project dev</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="result"><a class="link" href="#result">Result</a></h2>
+<h2 id="migrating_parts"><a class="link" href="#migrating_parts">Migrating parts</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Back in Content Studio, select a random person to see the glorious result.</p>
+<p>In react4xp v5 the example controller looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/site/parts/example/example.ts</div>
+<div class="content">
+<pre>import {render} from '/lib/enonic/react4xp';
+import {getComponent} from '/lib/xp/portal';
+import type {Enonic} from '@enonic/js-utils/types/Request';
+import {toStr} from './toStr';
+
+
+export function get(request: Enonic.Xp.Http.Request) {
+
+    const component = getComponent();
+    log.debug('component:%s', toStr(component));
+
+    const props = {};
+
+    const response = render(
+        component,
+        props,
+        request,
+        {
+            ...
+        }
+    );
+
+    return response;
+}</pre>
+</div>
+</div>
+<div id="update-request" class="paragraph">
+<p>V6 uses @enonic/types-core so you need to replace the old js-utils Request with the new one.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace "Enonic.Xp.Http.Request" from '@enonic/js-utils/types/Request' with “Request” from @enonic/types-core.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This is how the upgraded component looks like:
+.src/main/resources/site/parts/example/example.ts</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>import {render} from '/lib/enonic/react4xp';
+import {getComponent} from '/lib/xp/portal';
+import {Request} from '@enonic-types/core';
+import {toStr} from './toStr';
+
+
+export function get(request: Request) {
+
+    const component = getComponent();
+    log.debug('component:%s', toStr(component));
+
+    const props = {};
+
+    const response = render(
+        component,
+        props,
+        request,
+        {
+            ...
+        }
+    );
+
+    return response;
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So far in this tutorial we have used componentRegistry to render and dataFetcher to invoke the processor for all components.</p>
+</div>
+<div class="paragraph">
+<p>Since our old component does not have any processor and is rendered outside componentRegistry we need to exclude it so it becomes available for XP.
+We do this by updating site.xml:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/site/site.xml</div>
+<div class="content">
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;site&gt;
+  &lt;form/&gt;
+  &lt;mappings&gt;
+    &lt;mapping controller="/site/app.js" order="10"&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+      &lt;pattern invert="true"&gt;/r4xp5.*&lt;/pattern&gt;
+    &lt;/mapping&gt;
+    &lt;mapping controller="/site/component.js" order="10"&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+      &lt;service&gt;component&lt;/service&gt;
+    &lt;/mapping&gt;
+  &lt;/mappings&gt;
+&lt;/site&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we can use the v5 component with react4xp v6, we just need to make sure the url contains <code>/r4xp5</code></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="next"><a class="link" href="#next">Next</a></h2>
+<h2 id="migrating_pages_and_layouts"><a class="link" href="#migrating_pages_and_layouts">Migrating pages and layouts</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are on a roll, next - lets look into <a href="rich-text.ahtml">Rich text</a>.</p>
+<p>As this is a breaking change you need to follow the recommended <a href="./recommended#page-layout" target="_blank" rel="noopener">guide</a> for migrating pages and layouts as these are dependent on the component registry.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-17 08:08:57 UTC
+Last updated 2025-06-17 08:16:17 UTC
 </div>
 </div>
 </body>

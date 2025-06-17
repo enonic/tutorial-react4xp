@@ -444,7 +444,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#get_started">Get started</a></li>
 <li><a href="#dive_deeper">Dive deeper</a></li>
-<li><a href="#issues">Issues?</a></li>
+<li><a href="#get_in_touch">Get in touch!</a></li>
 </ul>
 </div>
 </div>
@@ -462,7 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 <td class="content">
 <div class="paragraph">
-<p><strong>tl;dr</strong> Skip directly to the end of the tutorial by trying out a <a href="appendix/demo.ahtml">demo</a> instead.</p>
+<p><strong>tl;dr</strong> Try the <a href="appendix/demo.ahtml">R4XP demo</a>, to see the completed result of this tutorial.</p>
 </div>
 </td>
 </tr>
@@ -488,7 +488,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="paragraph">
-<p>React4XP extends the Enonic JS framework by adding support for advanced use of Server-Side React - similar to how frameworks like Next.js work.</p>
+<p>React4XP extends Enonic&#8217;s JS framework by adding support for Server-Side React - similar to how frameworks like Next.js work.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -557,12 +557,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="dive_deeper"><a class="link" href="#dive_deeper">Dive deeper</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>For documentation beyond the tutorial, visit the <a href="appendix.ahtml">Appendix section</a>.</p>
+<p>Beyond the tutorial, visit the <a href="appendix.ahtml">Appendix section</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="issues"><a class="link" href="#issues">Issues?</a></h2>
+<h2 id="get_in_touch"><a class="link" href="#get_in_touch">Get in touch!</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Questions, bug reports or suggestions are welcome!</p>
@@ -570,13 +570,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Abug">Known bugs we&#8217;re working on</a> - and a few workarounds</p>
+<p><a href="https://discuss.enonic.com">The Enonic Forum</a></p>
 </li>
 <li>
-<p><a href="https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement">Future improvements, requested features</a></p>
+<p><a href="https://slack.enonic.com/react4xp">Enonic&#8217;s React4XP Slack channel</a></p>
 </li>
 <li>
-<p><a href="https://discuss.enonic.com">The Enonic Forums</a></p>
+<p><a href="https://github.com/enonic/feature-requests">Feature requests for Enonic</a></p>
+</li>
+<li>
+<p><a href="https://github.com/enonic/lib-react4xp/issues?q=is%3Aissue+is%3Aopen+label%3Abug">Issues we&#8217;re working on</a></p>
 </li>
 </ul>
 </div>
@@ -585,7 +588,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-17 08:08:57 UTC
+Last updated 2025-06-17 08:16:17 UTC
 </div>
 </div>
 </body>

@@ -17,8 +17,8 @@
       "document": "common"
     },
     {
-      "title": "4 - Rendering content",
-      "document": "render-content"
+      "title": "4 - Render by type",
+      "document": "content-type"
     },
     {
       "title": "5 - Rich text",
@@ -49,7 +49,7 @@
           "document": "appendix/demo"
         },
         {
-          "title": "App controller",
+          "title": "App.ts",
           "document": "appendix/controller"
         },
         {
@@ -73,12 +73,14 @@
           "document": "appendix/api"
         },
         {
-          "title": "Recommended upgrade",
-          "document": "appendix/recommended"
-        },
-        {
-          "title": "Legacy mode upgrade",
-          "document": "appendix/legacy"
+          "title": "Upgrade notes",
+          "document": "appendix/upgrade",
+          "menuItems": [
+            {
+              "title": "Partial upgrade",
+              "document": "appendix/partial-upgrade"
+            }
+          ]
         }
       ]
     },

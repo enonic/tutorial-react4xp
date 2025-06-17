@@ -444,7 +444,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#intro">Intro</a></li>
 <li><a href="#sample_content">Sample content</a></li>
 <li><a href="#rich_text_rendering">Rich text rendering</a></li>
-<li><a href="#macro_component">Macro component</a></li>
+<li><a href="#macro_components">Macro components</a></li>
 </ul>
 </div>
 </div>
@@ -461,8 +461,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="paragraph">
 <p>Enonic boasts a <a href="https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea">rich text input type</a>.
-Unlike basic text fields, rich-text may contain more complex concepts such as tables, images, links and custom components.
-Each of these will typically need to be processed during rendering in order to provide a contextually correct URL, ideal image sizes etc.</p>
+Unlike basic text fields, rich-text may contain more complex concepts such as tables, images, links and even custom components (aka macros).
+Each of these typically need custom processing during rendering, in order to provide a contextually correct URLs, image sizes etc.</p>
 </div>
 </div>
 </div>
@@ -470,8 +470,8 @@ Each of these will typically need to be processed during rendering in order to p
 <h2 id="sample_content"><a class="link" href="#sample_content">Sample content</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Luckily, the sample data set contains everything we need to get going.
-The <code>Bio</code> field for persons is rich text, and some content is even populated with relevant content, like you see below:</p>
+<p>As if by magic, the sample data set contains everything we need to get going.
+The <code>Bio</code> field in the person content type is what we&#8217;re looking for:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -484,29 +484,61 @@ The <code>Bio</code> field for persons is rich text, and some content is even po
 <div class="sect1">
 <h2 id="rich_text_rendering"><a class="link" href="#rich_text_rendering">Rich text rendering</a></h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>We&#8217;ll be using our existing Person component, and add support for the <code>Bio</code> field.</p>
+</div>
+<div class="paragraph">
+<p>Follow the steps below:</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Update the Person processor</strong></p>
+<p><strong>Update the Person processor</strong> to include a bio prop:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/content/PersonProcessor.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {processHtml} from '/lib/enonic/react4xp';
+import {get as getContentByKey} from '/lib/xp/content';
+import {imageUrl} from '/lib/xp/portal';
+import {toArray} from "/react4xp/utils/arrayUtils";
+import {PageDescriptor} from '@enonic-types/core';
+import type {Content} from '@enonic-types/lib-content';
+import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
 
-...
-
+function fetchAdditionalPhotos(photosIds) {
+    return photosIds.map(photoId =&gt; {
+        if (photoId) {
+        const photoContent = getContentByKey&lt;Content&gt;({key: photoId});
+        return {
+            _id: photoContent._id,
+            title: photoContent.displayName,
+            imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
+        };
+        }
+    });
+}
 
 export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
     = (params) =&gt; {
-...
+    const photos: string[] = toArray&lt;string&gt;(params.content.data.photos as string | string[])
+    const firstPhotoId = photos[0] || '';
+    const remainingPhotoIds = photos.slice(1);
 
-    return {
-        displayName: `${params.content.displayName}`,
-        photo: {
+    let firstPhoto = null;
+    if (firstPhotoId) {
+    const {_id, displayName} = getContentByKey&lt;Content&gt;({key: firstPhotoId});
+        firstPhoto = {
             _id,
             title: displayName,
             imageUrl: imageUrl({id: _id, scale: 'block(1200, 675)'})
-        },
+        }
+    }
+
+    const extraPhotos = fetchAdditionalPhotos(remainingPhotoIds);
+
+    return {
+        displayName: `${params.content.displayName}`,
+        photo: firstPhoto,
         birthDate: params.content.data.dateofbirth,
         restPhotos: extraPhotos,
         bio: `${params.content.data.bio}`,
@@ -519,52 +551,88 @@ export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
 </div>
 </div>
 <div class="paragraph">
-<p>ProcessHtml is a function to prepare data for the RichText component that already comes with react4xp.</p>
+<p>ProcessHtml (included in React4XP) outputs a generic format that the RichText component can use later.</p>
 </div>
 </li>
 <li>
-<p><strong>add it to your component</strong></p>
+<p><strong>Update the Person component</strong> with the following content:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/content/Person.tsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {componentRegistry} from '/react4xp/componentRegistry';
 import {RichText} from '@enonic/react-components';
-
-...
+import React from 'react'
+import styles from './Person.module.css';
 
 export const Person = (props) =&gt; {
     const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
-
-...
-
-&lt;/div&gt;
-    {
-        bioHtml &amp;&amp; (
-            &lt;&gt;
-                &lt;h2&gt;Bio&lt;/h2&gt;
-                &lt;div className={styles.richText}&gt;
-                    &lt;RichText
-                        data={bioHtml}
-                        componentRegistry={componentRegistry}
-                        loading="lazy"
-                    /&gt;
-                &lt;/div&gt;
-            &lt;/&gt;
-        )
-    }
-&lt;/div&gt;
-)
+    return (
+        &lt;div className={styles.person}&gt;
+            &lt;h1&gt;{displayName}&lt;/h1&gt;
+            &lt;p&gt;{birthDate}&lt;/p&gt;
+            &lt;div&gt;
+                {
+                    photo ? (
+                        &lt;&gt;
+                            &lt;div className={styles.photos}&gt;
+                                &lt;img src={photo.imageUrl}
+                                     title={photo.title}
+                                     alt={photo.title}
+                                     height={675}
+                                     width={1200}
+                                     loading="eager"
+                                /&gt;
+                            &lt;/div&gt;
+                        &lt;/&gt;
+                    ) : (
+                        &lt;p&gt;No photo available&lt;/p&gt;
+                    )
+                }
+                {restPhotos &amp;&amp; restPhotos.length &gt; 0 &amp;&amp; (
+                    &lt;&gt;
+                        &lt;h2&gt;Photos&lt;/h2&gt;
+                        &lt;div className={styles.photoContainer}&gt;
+                            &lt;div className={styles.photoGrid}&gt;
+                                &lt;div className={styles.photoScroll}&gt;
+                                    {restPhotos.map((photo, index) =&gt; (
+                                        &lt;img key={index}
+                                             src={photo.imageUrl}
+                                             title={photo.title}
+                                             alt={photo.title}
+                                             height={175}
+                                             width={175}
+                                        /&gt;
+                                    ))}
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/&gt;
+                )}
+            &lt;/div&gt;
+            {bioHtml &amp;&amp; (
+                &lt;&gt;
+                    &lt;h2&gt;Bio&lt;/h2&gt;
+                    &lt;div className={styles.richText}&gt;
+                        &lt;RichText
+                            data={bioHtml}
+                            componentRegistry={componentRegistry}
+                            loading="lazy"
+                        /&gt;
+                    &lt;/div&gt;
+                &lt;/&gt;
+            )}
+        &lt;/div&gt;
+    )
 }</code></pre>
 </div>
 </div>
 </li>
-<li>
-<p><strong>Et voilà!</strong></p>
-<div class="paragraph">
-<p>And just like that we have a fully functional rich text renderer.</p>
+</ol>
 </div>
 <div class="paragraph">
-<p>The page should look something like this:</p>
+<p><strong>Et voilà!</strong>
+And just like that we have a fully functional rich text renderer.
+The page should look something like this:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -572,19 +640,16 @@ export const Person = (props) =&gt; {
 </div>
 <div class="title">Figure 2. Person content rendered with rich text</div>
 </div>
-</li>
-</ol>
-</div>
 <div class="paragraph">
 <p>If you have a sharp eye, you might notice there is something missing, we need to add a macro component to render factbox!</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="macro_component"><a class="link" href="#macro_component">Macro component</a></h2>
+<h2 id="macro_components"><a class="link" href="#macro_components">Macro components</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Adding the Fact-Box is easy, we just need to add a new component that will be used to render the macro:</p>
+<p>The HMDB dataset also includes a "Fact-Box" macro, which editors may use inside their rich-text fields. Let&#8217;s add support for TODO</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -680,7 +745,7 @@ componentRegistry.addMacro('factbox', {View: Factbox});</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-17 08:08:57 UTC
+Last updated 2025-06-17 08:16:17 UTC
 </div>
 </div>
 </body>
