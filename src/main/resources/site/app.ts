@@ -20,6 +20,12 @@ export function get(request: Request): Response {
         request,
     });
 
+    if (data.type === "page" && !data.descriptor) {
+        return {
+            status: 418
+        };
+    }
+
     // Create HTML template
     const id = `react4xp_${content._id}`;
     const body = createHtmlTemplate(id, content.displayName);
