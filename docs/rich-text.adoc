@@ -14,8 +14,8 @@ Each of these typically need custom processing during rendering, in order to pro
 
 == Sample content
 
-As if by magic, the sample data set contains everything we need to get going.
-The `Bio` field in the person content type is what we're looking for:
+Again, the sample data set contains everything we need to get going.
+The `Bio` field in the person content type is exactly what we're looking for:
 
 image::rich-text-bio.png[title="Rich text bio field for Lea Seydoux",width=720px]
 
@@ -33,7 +33,7 @@ Follow the steps below:
 include::{sourcedir}react4xp/components/content/PersonProcessor.ts[]
 ----
 +
-ProcessHtml (included in React4XP) outputs a generic format that the RichText component can use later.
+The ProcessHtml function (included in React4XP) outputs a format that the RichText component can use, as you will see below:
 +
 . *Update the Person component* with the following content:
 +
@@ -45,33 +45,31 @@ include::{sourcedir}react4xp/components/content/Person.tsx[]
 
  
 *Et voilà!*
-And just like that we have a fully functional rich text renderer.
-The page should look something like this:
+And just like that we have a fully functional rich text rendering.
+The page should now look something like this:
 
 image::rich-text-result.png[title="Person content rendered with rich text",width=720px]
 
-If you have a sharp eye, you might notice there is something missing, we need to add a macro component to render factbox!
+If you have a sharp eye, you might notice there is something missing, the factbox is not rendering properly!
 
 == Macro components
 
-The HMDB dataset also includes a "Fact-Box" macro, which editors may use inside their rich-text fields. Let's add support for TODO
+The HMDB dataset defines a `Fact-Box` macro, which editors may use inside their rich-text fields. 
 
-. *Component*
-+
+. *Add the following files* to your app:
+
 ./src/main/resources/react4xp/components/macro/FactBox.tsx
 [source,TypeScript]
 ----
 include::{sourcedir}react4xp/components/macro/FactBox.tsx[]
 ----
-
-. *Styling*
 +
 ./src/main/resources/react4xp/components/macro/FactBox.module.css
 [source,TypeScript]
 ----
 include::{sourcedir}react4xp/components/macro/FactBox.module.css[]
 ----
-
++
 . *Register the component*
 +
 ./src/main/resources/react4xp/componentRegistry.tsx
@@ -80,10 +78,17 @@ include::{sourcedir}react4xp/components/macro/FactBox.module.css[]
 include::{snippet}Rich-text/componentRegistry.tsx[]
 ----
 
-. *Factbox complete!*
-+
-You should now see Lea Seydoux updated with the FactBox macro:
-+
+*Factbox complete!*
+
+You should now see the Factbox rendering properly
+
 image::rich-text-with-macro.png[title="Person content rendered with rich text and macro",width=720px]
 
-Sweet! next up <<pages#, pages>>.
+== What happened to the dataProcessor?
+
+TODO
+
+NOTE: The raw Macro data are actually 
+
+
+Sweet! next up are <<pages#, pages>>.

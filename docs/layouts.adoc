@@ -4,37 +4,38 @@
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
 
-Layouts are essentially parts, with an extra trick up their sleve.
-Regions.
-This means that layouts may host other components, and build rich page structures.
+Layouts are essentially parts, with regions
 
-== Task: Add layout to your application
+== Introduction
+Where parts are "leaf" components, layouts support nesting of components - similar to how pages work.
+
+Unsurprisingly, HMDB already contains sample pages that uses layouts, specifically a `2-column` layout.
+
+== Task: Add layout rendering
 
 Adding layouts is more or less identical to pages and parts.
-Simply follow the steps below:
+Follow the steps below:
 
-. *Add the `2-column` layout* to your application:
+. *Add the `2-column` layout* files:
 +
 ./src/main/resources/react4xp/components/layouts/TwoColumn.tsx
 [source,TypeScript]
 ----
 include::{sourcedir}react4xp/components/layouts/TwoColumn.tsx[]
 ----
-. *Add the `2-column` processor* to your application:
 +
 ./src/main/resources/react4xp/components/layouts/TwoColumnProcessor.ts
 [source,TypeScript]
 ----
 include::{sourcedir}react4xp/components/layouts/TwoColumnProcessor.ts[]
 ----
-. *Add the `2-column` CSS module* to your application:
 +
 ./src/main/resources/react4xp/components/layouts/TwoColumn.module.css
 [source,CSS]
 ----
 include::{sourcedir}react4xp/components/layouts/TwoColumn.module.css[]
 ----
-. *Add the `2-column` layout to your component registry and data fetcher*:
+. *Register the component and processor*:
 +
 ./src/main/resources/react4xp/componentRegistry.ts
 [source,TypeScript]
@@ -47,11 +48,19 @@ include::{snippet}layout/componentRegistry.tsx[]
 ----
 include::{snippet}layout/dataFetcher.ts[]
 ----
-. *Now you should be able to see something like this*:
-image:layout-blank.png[title="2-column layout",width=900px]
-+
+. *The result*:
 By combining layout, part and text we are starting to see the potential of the page editor:
 image:layout-filled.png[title="2-column layout with text",width=900px]
 +
-In the next chapter we will look into <<page-templates#, page templates>>.
-Page templates allow us to reuse a page definition across multiple content items.
+
+== Optional task: Build a page from scratch
+
+Try building your own page from scratch, using the various components you now have available.
+
+TIP: Create a new folder in the site structure, expand the preview panel and start creating.
+
+When adding an empty layout, it will look something like this:
+
+image:layout-blank.png[title="2-column layout",width=900px]
+
+Wrapping up pages, we'll have a look at <<page-templates#, page templates>>.
