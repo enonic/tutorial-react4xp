@@ -441,7 +441,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#task_add_layout_to_your_application">Task: Add layout to your application</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#task_add_layout_rendering">Task: Add layout rendering</a></li>
 </ul>
 </div>
 </div>
@@ -449,23 +450,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Layouts are essentially parts, with an extra trick up their sleve.
-Regions.
-This means that layouts may host other components, and build rich page structures.</p>
+<p>Layouts are essentially parts, with regions</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_add_layout_to_your_application"><a class="link" href="#task_add_layout_to_your_application">Task: Add layout to your application</a></h2>
+<h2 id="introduction"><a class="link" href="#introduction">Introduction</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Where parts are "leaf" components, layouts support nesting of components - similar to how pages work.</p>
+</div>
+<div class="paragraph">
+<p>Unsurprisingly, HMDB already contains sample pages that uses layouts, specifically a <code>2-column</code> layout.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="task_add_layout_rendering"><a class="link" href="#task_add_layout_rendering">Task: Add layout rendering</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Adding layouts is more or less identical to pages and parts.
-Simply follow the steps below:</p>
+Follow the steps below:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add the <code>2-column</code> layout</strong> to your application:</p>
+<p><strong>Add the <code>2-column</code> layout</strong> files:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/layouts/TwoColumn.tsx</div>
 <div class="content">
@@ -482,9 +492,6 @@ export const TwoColumnLayout = (props: any,) =&gt; {
 };</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p><strong>Add the <code>2-column</code> processor</strong> to your application:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/layouts/TwoColumnProcessor.ts</div>
 <div class="content">
@@ -502,9 +509,6 @@ export const layoutProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb
 };</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p><strong>Add the <code>2-column</code> CSS module</strong> to your application:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/layouts/TwoColumn.module.css</div>
 <div class="content">
@@ -527,7 +531,7 @@ export const layoutProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb
 </div>
 </li>
 <li>
-<p><strong>Add the <code>2-column</code> layout to your component registry and data fetcher</strong>:</p>
+<p><strong>Register the component and processor</strong>:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/componentRegistry.ts</div>
 <div class="content">
@@ -558,25 +562,45 @@ dataFetcher.addLayout('com.enonic.app.hmdb:2-column', {processor: layoutProcesso
 </div>
 </li>
 <li>
-<p><strong>Now you should be able to see something like this</strong>:
-<span class="image"><img src="media/layout-blank.png" alt="layout blank" width="900px" title="2-column layout"></span></p>
-<div class="paragraph">
-<p>By combining layout, part and text we are starting to see the potential of the page editor:
+<p><strong>The result</strong>:
+By combining layout, part and text we are starting to see the potential of the page editor:
 <span class="image"><img src="media/layout-filled.png" alt="layout filled" width="900px" title="2-column layout with text"></span></p>
-</div>
 <div class="paragraph">
-<p>In the next chapter we will look into <a href="page-templates.ahtml">page templates</a>.
-Page templates allow us to reuse a page definition across multiple content items.</p>
+<p>== Optional task: Build a page from scratch</p>
 </div>
 </li>
 </ol>
+</div>
+<div class="paragraph">
+<p>Try building your own page from scratch, using the various components you now have available.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Create a new folder in the site structure, expand the preview panel and start creating.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When adding an empty layout, it will look something like this:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="media/layout-blank.png" alt="layout blank" width="900px" title="2-column layout"></span></p>
+</div>
+<div class="paragraph">
+<p>Wrapping up pages, we&#8217;ll have a look at <a href="page-templates.ahtml">page templates</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-17 08:16:17 UTC
+Last updated 2025-06-19 13:21:56 UTC
 </div>
 </div>
 </body>

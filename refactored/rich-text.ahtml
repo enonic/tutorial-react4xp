@@ -445,6 +445,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#sample_content">Sample content</a></li>
 <li><a href="#rich_text_rendering">Rich text rendering</a></li>
 <li><a href="#macro_components">Macro components</a></li>
+<li><a href="#what_happened_to_the_dataprocessor">What happened to the dataProcessor?</a></li>
 </ul>
 </div>
 </div>
@@ -470,8 +471,8 @@ Each of these typically need custom processing during rendering, in order to pro
 <h2 id="sample_content"><a class="link" href="#sample_content">Sample content</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As if by magic, the sample data set contains everything we need to get going.
-The <code>Bio</code> field in the person content type is what we&#8217;re looking for:</p>
+<p>Again, the sample data set contains everything we need to get going.
+The <code>Bio</code> field in the person content type is exactly what we&#8217;re looking for:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -551,7 +552,7 @@ export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
 </div>
 </div>
 <div class="paragraph">
-<p>ProcessHtml (included in React4XP) outputs a generic format that the RichText component can use later.</p>
+<p>The ProcessHtml function (included in React4XP) outputs a format that the RichText component can use, as you will see below:</p>
 </div>
 </li>
 <li>
@@ -631,8 +632,8 @@ export const Person = (props) =&gt; {
 </div>
 <div class="paragraph">
 <p><strong>Et voilà!</strong>
-And just like that we have a fully functional rich text renderer.
-The page should look something like this:</p>
+And just like that we have a fully functional rich text rendering.
+The page should now look something like this:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -641,7 +642,7 @@ The page should look something like this:</p>
 <div class="title">Figure 2. Person content rendered with rich text</div>
 </div>
 <div class="paragraph">
-<p>If you have a sharp eye, you might notice there is something missing, we need to add a macro component to render factbox!</p>
+<p>If you have a sharp eye, you might notice there is something missing, the factbox is not rendering properly!</p>
 </div>
 </div>
 </div>
@@ -649,12 +650,15 @@ The page should look something like this:</p>
 <h2 id="macro_components"><a class="link" href="#macro_components">Macro components</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The HMDB dataset also includes a "Fact-Box" macro, which editors may use inside their rich-text fields. Let&#8217;s add support for TODO</p>
+<p>The HMDB dataset defines a <code>Fact-Box</code> macro, which editors may use inside their rich-text fields.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Component</strong></p>
+<p><strong>Add the following files</strong> to your app:</p>
+</li>
+</ol>
+</div>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/macro/FactBox.tsx</div>
 <div class="content">
@@ -675,11 +679,11 @@ export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
 };</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p><strong>Styling</strong></p>
+<div class="paragraph">
+<p>+
+./src/main/resources/react4xp/components/macro/FactBox.module.css</p>
+</div>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/macro/FactBox.module.css</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">.factbox {
   display: block;
@@ -704,11 +708,15 @@ export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
 }</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p><strong>Register the component</strong></p>
+<div class="paragraph">
+<p>+
+. <strong>Register the component</strong></p>
+</div>
+<div class="paragraph">
+<p>+
+./src/main/resources/react4xp/componentRegistry.tsx</p>
+</div>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/componentRegistry.tsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {ComponentRegistry} from '@enonic/react-components';
 import {Person} from './components/content/Person';
@@ -722,11 +730,11 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});
 componentRegistry.addMacro('factbox', {View: Factbox});</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p><strong>Factbox complete!</strong></p>
 <div class="paragraph">
-<p>You should now see Lea Seydoux updated with the FactBox macro:</p>
+<p><strong>Factbox complete!</strong></p>
+</div>
+<div class="paragraph">
+<p>You should now see the Factbox rendering properly</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -734,18 +742,35 @@ componentRegistry.addMacro('factbox', {View: Factbox});</code></pre>
 </div>
 <div class="title">Figure 3. Person content rendered with rich text and macro</div>
 </div>
-</li>
-</ol>
+</div>
+</div>
+<div class="sect1">
+<h2 id="what_happened_to_the_dataprocessor"><a class="link" href="#what_happened_to_the_dataprocessor">What happened to the dataProcessor?</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TODO</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The raw Macro data are actually
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Sweet! next up <a href="pages.ahtml">pages</a>.</p>
+<p>Sweet! next up are <a href="pages.ahtml">pages</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-17 08:16:17 UTC
+Last updated 2025-06-19 13:21:56 UTC
 </div>
 </div>
 </body>

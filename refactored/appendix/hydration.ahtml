@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>XP content studio -  pages, parts, regions and content</title>
+<title>Hydration - server and clientside rendering</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,25 +437,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>XP content studio -  pages, parts, regions and content</h1>
+<h1>Hydration - server and clientside rendering</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#tldr">TL;DR</a></li>
-<li><a href="#lesson_overview">Lesson overview</a></li>
-<li><a href="#template_with_react_page_controller">Template with React Page Controller</a>
-<ul class="sectlevel2">
-<li><a href="#code">Code</a></li>
-<li><a href="#page_template_setup">Setting up the Template</a></li>
-</ul>
-</li>
-<li><a href="#xp_part">XP Part</a>
-<ul class="sectlevel2">
-<li><a href="#code_2">Code</a></li>
-</ul>
-</li>
-<li><a href="#adding_parts_to_new_content">Setup and render</a></li>
-<li><a href="#output">Output</a></li>
+<li><a href="#countdown">Countdown</a></li>
+<li><a href="#preview">Preview</a></li>
+<li><a href="#ssr_vs_client_side_gotchas">SSR vs client side gotchas</a></li>
+<li><a href="#next">Next</a></li>
 </ul>
 </div>
 </div>
@@ -463,30 +452,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>So far, we&#8217;ve used a "raw" XP Page and just rendered the react component directly from the controller there. It&#8217;s fine in itself, but not really making good use of XP&#8217;s excellent CMS powers. So let&#8217;s move into that territory!</p>
+<p>With React4XP, components may render server-side, client-side or even both.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="tldr"><a class="link" href="#tldr">TL;DR</a></h2>
+<h2 id="countdown"><a class="link" href="#countdown">Countdown</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Naturally, this example will focus quite a bit on XP Content Studio and how to use Parts, Pages, Regions and Templates. If this is familiar to you, you can pretty much just skim through it.</p>
+<p>Start by updating your hello-react template, use the code below:</p>
+</div>
+<div class="listingblock">
+<div class="title">/src/main/resources/react4xp/entries/hello-react.tsx</div>
+<div class="content">
+<pre class="highlight"><code class="language-TSX" data-lang="TSX">## include::../src/main/resources/react4xp/entries/hello-hydration.tsx[]</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p><strong>The key takeaways are:</strong></p>
-</div>
-<div class="paragraph">
-<p><strong>1.</strong> <code>render</code> works the same way <strong>from any controller, and independently</strong>:
-    - A Region in a React4xp-rendered Page can contain any kind of Component (React4xp-rendered or not).
-    - And a React4xp-rendered Component can be placed inside the Region of any kind of Page (React4xp-rendered or not).</p>
-</div>
-<div class="paragraph">
-<p><strong>2.</strong> React4xp comes with an <strong>importable <code>&lt;Regions&gt;</code> react component</strong> for making XP Regions inside rendered output,
-    - One caveat: Regions work best when server-side rendered. Specifically: using <code>ssr = false</code> when React4xp-rendering a Region can cause the components inside the Region to drop their page contributions. This can break rendering and/or functionality of the Components inside - both React4xp-type and other kinds.</p>
-</div>
-<div class="paragraph">
-<p><strong>3.</strong> Each time the rendered page contributions make the browser call <a href="hello-react.ahtml#hello_output"><code>hydrate</code></a> or <a href="hello-react.ahtml#clientrendered_output"><code>render</code></a>, an <strong>independent top-level react root app</strong> is created in the browser - so a page can easily have more than one react root app.</p>
+<p>This React component will initially render server-side, hydrate, and come alive client side as well - producing an amusing beer bottle countdown.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -495,12 +478,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<div class="paragraph">
-<p>This last point means: if you use React4xp to render an XP Region in a Page/Layout, and insert a React4xp-rendered Part into that Region, this is NOT the same as the regular react way of importing and nesting one react component inside another, within the same app. The Page/Layout controller will create one react app, and the Part will be another one.</p>
-</div>
-<div class="paragraph">
-<p>So be sure to <strong>structure your react app(s) to be self-contained</strong>, with an <a href="appendix/entries.ahtml">entry</a> at the top level of each. This is especially important for functionality that&#8217;s shared inside one app, across react components - for example <a href="https://reactjs.org/docs/context.html">react context providers</a>).</p>
-</div>
+The interactive part here is vanilla JS, just to keep things as simple as possible. We&#8217;ll look at stateful/dynamic components later.
 </td>
 </tr>
 </table>
@@ -508,186 +486,52 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="lesson_overview"><a class="link" href="#lesson_overview">Lesson overview</a></h2>
+<h2 id="preview"><a class="link" href="#preview">Preview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>React4xp don&#8217;t need to render from a Page controller, but can also render from XP <em>Part or Layout controllers</em>, creating react-rendered XP elements that can be dragged into any regular XP Region. And besides, React4xp can (serverside) render these XP Regions themselves, which can then accept any XP Parts/Layouts dropped into them (as well as Fragments, Text and Image components of course).</p>
+<p>Back in Content Studio, your changes should automatically be picked up</p>
 </div>
 <div class="paragraph">
-<p>In this example, we&#8217;ll do both:</p>
+<p><span class="image"><img src="media/hello_cs.png" alt="hello cs" width="720px" title="Editing in Content Studio: Hello World."></span></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Make a react-rendered general <a href="https://developer.enonic.com/docs/xp/stable/cms/pages">XP Page Controller</a> with a working XP Region.</p>
-</li>
-<li>
-<p>Make a react-rendered <a href="https://developer.enonic.com/docs/xp/stable/cms/pages/parts">XP Part</a> that can be dragged into the Region.</p>
-</li>
-<li>
-<p>In addition, we&#8217;ll display it in the "regular XP way": using a <a href="https://developer.enonic.com/docs/xp/stable/cms/page-templates">Page Template</a> to connect a <a href="https://developer.enonic.com/docs/xp/stable/cms/content-types">Content Type</a> to our new Page controller. This way, in this example and the next ones, we can just create content items of that type and have the Page controller up and running immediately instead of having to set it up manually each time.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>+
+In edit mode, components will not be hydrated (for a more robust visual editing experience)
+. Click <em>Preview</em> to get the hydrated version of the page.</p>
 </div>
-<div class="listingblock">
-<div class="title">Files involved:</div>
-<div class="content">
-<pre class="highlight"><code class="language-files" data-lang="files">site/content-types/
-  my-content/
-    my-content.xml
-
-site/pages/
-  default/
-    default.xml
-    default.ts
-    default.tsx
-
-site/parts/
-  color/
-    color.xml
-    color.ts
-    color.tsx</code></pre>
+<div class="paragraph">
+<p>+</p>
 </div>
+<div class="paragraph thumb">
+<p><span class="image"><img src="media/hello_bottles.png" alt="hello bottles" width="720px" title="Rendering: Hello World and some bottles on a wall somewhere. You didn&#8217;t click this screenshot, did you?"></span></p>
+</div>
+<div class="paragraph">
+<p>+
+Clicking anywhere on the text should trigger the <code>dropBottle</code> function from <em>hello-react.tsx</em>, modify the DOM and output a message in the browser console.</p>
+</div>
+<div class="paragraph">
+<p>Look at those bottles go!</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="template_with_react_page_controller"><a class="link" href="#template_with_react_page_controller">Template with React Page Controller</a></h2>
+<h2 id="ssr_vs_client_side_gotchas"><a class="link" href="#ssr_vs_client_side_gotchas">SSR vs client side gotchas</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We&#8217;ll make a generic XP content type, then make a Template in Content Studio and connect the content type to a react-based XP Page, <em>site/pages/default/</em>, which is just a bare-bone page with nothing but a Region in it.</p>
+<p>When using isomorphic JavaScript, selected features may only be working on server-side, and some only on client side, like <code>document</code> and <code>window</code> - which are pure client-side concepts. React4xp has polyfilled <code>window</code> as <em>empty object</em>. To prevent weird behavior or errors, take care to only execute browser-specific code in the browser.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
 <div class="paragraph">
-<p>The Page controller <em>default</em> can be made from scratch, or you can copy <em>site/pages/hello-react</em> and change the copy (don&#8217;t delete <em>hello-react.jsx</em> just yet, we&#8217;re going to re-use it <a href="../custom-flow-syntax.ahtml">later</a>). If you copy and modify, just remember this as usual: name the the <strong>folder and file names</strong> identically.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="code"><a class="link" href="#code">Code</a></h3>
-<div class="sect3">
-<h4 id="content_type"><a class="link" href="#content_type">Content Type</a></h4>
-<div class="paragraph">
-<p>Start with a completely generic content type: <em>site/content-types/my-content/my-content.xml</em>. Content types tend to define more than this, but for now, this is all we need:</p>
+<p>In the example above, <code>dropBottle</code> is the response to a click listener which won&#8217;t be triggered to actually <em>run</em> on the server (although the code is compiled and read into memory), so we don&#8217;t need any more safeguards here. But if you do, it&#8217;s easy enough - for example:</p>
 </div>
 <div class="listingblock">
-<div class="title">my-content.xml:</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/content-types/my-content/my-content.xml[]</code></pre>
+<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">if (typeof window.navigator !== 'undefined') {
+    // ...This won't run during SSR...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Again, this content type has nothing to do with React4xp, but it&#8217;ll make the setup of this and the next examples easier.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="xp_page_definition"><a class="link" href="#xp_page_definition">XP Page definition</a></h4>
-<div class="paragraph">
-<p>The page definition is simple. We&#8217;re now leaving the <code>&lt;form&gt;</code> node empty, but adding a <code>&lt;regions&gt;</code> node with a single <code>"main"</code> Region defined in it:</p>
-</div>
-<div class="listingblock">
-<div class="title">default.xml:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/pages/default/default.xml[]</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="react_component"><a class="link" href="#react_component">React component</a></h4>
-<div class="paragraph">
-<p>This react component has a single focus, namely rendering the Region.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>We&#8217;re going to make a page controller with a react-rendered XP region and insert react-rendered components into the region, just to show how to react-render XP pages, parts and regions.</p>
-</div>
-<div class="paragraph">
-<p><strong>But React4xp doesn&#8217;t depend on this structure,</strong> it works fine with other, "regular" XP components.</p>
-</div>
-<div class="paragraph">
-<p>As long as you follow the general patterns here, you can use parts with React4xp components inside any old XP region (e.g. from Thymeleaf), and the other way around - render XP regions with react and insert any XP components into them.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="title">default.tsx</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/pages/default/default.tsx[]</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Importing a Region template from an NPM package that comes with React4xp (<a href="https://www.npmjs.com/package/@enonic/react-components">@enonic/react-components</a>).</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Nesting the Region in our component. To be precise: it uses <code>props.regionsData</code> and selects the Region name(s) in <code>props.names</code>, so it will render <em>all</em> Regions given by <code>props</code> if more than one is defined and selected.</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="page_controller"><a class="link" href="#page_controller">Page controller</a></h4>
-<div class="paragraph">
-<p>The <code>props</code> of course come from the <strong>Page controller</strong>. Still similar to the previous examples, we&#8217;re mainly just adding props that are needed by <code>&lt;Regions&gt;</code> in the react component.</p>
-</div>
-<div class="listingblock">
-<div class="title">default.ts:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/pages/default/default.ts[]</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The XP content ID is nice and unique, let&#8217;s just use that to bind the react component to the target element in the DOM.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Here, <code>content.page.regions</code> are content data containing the Region we defined in <em>default.xml</em> as well as data about content dropped into it. This is mapped to the <code>regionsData</code> prop.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The <code>names</code> prop can be a string or a string array. It&#8217;s used to select which Regions (by Region name defined in <em>default.xml</em>) to render, in case there are more Regions in <code>content.page.regions</code>. Rendering will occur in the order of the string array. If the <code>names</code> prop is missing, all the regions defined in <em>default.jsx</em> are rendered (so we could technically skip this prop here), but the order is less predictable if there&#8217;s more than one Region.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>The optional <code>tag</code> prop sets which HTML tag will be at the root of the section rendered by <code>&lt;Regions&gt;</code>, instead of <code>&lt;div&gt;</code>. Here, we&#8217;re going for <code>&lt;main&gt;</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>We&#8217;re setting the <code>request</code> argument of <code>render</code> to <em>null</em> - switching off the auto-handling of how <em>this</em> particular rendering is done inside/outside Content Studio, and just forcing <code>render</code> to <strong>always output a static, serverside rendered HTML body without page contributions</strong>. But why? Two reasons:
-<div class="ulist">
-<ul>
-<li>
-<p>The way it is now, <em>default.tsx</em> and the Regions in it has no need for page contributions. Only the static HTML is of interest; no client-side JS code needs to be activated/rendered in the client, and there&#8217;s no styling or anything else coming from it. So by skipping the page contributions rendering, performance is improved a little.</p>
-</li>
-<li>
-<p>There is a <strong>caveat</strong> when using React4xp to render Regions (like we do in in <em>default.tsx</em>): currently, page contributions don&#8217;t work for XP Parts/Layouts if they are dropped into a <em>clientside</em>-rendered Region. So <strong>Regions must be serverside rendered if they contain XP components that need their own page contributions to work</strong> (for example React4xp parts, which rely on page contributions to be activated in the client). So by forcing a static serverside Regions rendering, we prevent that corner case from failing, and make sure <em>any</em> XP element dropped inside the Region will work, even clientside-rendered React4xp parts.</p>
-</li>
-</ul>
-</div></td>
-</tr>
-</table>
+<p>Of course, this also applies to imported packages / nested components and so on. Importing them is usually safe, but consider wrapping the areas where they&#8217;re called/used.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -696,206 +540,30 @@ site/parts/
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Adding an XP Region to a Layout is the same, only easier: since it will be injected inside a Page, you don&#8217;t need to add an outer <code>body</code> in the <em>options</em> parameter, and therefore you don&#8217;t need an <code>id</code> parameter either - same as in the XP Part controller below.
+<div class="paragraph">
+<p>Your React components may produce server-side errors, but these are not always easily interpreted.</p>
+</div>
+<div class="paragraph">
+<p>Switching over to pure <em>clientside rendering</em> (by setting SSR false, Hydrate true) in your controller, the particular React component will likely give you a better/sourcemapped error message in the browser console, making your debugging life easier.</p>
+</div>
 </td>
 </tr>
 </table>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="page_template_setup"><a class="link" href="#page_template_setup">Setting up the Template</a></h3>
-<div class="paragraph">
-<p>Before we move on to the XP Part, we need to bind this Page controller to the <code>my-content</code> Content Type we just made, in the regular XP way: a <a href="https://developer.enonic.com/docs/xp/stable/cms#page_templates">Page Template</a>.</p>
-</div>
-<div class="paragraph">
-<p>This lays the foundation for this example and also the later ones. When this is done, <strong>using the <em>default</em> Page controller will be easy</strong>: create a new <em>my-content</em> item in your site, and it will come out ready to use with the Region from <em>default</em>.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>When you&#8217;ve deployed the updated app and logged into Content Studio, make a new Site content and connect it to the React4xp app (or re-use one of your previous ones).</p>
-</li>
-<li>
-<p>In the grid (Content Studio browse mode), under your Site, create a new Template content under Templates:</p>
-</li>
-</ol>
-</div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/template_new.png" alt="template new" width="720px" title="Creating a new Template content in Content Studio."></span></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="3">
-<li>
-<p>When editing your new Template, give it a display name, select your new content type <em>my-content</em> in the <em>"Supports"</em> drop-down menu on the left, and select the new Page controller <em>Default</em> under the <em>"Template</em>" (or <em>"Page controller"</em>) drop-down menu on the right:</p>
-</li>
-</ol>
-</div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/template_edit.png" alt="template edit" width="720px" title="Using a Template to connect a content type to a page controller in Content Studio."></span></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="4">
-<li>
-<p>Apply/save and you&#8217;re done. Now every new <em>myContent</em> item in every site with this Template will be rendered with the <em>default</em> page controller.</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
 <div class="sect1">
-<h2 id="xp_part"><a class="link" href="#xp_part">XP Part</a></h2>
+<h2 id="next"><a class="link" href="#next">Next</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Now we&#8217;re ready to add a simple react-rendered Part to drop into the Region: <em>site/parts/color/</em> .</p>
-</div>
-<div class="sect2">
-<h3 id="code_2"><a class="link" href="#code_2">Code</a></h3>
-<div class="sect3">
-<h4 id="part_definition"><a class="link" href="#part_definition">Part definition</a></h4>
-<div class="paragraph">
-<p>The Part definition is still pretty unremarkable. There&#8217;s just a <code>color</code> TextLine input field in the form:</p>
-</div>
-<div class="listingblock">
-<div class="title">color.xml:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">## include::../src/main/resources/site/parts/color/color.xml[]</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="react_component_2"><a class="link" href="#react_component_2">React component</a></h4>
-<div class="paragraph">
-<p>The react component only displays the color name from the props and inline-styles it with that color (as long as the <code>props.color</code> value is HTML-compliant):</p>
-</div>
-<div id="color_jsx" class="listingblock">
-<div class="title">color.tsx</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/parts/color/color.tsx[]</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="part_controller"><a class="link" href="#part_controller">Part controller</a></h4>
-<div class="paragraph">
-<p>Like before, the controller mainly hooks the XP editorial data into the props:</p>
-</div>
-<div id="color_part_controller" class="listingblock">
-<div class="title">color.ts:</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">## include::../src/main/resources/site/parts/color/color.ts[]</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>In the <em>options</em> argument (the object with <code>ssr</code> and <code>pageContributions</code>), notice how we&#8217;re <em>not</em> adding <code>body</code> or <code>id</code> like we did before. <code>body</code> is only needed for the controller to <em>add</em> HTML around the rendered react - if you skip it a target container <code>&lt;div&gt;</code> will just be generated for you. With an autogenerated container, the ID will match either way: you can still set the ID value with the <code>id</code> <em>option</em>, or skip it and just let React4xp supply a unique ID. For details, see the <a href="appendix/api.ahtml#react4xp_render">React4xp.render API</a>. For that matter, <strong>we don&#8217;t even need the options argument here at all</strong> - it could be completely skipped&#8230;&#8203;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>&#8230;&#8203;but for demonstrating, let&#8217;s use it to show that this Part is <em>independent</em> (from both the <em>default</em> Page we defined a moment ago, and from any other Parts dropped into the same Region, react or otherwise), by clientside rendering the Part&#8230;&#8203;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>&#8230;&#8203;and adding a tiny color-logging script with the Part. This is done by using the <em>options</em> parameter to pass <code>pageContributions</code> through <code>render</code>, the same way we&#8217;ve passed <code>body</code> through it so far.</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="adding_parts_to_new_content"><a class="link" href="#adding_parts_to_new_content">Setup and render</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Time to get this displayed and see it all in action! Again, just XP routine: creating a <em>my-content</em> item, and since the Template makes it show up ready with a <em>default</em> Page controller and Region, we can just drop our new <em>color</em> Part into it.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>As before, recompile/deploy and enter Content Studio. In the same Site as the Template you just made (but not under <em>Templates</em>), create a new <em>my-content</em> item:</p>
-</li>
-</ol>
-</div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/content_new.png" alt="content new" width="720px" title="Creating a new content item in Content Studio"></span></p>
-</div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/content_my.png" alt="content my" width="720px" title="Selecting the new my-content type in Content Studio"></span></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="2">
-<li>
-<p>When you edit the new content, the preview panel with a dash-bordered <strong><em>"Drop here"</em> area</strong> should appear on the right. This is the <em>default</em> Page controller rendering the initially empty <strong>Region</strong>. To the far right, there should be a config panel with the <em>"Insert"</em> tab (if you can&#8217;t see them, use the screen and cogwheel icons on the top right):</p>
-</li>
-</ol>
-</div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/page_with_ready_region.png" alt="page with ready region" width="720px" title="Editing new content in Content Studio, with Region ready to receive parts etc"></span></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="3">
-<li>
-<p>Drag <em>"Part"</em> from the config panel into the Region. In the dropdown menu (<em>"Type to search&#8230;&#8203;"</em>) that appears in the Region (or the <em>"Part"</em> dropdown menu now on the right), select your new <em>color</em> Part. It should now appear correctly rendered in the preview panel (occasionally, you might need to <em>Save</em> and refresh the page). And the config panel for editing the settings of that particular part should appear on the far right (if it doesn&#8217;t, click the part itself: <em>"Hey, I&#8217;m pretty red"</em>):</p>
-</li>
-</ol>
-</div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/content_with_red_part.png" alt="content with red part" width="720px" title="Editing new content in Content Studio, with Region ready to receive parts etc"></span></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="4">
-<li>
-<p>Try experimenting with dragging other XP components from the <em>"Insert"</em> tab into the Region. Say, a Text component, and/or adding another instance of the same <em>color</em> Part but with a different (HTML-compliant) color value in the Part config panel. You&#8217;ll see that the react-rendered Region accepts all regular XP components, and that multiple instances of the same <em>color</em> Part remain independent from each other.</p>
-</li>
-<li>
-<p>As usual, clicking <em>Preview</em> on the top will open a new Preview tab for your page.</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="output"><a class="link" href="#output">Output</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>We won&#8217;t go into the details about the HTML output anymore - it&#8217;s structurally and conceptually <strong>the same as in the previous examples</strong>. Looking at the <em>Page Source</em>, it should all make sense to you by now: the Page controller and Part are <strong>compiled to separate assets and downloaded exactly once</strong> in the client before calling <code>render</code> and <code>hydrate</code> as needed (using a React4xp Part more than once does not make the client download the assets more than once - they&#8217;re recycled for performance).</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Each time the client calls <code>render</code> or <code>hydrate</code>, it will spawn a <strong>separate root react app</strong>. For this to happen a controller usually calls <code>React4xp.render</code> (*). So in this example, there will be one independent react app in the client for each of the <em>color</em> Parts you added to the Region.</p>
-</div>
-<div class="paragraph">
-<p>(*) Remember from the code explanation of <a href="#page_controller">our Page controller</a> that <code>React4xp.render</code> needs the <code>request</code> argument to generate page contributions. Omitting <code>request</code> forces a pure serverside rendering without hydration - so our page controller is not starting a separate react app in the client.</p>
-</div>
-<div class="paragraph">
-<p>(And just for the record, there is an alternative renderer: <code>renderPageContributions</code>. It also starts a new react app, but never needs <code>request</code>. More on that in a <a href="../custom-flow-syntax.ahtml">later lesson</a>)</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Now we&#8217;ve covered the basics of how to use React4xp. It&#8217;ll be enough for most simple setups and use cases.</p>
-</div>
-<div class="paragraph">
-<p>Moving on from here, we&#8217;ll take a look at more advanced ways to use React4xp, giving you more control.</p>
+<p>You are on a roll, next - lets look into how we may pass editorial content to the component via <a href="props.ahtml">props</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-17 08:16:17 UTC
+Last updated 2025-06-19 13:21:56 UTC
 </div>
 </div>
 </body>

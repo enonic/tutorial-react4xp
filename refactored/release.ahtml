@@ -441,44 +441,46 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#changes">Changes</a>
-<ul class="sectlevel2">
+<li><a href="#build_system_dev_mode">Build system / Dev mode</a></li>
 <li><a href="#single_react_app">Single React app</a></li>
 <li><a href="#new_region_handling">New region handling</a></li>
 <li><a href="#detached_front_end">Detached front-end</a></li>
-<li><a href="#still_modular">Still modular</a></li>
 <li><a href="#component_registry">Component registry</a></li>
-</ul>
-</li>
+<li><a href="#response_processing">Response processing</a></li>
 <li><a href="#upgrading">Upgrading</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="changes"><a class="link" href="#changes">Changes</a></h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>The most significant changes since version 5 are:</p>
 </div>
-<div class="paragraph">
-<p>TODO:</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="build_system_dev_mode"><a class="link" href="#build_system_dev_mode">Build system / Dev mode</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Build system / Dev mode
-Types
+<p>Types
 New react components
 Static assets
 more?</p>
 </div>
-<div class="sect2">
-<h3 id="single_react_app"><a class="link" href="#single_react_app">Single React app</a></h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="single_react_app"><a class="link" href="#single_react_app">Single React app</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Each page now defaults to a single React app (aka entry), vs one React app/entry per component in version 5. This allows for a cleaner React development approach, and more flexibility.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="new_region_handling"><a class="link" href="#new_region_handling">New region handling</a></h3>
+</div>
+<div class="sect1">
+<h2 id="new_region_handling"><a class="link" href="#new_region_handling">New region handling</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The &lt;Region&gt; component (part of @enonic/react-components) has changed, and now handles rendering of it&#8217;s sub-components directly. V5 was based on site engine&#8217;s placeholder and iterative rendering technique.</p>
 </div>
@@ -486,8 +488,10 @@ more?</p>
 <p>This is a breaking change.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="detached_front_end"><a class="link" href="#detached_front_end">Detached front-end</a></h3>
+</div>
+<div class="sect1">
+<h2 id="detached_front_end"><a class="link" href="#detached_front_end">Detached front-end</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Previous versions were directly based on XP&#8217;s site engine, where rendering was defined with each CMS component.</p>
 </div>
@@ -495,10 +499,23 @@ more?</p>
 <p>V6 severs the tie beween CMS component definitions and the rendering. This means you may implement the front-end (R4XP rendering) code separately from the CMS model definition, including the ability to deploy front-end and back-end/model in two or more separate applications.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="still_modular"><a class="link" href="#still_modular">Still modular</a></h3>
+</div>
+<div class="sect1">
+<h2 id="component_registry"><a class="link" href="#component_registry">Component registry</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>React4XP still supports the use of multiple XP apps within the same site. For instance apps that add services, contribute scripts or custom tags to the HTML response. Applications that deliver standalone HTML may also be used - but these naturally need their own mapping.</p>
+<p>React4XP uses a Hierarchical MVC pattern, where data is first collected into a model (in the form of props), which are then passed to the view (React templates). This first (normally) happens on the server, then the process may repeat on the client - where the props are normally re-used.</p>
+</div>
+<div class="paragraph">
+<p>The process is handled via the Component registry, where you register server-side controllers that fetches relevant content, and then passes it to the respective component(s).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="response_processing"><a class="link" href="#response_processing">Response processing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>React4XP runs on top of the site engine, which means multiple XP apps can contribute to the request processing via page contributions and response processors. For instance the <a href="https://market.enonic.com/vendors/enonic/seo-metafields" target="_blank" rel="noopener">SEO Metafields applications</a> will inject custom tags to the HTML response - without interfering with the React4XP front-end. Applications that deliver standalone HTML may also be used - but will naturally need their own mapping.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -507,20 +524,10 @@ more?</p>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-You may still bundle the model and front-end code in the same app if desired
+Remember, you may still bundle both CMS model and front-end in the same app.
 </td>
 </tr>
 </table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="component_registry"><a class="link" href="#component_registry">Component registry</a></h3>
-<div class="paragraph">
-<p>React4XP uses a Hierarchical MVC pattern, where data is first collected into a model (in the form of props), which are then passed to the view (React templates). This first (normally) happens on the server, then the process may repeat on the client - where the props are normally re-used.</p>
-</div>
-<div class="paragraph">
-<p>The process is handled via the Component registry, where you register server-side controllers that fetches relevant content, and then passes it to the respective component(s).</p>
-</div>
 </div>
 </div>
 </div>
@@ -535,7 +542,7 @@ You may still bundle the model and front-end code in the same app if desired
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-17 08:16:17 UTC
+Last updated 2025-06-19 13:21:56 UTC
 </div>
 </div>
 </body>

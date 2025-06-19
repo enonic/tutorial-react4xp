@@ -441,33 +441,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#task_add_a_part">Task: Add a part</a></li>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#child_list_component">Child list component</a></li>
 <li><a href="#bonus_task_heading">Bonus task: Heading</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="intro"><a class="link" href="#intro">Intro</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Enonic provides a highly customizable component type called <a href="https://developer.enonic.com/docs/xp/stable/cms/pages/parts" target="_blank" rel="noopener">parts</a>.</p>
-</div>
-<div class="paragraph">
-<p>If you take a look at the person folder you might see something like this:
-<span class="image"><img src="media/child-list-no-render.png" alt="child list no render" width="900px" title="Parts in the person folder"></span></p>
+<p>Parts are highly flexible components which may be used to enrich your pages. Each part is like a content type, with an optional form that can be used to create content.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_add_a_part"><a class="link" href="#task_add_a_part">Task: Add a part</a></h2>
+<h2 id="child_list_component"><a class="link" href="#child_list_component">Child list component</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We’ll start off by adding a simple component that lists child items in the tree structure.</p>
+<p>Take a look at the <code>Person</code> folder. You may see something like this:
+<span class="image"><img src="media/child-list-no-render.png" alt="child list no render" width="900px" title="Parts in the person folder"></span></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add the <code>child-list</code> component</strong> to your application:</p>
+<p><strong>Add the <code>child-list</code> component</strong> to your front-end:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/ChildList.tsx</div>
 <div class="content">
@@ -493,9 +492,6 @@ export const ChildList = (props) =&gt; {
 };</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p><strong>Add the <code>child-list</code> processor</strong> to your application:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/ChildListProcessor.ts</div>
 <div class="content">
@@ -521,9 +517,6 @@ export const childListProcessor: ComponentProcessorFunction&lt;'com.enonic.app.h
 };</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p><strong>Add the <code>child-list</code> CSS module</strong> to your application:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/ChildList.module.css</div>
 <div class="content">
@@ -549,7 +542,7 @@ export const childListProcessor: ComponentProcessorFunction&lt;'com.enonic.app.h
 </div>
 </li>
 <li>
-<p>Add the <code>child-list</code> part to your <strong>component registry and data fetcher</strong>:</p>
+<p><strong>Register the component and processor</strong>:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/componentRegistry.ts</div>
 <div class="content">
@@ -580,13 +573,16 @@ dataFetcher.addPart('com.enonic.app.hmdb:child-list', {processor: childListProce
 </div>
 </li>
 <li>
-<p><strong>Now you should be able to see something like this:</strong>
+<p><strong>Refresh the Persons page</strong> to see the result:
 <span class="image"><img src="media/child-list-render.png" alt="child list render" width="900px" title="Child list part"></span></p>
 <div class="paragraph">
-<p>Try updating it by customizing the page and changing order, adding or removing items in the tree structure.</p>
+<p>Try updating the CMS component by changing the sorting order, or even adding or removing items within the tree structure.</p>
 </div>
 </li>
 </ol>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="media/child-list-form.png" alt="child list form" width="900px" title="Child list form"></span></p>
 </div>
 </div>
 </div>
@@ -594,10 +590,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:child-list', {processor: childListProce
 <h2 id="bonus_task_heading"><a class="link" href="#bonus_task_heading">Bonus task: Heading</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Since we are working with react4XP and not guillotine, we should have a head.</p>
-</div>
-<div class="paragraph">
-<p>Add a heading to the page</p>
+<p>HMDB also contains data for one more part, <code>Heading</code>. Follow the steps below to start rendering the heading as well:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -618,9 +611,6 @@ export const Heading = (props: any) =&gt; {
 };</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p><strong>Add the <code>heading</code> processor</strong> to your application:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/HeadingProcessor.ts</div>
 <div class="content">
@@ -639,7 +629,7 @@ export const headingProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmd
 </div>
 </div>
 <div class="paragraph">
-<p>Since we are using globalStyles.css to style the heading, we don’t need to add a CSS module for it.</p>
+<p>Since we are using globalStyles.css to style the heading, we don’t need to add a CSS module for this component.</p>
 </div>
 </li>
 <li>
@@ -684,14 +674,14 @@ dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor}
 </ol>
 </div>
 <div class="paragraph">
-<p>In the next chapter you will make page composition even more interesting, with the introduction of <a href="layouts.ahtml">layouts</a>.</p>
+<p>Moving on, we take page composition to the next level. Introducing <a href="layouts.ahtml">layouts</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-17 08:16:17 UTC
+Last updated 2025-06-19 13:21:56 UTC
 </div>
 </div>
 </body>
