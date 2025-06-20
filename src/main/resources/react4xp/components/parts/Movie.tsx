@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './MoviePage.module.css';
+import {PartProps} from '@enonic/react-components';
 
-export const Movie = (props) => {
+export const Movie = (props: PartProps) => {
     const {
         restphotos,
         trailer,
@@ -13,7 +14,7 @@ export const Movie = (props) => {
         director,
         subtitle,
         abstract,
-    } = props;
+    } = props.data as any;
 
     if (!abstract?.length) {
         return;
