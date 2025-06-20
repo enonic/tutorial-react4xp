@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "./ChildList.module.css";
+import type {PartProps} from '@enonic/react-components';
 
-export const ChildList = (props) => {
+export const ChildList = (props: PartProps) => {
 
-    const {names, paths} = props;
+    const {names, paths} = props.data as any;
 
     if (!names?.length) {
         return;

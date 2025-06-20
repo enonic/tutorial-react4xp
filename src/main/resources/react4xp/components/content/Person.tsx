@@ -1,10 +1,10 @@
 import {componentRegistry} from '/react4xp/componentRegistry';
-import {RichText} from '@enonic/react-components';
+import {RichText, type ContentTypeProps} from '@enonic/react-components';
 import React from 'react'
 import styles from './Person.module.css';
 
-export const Person = (props) => {
-    const {displayName, photo, restPhotos, bio, birthDate} = props as any;
+export const Person = (props: ContentTypeProps) => {
+    const {displayName, photo, restPhotos, bio, birthDate} = props.data as any;
     return (
         <div className={styles.person}>
             <h1>{displayName}</h1>
