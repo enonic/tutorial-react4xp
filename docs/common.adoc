@@ -4,15 +4,15 @@
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
 
-In this chapter you will add global styling and a footer component to the site
+In this chapter you'll add global styling and a footer component to the site
 
 == Global CSS
 
-To make the site more appealing, we'll need some style. By adding a global CSS file, we avoid repeating general styling for each component.
+By adding a global CSS file, we avoid repeating common styling for every component.
 
 Follow the steps below:
 
-. *Create CSS file* in the component directory:
+. *Create a CSS file* in the component directory:
 +
 .react4xp/components/globalStyles.css
 [source,CSS]

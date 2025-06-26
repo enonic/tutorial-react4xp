@@ -4,16 +4,15 @@
 :sourcedir: ../src/main/resources/
 :snippet: ../../code-samples/code-snippets/
 
-Version 6 is still compatible with how components such as parts are rendered in version 5(each part is a separate react app/entry).
+Version 6 is still compatible with how parts are rendered in version 5 (where each part is a separate entry).
 
-You still need to update pages and layouts to use the new component registry, as this is a breaking change and regions are now dependent on component registry.
-But you can can upgrade you existing react4xp application if you want to.
+This means you may perform a partial upgrade of your application, where you will not be using the Component Registry.
 
-Follow these steps:
+Follow the steps below:
 
 == Upgrade XP
 
-Set your app xp version 7.15 or newer
+Set the XP version of your app to 7.15 or newer
 
 .gradle.properties
 [source,properties]
@@ -41,7 +40,7 @@ xpVersion = 7.15.1
 +
 [source,json]
 ----
-"@enonic-types/global":   "^7.15.0",
+"@enonic-types/global":   "^7.15.1",
 ----
 
   NOTE: this brings in `@enonic-types/core`:
@@ -103,53 +102,7 @@ xpVersion = 7.15.1
 
 == Folder structure
 
-The folder structure of your React4XP application should look similar to this:
-
-[source,files]
-----
-package.json
-react4xp.config.js // <1>
-src/
-  main/
-    resources/
-      react4xp/ // <2>
-        dataFetcher.ts // <3>
-        componentRegistry.tsx // <4>
-        components/
-            common/
-            content/
-            layouts/
-            macro/
-            page/ // <5>
-              Page.module.css
-              Page.tsx
-              PageProcessor.ts
-            parts/
-            globalStyles.css // <6>
-        entries/
-          App.tsx // <7>
-          Site.xml // <8>
-          pages/ // <9>
-            page/ // <9>
-              page.xml // <10>
-      site/ // <11>
-        app.ts // <12>
-      types/ // <13>
-----
-
-<1> React4XP settings
-<2> React components must be placed within this folder
-<3> Fetches props for CMS components
-<4> Mapping React components to CMS component
-<5> default page component
-<6> Global styles
-<7> Main React component
-<8> link:./controller#site-mapping[Site descriptor^]
-<9> Folder for descriptor
-<10> Component descriptor XML
-<11> Optionally place CMS schemas here
-<12> Boostrapping controller
-<13> TypeScript types (optional)
+The folder structure of your React4XP application can stay intact
 
 This layout ensures XP can discover your React4XP assets (under react4xp/), site controllers (under site/), static files, and shared TS types.
 

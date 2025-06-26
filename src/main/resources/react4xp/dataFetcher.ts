@@ -1,4 +1,5 @@
 import {DataFetcher} from '/lib/enonic/react4xp';
+//import {helloProcessor} from './components/hello/HelloProcessor';
 import {commonProcessor} from '/react4xp/components/common/CommonProcessor';
 import {articleProcessor} from "./components/content/ArticleProcessor";
 import {personProcessor} from './components/content/PersonProcessor';

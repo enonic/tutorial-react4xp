@@ -5,11 +5,10 @@
 
 [[entries]]
 == What is an entry?
-React4xp is structured around _entries_.
+React4xp is not limited to a single "React app", it may actually support multiple React instances on a single page. 
 
-It's actually a webpack term, but in React4xp we use the word entry for *a React component that can be accessed by React4xp* in an XP controller. They are the _only_ react files that React4xp can use directly.
+In. React4XP we call these `entries`. It's actually a webpack term, but in React4xp we use the word entry for *a React component that can be called by React4xp* in an XP controller. They are the only react files that React4xp can use directly.
 
-[[mentalmodel]]
 Think of entries as *"bridge elements"*:
 
 .A mental model:

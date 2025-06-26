@@ -8,11 +8,11 @@ In this chapter you will create a new component that renders persons
 
 == Person content type
 
-The Headless Movie DB contains sample content, and content types.
-One of these is `Person` or more specifically `com.enonic.app.hmdb:person`.
+The Headless Movie DB contains both sample content, content type definitions.
+`Person` or more specifically `com.enonic.app.hmdb:person`, is one of these.
 
 From Content Studio, you may easily find and list persons.
-By selecting the JSON preview, you can also study the properties of a person:
+Click a person, and then selecting the JSON preview, which allows you to study the properties of a person:
 
 .Sample JSON for Person
 [source,JSON]
@@ -51,11 +51,11 @@ By selecting the JSON preview, you can also study the properties of a person:
 }
 ----
 
-== The Person component
+== Person React component
 
-To implement the rendering we need to create a new component, and accompanying data processor:
+To implement the rendering we need to create a new React component, and related data processor:
 
-. *Create a processor*:
+. *Create a data processor*:
 +
 ./src/main/resources/react4xp/components/content/PersonProcessor.ts
 [source,TypeScript]
@@ -63,7 +63,7 @@ To implement the rendering we need to create a new component, and accompanying d
 include::{snippet}PersonProcessor.ts[]
 ----
 +
-. *Add it to the dataFetcher*, with the following two lines:
+. *Add it to the dataFetcher*, using the following two lines:
 +
 .dataFetcher
 [source,TypeScript]
@@ -87,7 +87,7 @@ include::{snippet}Person.tsx[]
 include::{snippet}Person.module.css[]
 ----
 +
-. *Plaec it in the component to the registry*: by adding the following two lines:
+. *Add it to the componentRegistry*: with these two lines:
 
 .componentRegistry
 [source,TypeScript]
@@ -96,12 +96,10 @@ import {Person} from './components/content/Person';
 
 componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); // <1>
 ----
-+
-<1> By using `addContentType()` we are instructnig the componentRegistry to render this component when the content is of type 'com.enonic.app.hmdb:person'. 
 
-Back in Content Studio, select a random person to see what you have made:
+Back in Content Studio, select a person item to see what you have made:
 
-image:lea-seydoux.png[title="Preview of a Person Content", width=720px]
+image:person.png[title="Preview of a Person", width=1346px]
 
 == Next
 

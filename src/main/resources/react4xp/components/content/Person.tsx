@@ -4,7 +4,7 @@ import React from 'react'
 import styles from './Person.module.css';
 
 export const Person = (props) => {
-    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+    const {displayName, photo, restPhotos, bio, birthDate} = props as any;
     return (
         <div className={styles.person}>
             <h1>{displayName}</h1>
@@ -48,12 +48,12 @@ export const Person = (props) => {
                     </>
                 )}
             </div>
-            {bioHtml && (
+            {bio && (
                 <>
                     <h2>Bio</h2>
                     <div className={styles.richText}>
                         <RichText
-                            data={bioHtml}
+                            data={bio}
                             componentRegistry={componentRegistry}
                             loading="lazy"
                         />

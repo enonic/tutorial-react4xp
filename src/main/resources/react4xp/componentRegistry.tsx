@@ -1,3 +1,4 @@
+//import {Hello} from './components/hello/Hello';
 import {ComponentRegistry} from '@enonic/react-components';
 import {Article} from "./components/content/Article";
 import {Person} from './components/content/Person';
@@ -13,7 +14,6 @@ export const componentRegistry = new ComponentRegistry();
 
 
 componentRegistry.addMacro('factbox', {View: Factbox});
-
 //componentRegistry.addContentType('portal:site', { View: Hello }); // <1>
 componentRegistry.addPart('com.enonic.app.hmdb:heading', {View: Heading}); // <2>
 componentRegistry.addPage('com.enonic.app.hmdb:main', {View: Page}); // <3>

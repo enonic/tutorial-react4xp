@@ -1,5 +1,6 @@
 = Hello React4XP
 :toc: right
+:experimental:
 :imagesdir: media/
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
@@ -20,17 +21,21 @@ Follow these steps to make your application a front-end for the Headless Movie D
 +
 . The "Headless Movie Database" project should automatically be visible
 +
-. Select the root item in the tree structure, and you should see something like this:
+. Select the root item in the tree structure, and click btn:[Edit]. You should see something like this:
 +
 image:hmdb.png[title="HMDB welcome page",width=900px]
 +
-. Click btn:[Edit], and add your React4xp app to the site.
+. Add your brand new "React4XP" application to the site.
 +
 image:add-to-site.png[title="Add React4XP application to the site", width=647px]
 +
-After saving, the preview should refresh, and look something like this:
+After saving, the preview will refresh, to reveal something like this:
 +
-image:hello.png[title="React4XP starter page", width=647px]
+image:hello.png[title="React4XP starter page", width=547px]
+
+The component was initially rendered on the server, then <<appendix/hydfation#, hydrated>> to spin up as a client-side React component. 
+
+TIP: Try clicking the button for some React interactivity.
 
 
 == A look at the code
@@ -63,7 +68,7 @@ NOTE: Typing your props is optional, but recommended for more robust code.
 
 === Data Processor
 
-To fetch the props for the Hello component, we need a data processor:
+A data processor is used to fetch the props:
 
 .react4xp/components/hello/HelloProcessor.ts
 [source,TypeScript]
@@ -71,7 +76,9 @@ To fetch the props for the Hello component, we need a data processor:
 include::{sourcedir}react4xp/components/hello/HelloProcessor.ts[]
 ----
 
-The processor does not execute by itself, it must be registered in the dataFetcher. The dataFetcher solely executes on the server side.
+The processor does not execute by itself, it must be registered in the dataFetcher. 
+
+NOTE: The dataFetcher solely executes on the server side.
 
 The dataFetcher will only invoke a processor if needed, in our case when a content of type `portal:site` (the site content) is rendered.
 
@@ -90,7 +97,7 @@ dataFetcher.addContentType('portal:site', { processor: helloProcessor }); // <1>
 
 === Component Registry
 
-Back to the Hello component. Similar to the dataFetcher, this must be added to the ComponentRegistry in order to work.
+Back to the Hello React component. Similar to the dataFetcher, this must be added to the ComponentRegistry in order to work.
 
 .react4xp/componentRegistry.ts
 [source,TypeScript]
@@ -107,9 +114,9 @@ componentRegistry.addContentType('portal:site', { View: Hello }); //<1>
 
 Try clicking other content items in Content Studio, and you should simply see an error message at this point.
 
-TIP: Learn how the basic boot-strapping and routing works in the <<appendix/controller#, app controller section>>.
+TIP: Dive deeper by learning how the basic boot-strapping and routing works in the <<appendix/controller#, app controller section>>.
 
-== Next
+== Next up
 
-Great, you rendered your first page, next up about <<common#, common processors and components>>.
+Great, you rendered your first page, let's check out <<common#, common processors and components>>.
 
