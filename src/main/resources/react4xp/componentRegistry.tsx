@@ -14,7 +14,7 @@ export const componentRegistry = new ComponentRegistry();
 
 
 componentRegistry.addMacro('factbox', {View: Factbox});
-componentRegistry.addContentType('portal:site', { View: Hello }); // <1>
+//componentRegistry.addContentType('portal:site', { View: Hello }); // <1>
 componentRegistry.addPart('com.enonic.app.hmdb:heading', {View: Heading}); // <2>
 componentRegistry.addPage('com.enonic.app.hmdb:main', {View: Page}); // <3>
 componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); // <4>
