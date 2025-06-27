@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "./ChildList.module.css";
-import type {PartProps} from '@enonic/react-components';
+import type {ComponentProps} from '@enonic/react-components';
 
-export const ChildList = (props: PartProps) => {
+export const ChildList = (props: ComponentProps) => {
 
     const {names, paths} = props.data as any;
 

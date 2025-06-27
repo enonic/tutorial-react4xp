@@ -1,7 +1,7 @@
-import {Regions, type PageProps} from '@enonic/react-components';
+import {Regions, type ComponentProps} from '@enonic/react-components';
 import React from 'react'
 
-export const Page = (props: PageProps) => {
+export const Page = (props: ComponentProps) => {
 
     return (
             <Regions {...props} />

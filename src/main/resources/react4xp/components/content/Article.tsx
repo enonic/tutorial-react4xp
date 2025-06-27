@@ -1,10 +1,10 @@
 import {componentRegistry} from '/react4xp/componentRegistry';
-import {RichText, type ContentTypeProps} from "@enonic/react-components";
+import {RichText, type ComponentProps} from "@enonic/react-components";
 import React from 'react';
 import styles from './Article.module.css';
 
 
-export const Article = (props: ContentTypeProps) => {
+export const Article = (props: ComponentProps) => {
     const {title, blocks, coverImage, preface, author, tags, spotlight} = props.data as any; // Include new props
     return (
         <div className={`wrapper ${styles.article}`}>

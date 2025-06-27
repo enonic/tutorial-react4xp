@@ -20,7 +20,7 @@ export function get(request: Request): Response {
         request,
     });
 
-    if (data.type === "page" && !data.descriptor) {
+    if (data.component.type === "page" && !data.component.descriptor) {
         return {
             status: 418
         };

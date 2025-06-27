@@ -1,10 +1,10 @@
 import Footer from '/react4xp/components/common/Footer';
 import React, {useEffect, useRef, useState} from 'react';
 import styles from './Playlist.module.css';
-import type {ContentTypeProps} from '@enonic/react-components';
+import type {ComponentProps} from '@enonic/react-components';
 
 
-export const Playlist = (props: ContentTypeProps) => {
+export const Playlist = (props: ComponentProps) => {
     const playlistRef = useRef(null);
     const [playlistHeight, setPlaylistHeight] = useState(0);
 
