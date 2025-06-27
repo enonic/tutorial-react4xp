@@ -1,11 +1,15 @@
-import {Layout} from '@enonic/react-components';
+import type {ComponentProps, ProcessedLayout} from '@enonic/react-components';
+import {Region} from '@enonic/react-components';
 import React from 'react'
 import styles from './TwoColumn.module.css';
 
 
-export const TwoColumnLayout = (props: any,) => {
+export const TwoColumnLayout = ({component, meta}: ComponentProps) => {
 
-    return (
-        <Layout className={styles.row} {...props}/>
-    );
+    const regions = (component as ProcessedLayout).regions;
+
+    return <div className={styles.row}>
+        <Region data={regions.left.components} meta={meta} name="left"/>
+        <Region data={regions.right.components} meta={meta} name="right"/>
+    </div>;
 };

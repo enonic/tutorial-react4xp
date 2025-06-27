@@ -1,10 +1,7 @@
-import {Part} from '@enonic/react-components';
 import React from 'react';
+import type {ComponentProps} from '@enonic/react-components';
 
-export const Heading = (props: any) => {
+export const Heading = ({data}: ComponentProps) => {
 
-    const {componentRegistry, ...partProps} = props;
-    return <Part {...partProps}>
-        <h1>{props.heading}</h1>
-    </Part>
+    return <h1>{data.heading as string}</h1>
 };

@@ -1,9 +1,10 @@
 import Footer from '/react4xp/components/common/Footer';
 import React, {useEffect, useRef, useState} from 'react';
 import styles from './Playlist.module.css';
+import type {ComponentProps} from '@enonic/react-components';
 
 
-export const Playlist = (props: any) => {
+export const Playlist = (props: ComponentProps) => {
     const playlistRef = useRef(null);
     const [playlistHeight, setPlaylistHeight] = useState(0);
 
@@ -14,7 +15,7 @@ export const Playlist = (props: any) => {
         }
     }, [props]);
 
-    const {displayName, description, movies, footerUrl} = props.playlist;
+    const {displayName, description, movies, footerUrl} = props.data.playlist as any;
     return (
         <>
             <div className={styles.playlist}>
