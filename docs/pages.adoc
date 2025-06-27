@@ -4,7 +4,7 @@
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
 
-Content types are nice, but letting the editors compose their own pages is even better.
+Structured content is nice. Letting editors compose pages adds another dimention.
 
 
 == Intro
@@ -13,11 +13,10 @@ By defining a page, editors may drag'n drop cms components into the page, visual
 
 == Set up page rendering
 
-Content types are required before an editor can create content.
-Similarly, pages components must be defined before they can create pages.
+Content types are required before an editor can create content. Similarly, pages components must be defined before they can create pages.
 
 . *Add the component files*:
-
++
 ./src/main/resources/react4xp/components/page/Page.tsx
 [source,TypeScript]
 ----
@@ -36,7 +35,9 @@ include::{sourcedir}react4xp/components/page/PageProcessor.ts[]
 include::{sourcedir}react4xp/components/page/Page.module.css[]
 ----
 
-. *Register the processor and component*:
+. *Register the data processor*:
++
+Your dataFetcher should now look like this:
 +
 ./src/main/resources/react4xp/dataFetcher.ts
 [source,TypeScript]
@@ -44,33 +45,40 @@ include::{sourcedir}react4xp/components/page/Page.module.css[]
 include::{snippet}pages/dataFetcher.ts[]
 ----
 +
+. *Update the componentRegistry*
++
 ./src/main/resources/componentRegistry.tsx
 [source,TypeScript]
 ----
 include::{snippet}pages/componentRegistry.tsx[]
 ----
 +
-NOTE: We also leave "Hello React4xp" behind, by commenting it out
+NOTE: We disabled the "Hello" component in both files, as it is no longer needed.
+
 
 
 == Working with pages
 
-As it turns out, HMDB already contains data for pages, and by reloading your front-page, you should immediately see this:
+The HMDB dataset already contains sample content with pages. By reloading the front-page, you should immediately see something like this:
 
-=== The text component
+image:r4xp-demo.png[title="First page rendering with text component",width=1390px]
 
-The reason why you can see the righ text content on the page, is that Content Studio ships with a `Rich text component` that can be placed on pages. React4XP also implements a default rendering of this.
+By editing the front page, you will see that a page with a single region `main`, containing a single Text Component.
 
-Try editing the page, to see how this works.
+image:page.png[title="Editing front page",width=1389px]
 
-image:TODO.png[title="Editing front page",width=900px]
+=== The Text Component
+
+Enonic provides a standard `Rich text component` that can be placed on pages. React4XP implements a default rendering of this special component.
+
+By selecting the component, in the list, or directly on the page you can start editing it.
+
+image:text-component.png[title="Editing the text component",width=1390px]
 
 === Movies
 
-TODO: Verify
+Pages may also contain custom components. Try visiting the `Movies` page, and you will see that some components are not rendering properly. Content Studio has a built-in fallback handling for thse, so you can interact with them, even if they are not yet rendering.
 
-Visiting the `Movies` page, you will components that are missing rendering. Content Studio has a built-in fallback handling for thse, so you can interact with them, even if they are not yet rendering.
-
-image:TODO.png[title="Editing movies",width=900px]
+image:TODO.png[title="Editing movies",width=1390px]
 
 We'll deal with some of these in the <<parts#,parts>> chapter.
