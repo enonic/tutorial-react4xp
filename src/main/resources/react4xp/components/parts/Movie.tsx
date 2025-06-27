@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './MoviePage.module.css';
+import styles from './Movie.module.css';
 import type {ComponentProps} from '@enonic/react-components';
 
 export const Movie = (props: ComponentProps) => {

@@ -1,9 +1,9 @@
-import {Regions, type ComponentProps} from '@enonic/react-components';
+import {Region, ComponentProps, ProcessedPage} from '@enonic/react-components';
 import React from 'react'
 
-export const Page = (props: ComponentProps) => {
-
+export const Page = ({component, meta}: ComponentProps) => {
+    const regions = (component as ProcessedPage).regions;
     return (
-            <Regions {...props} />
+        <Region data={regions.main.components} meta={meta} name="main"/>
     );
 };
