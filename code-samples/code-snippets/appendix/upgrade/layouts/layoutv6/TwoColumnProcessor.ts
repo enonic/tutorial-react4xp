@@ -1,8 +1,8 @@
 import {LayoutComponent} from '@enonic-types/core';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
 
-export const layoutProcessor: ComponentProcessorFunction<'com.enonic.app.react4xp:TwoColumns'> = ({component}) => {
+export const layoutProcessor: ComponentProcessor<'com.enonic.app.react4xp:TwoColumns'> = ({component}) => {
     const {regions} = component as LayoutComponent;
 
     return {

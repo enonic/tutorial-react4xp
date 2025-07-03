@@ -4,9 +4,9 @@ import {imageUrl, pageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import {PageDescriptor} from '@enonic-types/core';
 import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
-export const articleProcessor: ComponentProcessorFunction<PageDescriptor> = (params) => {
+export const articleProcessor: ComponentProcessor<PageDescriptor> = (params) => {
     const {content} = params;
     const {data} = content;
 
