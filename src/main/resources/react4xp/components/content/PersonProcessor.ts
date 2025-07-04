@@ -4,7 +4,7 @@ import {imageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import {PageDescriptor} from '@enonic-types/core';
 import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
 function fetchAdditionalPhotos(photosIds) {
     return photosIds.map(photoId => {
@@ -19,7 +19,7 @@ function fetchAdditionalPhotos(photosIds) {
     });
 }
 
-export const personProcessor: ComponentProcessorFunction<PageDescriptor>
+export const personProcessor: ComponentProcessor<PageDescriptor>
     = (params) => {
     const photos: string[] = toArray<string>(params.content.data.photos as string | string[])
     const firstPhotoId = photos[0] || '';

@@ -3,7 +3,7 @@ import {processHtml} from '/lib/enonic/react4xp';
 ...
 
 
-export const personProcessor: ComponentProcessorFunction<PageDescriptor>
+export const personProcessor: ComponentProcessor<PageDescriptor>
     = (params) => {
 ...
 

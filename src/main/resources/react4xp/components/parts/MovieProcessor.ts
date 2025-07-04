@@ -2,7 +2,7 @@ import {get as getContentByKey} from '/lib/xp/content';
 import {imageUrl, pageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
 function fetchAdditionalPhotos(photoIds: string[]) {
     return photoIds.map(photoId => {
@@ -17,7 +17,7 @@ function fetchAdditionalPhotos(photoIds: string[]) {
     });
 }
 
-export const movieProcessor: ComponentProcessorFunction<'com.enonic.app.hmdb:movie-details'> = (params) => {
+export const movieProcessor: ComponentProcessor<'com.enonic.app.hmdb:movie-details'> = (params) => {
     const data = params.content.data;
 
     const photos: string[] = toArray<string>(data.photos as string | string[]);

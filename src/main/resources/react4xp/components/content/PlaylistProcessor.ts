@@ -4,7 +4,7 @@ import {imageUrl, pageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import {PageDescriptor} from '@enonic-types/core';
 import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
 
 // Function to fetch additional photos and return their image URLs
@@ -67,7 +67,7 @@ function fetchMovies(movieIds: string[]) {
     });
 }
 
-export const playlistProcessor: ComponentProcessorFunction<PageDescriptor> = params => {
+export const playlistProcessor: ComponentProcessor<PageDescriptor> = params => {
     const footerUrl = assetUrl({path: 'images/React4XP.svg'});
     const content = params.content;
     const playlistData = content.data;
