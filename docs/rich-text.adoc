@@ -6,7 +6,7 @@
 
 In this chapter you'll learn how to render rich text content.
 
-== Intro
+== Background
 
 Enonic boasts a https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea[rich text input type].
 Unlike basic text fields, rich-text may contain more complex concepts such as tables, images, links and even custom components (aka macros).
@@ -51,12 +51,12 @@ image::rich-text-result.png[title="Person content rendered with rich text",width
 
 If you have a sharp eye, you might notice there is something missing, the factbox is not rendering properly!
 
-== Macro components
+== Macros
 
-The HMDB dataset defines a `Fact-Box` macro, which editors may use inside their rich-text fields. 
+The HMDB dataset defines a `Fact-Box` macro, which editors may use inside their rich-text input.
 
 . *Add the following files* to your app:
-
++
 ./src/main/resources/react4xp/components/macro/FactBox.tsx
 [source,TypeScript]
 ----
@@ -83,11 +83,11 @@ You should now see the Factbox rendering properly
 
 image::rich-text-with-macro.png[title="Person content rendered with rich text and macro",width=720px]
 
-== What happened to the dataProcessor?
+=== What happened to the dataProcessor?
 
-TODO
+Why did you not have to implement a dataProcessor for the FactBox? 
 
-NOTE: The raw Macro data are actually 
+NOTE: TODO!
 
 
 Sweet! next up are <<pages#, pages>>.

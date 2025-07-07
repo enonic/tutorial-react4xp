@@ -1,4 +1,4 @@
-= Commons components and props
+= Common components and props
 :toc: right
 :imagesdir: media/
 :sourcedir: ../src/main/resources/

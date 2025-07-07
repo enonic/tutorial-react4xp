@@ -4,16 +4,13 @@
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
 
-Layouts are essentially parts, with regions
+Layouts are essentially parts with regions, providing another layer of flexibility for page composition.
 
-== Introduction
-Where parts are "leaf" components, layouts support nesting of components - similar to how pages work.
-
-Unsurprisingly, HMDB already contains sample pages that uses layouts, specifically a `2-column` layout.
 
 == Task: Add layout rendering
 
-Adding layouts is more or less identical to pages and parts.
+Adding layouts is more or less identical to pages and parts. Unsurprisingly, HMDB already contains sample pages that uses layouts, specifically a `2-column` layout.
+
 Follow the steps below:
 
 . *Add the `2-column` layout* files:
@@ -29,7 +26,7 @@ include::{sourcedir}react4xp/components/layouts/TwoColumn.tsx[]
 ----
 include::{sourcedir}react4xp/components/layouts/TwoColumn.module.css[]
 ----
-. *Register the component and processor*:
+. *Register the component:
 +
 ./src/main/resources/react4xp/componentRegistry.ts
 [source,TypeScript]
@@ -37,21 +34,19 @@ include::{sourcedir}react4xp/components/layouts/TwoColumn.module.css[]
 include::{snippet}layout/componentRegistry.tsx[]
 ----
 +
-./src/main/resources/react4xp/dataFetcher.ts
-[source,TypeScript]
-----
-include::{snippet}layout/dataFetcher.ts[]
-----
 . *The result*:
 By combining layout, part and text we are starting to see the potential of the page editor:
 image:layout-filled.png[title="2-column layout with text",width=900px]
-+
+
+
+TIP: Just like parts, you may also add a dataProcessor if you wish to pass custom properties to the Layout component. Just use `.addLayout` instead of `.addPart`.
+
 
 == Optional task: Build a page from scratch
 
-Try building your own page from scratch, using the various components you now have available.
+So far you have seen pre-defined pages. You may also try building your own page from scratch - using the components that are now available.
 
-TIP: Create a new folder in the site structure, expand the preview panel and start creating.
+TIP: Create a new `folder` within the site structure, click the preview and choose `Customize`.
 
 When adding an empty layout, it will look something like this:
 

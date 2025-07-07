@@ -4,12 +4,7 @@
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
 
-Structured content is nice. Letting editors compose pages adds another dimention.
-
-
-== Intro
-
-By defining a page component, editors may start building pages.
+By defining a page component, editors may start composing pages using pre-defined components.
 
 == Set up page rendering
 
