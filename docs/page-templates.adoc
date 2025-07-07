@@ -41,7 +41,7 @@ include::{sourcedir}react4xp/components/parts/MovieProcessor.ts[]
 ./src/main/resources/react4xp/components/parts/Movie.module.css
 [source,CSS]
 ----
-include::{sourcedir}react4xp/components/parts/MoviePage.module.css[]
+include::{sourcedir}react4xp/components/parts/Movie.module.css[]
 ----
 +
 . Then *register the component and processor*:

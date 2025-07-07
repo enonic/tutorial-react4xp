@@ -24,12 +24,6 @@ Follow the steps below:
 include::{sourcedir}react4xp/components/layouts/TwoColumn.tsx[]
 ----
 +
-./src/main/resources/react4xp/components/layouts/TwoColumnProcessor.ts
-[source,TypeScript]
-----
-include::{sourcedir}react4xp/components/layouts/TwoColumnProcessor.ts[]
-----
-+
 ./src/main/resources/react4xp/components/layouts/TwoColumn.module.css
 [source,CSS]
 ----
