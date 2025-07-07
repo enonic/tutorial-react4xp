@@ -450,7 +450,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#component_registry">Component Registry</a></li>
 </ul>
 </li>
-<li><a href="#next">Next</a></li>
+<li><a href="#next_up">Next up</a></li>
 </ul>
 </div>
 </div>
@@ -488,24 +488,39 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>The "Headless Movie Database" project should automatically be visible</p>
 </li>
 <li>
-<p>Select the root item in the tree structure, and you should see something like this:</p>
+<p>Select the root item in the tree structure, and click <b class="button">Edit</b>. You should see something like this:</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/hmdb.png" alt="hmdb" width="900px" title="HMDB welcome page"></span></p>
 </div>
 </li>
 <li>
-<p>Click btn:[Edit], and add your React4xp app to the site.</p>
+<p>Add your brand new "React4XP" application to the site.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/add-to-site.png" alt="add to site" width="647px" title="Add React4XP application to the site"></span></p>
 </div>
 <div class="paragraph">
-<p>After saving, the preview should refresh, and look something like this:</p>
+<p>After saving, the preview will refresh, to reveal something like this:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/hello.png" alt="hello" width="647px" title="React4XP starter page"></span></p>
+<p><span class="image"><img src="media/hello.png" alt="hello" width="547px" title="React4XP starter page"></span></p>
 </div>
 </li>
 </ol>
+</div>
+<div class="paragraph">
+<p>The component was initially rendered on the server, then <a href="appendix/hydfation.ahtml">hydrated</a> to spin up as a client-side React component.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Try clicking the button for some React interactivity.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -537,12 +552,10 @@ export const Hello = ({title, initialCount}: HelloProps) =&gt; {
     const [count, setCount] = React.useState(initialCount);
 
     return (
-        &lt;div&gt;
-            &lt;section className={styles.helloContainer}&gt;
-                &lt;h1&gt;{title}&lt;/h1&gt;
-                &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count} Clicks!&lt;/button&gt;
-            &lt;/section&gt;
-        &lt;/div&gt;
+        &lt;section className={`helloPage ${styles.helloContainer}`}&gt;
+            &lt;h1&gt;{title}&lt;/h1&gt;
+            &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count} Clicks!&lt;/button&gt;
+        &lt;/section&gt;
     );
 };</code></pre>
 </div>
@@ -575,15 +588,15 @@ Typing your props is optional, but recommended for more robust code.
 <div class="sect2">
 <h3 id="data_processor"><a class="link" href="#data_processor">Data Processor</a></h3>
 <div class="paragraph">
-<p>To fetch the props for the Hello component, we need a data processor:</p>
+<p>A data processor is used to fetch the props:</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/components/hello/HelloProcessor.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {PageDescriptor} from '@enonic-types/core';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
-export const helloProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt; = (params) =&gt; {
+export const helloProcessor: ComponentProcessor&lt;PageDescriptor&gt; = (params) =&gt; {
     return {
         title: `${params.content.displayName}`,
         initialCount: 0,
@@ -592,7 +605,19 @@ export const helloProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt; = 
 </div>
 </div>
 <div class="paragraph">
-<p>The processor does not execute by itself, it must be registered in the dataFetcher. The dataFetcher solely executes on the server side.</p>
+<p>The processor does not execute by itself, it must be registered in the dataFetcher.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The dataFetcher solely executes on the server side.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>The dataFetcher will only invoke a processor if needed, in our case when a content of type <code>portal:site</code> (the site content) is rendered.</p>
@@ -620,7 +645,7 @@ dataFetcher.addContentType('portal:site', { processor: helloProcessor }); <i cla
 <div class="sect2">
 <h3 id="component_registry"><a class="link" href="#component_registry">Component Registry</a></h3>
 <div class="paragraph">
-<p>Back to the Hello component. Similar to the dataFetcher, this must be added to the ComponentRegistry in order to work.</p>
+<p>Back to the Hello React component. Similar to the dataFetcher, this must be added to the ComponentRegistry in order to work.</p>
 </div>
 <div class="listingblock">
 <div class="title">react4xp/componentRegistry.ts</div>
@@ -651,7 +676,7 @@ componentRegistry.addContentType('portal:site', { View: Hello }); <i class="conu
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Learn how the basic boot-strapping and routing works in the <a href="appendix/controller.ahtml">app controller section</a>.
+Dive deeper by learning how the basic boot-strapping and routing works in the <a href="appendix/controller.ahtml">app controller section</a>.
 </td>
 </tr>
 </table>
@@ -660,17 +685,17 @@ Learn how the basic boot-strapping and routing works in the <a href="appendix/co
 </div>
 </div>
 <div class="sect1">
-<h2 id="next"><a class="link" href="#next">Next</a></h2>
+<h2 id="next_up"><a class="link" href="#next_up">Next up</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Great, you rendered your first page, next up about <a href="common.ahtml">common processors and components</a>.</p>
+<p>Great, you rendered your first page, let&#8217;s check out <a href="common.ahtml">common processors and components</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

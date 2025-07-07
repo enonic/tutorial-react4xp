@@ -495,15 +495,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/Movie.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Part} from "@enonic/react-components";
-import React from 'react';
-import styles from './MoviePage.module.css';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react';
+import styles from './Movie.module.css';
+import type {ComponentProps} from '@enonic/react-components';
 
-export const Movie = (props) =&gt; {
+export const Movie = (props: ComponentProps) =&gt; {
     const {
-        names,
-        paths,
-        componentRegistry,
+        restphotos,
         trailer,
         name,
         photo,
@@ -513,132 +511,117 @@ export const Movie = (props) =&gt; {
         director,
         subtitle,
         abstract,
-        restphotos,
-        ...extraProps
-    } = props;
+    } = props.data as any;
 
-    return (
-        &lt;Part {...extraProps}&gt;
-            {abstract?.length &gt; 0 &amp;&amp;
-            &lt;div className={styles.moviePage}&gt;
-                &lt;header&gt;
-                    &lt;h1&gt;&lt;a href={props.trailer} className={styles.sneakyTitle}&gt;{props.name}&lt;/a&gt;&lt;/h1&gt;
-                &lt;/header&gt;
+    if (!abstract?.length) {
+        return;
+    }
 
-                &lt;main className={styles.main}&gt;
-                    &lt;div className={styles.flexy}&gt;
-                        {props.photo &amp;&amp; (
-                            &lt;section className={styles.firstPhoto}&gt;
-                                &lt;a href={props.trailer}&gt;
-                                    &lt;img
-                                        src={props.photo.imageUrl}
-                                        alt={props.photo.title}
-                                        title={props.photo.title}
-                                        className={styles.featuredImage}
-                                        loading="eager"
-                                        height={1200}
-                                        width={800}
-                                    /&gt;
-                                &lt;/a&gt;
-                            &lt;/section&gt;
-                        )}
+    return &lt;div className={styles.moviePage}&gt;
+        &lt;header&gt;
+            &lt;h1&gt;&lt;a href={trailer} className={styles.sneakyTitle}&gt;{name}&lt;/a&gt;&lt;/h1&gt;
+        &lt;/header&gt;
 
-                        &lt;div className={styles.blocky}&gt;
-                            &lt;div&gt;
-                                &lt;div&gt;
-                                    {props.website &amp;&amp; (
-                                        &lt;&gt;
-                                            &lt;h2&gt;
-                                                Official Website
-                                            &lt;/h2&gt;
-                                            &lt;p className={styles.website}&gt;
-                                                &lt;a href={props.website} className={styles.sneakyLink} target="_blank"
-                                                   rel="noopener noreferrer"&gt;
-                                                    {props.website}
-                                                &lt;/a&gt;
-                                            &lt;/p&gt;
-                                        &lt;/&gt;
-                                    )}
-                                    {props.release &amp;&amp; (
-                                        &lt;&gt;
-                                            &lt;h2&gt;Release Date:&lt;/h2&gt;
-                                            &lt;p className={styles.date}&gt;{props.release}&lt;/p&gt;
-                                        &lt;/&gt;
-                                    )}
-                                &lt;/div&gt;
+        &lt;main className={styles.main}&gt;
+            &lt;div className={styles.flexy}&gt;
+                {photo &amp;&amp; &lt;section className={styles.firstPhoto}&gt;
+                    &lt;a href={trailer}&gt;
+                        &lt;img
+                            src={photo.imageUrl}
+                            alt={photo.title}
+                            title={photo.title}
+                            className={styles.featuredImage}
+                            loading="eager"
+                            height={1200}
+                            width={800}
+                        /&gt;
+                    &lt;/a&gt;
+                &lt;/section&gt;}
 
-                                {props.cast.length &gt; 0 &amp;&amp; (
-                                    &lt;section className={styles.cast}&gt;
-                                        &lt;h2&gt;Cast&lt;/h2&gt;
-                                        &lt;ul&gt;
-                                            {props.cast.map((member, index) =&gt; (
-                                                &lt;li key={index}&gt;
-                                                    &lt;a href={member.castUrl} className={styles.sneakyCastLink}&gt;
-                                                        &lt;img
-                                                            src={member.photoUrl}
-                                                            alt={member.actorName}
-                                                            height={150}
-                                                            width={150}
-                                                        /&gt;
-                                                        &lt;p&gt;&lt;strong&gt;{member.actorName}&lt;/strong&gt; as {member.character}
-                                                        &lt;/p&gt;
-                                                    &lt;/a&gt;
-                                                &lt;/li&gt;
-                                            ))}
-                                        &lt;/ul&gt;
-                                    &lt;/section&gt;
-                                )}
-                            &lt;/div&gt;
-                            &lt;div&gt;
-                                {props.director &amp;&amp; (
-                                    &lt;section className={styles.director}&gt;
-                                        &lt;h2&gt;Director&lt;/h2&gt;
-                                        &lt;a href={props.director.url} className={styles.sneakyLink}&gt;
-                                            &lt;h3&gt;{props.director.name}&lt;/h3&gt;
-                                            &lt;img
-                                                className={styles.directorImg}
-                                                src={props.director.photo}
-                                                alt={"Director"}
-                                                height={200}
-                                                width={300}
-                                            /&gt;
-                                        &lt;/a&gt;
-                                    &lt;/section&gt;
-                                )}
-                            &lt;/div&gt;
+                &lt;div className={styles.blocky}&gt;
+                    &lt;div&gt;
+                        &lt;div&gt;
+                            {website &amp;&amp; &lt;&gt;
+                                &lt;h2&gt;
+                                    Official Website
+                                &lt;/h2&gt;
+                                &lt;p className={styles.website}&gt;
+                                    &lt;a href={website} className={styles.sneakyLink} target="_blank"
+                                       rel="noopener noreferrer"&gt;
+                                        {website}
+                                    &lt;/a&gt;
+                                &lt;/p&gt;
+                            &lt;/&gt;}
+                            {release &amp;&amp; &lt;&gt;
+                                &lt;h2&gt;Release Date:&lt;/h2&gt;
+                                &lt;p className={styles.date}&gt;{release}&lt;/p&gt;
+                            &lt;/&gt;}
                         &lt;/div&gt;
+
+                        {cast.length &gt; 0 &amp;&amp; &lt;section className={styles.cast}&gt;
+                            &lt;h2&gt;Cast&lt;/h2&gt;
+                            &lt;ul&gt;
+                                {cast.map((member, index) =&gt; (
+                                    &lt;li key={index}&gt;
+                                        &lt;a href={member.castUrl} className={styles.sneakyCastLink}&gt;
+                                            &lt;img
+                                                src={member.photoUrl}
+                                                alt={member.actorName}
+                                                height={150}
+                                                width={150}
+                                            /&gt;
+                                            &lt;p&gt;&lt;strong&gt;{member.actorName}&lt;/strong&gt; as {member.character}
+                                            &lt;/p&gt;
+                                        &lt;/a&gt;
+                                    &lt;/li&gt;
+                                ))}
+                            &lt;/ul&gt;
+                        &lt;/section&gt;}
                     &lt;/div&gt;
+                    &lt;div&gt;
+                        {director &amp;&amp; &lt;section className={styles.director}&gt;
+                            &lt;h2&gt;Director&lt;/h2&gt;
+                            &lt;a href={director.url} className={styles.sneakyLink}&gt;
+                                &lt;h3&gt;{director.name}&lt;/h3&gt;
+                                &lt;img
+                                    className={styles.directorImg}
+                                    src={director.photo}
+                                    alt={"Director"}
+                                    height={200}
+                                    width={300}
+                                /&gt;
+                            &lt;/a&gt;
+                        &lt;/section&gt;}
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
 
-                    &lt;h2&gt;{props.subtitle}&lt;/h2&gt;
+            &lt;h2&gt;{subtitle}&lt;/h2&gt;
 
-                    &lt;section className={styles.abstract}&gt;
-                        &lt;p&gt;{props.abstract}&lt;/p&gt;
-                    &lt;/section&gt;
+            &lt;section className={styles.abstract}&gt;
+                &lt;p&gt;{abstract}&lt;/p&gt;
+            &lt;/section&gt;
 
-                    {props.restphotos &amp;&amp; props.restphotos.length &gt; 0 &amp;&amp; (
-                        &lt;section className={styles.photos}&gt;
-                            &lt;div className={styles.photoGrid}&gt;
-                                &lt;div className={styles.photoScroll}&gt;
-                                    {props.restphotos.map((photo, index) =&gt; (
-                                        &lt;img
-                                            key={index}
-                                            src={photo.imageUrl}
-                                            alt={photo.title}
-                                            title={photo.title}
-                                            className={styles.photoImg}
-                                            loading="lazy"
-                                            height={220}
-                                            width={340}
-                                        /&gt;
-                                    ))}
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/section&gt;
-                    )}
-                &lt;/main&gt;
-            &lt;/div&gt;}
-        &lt;/Part&gt;
-    );
+            {restphotos &amp;&amp; restphotos.length &gt; 0 &amp;&amp; &lt;section className={styles.photos}&gt;
+                &lt;div className={styles.photoGrid}&gt;
+                    &lt;div className={styles.photoScroll}&gt;
+                        {restphotos.map((photo, index) =&gt; (
+                            &lt;img
+                                key={index}
+                                src={photo.imageUrl}
+                                alt={photo.title}
+                                title={photo.title}
+                                className={styles.photoImg}
+                                loading="lazy"
+                                height={220}
+                                width={340}
+                            /&gt;
+                        ))}
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;}
+        &lt;/main&gt;
+    &lt;/div&gt;
 };</code></pre>
 </div>
 </div>
@@ -649,7 +632,7 @@ export const Movie = (props) =&gt; {
 import {imageUrl, pageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
 function fetchAdditionalPhotos(photoIds: string[]) {
     return photoIds.map(photoId =&gt; {
@@ -664,7 +647,7 @@ function fetchAdditionalPhotos(photoIds: string[]) {
     });
 }
 
-export const movieProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:movie-details'&gt; = (params) =&gt; {
+export const movieProcessor: ComponentProcessor&lt;'com.enonic.app.hmdb:movie-details'&gt; = (params) =&gt; {
     const data = params.content.data;
 
     const photos: string[] = toArray&lt;string&gt;(data.photos as string | string[]);
@@ -996,7 +979,7 @@ The <code>Person</code> content type component we created initially has preseden
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>React4XP - Server Side React sites on Enonic</title>
+<title>React4XP - Server Side React using the Enonic Framework</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,7 +437,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>React4XP - Server Side React sites on Enonic</h1>
+<h1>React4XP - Server Side React using the Enonic Framework</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -462,7 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 <td class="content">
 <div class="paragraph">
-<p><strong>tl;dr</strong> Try the <a href="appendix/demo.ahtml">R4XP demo</a>, to see the completed result of this tutorial.</p>
+<p><strong>tl;dr</strong> The <a href="appendix/demo.ahtml">React4XP demo</a> is the completed result of this tutorial.</p>
 </div>
 </td>
 </tr>
@@ -481,14 +481,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Basic <a href="https://reactjs.org/tutorial/tutorial.html">React</a> knowledge is recommended before you dive into this tutorial.</p>
+<p>Basic <a href="https://reactjs.org/tutorial/tutorial.html">React</a> and <a href="https://developer.enonic.com/start">Enonic</a> knowledge is recommended before you dive into this tutorial.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>React4XP extends Enonic&#8217;s JS framework by adding support for Server-Side React - similar to how frameworks like Next.js work.</p>
+<p>React4XP extends Enonic&#8217;s JS framework by adding support for Server-Side React - similar to Next.js.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -496,7 +496,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>100% TSX/JSX rendering - Single React app</p>
 </li>
 <li>
-<p>Works with CMS Schemas in other apps as well as inline</p>
+<p>Works with CMS Schemas across multiple namespaces/apps</p>
 </li>
 <li>
 <p>Isomorphic server side and client side rendering through hydration</p>
@@ -508,10 +508,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Fast and continuous builds</p>
 </li>
 <li>
-<p>Optimized builds and static asset handling</p>
-</li>
-<li>
-<p>Flexible enough to cover advanced use cases</p>
+<p>Production builds and static asset handling</p>
 </li>
 </ul>
 </div>
@@ -521,7 +518,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="get_started"><a class="link" href="#get_started">Get started</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><span class="image"><img src="media/screenshot.png" alt="screenshot" width="1200px" title="React4xp front-end, Headless Movie DB content"></span></p>
+<p><span class="image"><img src="media/r4xp-demo.png" alt="r4xp demo" width="1390px" title="React4xp front-end rendring the Headless Movie DB"></span></p>
 </div>
 <div class="paragraph">
 <p>In this tutorial youy will complete the following steps:</p>
@@ -588,7 +585,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

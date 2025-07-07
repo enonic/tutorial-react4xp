@@ -470,36 +470,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/ChildList.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Part} from "@enonic/react-components";
-import React from "react";
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from "react";
 import styles from "./ChildList.module.css";
+import type {ComponentProps} from '@enonic/react-components';
 
+export const ChildList = (props: ComponentProps) =&gt; {
 
-export const ChildList = (props) =&gt; {
+    const {names, paths} = props.data as any;
 
-    const {names, paths, componentRegistry, ...partProps} = props;
-    return (
-        &lt;Part {...partProps}&gt;
-            {names?.length &gt; 0 &amp;&amp; &lt;ul&gt;
-                {names.map((name, index) =&gt; (
-                    &lt;li className={styles.listItem} key={index}&gt;
-                        &lt;a className={styles.listLink} href={paths[index]}&gt;&lt;p&gt;{name}&lt;/p&gt;&lt;/a&gt;
-                    &lt;/li&gt;
-                ))}
-            &lt;/ul&gt;}
-        &lt;/Part&gt;
-    );
+    if (!names?.length) {
+        return;
+    }
+
+    return &lt;ul&gt;
+        {names.map((name, index) =&gt; (
+            &lt;li className={styles.listItem} key={index}&gt;
+                &lt;a className={styles.listLink} href={paths[index]}&gt;&lt;p&gt;{name}&lt;/p&gt;&lt;/a&gt;
+            &lt;/li&gt;
+        ))}
+    &lt;/ul&gt;
 };</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/ChildListProcessor.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 import {getChildren} from '/lib/xp/content';
 import {PartComponent} from '@enonic-types/core';
 
-export const childListProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:child-list'&gt; = (params) =&gt; {
+export const childListProcessor: ComponentProcessor&lt;'com.enonic.app.hmdb:child-list'&gt; = (params) =&gt; {
     const component = params.component as PartComponent;
     const sortOrder: any = component.config.sorting;
 
@@ -599,15 +599,12 @@ dataFetcher.addPart('com.enonic.app.hmdb:child-list', {processor: childListProce
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/Heading.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Part} from '@enonic/react-components';
-import React from 'react';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react';
+import type {ComponentProps} from '@enonic/react-components';
 
-export const Heading = (props: any) =&gt; {
+export const Heading = ({data}: ComponentProps) =&gt; {
 
-    const {componentRegistry, ...partProps} = props;
-    return &lt;Part {...partProps}&gt;
-        &lt;h1&gt;{props.heading}&lt;/h1&gt;
-    &lt;/Part&gt;
+    return &lt;h1&gt;{data.heading as string}&lt;/h1&gt;
 };</code></pre>
 </div>
 </div>
@@ -615,9 +612,9 @@ export const Heading = (props: any) =&gt; {
 <div class="title">/src/main/resources/react4xp/components/parts/HeadingProcessor.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {PartComponent} from '@enonic-types/core';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
-export const headingProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:heading'&gt; = (params) =&gt; {
+export const headingProcessor: ComponentProcessor&lt;'com.enonic.app.hmdb:heading'&gt; = (params) =&gt; {
     const component = params.component as PartComponent;
     const heading = component.config?.heading || params.content.displayName;
 
@@ -681,7 +678,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

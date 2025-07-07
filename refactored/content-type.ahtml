@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#person_content_type">Person content type</a></li>
-<li><a href="#the_person_component">The Person component</a></li>
+<li><a href="#person_react_component">Person React component</a></li>
 <li><a href="#next">Next</a></li>
 </ul>
 </div>
@@ -459,12 +459,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="person_content_type"><a class="link" href="#person_content_type">Person content type</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Headless Movie DB contains sample content, and content types.
-One of these is <code>Person</code> or more specifically <code>com.enonic.app.hmdb:person</code>.</p>
+<p>The Headless Movie DB contains both sample content, content type definitions.
+<code>Person</code> or more specifically <code>com.enonic.app.hmdb:person</code>, is one of these.</p>
 </div>
 <div class="paragraph">
 <p>From Content Studio, you may easily find and list persons.
-By selecting the JSON preview, you can also study the properties of a person:</p>
+Click a person, and then selecting the JSON preview, which allows you to study the properties of a person:</p>
 </div>
 <div class="listingblock">
 <div class="title">Sample JSON for Person</div>
@@ -506,15 +506,15 @@ By selecting the JSON preview, you can also study the properties of a person:</p
 </div>
 </div>
 <div class="sect1">
-<h2 id="the_person_component"><a class="link" href="#the_person_component">The Person component</a></h2>
+<h2 id="person_react_component"><a class="link" href="#person_react_component">Person React component</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To implement the rendering we need to create a new component, and accompanying data processor:</p>
+<p>To implement the rendering we need to create a new React component, and related data processor:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Create a processor</strong>:</p>
+<p><strong>Create a data processor</strong>:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/content/PersonProcessor.ts</div>
 <div class="content">
@@ -523,7 +523,7 @@ import {imageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import {PageDescriptor} from '@enonic-types/core';
 import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
 function fetchAdditionalPhotos(photosIds) {
     return photosIds.map(photoId =&gt; {
@@ -538,7 +538,7 @@ function fetchAdditionalPhotos(photosIds) {
     });
 }
 
-export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
+export const personProcessor: ComponentProcessor&lt;PageDescriptor&gt;
     = (params) =&gt; {
     const photos: string[] = toArray&lt;string&gt;(params.content.data.photos as string | string[])
     const firstPhotoId = photos[0] || '';
@@ -567,7 +567,7 @@ export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
 </div>
 </li>
 <li>
-<p><strong>Add it to the dataFetcher</strong>, with the following two lines:</p>
+<p><strong>Add it to the dataFetcher</strong>, using the following two lines:</p>
 <div class="listingblock">
 <div class="title">dataFetcher</div>
 <div class="content">
@@ -744,7 +744,7 @@ export const Person = (props) =&gt; {
 </div>
 </li>
 <li>
-<p><strong>Plaec it in the component to the registry</strong>: by adding the following two lines:</p>
+<p><strong>Add it to the componentRegistry</strong>: with these two lines:</p>
 </li>
 </ol>
 </div>
@@ -757,14 +757,10 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); 
 </div>
 </div>
 <div class="paragraph">
-<p>+
-&lt;1&gt; By using <code>addContentType()</code> we are instructnig the componentRegistry to render this component when the content is of type 'com.enonic.app.hmdb:person'.</p>
+<p>Back in Content Studio, select a person item to see what you have made:</p>
 </div>
 <div class="paragraph">
-<p>Back in Content Studio, select a random person to see what you have made:</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/lea-seydoux.png" alt="lea seydoux" width="720px" title="Preview of a Person Content"></span></p>
+<p><span class="image"><img src="media/person.png" alt="person" width="1346px" title="Preview of a Person"></span></p>
 </div>
 </div>
 </div>
@@ -779,7 +775,7 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

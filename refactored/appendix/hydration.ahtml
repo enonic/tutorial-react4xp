@@ -441,10 +441,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#countdown">Countdown</a></li>
-<li><a href="#preview">Preview</a></li>
+<li><a href="#usage">Usage</a></li>
 <li><a href="#ssr_vs_client_side_gotchas">SSR vs client side gotchas</a></li>
-<li><a href="#next">Next</a></li>
 </ul>
 </div>
 </div>
@@ -452,65 +450,47 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>With React4XP, components may render server-side, client-side or even both.</p>
+<p>React4XP allows entries to render server-side, client-side or both (the default).</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="countdown"><a class="link" href="#countdown">Countdown</a></h2>
+<h2 id="usage"><a class="link" href="#usage">Usage</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Start by updating your hello-react template, use the code below:</p>
+<p>The mode is controlled when the entry (React App) is initialized via react4xp.render().</p>
 </div>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/entries/hello-react.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TSX" data-lang="TSX">## include::../src/main/resources/react4xp/entries/hello-hydration.tsx[]</code></pre>
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">const output = render(
+  'MyComponent',
+  props,
+  request,
+  {
+    body: myHtmlBody,
+    id: myId,
+    ssr: true <i class="conum" data-value="1"></i><b>(1)</b>
+    hydrate: true <i class="conum" data-value="2"></i><b>(2)</b>
+  }
+);
+
+return output;</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>This React component will initially render server-side, hydrate, and come alive client side as well - producing an amusing beer bottle countdown.</p>
-</div>
-<div class="admonitionblock note">
+<div class="colist arabic">
 <table>
 <tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The interactive part here is vanilla JS, just to keep things as simple as possible. We&#8217;ll look at stateful/dynamic components later.
-</td>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Set to <code>false</code> to disable server-side rendering</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Set to <code>false</code> to disable client-side rendering</td>
 </tr>
 </table>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="preview"><a class="link" href="#preview">Preview</a></h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>Back in Content Studio, your changes should automatically be picked up</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/hello_cs.png" alt="hello cs" width="720px" title="Editing in Content Studio: Hello World."></span></p>
-</div>
-<div class="paragraph">
-<p>+
-In edit mode, components will not be hydrated (for a more robust visual editing experience)
-. Click <em>Preview</em> to get the hydrated version of the page.</p>
-</div>
-<div class="paragraph">
-<p>+</p>
-</div>
-<div class="paragraph thumb">
-<p><span class="image"><img src="media/hello_bottles.png" alt="hello bottles" width="720px" title="Rendering: Hello World and some bottles on a wall somewhere. You didn&#8217;t click this screenshot, did you?"></span></p>
-</div>
-<div class="paragraph">
-<p>+
-Clicking anywhere on the text should trigger the <code>dropBottle</code> function from <em>hello-react.tsx</em>, modify the DOM and output a message in the browser console.</p>
-</div>
-<div class="paragraph">
-<p>Look at those bottles go!</p>
+<p>Visit the <a href="api.ahtml">API documentation</a> for more details.</p>
 </div>
 </div>
 </div>
@@ -521,7 +501,7 @@ Clicking anywhere on the text should trigger the <code>dropBottle</code> functio
 <p>When using isomorphic JavaScript, selected features may only be working on server-side, and some only on client side, like <code>document</code> and <code>window</code> - which are pure client-side concepts. React4xp has polyfilled <code>window</code> as <em>empty object</em>. To prevent weird behavior or errors, take care to only execute browser-specific code in the browser.</p>
 </div>
 <div class="paragraph">
-<p>In the example above, <code>dropBottle</code> is the response to a click listener which won&#8217;t be triggered to actually <em>run</em> on the server (although the code is compiled and read into memory), so we don&#8217;t need any more safeguards here. But if you do, it&#8217;s easy enough - for example:</p>
+<p>For example, the "Click" counter example used in this tutorial won&#8217;t be triggered to actually <em>run</em> on the server (although the code is compiled and read into memory), so we don&#8217;t need any more safeguards here. But if you do, it&#8217;s easy enough - for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -552,18 +532,10 @@ Clicking anywhere on the text should trigger the <code>dropBottle</code> functio
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="next"><a class="link" href="#next">Next</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>You are on a roll, next - lets look into how we may pass editorial content to the component via <a href="props.ahtml">props</a>.</p>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

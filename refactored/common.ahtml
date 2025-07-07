@@ -452,7 +452,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you will add global styling and a footer component to the site</p>
+<p>In this chapter you&#8217;ll add global styling and a footer component to the site</p>
 </div>
 </div>
 </div>
@@ -460,7 +460,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="global_css"><a class="link" href="#global_css">Global CSS</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To make the site more appealing, we&#8217;ll need some style. By adding a global CSS file, we avoid repeating general styling for each component.</p>
+<p>By adding a global CSS file, we avoid repeating common styling for every component.</p>
 </div>
 <div class="paragraph">
 <p>Follow the steps below:</p>
@@ -468,7 +468,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Create CSS file</strong> in the component directory:</p>
+<p><strong>Create a CSS file</strong> in the component directory:</p>
 <div class="listingblock">
 <div class="title">react4xp/components/globalStyles.css</div>
 <div class="content">
@@ -532,6 +532,31 @@ p {
 
 .editor-align-justify {
   margin-inline: auto;
+}
+
+.helloPage {
+
+  h1 {
+    color: #61DBFB;
+  }
+
+  button {
+    background-color: #61DBFB;
+    color: #071622;
+    border: 1px solid #61DBFB;
+    box-shadow: 0 0 4px #61DBFB;
+  }
+
+  button:hover {
+    box-shadow: 0 0 16px #61DBFB;
+  }
+
+  button:active {
+    background-color: #EF82F0;
+    box-shadow: 0 0 8px #EF82F0;
+    border-color: #EF82F0;
+  }
+
 }</code></pre>
 </div>
 </div>
@@ -674,7 +699,7 @@ const App: React.FC&lt;AppProps&gt; = (props) =&gt; {
             &lt;BaseComponent componentRegistry={componentRegistry} data={props}/&gt;
             {
                 (props.type == "page" || props.type == "contentType") &amp;&amp;
-                &lt;Footer logoUrl={props.commonProps.logoUrl as string}/&gt;
+                &lt;Footer logoUrl={props.common.logoUrl as string}/&gt;
             }
         &lt;/&gt;
     );
@@ -722,9 +747,9 @@ The logo already exists in <code>resources/assets/react4xp.svg</code>
 <div class="title">react4xp/components/common/CommonProcessor.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {assetUrl} from '/lib/enonic/asset';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
-export const commonProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:main'&gt; = (props) =&gt; {
+export const commonProcessor: ComponentProcessor&lt;'com.enonic.app.hmdb:main'&gt; = (props) =&gt; {
 
     const logoUrl = assetUrl({path: 'react4xp.svg'});
 
@@ -790,7 +815,7 @@ You now have a stylish site with a footer component on all pages. The footer als
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

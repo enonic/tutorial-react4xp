@@ -445,8 +445,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#set_up_page_rendering">Set up page rendering</a></li>
 <li><a href="#working_with_pages">Working with pages</a>
 <ul class="sectlevel2">
-<li><a href="#the_text_component">The text component</a></li>
-<li><a href="#movies">Movies</a></li>
+<li><a href="#the_text_component">The Text Component</a></li>
+<li><a href="#custom_components">Custom components</a></li>
 </ul>
 </li>
 </ul>
@@ -456,7 +456,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Content types are nice, but letting the editors compose their own pages is even better.</p>
+<p>Structured content is nice. Letting editors compose pages adds another dimention.</p>
 </div>
 </div>
 </div>
@@ -464,7 +464,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="intro"><a class="link" href="#intro">Intro</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>By defining a page, editors may drag&#8217;n drop cms components into the page, visually.</p>
+<p>By defining a page component, editors may start building pages.</p>
 </div>
 </div>
 </div>
@@ -472,56 +472,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="set_up_page_rendering"><a class="link" href="#set_up_page_rendering">Set up page rendering</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Content types are required before an editor can create content.
-Similarly, pages components must be defined before they can create pages.</p>
+<p>Content types are required before an editor can create content. Similarly, pages components must be defined before they can create pages.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p><strong>Add the component files</strong>:</p>
-</li>
-</ol>
-</div>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/page/Page.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Regions,} from '@enonic/react-components';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Region, ComponentProps, PageData} from '@enonic/react-components';
 import React from 'react'
 
-export const Page = (props: any) =&gt; {
+export const Page = ({component, meta}: ComponentProps&lt;PageData&gt;) =&gt; {
 
     return (
-            &lt;Regions {...props} /&gt;
+        &lt;Region data={component.regions.main.components} meta={meta} name="main"/&gt;
     );
 };</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>+
-./src/main/resources/react4xp/components/page/PageProcessor.ts</p>
-</div>
 <div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {PageComponent} from "@enonic-types/core";
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
-
-export const pageProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:main'&gt; = (props) =&gt; {
-    const component = props.component as PageComponent;
-
-    const regions = component?.regions || {};
-
-    return {
-        regions,
-        name: "main"
-    };
-};</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>+
-./src/main/resources/react4xp/components/page/Page.module.css</p>
-</div>
-<div class="listingblock">
+<div class="title">/src/main/resources/react4xp/components/page/Page.module.css</div>
 <div class="content">
 <pre class="highlight"><code class="language-CSS" data-lang="CSS">.page {
   padding-bottom: 0;
@@ -530,27 +502,9 @@ export const pageProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:m
 }</code></pre>
 </div>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
-<p><strong>Register the processor and component</strong>:</p>
-<div class="listingblock">
-<div class="title">/src/main/resources/react4xp/dataFetcher.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {DataFetcher} from '/lib/enonic/react4xp';
-import {commonProcessor} from '/react4xp/components/common/CommonProcessor';
-//import {helloProcessor} from './components/hello/HelloProcessor';
-import {personProcessor} from './components/content/PersonProcessor';
-import {pageProcessor} from './components/page/PageProcessor';
-
-export const dataFetcher = new DataFetcher();
-
-//dataFetcher.addContentType('portal:site', {processor: helloProcessor});
-dataFetcher.addCommon({processor: commonProcessor});
-dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});
-dataFetcher.addPage('com.enonic.app.hmdb:main', {processor: pageProcessor});</code></pre>
-</div>
-</div>
+<p><strong>Update the componentRegistry</strong></p>
 <div class="listingblock">
 <div class="title">/src/main/resources/componentRegistry.tsx</div>
 <div class="content">
@@ -575,10 +529,31 @@ componentRegistry.addPage('com.enonic.app.hmdb:main', {View: Page});</code></pre
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-We also leave "Hello React4xp" behind, by commenting it out
+Here we also disabled the "Hello" component, as it is no longer needed.
 </td>
 </tr>
 </table>
+</div>
+</li>
+<li>
+<p><strong>Disable the HelloProcessor</strong> as well:</p>
+<div class="paragraph">
+<p>Your dataFetcher should now look like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">/src/main/resources/react4xp/dataFetcher.ts</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {DataFetcher} from '/lib/enonic/react4xp';
+import {commonProcessor} from '/react4xp/components/common/CommonProcessor';
+//import {helloProcessor} from './components/hello/HelloProcessor';
+import {personProcessor} from './components/content/PersonProcessor';
+
+export const dataFetcher = new DataFetcher();
+
+//dataFetcher.addContentType('portal:site', {processor: helloProcessor});
+dataFetcher.addCommon({processor: commonProcessor});
+dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProcessor});</code></pre>
+</div>
 </div>
 </li>
 </ol>
@@ -589,33 +564,39 @@ We also leave "Hello React4xp" behind, by commenting it out
 <h2 id="working_with_pages"><a class="link" href="#working_with_pages">Working with pages</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As it turns out, HMDB already contains data for pages, and by reloading your front-page, you should immediately see this:</p>
+<p>The HMDB dataset already contains sample content with pages. By selecting the front-page in Content Studio, you should immediately see something like this:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="media/r4xp-demo.png" alt="r4xp demo" width="1390px" title="First page rendering with text component"></span></p>
+</div>
+<div class="paragraph">
+<p>By editing the front page, you will see that a page with a single region <code>main</code>, containing a single Text Component.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="media/page.png" alt="page" width="1389px" title="Editing front page"></span></p>
 </div>
 <div class="sect2">
-<h3 id="the_text_component"><a class="link" href="#the_text_component">The text component</a></h3>
+<h3 id="the_text_component"><a class="link" href="#the_text_component">The Text Component</a></h3>
 <div class="paragraph">
-<p>The reason why you can see the righ text content on the page, is that Content Studio ships with a <code>Rich text component</code> that can be placed on pages. React4XP also implements a default rendering of this.</p>
+<p>Enonic provides a standard <code>Rich text component</code> that can be placed on pages. React4XP implements a default rendering of this special component.</p>
 </div>
 <div class="paragraph">
-<p>Try editing the page, to see how this works.</p>
+<p>By selecting the component, in the list, or directly on the page you can start editing it.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/TODO.png" alt="TODO" width="900px" title="Editing front page"></span></p>
+<p><span class="image"><img src="media/text-component.png" alt="text component" width="1390px" title="Editing the text component"></span></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="movies"><a class="link" href="#movies">Movies</a></h3>
+<h3 id="custom_components"><a class="link" href="#custom_components">Custom components</a></h3>
 <div class="paragraph">
-<p>TODO: Verify</p>
+<p>Pages also support custom components. Try selecting the <code>Movies</code> page, and you will see that some components are not rendering properly. Content Studio has a built-in fallback handling for these, so you can interact with them, even if they are not yet rendering.</p>
 </div>
 <div class="paragraph">
-<p>Visiting the <code>Movies</code> page, you will components that are missing rendering. Content Studio has a built-in fallback handling for thse, so you can interact with them, even if they are not yet rendering.</p>
+<p><span class="image"><img src="media/movies.png" alt="movies" width="1389px" title="Preview of movies with missing parts"></span></p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/TODO.png" alt="TODO" width="900px" title="Editing movies"></span></p>
-</div>
-<div class="paragraph">
-<p>We&#8217;ll deal with some of these in the <a href="parts.ahtml">parts</a> chapter.</p>
+<p>We&#8217;ll start dealing with this in the <a href="parts.ahtml">parts</a> chapter.</p>
 </div>
 </div>
 </div>
@@ -623,7 +604,7 @@ We also leave "Hello React4xp" behind, by commenting it out
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

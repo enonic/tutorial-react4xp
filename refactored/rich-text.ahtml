@@ -463,7 +463,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Enonic boasts a <a href="https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea">rich text input type</a>.
 Unlike basic text fields, rich-text may contain more complex concepts such as tables, images, links and even custom components (aka macros).
-Each of these typically need custom processing during rendering, in order to provide a contextually correct URLs, image sizes etc.</p>
+Each of these typically need custom processing during rendering. For instance to ensure contextually correct URLs, image sizes etc.</p>
 </div>
 </div>
 </div>
@@ -471,12 +471,11 @@ Each of these typically need custom processing during rendering, in order to pro
 <h2 id="sample_content"><a class="link" href="#sample_content">Sample content</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Again, the sample data set contains everything we need to get going.
-The <code>Bio</code> field in the person content type is exactly what we&#8217;re looking for:</p>
+<p>The <code>Bio</code> field in the person content type is exactly what we&#8217;re looking for:</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="media/rich-text-bio.png" alt="rich text bio" width="720px">
+<img src="media/rich-text-bio.png" alt="rich text bio" width="500px">
 </div>
 <div class="title">Figure 1. Rich text bio field for Lea Seydoux</div>
 </div>
@@ -494,7 +493,7 @@ The <code>Bio</code> field in the person content type is exactly what we&#8217;r
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Update the Person processor</strong> to include a bio prop:</p>
+<p><strong>Update the Person processor file</strong> to include the <code>bio</code> prop:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/content/PersonProcessor.ts</div>
 <div class="content">
@@ -504,7 +503,7 @@ import {imageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
 import {PageDescriptor} from '@enonic-types/core';
 import type {Content} from '@enonic-types/lib-content';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
 function fetchAdditionalPhotos(photosIds) {
     return photosIds.map(photoId =&gt; {
@@ -519,7 +518,7 @@ function fetchAdditionalPhotos(photosIds) {
     });
 }
 
-export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
+export const personProcessor: ComponentProcessor&lt;PageDescriptor&gt;
     = (params) =&gt; {
     const photos: string[] = toArray&lt;string&gt;(params.content.data.photos as string | string[])
     const firstPhotoId = photos[0] || '';
@@ -542,8 +541,7 @@ export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
         photo: firstPhoto,
         birthDate: params.content.data.dateofbirth,
         restPhotos: extraPhotos,
-        bio: `${params.content.data.bio}`,
-        bioHtml: processHtml({
+        bio: processHtml({
             value: params.content.data.bio as string,
             imageWidths: [200, 400, 800],
         })
@@ -552,7 +550,7 @@ export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
 </div>
 </div>
 <div class="paragraph">
-<p>The ProcessHtml function (included in React4XP) outputs a format that the RichText component can use, as you will see below:</p>
+<p>The ProcessHtml function (part of React4XP) outputs a format that the RichText component can use, as you will see below:</p>
 </div>
 </li>
 <li>
@@ -561,12 +559,12 @@ export const personProcessor: ComponentProcessorFunction&lt;PageDescriptor&gt;
 <div class="title">/src/main/resources/react4xp/components/content/Person.tsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {componentRegistry} from '/react4xp/componentRegistry';
-import {RichText} from '@enonic/react-components';
+import {RichText, type ComponentProps} from '@enonic/react-components';
 import React from 'react'
 import styles from './Person.module.css';
 
-export const Person = (props) =&gt; {
-    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+export const Person = (props: ComponentProps) =&gt; {
+    const {displayName, photo, restPhotos, bio, birthDate} = props.data as any;
     return (
         &lt;div className={styles.person}&gt;
             &lt;h1&gt;{displayName}&lt;/h1&gt;
@@ -610,12 +608,12 @@ export const Person = (props) =&gt; {
                     &lt;/&gt;
                 )}
             &lt;/div&gt;
-            {bioHtml &amp;&amp; (
+            {bio &amp;&amp; (
                 &lt;&gt;
                     &lt;h2&gt;Bio&lt;/h2&gt;
                     &lt;div className={styles.richText}&gt;
                         &lt;RichText
-                            data={bioHtml}
+                            data={bio}
                             componentRegistry={componentRegistry}
                             loading="lazy"
                         /&gt;
@@ -770,7 +768,7 @@ The raw Macro data are actually
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

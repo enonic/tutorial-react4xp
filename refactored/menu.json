@@ -61,12 +61,16 @@
           "document": "appendix/config"
         },
         {
-          "title": "Chunks",
-          "document": "appendix/chunks"
-        },
-        {
           "title": "Entries",
           "document": "appendix/entries"
+        },
+        {
+          "title": "Hydration",
+          "document": "appendix/hydration"
+        },
+        {
+          "title": "Chunks",
+          "document": "appendix/chunks"
         },
         {
           "title": "API",

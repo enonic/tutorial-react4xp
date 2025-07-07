@@ -457,14 +457,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Version 6 is still compatible with how components such as parts are rendered in version 5(each part is a separate react app/entry).</p>
+<p>Version 6 is still compatible with how parts are rendered in version 5 (where each part is a separate entry).</p>
 </div>
 <div class="paragraph">
-<p>You still need to update pages and layouts to use the new component registry, as this is a breaking change and regions are now dependent on component registry.
-But you can can upgrade you existing react4xp application if you want to.</p>
+<p>This means you may perform a partial upgrade of your application, where you will not be using the Component Registry.</p>
 </div>
 <div class="paragraph">
-<p>Follow these steps:</p>
+<p>Follow the steps below:</p>
 </div>
 </div>
 </div>
@@ -472,7 +471,7 @@ But you can can upgrade you existing react4xp application if you want to.</p>
 <h2 id="upgrade_xp"><a class="link" href="#upgrade_xp">Upgrade XP</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Set your app xp version 7.15 or newer</p>
+<p>Set the XP version of your app to 7.15 or newer</p>
 </div>
 <div class="listingblock">
 <div class="title">gradle.properties</div>
@@ -507,7 +506,7 @@ But you can can upgrade you existing react4xp application if you want to.</p>
 <p>Add global Enonic types (includes core transitively)</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"@enonic-types/global":   "^7.15.0",</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">"@enonic-types/global":   "^7.15.1",</code></pre>
 </div>
 </div>
 <div class="literalblock">
@@ -584,95 +583,7 @@ But you can can upgrade you existing react4xp application if you want to.</p>
 <h2 id="folder_structure"><a class="link" href="#folder_structure">Folder structure</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The folder structure of your React4XP application should look similar to this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-files" data-lang="files">package.json
-react4xp.config.js <i class="conum" data-value="1"></i><b>(1)</b>
-src/
-  main/
-    resources/
-      react4xp/ <i class="conum" data-value="2"></i><b>(2)</b>
-        dataFetcher.ts <i class="conum" data-value="3"></i><b>(3)</b>
-        componentRegistry.tsx <i class="conum" data-value="4"></i><b>(4)</b>
-        components/
-            common/
-            content/
-            layouts/
-            macro/
-            page/ <i class="conum" data-value="5"></i><b>(5)</b>
-              Page.module.css
-              Page.tsx
-              PageProcessor.ts
-            parts/
-            globalStyles.css <i class="conum" data-value="6"></i><b>(6)</b>
-        entries/
-          App.tsx <i class="conum" data-value="7"></i><b>(7)</b>
-          Site.xml <i class="conum" data-value="8"></i><b>(8)</b>
-          pages/ <i class="conum" data-value="9"></i><b>(9)</b>
-            page/ <i class="conum" data-value="9"></i><b>(9)</b>
-              page.xml <i class="conum" data-value="10"></i><b>(10)</b>
-      site/ <i class="conum" data-value="11"></i><b>(11)</b>
-        app.ts <i class="conum" data-value="12"></i><b>(12)</b>
-      types/ <i class="conum" data-value="13"></i><b>(13)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>React4XP settings</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>React components must be placed within this folder</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Fetches props for CMS components</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Mapping React components to CMS component</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>default page component</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Global styles</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>Main React component</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="8"></i><b>8</b></td>
-<td><a href="./controller#site-mapping" target="_blank" rel="noopener">Site descriptor</a></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="9"></i><b>9</b></td>
-<td>Folder for descriptor</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="10"></i><b>10</b></td>
-<td>Component descriptor XML</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="11"></i><b>11</b></td>
-<td>Optionally place CMS schemas here</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="12"></i><b>12</b></td>
-<td>Boostrapping controller</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="13"></i><b>13</b></td>
-<td>TypeScript types (optional)</td>
-</tr>
-</table>
+<p>The folder structure of your React4XP application can stay intact</p>
 </div>
 <div class="paragraph">
 <p>This layout ensures XP can discover your React4XP assets (under react4xp/), site controllers (under site/), static files, and shared TS types.</p>
@@ -995,7 +906,7 @@ We do this by updating site.xml:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

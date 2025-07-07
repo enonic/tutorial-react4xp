@@ -479,33 +479,18 @@ Follow the steps below:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/layouts/TwoColumn.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Layout} from '@enonic/react-components';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {ComponentProps, LayoutData} from '@enonic/react-components';
+import {Region} from '@enonic/react-components';
 import React from 'react'
 import styles from './TwoColumn.module.css';
 
 
-export const TwoColumnLayout = (props: any,) =&gt; {
+export const TwoColumnLayout = ({component, meta}: ComponentProps&lt;LayoutData&gt;) =&gt; {
 
-    return (
-        &lt;Layout className={styles.row} {...props}/&gt;
-    );
-};</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">/src/main/resources/react4xp/components/layouts/TwoColumnProcessor.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {LayoutComponent} from '@enonic-types/core';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
-
-
-export const layoutProcessor: ComponentProcessorFunction&lt;'com.enonic.app.hmdb:2-column'&gt; = ({component}) =&gt; {
-
-    const {regions} = component as LayoutComponent;
-
-    return {
-        regions: regions,
-    };
+    return &lt;div className={styles.row}&gt;
+        &lt;Region data={component.regions.left.components} meta={meta} name="left"/&gt;
+        &lt;Region data={component.regions.right.components} meta={meta} name="right"/&gt;
+    &lt;/div&gt;;
 };</code></pre>
 </div>
 </div>
@@ -600,7 +585,7 @@ Create a new folder in the site structure, expand the preview panel and start cr
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

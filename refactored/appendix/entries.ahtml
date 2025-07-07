@@ -462,12 +462,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="entries"><a class="link" href="#entries">What is an entry?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>React4xp is structured around <em>entries</em>.</p>
+<p>React4xp is not limited to a single "React app", it may actually support multiple React instances on a single page.</p>
 </div>
 <div class="paragraph">
-<p>It&#8217;s actually a webpack term, but in React4xp we use the word entry for <strong>a React component that can be accessed by React4xp</strong> in an XP controller. They are the <em>only</em> react files that React4xp can use directly.</p>
+<p>In. React4XP we call these <code>entries</code>. It&#8217;s actually a webpack term, but in React4xp we use the word entry for <strong>a React component that can be called by React4xp</strong> in an XP controller. They are the only react files that React4xp can use directly.</p>
 </div>
-<div id="mentalmodel" class="paragraph">
+<div class="paragraph">
 <p>Think of entries as <strong>"bridge elements"</strong>:</p>
 </div>
 <div class="paragraph">
@@ -703,7 +703,7 @@ export default props =&gt; &lt;HookButton {...props} /&gt;;</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>

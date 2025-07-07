@@ -522,22 +522,18 @@ Then we add extraProps to it, this is important because react4xp v6 uses this to
 <div class="title">src/main/resources/react4xp/components/parts/example/example.tsx</div>
 <div class="content">
 <pre>import Hello from '/lib/myReactComponents/Hello';
-import {Part} from '@enonic/react-components';
 import dayjs from 'dayjs';
 import React, {useState} from 'react';
 
 export const Example = (props: any) =&gt; {
 
-    const {componentRegistry, ...extraProps} = props;
     const [count, setCount] = useState(0);
 
-    return (
-        &lt;Part {...extraProps}&gt;
+    return &lt;&gt;
             &lt;Hello/&gt;
             &lt;div&gt;Part: {dayjs().format()}&lt;/div&gt;
             &lt;button onClick={() =&gt; setCount(prev =&gt; prev + 1)}&gt;{count}&lt;/button&gt;
-        &lt;/Part&gt;
-    );
+    &lt;/&gt;;
 };
 
 
@@ -550,9 +546,9 @@ export default Example;</pre>
 <div class="listingblock">
 <div class="title">src/main/resources/react4xp/components/parts/example/exampleProcessor.ts</div>
 <div class="content">
-<pre>import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+<pre>import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
-export const partProcessor: ComponentProcessorFunction&lt;'com.enonic.app.react4xp:example'&gt; = (props) =&gt; {
+export const partProcessor: ComponentProcessor&lt;'com.enonic.app.react4xp:example'&gt; = (props) =&gt; {
     return {};
 };</pre>
 </div>
@@ -698,9 +694,9 @@ Notice how we change <code>regionsData</code> to <code>regions</code>, this is b
 <div class="title">src/main/resources/react4xp/components/page/PageProcessor.ts</div>
 <div class="content">
 <pre>import {PageComponent} from "@enonic-types/core";
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
-export const pageProcessor: ComponentProcessorFunction&lt;'com.enonic.app.react4xp:Page'&gt; = (props) =&gt; {
+export const pageProcessor: ComponentProcessor&lt;'com.enonic.app.react4xp:Page'&gt; = (props) =&gt; {
     const component = props.component as PageComponent;
 
     const regions = component?.regions || {};
@@ -887,10 +883,10 @@ export function get(request: Enonic.Xp.Http.Request) {
 <div class="title">src/main/resources/react4xp/components/layouts/TwoColumnProcessor.ts</div>
 <div class="content">
 <pre>import {LayoutComponent} from '@enonic-types/core';
-import type {ComponentProcessorFunction} from '@enonic-types/lib-react4xp/DataFetcher';
+import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
 
-export const layoutProcessor: ComponentProcessorFunction&lt;'com.enonic.app.react4xp:TwoColumns'&gt; = ({component}) =&gt; {
+export const layoutProcessor: ComponentProcessor&lt;'com.enonic.app.react4xp:TwoColumns'&gt; = ({component}) =&gt; {
     const {regions} = component as LayoutComponent;
 
     return {
@@ -1010,7 +1006,7 @@ dataFetcher.addLayout('com.enonic.app.react4xp:TwoColumns', {processor: layoutPr
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-19 13:21:56 UTC
+Last updated 2025-07-07 11:26:38 UTC
 </div>
 </div>
 </body>
