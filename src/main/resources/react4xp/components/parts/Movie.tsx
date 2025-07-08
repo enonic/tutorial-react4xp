@@ -1,10 +1,11 @@
-import React from 'react';
-import styles from './Movie.module.css';
 import type {ComponentProps} from '@enonic/react-components';
+import React from 'react';
+import {REQUEST_MODE} from '../../constants'
+import styles from './Movie.module.css';
 
 export const Movie = (props: ComponentProps) => {
     const {
-        restphotos,
+        restPhotos,
         trailer,
         name,
         photo,
@@ -14,11 +15,17 @@ export const Movie = (props: ComponentProps) => {
         director,
         subtitle,
         abstract,
-    } = props.data as any;
+        meta
+    } = {
+        ...props.data as any,
+        meta: props.meta
+    };
 
     if (!abstract?.length) {
+        if (meta.mode !== REQUEST_MODE.EDIT) { return <h1>Movie details</h1>}
         return;
     }
+
 
     return <div className={styles.moviePage}>
         <header>
@@ -105,10 +112,10 @@ export const Movie = (props: ComponentProps) => {
                 <p>{abstract}</p>
             </section>
 
-            {restphotos && restphotos.length > 0 && <section className={styles.photos}>
+            {restPhotos && restPhotos.length > 0 && <section className={styles.photos}>
                 <div className={styles.photoGrid}>
                     <div className={styles.photoScroll}>
-                        {restphotos.map((photo, index) => (
+                        {restPhotos.map((photo, index) => (
                             <img
                                 key={index}
                                 src={photo.imageUrl}

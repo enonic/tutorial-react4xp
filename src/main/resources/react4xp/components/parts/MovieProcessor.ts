@@ -35,7 +35,7 @@ export const movieProcessor: ComponentProcessor<'com.enonic.app.hmdb:movie-detai
         };
     }
 
-    const restphotos = fetchAdditionalPhotos(remainingPhotoIds);
+    const restPhotos = fetchAdditionalPhotos(remainingPhotoIds);
 
     const cast = toArray<any>(data.cast).map(castMember => {
         const actorContent = getContentByKey<Content>({key: castMember.actor});
@@ -80,7 +80,7 @@ export const movieProcessor: ComponentProcessor<'com.enonic.app.hmdb:movie-detai
         abstract: data.abstract,
         release: data.release,
         photo: firstPhoto,
-        restphotos,
+        restPhotos,
         website: data.website,
         cast,
         director

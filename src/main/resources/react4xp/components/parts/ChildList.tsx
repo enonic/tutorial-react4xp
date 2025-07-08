@@ -1,13 +1,17 @@
+import type {ComponentProps} from '@enonic/react-components';
 import React from "react";
 import styles from "./ChildList.module.css";
-import type {ComponentProps} from '@enonic/react-components';
 
 export const ChildList = (props: ComponentProps) => {
 
     const {names, paths} = props.data as any;
 
     if (!names?.length) {
-        return;
+        return <ul>
+            <li className={styles.listItem}>
+                <p className={styles.listLink}>No child elements found.</p>
+            </li>
+        </ul>;
     }
 
     return <ul>
