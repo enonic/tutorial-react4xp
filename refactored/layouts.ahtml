@@ -441,8 +441,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#introduction">Introduction</a></li>
 <li><a href="#task_add_layout_rendering">Task: Add layout rendering</a></li>
+<li><a href="#optional_task_build_a_page_from_scratch">Optional task: Build a page from scratch</a></li>
 </ul>
 </div>
 </div>
@@ -450,18 +450,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Layouts are essentially parts, with regions</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="introduction"><a class="link" href="#introduction">Introduction</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Where parts are "leaf" components, layouts support nesting of components - similar to how pages work.</p>
-</div>
-<div class="paragraph">
-<p>Unsurprisingly, HMDB already contains sample pages that uses layouts, specifically a <code>2-column</code> layout.</p>
+<p>Layouts are essentially parts with regions, providing another layer of flexibility for page composition.</p>
 </div>
 </div>
 </div>
@@ -469,8 +458,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="task_add_layout_rendering"><a class="link" href="#task_add_layout_rendering">Task: Add layout rendering</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Adding layouts is more or less identical to pages and parts.
-Follow the steps below:</p>
+<p>Adding layouts is more or less identical to pages and parts. Unsurprisingly, HMDB already contains sample pages that uses layouts, specifically a <code>2-column</code> layout.</p>
+</div>
+<div class="paragraph">
+<p>Follow the steps below:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -516,7 +507,7 @@ export const TwoColumnLayout = ({component, meta}: ComponentProps&lt;LayoutData&
 </div>
 </li>
 <li>
-<p><strong>Register the component and processor</strong>:</p>
+<p>*Register the component:</p>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/componentRegistry.ts</div>
 <div class="content">
@@ -531,33 +522,13 @@ export const componentRegistry = new ComponentRegistry();
 componentRegistry.addLayout('com.enonic.app.hmdb:2-column', {View: TwoColumnLayout});</code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="title">/src/main/resources/react4xp/dataFetcher.ts</div>
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {layoutProcessor} from './components/layouts/TwoColumnProcessor';
-
-...
-
-export const dataFetcher = new DataFetcher();
-
-...
-
-dataFetcher.addLayout('com.enonic.app.hmdb:2-column', {processor: layoutProcessor});</code></pre>
-</div>
-</div>
 </li>
 <li>
 <p><strong>The result</strong>:
 By combining layout, part and text we are starting to see the potential of the page editor:
 <span class="image"><img src="media/layout-filled.png" alt="layout filled" width="900px" title="2-column layout with text"></span></p>
-<div class="paragraph">
-<p>== Optional task: Build a page from scratch</p>
-</div>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p>Try building your own page from scratch, using the various components you now have available.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -566,26 +537,40 @@ By combining layout, part and text we are starting to see the potential of the p
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Create a new folder in the site structure, expand the preview panel and start creating.
+Like parts, layouts also support processors. Use <code>.addLayout</code> instead of <code>.addPart</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="optional_task_build_a_page_from_scratch"><a class="link" href="#optional_task_build_a_page_from_scratch">Optional task: Build a page from scratch</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>So far you have seen pre-defined pages. You may also try building your own page from scratch - using the components that are now available.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Create a new <code>folder</code> within the site structure, click the preview field and choose <code>Customize</code>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>When adding an empty layout, it will look something like this:</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/layout-blank.png" alt="layout blank" width="900px" title="2-column layout"></span></p>
-</div>
-<div class="paragraph">
-<p>Wrapping up pages, we&#8217;ll have a look at <a href="page-templates.ahtml">page templates</a>.</p>
+<p>Wrapping up, we&#8217;ll have a look at <a href="page-templates.ahtml">page templates</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-07 11:26:38 UTC
+Last updated 2025-07-09 09:02:58 UTC
 </div>
 </div>
 </body>

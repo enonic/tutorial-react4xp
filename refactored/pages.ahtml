@@ -441,7 +441,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#intro">Intro</a></li>
 <li><a href="#set_up_page_rendering">Set up page rendering</a></li>
 <li><a href="#working_with_pages">Working with pages</a>
 <ul class="sectlevel2">
@@ -456,15 +455,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Structured content is nice. Letting editors compose pages adds another dimention.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="intro"><a class="link" href="#intro">Intro</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>By defining a page component, editors may start building pages.</p>
+<p>By defining a page component, editors may start composing pages using pre-defined components.</p>
 </div>
 </div>
 </div>
@@ -604,7 +595,7 @@ dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProce
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-07 11:26:38 UTC
+Last updated 2025-07-09 09:02:58 UTC
 </div>
 </div>
 </body>

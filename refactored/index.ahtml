@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>React4XP - Server Side React using the Enonic Framework</title>
+<title>React4XP - Server Side React with the Enonic Framework</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,11 +437,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>React4XP - Server Side React using the Enonic Framework</h1>
+<h1>React4XP - Server Side React with the Enonic Framework</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#introduction">Introduction</a></li>
+<li><a href="#what_is_react4xp">What is React4XP</a></li>
 <li><a href="#get_started">Get started</a></li>
 <li><a href="#dive_deeper">Dive deeper</a></li>
 <li><a href="#get_in_touch">Get in touch!</a></li>
@@ -462,7 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 <td class="content">
 <div class="paragraph">
-<p><strong>tl;dr</strong> The <a href="appendix/demo.ahtml">React4XP demo</a> is the completed result of this tutorial.</p>
+<p><strong>tl;dr</strong> Try the <a href="demo.ahtml">React4XP demo</a> instead.</p>
 </div>
 </td>
 </tr>
@@ -471,7 +471,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="introduction"><a class="link" href="#introduction">Introduction</a></h2>
+<h2 id="what_is_react4xp"><a class="link" href="#what_is_react4xp">What is React4XP</a></h2>
 <div class="sectionbody">
 <div class="admonitionblock note">
 <table>
@@ -494,6 +494,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul>
 <li>
 <p>100% TSX/JSX rendering - Single React app</p>
+</li>
+<li>
+<p>Based on the <a href="https://www.npmjs.com/package/@enonic/react-components">Enonic React component NPM</a></p>
 </li>
 <li>
 <p>Works with CMS Schemas across multiple namespaces/apps</p>
@@ -585,7 +588,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-07 11:26:38 UTC
+Last updated 2025-07-09 09:02:58 UTC
 </div>
 </div>
 </body>

@@ -5,7 +5,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<meta name="author" content="Skip straight to the end of this tutorial.">
 <title>React4XP Demo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -439,25 +438,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <body class="article toc2 toc-right">
 <div id="header">
 <h1>React4XP Demo</h1>
-<div class="details">
-<span id="author" class="author">Skip straight to the end of this tutorial.</span><br>
-</div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#what">What?</a></li>
-<li><a href="#1_create_a_sandbox">1 - Create a sandbox</a></li>
-<li><a href="#2_create_application">2 - Create application</a></li>
-<li><a href="#3_build_and_deploy">3 - Build and deploy</a></li>
+<li><a href="#alternative_1_enonic_cloud">Alternative 1 - Enonic Cloud</a></li>
+<li><a href="#alterrnative_2_enonic_sdk">Alterrnative 2 - Enonic SDK</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spin up your own React4XP personal demo in the cloud, or on your local machine.</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="what"><a class="link" href="#what">What?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You will run an XP server with a sample dataset, then deploy a R4XP front-end on top of it</p>
+<p>A complete demo instance - complete with sample content and a React4XP front-end. Choose from the alternatives below:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="media/r4xp-demo.png" alt="r4xp demo" width="1390px" title="React4xp front-end rendring the Headless Movie DB"></span></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -466,7 +471,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Want to learn what is really happening? Head on to the <a href="enonic-setup.ahtml">first chapter</a> of the tutorial instead.
+To learn the details behind how this front-end was built, head on to the <a href="setup.ahtml">first chapter</a> of the tutorial instead.
 </td>
 </tr>
 </table>
@@ -474,48 +479,156 @@ Want to learn what is really happening? Head on to the <a href="enonic-setup.aht
 </div>
 </div>
 <div class="sect1">
-<h2 id="1_create_a_sandbox"><a class="link" href="#1_create_a_sandbox">1 - Create a sandbox</a></h2>
+<h2 id="alternative_1_enonic_cloud"><a class="link" href="#alternative_1_enonic_cloud">Alternative 1 - Enonic Cloud</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>Create a sandbox</strong> run the following command in your terminal:</p>
+<p>Follow these steps to get the demo up and running on our Free plan:</p>
 </div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Sign up</strong> for <a href="https://console.enonic.com/">Enonic cloud</a></p>
+<div class="paragraph">
+<p>Verify your e-mail and create the account</p>
+</div>
+</li>
+<li>
+<p><strong>Create a new solution</strong></p>
+<div class="paragraph">
+<p>Use the template called <code>Headless Movie DB</code>, and complete the setup.</p>
+</div>
+</li>
+<li>
+<p>Link the front-end to your content</p>
+<div class="paragraph">
+<p>Once the solution is ready, launch <code>XP admin</code> and open <code>Content Studio</code>.
+Edit the <code>Headless Movie DB</code> site, add the <code>React4XP Demo</code> application and press <b class="button">Save</b></p>
+</div>
+<div class="paragraph">
+<p>You should how see the new front-end in Content Studio.</p>
+</div>
+</li>
+<li>
+<p>Publish the changes</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Optionally expose the site on a public URL</strong> by following the steps below:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select <code>Ingresses</code> from the main menu and click <b class="button">Create</b></p>
+</li>
+<li>
+<p>Give it a suitable name, i.e. <code>moviedb</code></p>
+</li>
+<li>
+<p>Set the target to <code>/site/hmdb/master/hmdb</code></p>
+</li>
+<li>
+<p>Accept creating a new domain, and set the path to <code>/</code></p>
+</li>
+<li>
+<p>Leave IDprovider empty and click <b class="button">Create</b> on the final step</p>
+</li>
+<li>
+<p>Visit the Ingress link to see the live site.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If the live site is showing the default preview of Headless Movie DB, you have not published your changes to the site.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Congratulations, you just deployed a live a React site powered by Enonic! 🚀</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="alterrnative_2_enonic_sdk"><a class="link" href="#alterrnative_2_enonic_sdk">Alterrnative 2 - Enonic SDK</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Follow the steps below to build and run the demo an a local Enonic developer instance:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Install Enonic CLI</strong> if you have not already done this</p>
+<div class="literalblock">
+<div class="content">
+<pre>npm install -g @enonic/cli</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Create a new sandbox</strong> by running this command in your terminal:</p>
 <div class="literalblock">
 <div class="content">
 <pre>enonic sandbox create r4xpdemo -t hmdb -f</pre>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="2_create_application"><a class="link" href="#2_create_application">2 - Create application</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>From a <strong>new terminal window</strong>, run the following command:</p>
-</div>
+</li>
+<li>
+<p><strong>Create the R4XP front-end app</strong> by running this command from a <em>new terminal window</em>:</p>
 <div class="literalblock">
 <div class="content">
 <pre>enonic project create my.first.r4xp -r tutorial-react4xp -s r4xpdemo -f</pre>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="3_build_and_deploy"><a class="link" href="#3_build_and_deploy">3 - Build and deploy</a></h2>
-<div class="sectionbody">
+</li>
+<li>
+<p><strong>Build and deploy the app</strong> to your XP sandbox</p>
 <div class="literalblock">
 <div class="content">
-<pre>enonic project deploy</pre>
+<pre>cd r4xpdemo/
+enonic project deploy</pre>
 </div>
+</div>
+</li>
+<li>
+<p><strong>Link the front-end with your content</strong></p>
+<div class="paragraph">
+<p>Launch <code>XP admin</code> and open <code>Content Studio</code>.
+Edit the <code>Headless Movie DB</code> site, add the <code>React4XP Demo</code> application and press <b class="button">Save</b></p>
 </div>
 <div class="paragraph">
-<p>Congratulations, you now have a React site powered by Enonic! 🚀</p>
+<p>You should how see the demo in Content Studio.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The live version of the site can be found on <a href="http://localhost:8080/site/hmdb/master/hmdb" target="_blank" rel="noopener">http://localhost:8080/site/hmdb/master/hmdb</a>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Congratulations, you just built a React site powered by Enonic! 🚀</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-07 11:26:38 UTC
+Last updated 2025-07-09 09:02:58 UTC
 </div>
 </div>
 </body>

@@ -470,16 +470,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/ChildList.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from "react";
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {ComponentProps} from '@enonic/react-components';
+import React from "react";
 import styles from "./ChildList.module.css";
-import type {ComponentProps} from '@enonic/react-components';
 
 export const ChildList = (props: ComponentProps) =&gt; {
 
     const {names, paths} = props.data as any;
 
     if (!names?.length) {
-        return;
+        return &lt;ul&gt;
+            &lt;li className={styles.listItem}&gt;
+                &lt;p className={styles.listLink}&gt;No child elements found.&lt;/p&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;;
     }
 
     return &lt;ul&gt;
@@ -535,7 +539,7 @@ export const childListProcessor: ComponentProcessor&lt;'com.enonic.app.hmdb:chil
   font-weight: 500;
 }
 
-.listLink p {
+.listItem p {
   margin-block: 0;
 }</code></pre>
 </div>
@@ -616,7 +620,7 @@ import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
 export const headingProcessor: ComponentProcessor&lt;'com.enonic.app.hmdb:heading'&gt; = (params) =&gt; {
     const component = params.component as PartComponent;
-    const heading = component.config?.heading || params.content.displayName;
+    const heading = component.config?.heading || params.content.displayName || 'Display name not set';
 
     return {
         heading: heading,
@@ -678,7 +682,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-07 11:26:38 UTC
+Last updated 2025-07-09 09:02:58 UTC
 </div>
 </div>
 </body>

@@ -441,11 +441,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#intro">Intro</a></li>
+<li><a href="#background">Background</a></li>
 <li><a href="#sample_content">Sample content</a></li>
 <li><a href="#rich_text_rendering">Rich text rendering</a></li>
-<li><a href="#macro_components">Macro components</a></li>
-<li><a href="#what_happened_to_the_dataprocessor">What happened to the dataProcessor?</a></li>
+<li><a href="#macros">Macros</a>
+<ul class="sectlevel2">
+<li><a href="#no_dataprocessor">No dataProcessor?</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -458,7 +461,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="intro"><a class="link" href="#intro">Intro</a></h2>
+<h2 id="background"><a class="link" href="#background">Background</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Enonic boasts a <a href="https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea">rich text input type</a>.
@@ -645,18 +648,15 @@ The page should now look something like this:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="macro_components"><a class="link" href="#macro_components">Macro components</a></h2>
+<h2 id="macros"><a class="link" href="#macros">Macros</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The HMDB dataset defines a <code>Fact-Box</code> macro, which editors may use inside their rich-text fields.</p>
+<p>The HMDB dataset defines a <code>Fact-Box</code> macro, which editors may use inside their rich-text input.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p><strong>Add the following files</strong> to your app:</p>
-</li>
-</ol>
-</div>
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/macro/FactBox.tsx</div>
 <div class="content">
@@ -677,11 +677,8 @@ export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
 };</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>+
-./src/main/resources/react4xp/components/macro/FactBox.module.css</p>
-</div>
 <div class="listingblock">
+<div class="title">/src/main/resources/react4xp/components/macro/FactBox.module.css</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">.factbox {
   display: block;
@@ -706,15 +703,11 @@ export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>+
-. <strong>Register the component</strong></p>
-</div>
-<div class="paragraph">
-<p>+
-./src/main/resources/react4xp/componentRegistry.tsx</p>
-</div>
+</li>
+<li>
+<p><strong>Register the component</strong></p>
 <div class="listingblock">
+<div class="title">/src/main/resources/react4xp/componentRegistry.tsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {ComponentRegistry} from '@enonic/react-components';
 import {Person} from './components/content/Person';
@@ -728,6 +721,9 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});
 componentRegistry.addMacro('factbox', {View: Factbox});</code></pre>
 </div>
 </div>
+</li>
+</ol>
+</div>
 <div class="paragraph">
 <p><strong>Factbox complete!</strong></p>
 </div>
@@ -740,22 +736,19 @@ componentRegistry.addMacro('factbox', {View: Factbox});</code></pre>
 </div>
 <div class="title">Figure 3. Person content rendered with rich text and macro</div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="what_happened_to_the_dataprocessor"><a class="link" href="#what_happened_to_the_dataprocessor">What happened to the dataProcessor?</a></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="no_dataprocessor"><a class="link" href="#no_dataprocessor">No dataProcessor?</a></h3>
 <div class="paragraph">
-<p>TODO</p>
+<p>What happened to the FactBox dataProcessor? Macros automatically get configuration values passed to the React component via the <code>children</code> field.</p>
 </div>
-<div class="admonitionblock note">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-The raw Macro data are actually
+To create a macro dataProcessor, register it using <code>.addMacro</code> instead of <code>.addPage</code> in your dataFetcher.
 </td>
 </tr>
 </table>
@@ -766,9 +759,10 @@ The raw Macro data are actually
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-07 11:26:38 UTC
+Last updated 2025-07-09 09:02:58 UTC
 </div>
 </div>
 </body>

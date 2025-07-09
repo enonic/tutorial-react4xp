@@ -441,7 +441,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#introduction">Introduction</a></li>
 <li><a href="#movies">Movies</a></li>
 <li><a href="#task_movie_details_part">Task: Movie details part</a></li>
 <li><a href="#optional_task_edit_template">Optional task: Edit template</a></li>
@@ -453,15 +452,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Page templates let us to reuse a page setup across multiple content items.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="introduction"><a class="link" href="#introduction">Introduction</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>So far, the pages you have seen are individually defined on every content item. So far, you have seen how to hard-code how a <code>Person</code> is rendered. Page templates enable editors to control how specific content types presented.</p>
+<p>Page templates allow editors to control how specific content types are rendered</p>
 </div>
 </div>
 </div>
@@ -469,16 +460,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="movies"><a class="link" href="#movies">Movies</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A page template content item <code>/hmdb/page-templates/Movie</code> already exists in our sample content. This will automatically be used when attempting to render content of type <code>Movie</code>.</p>
+<p>In the <code>HMDB</code> dataset, the <code>/hmdb/page-templates/Movie</code> page template already exists. This will automatically be used when attempting to render content of type <code>Movie</code>.</p>
 </div>
 <div class="paragraph">
 <p>Try selecting a Movie in Content Studio. You should see something like this:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/todo.png" alt="todo" width="900px" title="Movie without part"></span></p>
+<p><span class="image"><img src="media/movie-no-component.png" alt="movie no component" width="1389px" title="Movie template missing component"></span></p>
 </div>
 <div class="paragraph">
-<p>We&#8217;re basically missing the implementation of the part that renders the presentation of a movie.</p>
+<p>Here, we&#8217;re basically missing the implementation of the part that renders the presentation of a movie.</p>
 </div>
 </div>
 </div>
@@ -486,7 +477,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="task_movie_details_part"><a class="link" href="#task_movie_details_part">Task: Movie details part</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s implement one final component:</p>
+<p>Start by implementing this final component by following the steps below:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -495,13 +486,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/parts/Movie.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {ComponentProps} from '@enonic/react-components';
+import React from 'react';
+import {REQUEST_MODE} from '../../constants'
 import styles from './Movie.module.css';
-import type {ComponentProps} from '@enonic/react-components';
 
 export const Movie = (props: ComponentProps) =&gt; {
     const {
-        restphotos,
+        restPhotos,
         trailer,
         name,
         photo,
@@ -511,11 +503,17 @@ export const Movie = (props: ComponentProps) =&gt; {
         director,
         subtitle,
         abstract,
-    } = props.data as any;
+        meta
+    } = {
+        ...props.data as any,
+        meta: props.meta
+    };
 
     if (!abstract?.length) {
+        if (meta.mode !== REQUEST_MODE.EDIT) { return &lt;h1&gt;Movie details&lt;/h1&gt;}
         return;
     }
+
 
     return &lt;div className={styles.moviePage}&gt;
         &lt;header&gt;
@@ -602,10 +600,10 @@ export const Movie = (props: ComponentProps) =&gt; {
                 &lt;p&gt;{abstract}&lt;/p&gt;
             &lt;/section&gt;
 
-            {restphotos &amp;&amp; restphotos.length &gt; 0 &amp;&amp; &lt;section className={styles.photos}&gt;
+            {restPhotos &amp;&amp; restPhotos.length &gt; 0 &amp;&amp; &lt;section className={styles.photos}&gt;
                 &lt;div className={styles.photoGrid}&gt;
                     &lt;div className={styles.photoScroll}&gt;
-                        {restphotos.map((photo, index) =&gt; (
+                        {restPhotos.map((photo, index) =&gt; (
                             &lt;img
                                 key={index}
                                 src={photo.imageUrl}
@@ -665,7 +663,7 @@ export const movieProcessor: ComponentProcessor&lt;'com.enonic.app.hmdb:movie-de
         };
     }
 
-    const restphotos = fetchAdditionalPhotos(remainingPhotoIds);
+    const restPhotos = fetchAdditionalPhotos(remainingPhotoIds);
 
     const cast = toArray&lt;any&gt;(data.cast).map(castMember =&gt; {
         const actorContent = getContentByKey&lt;Content&gt;({key: castMember.actor});
@@ -710,7 +708,7 @@ export const movieProcessor: ComponentProcessor&lt;'com.enonic.app.hmdb:movie-de
         abstract: data.abstract,
         release: data.release,
         photo: firstPhoto,
-        restphotos,
+        restPhotos,
         website: data.website,
         cast,
         director
@@ -938,7 +936,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:movie-details', {processor: movieProces
 </ol>
 </div>
 <div class="paragraph">
-<p>Sweet, you now have a Part that can render Movies, and it will look something like this:</p>
+<p>You now have a Part that can render Movies, and it will look something like this:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="media/page-template.png" alt="page template" width="900px" title="Movie details part"></span></p>
@@ -949,16 +947,16 @@ dataFetcher.addPart('com.enonic.app.hmdb:movie-details', {processor: movieProces
 <h2 id="optional_task_edit_template"><a class="link" href="#optional_task_edit_template">Optional task: Edit template</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Try editing the Movie page template in Content Studio by adding other layouts and parts, and see what happens.</p>
+<p>The page that is used for rendering movies exists in the "Templates/" folder within your site. Try editing the <code>Movie</code> page template in Content Studio by adding other layouts and parts to see what happens.</p>
 </div>
-<div class="admonitionblock note">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-The <code>Person</code> content type component we created initially has presedence over editorial page templates. As such, creating a page template for <code>Person</code> will not affect the actual rendering.
+Hard-coded content type components, like the <code>Person</code> component we created initially has presedence over editorial page templates. As such, creating a page template for <code>Person</code> will not affect the actual rendering.
 </td>
 </tr>
 </table>
@@ -979,7 +977,7 @@ The <code>Person</code> content type component we created initially has preseden
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-07 11:26:38 UTC
+Last updated 2025-07-09 09:02:58 UTC
 </div>
 </div>
 </body>
