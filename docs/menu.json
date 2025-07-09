@@ -77,20 +77,20 @@
           "document": "appendix/api"
         },
         {
+          "title": "Release Notes",
+          "document": "release"
+        },
+        {
           "title": "Upgrade notes",
           "document": "appendix/upgrade",
           "menuItems": [
             {
-              "title": "Partial upgrade",
+              "title": "Legacy mode",
               "document": "appendix/partial-upgrade"
             }
           ]
         }
       ]
-    },
-    {
-      "title": "Release Notes",
-      "document": "release"
     }
   ]
 }
