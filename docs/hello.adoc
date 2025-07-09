@@ -54,10 +54,12 @@ include::{sourcedir}react4xp/components/hello/Hello.tsx[]
 
 It takes a single parameter, HelloProps. The type is declared like this:
 
-.types/HelloProps.ts
 [source,TypeScript]
 ----
-include::{sourcedir}types/HelloProps.ts[]
+export interface HelloProps extends Record<string, unknown>{
+    title: string
+    initialCount: number
+}
 ----
 
 NOTE: Typing your props is optional, but recommended for more robust code.
