@@ -39,17 +39,12 @@ By combining layout, part and text we are starting to see the potential of the p
 image:layout-filled.png[title="2-column layout with text",width=900px]
 
 
-TIP: Just like parts, you may also add a dataProcessor if you wish to pass custom properties to the Layout component. Just use `.addLayout` instead of `.addPart`.
-
+TIP: Like parts, layouts also support processors. Use `.addLayout` instead of `.addPart`.
 
 == Optional task: Build a page from scratch
 
 So far you have seen pre-defined pages. You may also try building your own page from scratch - using the components that are now available.
 
-TIP: Create a new `folder` within the site structure, click the preview and choose `Customize`.
+TIP: Create a new `folder` within the site structure, click the preview field and choose `Customize`.
 
-When adding an empty layout, it will look something like this:
-
-image:layout-blank.png[title="2-column layout",width=900px]
-
-Wrapping up pages, we'll have a look at <<page-templates#, page templates>>.
+Wrapping up, we'll have a look at <<page-templates#, page templates>>.

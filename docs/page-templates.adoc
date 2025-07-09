@@ -4,25 +4,21 @@
 :sourcedir: ../src/main/resources/
 :snippet: ../code-samples/code-snippets/
 
-Page templates let us to reuse a page setup across multiple content items.
-
-== Introduction
-
-So far, the pages you have seen are individually defined on every content item. So far, you have seen how to hard-code how a `Person` is rendered. Page templates enable editors to control how specific content types presented.
+Page templates allow editors to control how specific content types are rendered
 
 == Movies
 
-A page template content item `/hmdb/page-templates/Movie` already exists in our sample content. This will automatically be used when attempting to render content of type `Movie`. 
+In the `HMDB` dataset, the `/hmdb/page-templates/Movie` page template already exists. This will automatically be used when attempting to render content of type `Movie`. 
 
 Try selecting a Movie in Content Studio. You should see something like this:
 
-image:todo.png[title="Movie without part",width=900px]
+image:movie-no-component.png[title="Movie template missing component",width=1389px]
 
-We're basically missing the implementation of the part that renders the presentation of a movie.
+Here, we're basically missing the implementation of the part that renders the presentation of a movie.
 
 == Task: Movie details part
 
-Let's implement one final component:
+Start by implementing this final component by following the steps below:
 
 . *Add the Movie part files* to your app:
 +
@@ -58,15 +54,15 @@ include::{snippet}/page-templates/componentRegistry.tsx[]
 include::{snippet}/page-templates/dataFetcher.ts[]
 ----
 
-Sweet, you now have a Part that can render Movies, and it will look something like this:
+You now have a Part that can render Movies, and it will look something like this:
 
 image:page-template.png[title="Movie details part",width=900px]
 
 == Optional task: Edit template
 
-Try editing the Movie page template in Content Studio by adding other layouts and parts, and see what happens.
+The page that is used for rendering movies exists in the "Templates/" folder within your site. Try editing the `Movie` page template in Content Studio by adding other layouts and parts to see what happens.
 
-NOTE: The `Person` content type component we created initially has presedence over editorial page templates. As such, creating a page template for `Person` will not affect the actual rendering.
+TIP: Hard-coded content type components, like the `Person` component we created initially has presedence over editorial page templates. As such, creating a page template for `Person` will not affect the actual rendering.
 
 == Wrap up
 

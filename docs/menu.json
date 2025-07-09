@@ -41,13 +41,13 @@
       "document": "page-templates"
     },
     {
+      "title": "Demo",
+      "document": "demo"
+    },
+    {
       "title": "Appendix",
       "document": "appendix",
       "menuItems": [
-        {
-          "title": "Demo",
-          "document": "appendix/demo"
-        },
         {
           "title": "App.ts",
           "document": "appendix/controller"

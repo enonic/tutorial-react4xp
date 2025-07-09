@@ -83,11 +83,11 @@ You should now see the Factbox rendering properly
 
 image::rich-text-with-macro.png[title="Person content rendered with rich text and macro",width=720px]
 
-=== What happened to the dataProcessor?
+=== No dataProcessor?
 
-Why did you not have to implement a dataProcessor for the FactBox? 
+What happened to the FactBox dataProcessor? Macros automatically get configuration values passed to the React component via the `children` field.
 
-NOTE: TODO!
+TIP: To create a macro dataProcessor, register it using `.addMacro` instead of `.addPage` in your dataFetcher.
 
 
 Sweet! next up are <<pages#, pages>>.
