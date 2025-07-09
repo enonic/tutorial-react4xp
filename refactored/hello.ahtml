@@ -494,15 +494,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </li>
 <li>
-<p>Add your brand new "React4XP" application to the site.</p>
+<p>Add your brand new "React4XP" application to the site. After saving, the preview will refresh, to reveal something like this:</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/add-to-site.png" alt="add to site" width="647px" title="Add React4XP application to the site"></span></p>
-</div>
-<div class="paragraph">
-<p>After saving, the preview will refresh, to reveal something like this:</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/hello.png" alt="hello" width="547px" title="React4XP starter page"></span></p>
+<p><span class="image"><img src="media/hello.png" alt="hello" width="1440px" title="React4XP starter page"></span></p>
 </div>
 </li>
 </ol>
@@ -517,7 +511,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Try clicking the button for some React interactivity.
+Click <code>Preview</code> and try pressing the button for some React action.
 </td>
 </tr>
 </table>
@@ -696,7 +690,7 @@ Dive deeper by learning how the basic boot-strapping and routing works in the <a
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-09 09:02:58 UTC
+Last updated 2025-07-09 11:17:41 UTC
 </div>
 </div>
 </body>
