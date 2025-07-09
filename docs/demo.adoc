@@ -6,7 +6,9 @@
 Spin up your own React4XP personal demo in the cloud, or on your local machine.
 
 == What?
-A complete demo instance - complete with sample content and a React4XP front-end. Choose from the alternatives below:
+A complete demo instance with sample content and React4XP front-end.
+
+Choose from the alternatives below:
 
 image:r4xp-demo.png[title="React4xp front-end rendring the Headless Movie DB", 1390px]
 
