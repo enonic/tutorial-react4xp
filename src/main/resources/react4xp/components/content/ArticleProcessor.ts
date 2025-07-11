@@ -49,6 +49,8 @@ export const articleProcessor: ComponentProcessor<PageDescriptor> = (params) => 
                 text: processHtml({
                     value: block.text.text,
                     imageWidths: [200, 400, 800],
+                    dataFetcher: params.dataFetcher,
+                    component: params.component
                 }),
             };
         }
