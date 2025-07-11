@@ -1,4 +1,4 @@
-.factbox {
+.factBox {
   display: block;
   text-decoration: none;
   border-radius: 8px;
@@ -8,13 +8,14 @@
   margin: 1rem;
   position: relative;
   background-color: #0b0425;
+  box-shadow: 0 0 5px #0c022b;
 
   i {
     font-style: normal;
   }
 }
 
-.factbox .header {
+.factBox .header {
   font-size: 20px;
   line-height: 24px;
   margin: 0 0 0 1rem;
