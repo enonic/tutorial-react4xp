@@ -142,7 +142,7 @@ header {
 }
 
 .sneakyLink H3 {
-  margin-inline: 0rem;
+  margin-inline: 0;
   margin-top: 0;
 }
 
@@ -161,4 +161,14 @@ header {
 .date {
   font-size: 24px;
   margin-top: -1rem;
+}
+
+@media screen and (max-width: 1200px) {
+  .blocky {
+    display: flex;
+    width: 800px;
+    max-width: 90vw;
+    justify-content: space-between;
+    gap: 25px;
+  }
 }

@@ -1,5 +1,5 @@
 html {
-  background-color: #071622;
+  background-color: #0b1d30;
   color: ghostwhite;
   font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
   padding: 0;
@@ -61,6 +61,7 @@ p {
 }
 
 .helloPage {
+  min-height: calc(92vh - 7rem);
 
   h1 {
     color: #61DBFB;
@@ -68,19 +69,20 @@ p {
 
   button {
     background-color: #61DBFB;
-    color: #071622;
-    border: 1px solid #61DBFB;
+    color: #0b1d30;
+    border: 2px solid #61DBFB !important;
     box-shadow: 0 0 4px #61DBFB;
+    height: fit-content;
   }
 
   button:hover {
-    box-shadow: 0 0 16px #61DBFB;
+    box-shadow: 0 0 16px #61DBFB !important;
   }
 
   button:active {
-    background-color: #EF82F0;
-    box-shadow: 0 0 8px #EF82F0;
-    border-color: #EF82F0;
+    background-color: #EF82F0 !important;
+    box-shadow: 0 0 8px #EF82F0 !important;
+    border-color: #EF82F0 !important;
   }
 
 }
@@ -128,6 +130,13 @@ p {
 
   .contentContainer > div {
     min-height: 80vh;
+  }
+
+  .helloPage {
+    min-height: calc(86vh - 7rem);
+    max-width: 100%;
+    width: unset !important;
+    padding: 2.5rem 1rem 2.5rem 1rem !important;
   }
 
   figure {

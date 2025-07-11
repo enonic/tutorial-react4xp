@@ -42,8 +42,8 @@ export const Movie = (props: ComponentProps) => {
                             title={photo.title}
                             className={styles.featuredImage}
                             loading="eager"
-                            height={1200}
-                            width={800}
+                            height={1000}
+                            width={700}
                         />
                     </a>
                 </section>}
