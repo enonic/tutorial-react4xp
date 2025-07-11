@@ -1,10 +1,10 @@
-import {componentRegistry} from '/react4xp/componentRegistry';
 import {RichText, type ComponentProps} from "@enonic/react-components";
 import React from 'react';
 import styles from './Article.module.css';
 
 
 export const Article = (props: ComponentProps) => {
+    const {component, common, meta} = props;
     const {title, blocks, coverImage, preface, author, tags, spotlight} = props.data as any; // Include new props
     return (
         <div className={`wrapper ${styles.article}`}>
@@ -64,7 +64,7 @@ export const Article = (props: ComponentProps) => {
                         return (
                             <section key={index} className={styles.textBlock}>
                                 {/* Use processed HTML */}
-                                <RichText data={block.text} componentRegistry={componentRegistry}/>
+                                <RichText data={block.text} component={component} meta={meta} common={common}/>
                             </section>
                         );
                     }

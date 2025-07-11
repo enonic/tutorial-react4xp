@@ -1,4 +1,4 @@
-import {processHtml} from '/lib/enonic/react4xp';
+import {processHtml, DataFetcher} from '/lib/enonic/react4xp';
 import {get as getContentByKey} from '/lib/xp/content';
 import {imageUrl} from '/lib/xp/portal';
 import {toArray} from "/react4xp/utils/arrayUtils";
@@ -21,6 +21,10 @@ function fetchAdditionalPhotos(photosIds) {
 
 export const personProcessor: ComponentProcessor<PageDescriptor>
     = (params) => {
+    //TODO: change when types are updated
+    const dataFetcher = (params as any).dataFetcher as DataFetcher;
+    const component = params.component;
+
     const photos: string[] = toArray<string>(params.content.data.photos as string | string[])
     const firstPhotoId = photos[0] || '';
     const remainingPhotoIds = photos.slice(1);
@@ -42,9 +46,12 @@ export const personProcessor: ComponentProcessor<PageDescriptor>
         photo: firstPhoto,
         birthDate: params.content.data.dateofbirth,
         restPhotos: extraPhotos,
-        bio: processHtml({
+        //TODO: change when types are updated
+        bio: (processHtml as any)({
             value: params.content.data.bio as string,
             imageWidths: [200, 400, 800],
+            dataFetcher,
+            component
         })
     };
 };
