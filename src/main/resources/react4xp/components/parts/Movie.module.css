@@ -163,7 +163,7 @@ header {
   margin-top: -1rem;
 }
 
-@media screen and (max-width: 1150px) {
+@media screen and (max-width: 1200px) {
   .blocky {
     display: flex;
     width: 800px;

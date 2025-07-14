@@ -30,7 +30,7 @@ export const movieProcessor: ComponentProcessor<'com.enonic.app.hmdb:movie-detai
         firstPhoto = {
             _id: photoContent._id,
             title: photoContent.displayName,
-            imageUrl: imageUrl({id: photoContent._id, scale: 'block(800, 1200)'}), // Larger scale for first photo
+            imageUrl: imageUrl({id: photoContent._id, scale: 'block(700, 1000)'}), // Larger scale for first photo
             id: photoContent._id
         };
     }
