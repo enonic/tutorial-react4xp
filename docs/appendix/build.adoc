@@ -6,21 +6,36 @@
 == Build arguments
 
 [[NODE_ENV]]
-=== Development mode
+=== Development build
 
-Use the gradle commandline flag `-Pdev` or `-Pdevelopment` to enable building in development mode.
+To run a continuous build in development mode where assets are compiled for easy readability without minifying, making errors easier to track down run:
 
 [source,bash]
 ----
-enonic project gradle build deploy -Pdev
+enonic dev
 ----
 
-This switches between React4xp *build* modes (not to be confused with XP's https://developer.enonic.com/docs/enonic-cli/stable/dev#start[run modes]).
+=== Production build
 
-- `production`: assets are compiled more compact (and faster), with source maps
-- `development`: assets are compiled for more human-readability, without minification, making errors easier to track down.
+To make a production build where hashed assets are compiled compact, fast with source maps.
+Since production build is default, you can run:
 
-Default value is `production`.
+[source,bash]
+----
+enonic project build
+----
+
+This gives you a production build with an application ready to use for your server.
+
+=== Running production builds locally
+
+If you want to test a production build locally, you need to start your sandbox in production (as well as the project).
+This allows you to serve the optimized assets with hashing and cached headers locally:
+
+[source,bash]
+----
+enonic sandbox start --prod
+----
 
 [[VERBOSE]]
 === Verbosity
