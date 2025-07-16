@@ -530,8 +530,8 @@ export const Movie = (props: ComponentProps) =&gt; {
                             title={photo.title}
                             className={styles.featuredImage}
                             loading="eager"
-                            height={1200}
-                            width={800}
+                            height={1000}
+                            width={700}
                         /&gt;
                     &lt;/a&gt;
                 &lt;/section&gt;}
@@ -658,7 +658,7 @@ export const movieProcessor: ComponentProcessor&lt;'com.enonic.app.hmdb:movie-de
         firstPhoto = {
             _id: photoContent._id,
             title: photoContent.displayName,
-            imageUrl: imageUrl({id: photoContent._id, scale: 'block(800, 1200)'}), // Larger scale for first photo
+            imageUrl: imageUrl({id: photoContent._id, scale: 'block(700, 1000)'}), // Larger scale for first photo
             id: photoContent._id
         };
     }
@@ -884,7 +884,7 @@ header {
   margin-top: -1rem;
 }
 
-@media screen and (max-width: 1150px) {
+@media screen and (max-width: 1200px) {
   .blocky {
     display: flex;
     width: 800px;
@@ -977,7 +977,7 @@ Hard-coded content type components, like the <code>Person</code> component we cr
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-09 11:31:56 UTC
+Last updated 2025-07-16 09:06:48 UTC
 </div>
 </div>
 </body>

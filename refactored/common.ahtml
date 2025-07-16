@@ -473,7 +473,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="title">react4xp/components/globalStyles.css</div>
 <div class="content">
 <pre class="highlight"><code class="language-CSS" data-lang="CSS">html {
-  background-color: #071622;
+  background-color: #0b1d30;
   color: ghostwhite;
   font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
   padding: 0;
@@ -535,6 +535,7 @@ p {
 }
 
 .helloPage {
+  min-height: calc(92vh - 7rem);
 
   h1 {
     color: #61DBFB;
@@ -542,19 +543,20 @@ p {
 
   button {
     background-color: #61DBFB;
-    color: #071622;
-    border: 1px solid #61DBFB;
+    color: #0b1d30;
+    border: 2px solid #61DBFB !important;
     box-shadow: 0 0 4px #61DBFB;
+    height: fit-content;
   }
 
   button:hover {
-    box-shadow: 0 0 16px #61DBFB;
+    box-shadow: 0 0 16px #61DBFB !important;
   }
 
   button:active {
-    background-color: #EF82F0;
-    box-shadow: 0 0 8px #EF82F0;
-    border-color: #EF82F0;
+    background-color: #EF82F0 !important;
+    box-shadow: 0 0 8px #EF82F0 !important;
+    border-color: #EF82F0 !important;
   }
 
 }</code></pre>
@@ -815,7 +817,7 @@ You now have a stylish site with a footer component on all pages. The footer als
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-09 11:31:56 UTC
+Last updated 2025-07-16 09:06:48 UTC
 </div>
 </div>
 </body>

@@ -443,7 +443,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#build_arguments">Build arguments</a>
 <ul class="sectlevel2">
-<li><a href="#NODE_ENV">Development mode</a></li>
+<li><a href="#NODE_ENV">Development build</a></li>
+<li><a href="#production_build">Production build</a></li>
+<li><a href="#running_production_builds_locally">Running production builds locally</a></li>
 <li><a href="#VERBOSE">Verbosity</a></li>
 </ul>
 </li>
@@ -467,30 +469,41 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="build_arguments"><a class="link" href="#build_arguments">Build arguments</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="NODE_ENV"><a class="link" href="#NODE_ENV">Development mode</a></h3>
+<h3 id="NODE_ENV"><a class="link" href="#NODE_ENV">Development build</a></h3>
 <div class="paragraph">
-<p>Use the gradle commandline flag <code>-Pdev</code> or <code>-Pdevelopment</code> to enable building in development mode.</p>
+<p>To run a continuous build in development mode where assets are compiled for easy readability without minifying, making errors easier to track down run:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">enonic project gradle build deploy -Pdev</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">enonic dev</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="production_build"><a class="link" href="#production_build">Production build</a></h3>
+<div class="paragraph">
+<p>To make a production build where hashed assets are compiled compact, fast with source maps.
+Since production build is default, you can run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">enonic project build</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This switches between React4xp <strong>build</strong> modes (not to be confused with XP&#8217;s <a href="https://developer.enonic.com/docs/enonic-cli/stable/dev#start">run modes</a>).</p>
+<p>This gives you a production build with an application ready to use for your server.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>production</code>: assets are compiled more compact (and faster), with source maps</p>
-</li>
-<li>
-<p><code>development</code>: assets are compiled for more human-readability, without minification, making errors easier to track down.</p>
-</li>
-</ul>
 </div>
+<div class="sect2">
+<h3 id="running_production_builds_locally"><a class="link" href="#running_production_builds_locally">Running production builds locally</a></h3>
 <div class="paragraph">
-<p>Default value is <code>production</code>.</p>
+<p>If you want to test a production build locally, you need to start your sandbox in production (as well as the project).
+This allows you to serve the optimized assets with hashing and cached headers locally:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">enonic sandbox start --prod</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -739,7 +752,7 @@ jar.dependsOn 'react4xp'</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-09 11:31:56 UTC
+Last updated 2025-07-16 09:06:48 UTC
 </div>
 </div>
 </body>

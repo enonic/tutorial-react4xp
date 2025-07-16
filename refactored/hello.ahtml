@@ -538,13 +538,19 @@ Click <code>Preview</code> and try pressing the button for some React action.
 <div class="listingblock">
 <div class="title">react4xp/hello/components/Hello.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {HelloProps} from '/types/HelloProps';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {ComponentProps} from '@enonic/react-components';
 import * as React from 'react';
 import styles from './Hello.module.css';
 
-export const Hello = ({title, initialCount}: HelloProps) =&gt; {
-    const [count, setCount] = React.useState(initialCount);
+export interface HelloProps
+    extends Record&lt;string, unknown&gt; {
+    title: string
+    initialCount: number
+}
 
+export const Hello = (props: ComponentProps) =&gt; {
+    const {title, initialCount} = props.data as HelloProps;
+    const [count, setCount] = React.useState(initialCount);
     return (
         &lt;section className={`helloPage ${styles.helloContainer}`}&gt;
             &lt;h1&gt;{title}&lt;/h1&gt;
@@ -558,9 +564,8 @@ export const Hello = ({title, initialCount}: HelloProps) =&gt; {
 <p>It takes a single parameter, HelloProps. The type is declared like this:</p>
 </div>
 <div class="listingblock">
-<div class="title">types/HelloProps.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">export interface HelloProps {
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">export interface HelloProps extends Record&lt;string, unknown&gt;{
     title: string
     initialCount: number
 }</code></pre>
@@ -591,7 +596,7 @@ Typing your props is optional, but recommended for more robust code.
 import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 
 export const helloProcessor: ComponentProcessor&lt;PageDescriptor&gt; = (params) =&gt; {
-    const title = params.content?.displayName || 'Display name not set';
+    const title = params.content?.displayName || params.content._name || 'Display name not set';
     return {
         title: title,
         initialCount: 0,
@@ -690,7 +695,7 @@ Dive deeper by learning how the basic boot-strapping and routing works in the <a
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-09 11:31:56 UTC
+Last updated 2025-07-16 09:06:48 UTC
 </div>
 </div>
 </body>
