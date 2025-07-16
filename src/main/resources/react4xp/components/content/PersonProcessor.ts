@@ -21,6 +21,7 @@ function fetchAdditionalPhotos(photosIds) {
 
 export const personProcessor: ComponentProcessor<PageDescriptor>
     = (params) => {
+
     const photos: string[] = toArray<string>(params.content.data.photos as string | string[])
     const firstPhotoId = photos[0] || '';
     const remainingPhotoIds = photos.slice(1);
@@ -45,6 +46,8 @@ export const personProcessor: ComponentProcessor<PageDescriptor>
         bio: processHtml({
             value: params.content.data.bio as string,
             imageWidths: [200, 400, 800],
+            dataFetcher: params.dataFetcher,
+            component: params.component
         })
     };
 };

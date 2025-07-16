@@ -1,9 +1,9 @@
-import {componentRegistry} from '/react4xp/componentRegistry';
 import {RichText, type ComponentProps} from '@enonic/react-components';
 import React from 'react'
 import styles from './Person.module.css';
 
 export const Person = (props: ComponentProps) => {
+    const {meta, common, component} = props;
     const {displayName, photo, restPhotos, bio, birthDate} = props.data as any;
     return (
         <div className={styles.person}>
@@ -54,7 +54,9 @@ export const Person = (props: ComponentProps) => {
                     <div className={styles.richText}>
                         <RichText
                             data={bio}
-                            componentRegistry={componentRegistry}
+                            meta={meta}
+                            common={common}
+                            component={component}
                             loading="lazy"
                         />
                     </div>
