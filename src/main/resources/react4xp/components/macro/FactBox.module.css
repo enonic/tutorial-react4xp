@@ -10,6 +10,10 @@
   background-color: #0b0425;
   box-shadow: 0 0 5px #0c022b;
 
+  ul {
+    padding-left: 20px;
+  }
+
   i {
     font-style: normal;
   }

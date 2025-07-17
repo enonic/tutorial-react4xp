@@ -7,7 +7,7 @@ export const ChildList = (props: ComponentProps) => {
     const {names, paths} = props.data as any;
 
     if (!names?.length) {
-        return <ul>
+        return <ul className={styles.list}>
             <li className={styles.listItem}>
                 <p className={styles.listLink}>No child elements found.</p>
             </li>
