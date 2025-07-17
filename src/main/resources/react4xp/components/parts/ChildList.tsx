@@ -14,7 +14,7 @@ export const ChildList = (props: ComponentProps) => {
         </ul>;
     }
 
-    return <ul>
+    return <ul className={styles.list}>
         {names.map((name, index) => (
             <li className={styles.listItem} key={index}>
                 <a className={styles.listLink} href={paths[index]}><p>{name}</p></a>
