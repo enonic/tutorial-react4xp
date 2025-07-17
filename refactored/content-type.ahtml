@@ -646,7 +646,6 @@ export const Person = (props) =&gt; {
   display: flex;
   flex-direction: column;
   margin-inline: auto;
-  min-height: 1600px;
 }
 
 .person h1 {
@@ -775,7 +774,7 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-17 12:03:51 UTC
+Last updated 2025-07-17 14:02:34 UTC
 </div>
 </div>
 </body>

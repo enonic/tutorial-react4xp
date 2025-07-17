@@ -5,11 +5,11 @@
       "document": "index"
     },
     {
-      "title": "1 - Sandbox setup",
+      "title": "1 - Sandbox",
       "document": "setup"
     },
     {
-      "title": "2 - Hello React4XP",
+      "title": "2 - Hello",
       "document": "hello"
     },
     {
@@ -17,7 +17,7 @@
       "document": "common"
     },
     {
-      "title": "4 - Render by type",
+      "title": "4 - Content rendering",
       "document": "content-type"
     },
     {

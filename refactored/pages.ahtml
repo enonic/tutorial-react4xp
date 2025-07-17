@@ -595,7 +595,7 @@ dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProce
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-17 12:03:51 UTC
+Last updated 2025-07-17 14:02:34 UTC
 </div>
 </div>
 </body>
