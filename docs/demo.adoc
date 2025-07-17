@@ -5,15 +5,9 @@
 
 Spin up your own React4XP personal demo in the cloud, or on your local machine.
 
-== What?
-A complete demo instance with sample content and React4XP front-end.
-
-Choose from the alternatives below:
-
-image:r4xp-demo.png[title="React4xp front-end rendring the Headless Movie DB", 1390px]
+Below: Choose to run the demo in Enonic Cloud, or on your local machine.
 
 TIP: To learn the details behind how this front-end was built, head on to the <<setup#, first chapter>> of the tutorial instead.
-
 
 == Alternative 1 - Enonic Cloud
 
@@ -27,9 +21,10 @@ Verify your e-mail and create the account
 +
 Use the template called `Headless Movie DB`, and complete the setup.
 +
-. Link the front-end to your content
+. *Link the front-end to your content*
 +
-Once the solution is ready, launch `XP admin` and open `Content Studio`.
+Once the solution is ready, launch `XP Admin` -> `Content Studio`.
++
 Edit the `Headless Movie DB` site, add the `React4XP Demo` application and press btn:[Save]
 +
 You should how see the new front-end in Content Studio.
@@ -50,33 +45,25 @@ TIP: If the live site is showing the default preview of Headless Movie DB, you h
 Congratulations, you just deployed a live a React site powered by Enonic! 🚀
 
 
-== Alterrnative 2 - Enonic SDK
+== Alternative 2 - Local instance
 
-Follow the steps below to build and run the demo an a local Enonic developer instance:
+Follow the steps below to build and run the demo an a local Enonic developer environment:
 
 . *Install Enonic CLI* if you have not already done this
 +
  npm install -g @enonic/cli 
 +
-. *Create a new sandbox* by running this command in your terminal:
+. *Create a new sandbox and start it* by running this command in your terminal:
 +
  enonic sandbox create r4xpdemo -t hmdb -f
 +
-. *Create the R4XP front-end app* by running this command from a _new terminal window_:
-+
- enonic project create my.first.r4xp -r tutorial-react4xp -s r4xpdemo -f
-+
-. *Build and deploy the app* to your XP sandbox
-+
- cd r4xpdemo/
- enonic project deploy
-+
 . *Link the front-end with your content*
 +
-Launch `XP admin` and open `Content Studio`.
+Launch `XP admin` -> `Content Studio`.
++
 Edit the `Headless Movie DB` site, add the `React4XP Demo` application and press btn:[Save]
 +
-You should how see the demo in Content Studio.
+image:r4xp-demo.png[title="React4xp front-end rendring the Headless Movie DB", 1390px]
 +
 TIP: The live version of the site can be found on http://localhost:8080/site/hmdb/master/hmdb[http://localhost:8080/site/hmdb/master/hmdb^]
 

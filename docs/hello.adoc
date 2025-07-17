@@ -74,7 +74,7 @@ A data processor is used to fetch the props:
 include::{sourcedir}react4xp/components/hello/HelloProcessor.ts[]
 ----
 
-The processor does not execute by itself, it must be registered in the dataFetcher. 
+This processor does not execute by itself, it must be registered in the dataFetcher. 
 
 NOTE: The dataFetcher solely executes on the server side.
 
@@ -112,7 +112,7 @@ componentRegistry.addContentType('portal:site', { View: Hello }); //<1>
 
 Try clicking other content items in Content Studio, and you should simply see an error message at this point.
 
-TIP: Dive deeper by learning how the basic boot-strapping and routing works in the <<appendix/controller#, app controller section>>.
+TIP: Dive deeper by learning how the basic boot-strapping and routing works in the <<appendix/controller#, app controller documentation>>.
 
 == Next up
 

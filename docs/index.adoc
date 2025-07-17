@@ -2,7 +2,7 @@
 :toc: right
 :imagesdir: media/
 
-Build, deploy and run server-side rendered React websites in an Enonic app.
+Build, deploy and run server-side rendered React websites using the Enonic framework.
 
 [TIP]
 ====
@@ -16,7 +16,7 @@ Build, deploy and run server-side rendered React websites in an Enonic app.
 Basic https://reactjs.org/tutorial/tutorial.html[React] and https://developer.enonic.com/start[Enonic] knowledge is recommended before you dive into this tutorial.
 ====
 
-React4XP extends Enonic's JS framework by adding support for Server-Side React - similar to Next.js. 
+React4XP is designed for React devs looking to use Enonic's JS framework and natively, rather than introducing a 3rd party front-end framework like https://developer.enonic.com/docs/next.xp[Next.js] in the stack.
 
 * 100% TSX/JSX rendering - Single React app
 * Based on the https://www.npmjs.com/package/@enonic/react-components[Enonic React component NPM]
@@ -26,18 +26,17 @@ React4XP extends Enonic's JS framework by adding support for Server-Side React -
 * Fast and continuous builds
 * Production builds and static asset handling
 
-== Get started
+== Tutorial
 
 image:r4xp-demo.png[title="React4xp front-end rendring the Headless Movie DB", 1390px]
 
-In this tutorial youy will complete the following steps:
+In this tutorial you will complete the following steps:
 
 * Set up the Enonic SDK and sample content
 * Create a new application based on the React4xp starter
 * Render content based on type
 * Render pages using different components
-* Create a page template
-* Deploy to live servers
+* Use page templates
 
 Get started by <<setup#, setting up the developer environment>>.
 

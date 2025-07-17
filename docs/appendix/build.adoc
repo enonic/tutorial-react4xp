@@ -1,100 +1,42 @@
 = Build configuration
 :toc: right
 
+React4XP build setup and configuration options
 
+== Development build
 
-== Build arguments
-
-[[NODE_ENV]]
-=== Development build
-
-To run a continuous build in development mode where assets are compiled for easy readability without minifying, making errors easier to track down run:
+The development build continuously compiles your changes, and avoids minifying of assets to make debugging easier:
 
 [source,bash]
 ----
 enonic dev
 ----
 
-=== Production build
+== Production build
 
-To make a production build where hashed assets are compiled compact, fast with source maps.
-Since production build is default, you can run:
+A standard build will produce a production optimized version of the applicaiton, including minified assets and source maps. Simply run the following command:
 
 [source,bash]
 ----
 enonic project build
 ----
 
-This gives you a production build with an application ready to use for your server.
+TIP: For more verbose output you may specify -i or --info. However, this requires that you use the full build command: `enonic project gradle build -i`
 
-=== Running production builds locally
+=== Server simulation
 
-If you want to test a production build locally, you need to start your sandbox in production (as well as the project).
-This allows you to serve the optimized assets with hashing and cached headers locally:
+You may test how how your application will perform on a server by launching your sandbox in production mode. In this mode, assets will be served with optimized cached headers:
 
 [source,bash]
 ----
 enonic sandbox start --prod
 ----
 
-[[VERBOSE]]
-=== Verbosity
-
-Use the gradle commandline flag -i or --info to enable a more verbose output when compiling React4xp components and globals.
-
 
 [[react4xp.config.js]]
 == react4xp.config.js
 
 Several aspects of React4xp can be configured with a file _react4xp.config.js_. When using the React4XP starter this should automatically be available in your project.
-
-
-=== Adding react4xp.config.js
-
-NOTE: If you're using the https://market.enonic.com/vendors/enonic/react4xp-starter[React4XP starter] or your project is based on it, you may skip this section:
-
-Put _react4xp.config.js_ at the root of your XP project. A template can be copied from link:https://github.com/enonic/enonic-react4xp/blob/master/examples/react4xp.config.js[here], or from _node_modules/@enonic/react4xp/examples/react4xp.config.js_ after installing the React4xp NPM package.
-
-*In order to take effect, it must be handled by gradle during the build:*
-
-- Add this to your _build.gradle_:
-+
-[source,groovy]
-----
-task react4xp(type: NpmTask, dependsOn: npmInstall) {
-  args = [
-    'run',
-    'build:react4xp' // This script must exist in the package.json file
-  ]
-  description 'Compile react4xp resources'
-  environment = [
-    'R4X_APP_NAME': "${appName}",
-    'R4X_BUILD_LOG_LEVEL': gradle.startParameter.logLevel.toString(),
-    'R4X_DIR_PATH_ABSOLUTE_PROJECT': project.projectDir.toString(),
-    'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
-  ]
-  group 'react4xp'
-  // It also watches package.json and package-lock.json :)
-  inputs.dir 'node_modules/@enonic/react4xp'
-  inputs.dir 'src/main/resources'
-  outputs.dir 'build/resources/main'
-}
-jar.dependsOn 'react4xp'
-----
-+
-This will not only make sure _react4xp.config.js_ is handled, but also give a full react4xp build setup.
-
-- Add this to your _package.json_:
-+
-[source,json]
-----
-{
-  "scripts": {
-    "build:react4xp": "npm explore @enonic/react4xp -- npm run build:react4xp",
-  }
-}
-----
-
 
 
 [[entryDirs]]
@@ -109,7 +51,6 @@ entryDirs: ['myComponents', '../otherComponents']
 By default, React4xp will look for (ie. sets up webpack to look for) .TSX/.JSX files to turn into <<entries#, entries>> below _src/main/resources/site/_.
 
 Adding comma separated values under `entryDirs` adds _more_ folder names/paths (relative to _src/main/resources/react4xp/_) where TSX/JSX files will also become entries.
-
 
 
 [[chunkDirs]]
@@ -142,7 +83,7 @@ This example adds these folders as chunkDirs, and anything the entries import fr
 [[webpack.config.react4xp.js]]
 == webpack.config.react4xp.js
 
-React4xp uses Webpack to build. The starter comes with a minimal set of webpack rules built-in, for compiling react components in TSX/JSX files into vanilla JS.
+React4xp uses RSpack/Webpack to build. The starter comes with a minimal set of webpack rules built-in, for compiling react components in TSX/JSX files into vanilla JS.
 
 If you need to change/expand this setup, simply place a custom `webpack.config.react4xp.js` in your project folder.
 
@@ -186,26 +127,6 @@ module.exports = function(env, config) {
 
 The extra incoming `config` object contains the built-in rules from React4xp. This enables you to both manipulate those rules and/or add your own, or entirely replace them by returning a different object.
 ====
-
-=== Webpack caching
-
-To improve the speed of incremental builds, you may also enable webpack caching.
-
-[source,javascript]
-.webpack.config.react4xp.js
-----
-module.exports = function(env, config) {
-		if (process.env.NODE_ENV === 'development') {
-		config.cache = {
-			type: 'filesystem'
-		}
-	}
-  return config;
-}
-----
-
-Read more https://webpack.js.org/configuration/cache/
-
 
 
 
