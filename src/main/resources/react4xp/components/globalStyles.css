@@ -60,6 +60,12 @@ p {
   margin-inline: auto;
 }
 
+.contentContainer > div > .helloPage {
+  margin-bottom: unset;
+  min-height: unset;
+  padding: unset;
+}
+
 .helloPage {
   min-height: calc(92vh - 7rem);
 
