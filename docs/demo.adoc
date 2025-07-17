@@ -30,6 +30,9 @@ Edit the `Headless Movie DB` site, add the `React4XP Demo` application and press
 You should how see the new front-end in Content Studio.
 +
 . Publish the changes
++
+image:r4xp-demo.png[title="React4xp front-end rendring the Headless Movie DB", 1390px]
+
 
 *Optionally expose the site on a public URL* by following the steps below:
 

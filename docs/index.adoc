@@ -1,13 +1,8 @@
-= React4XP - Server Side React with the Enonic Framework
+= React4XP - React sites with the Enonic framework
 :toc: right
 :imagesdir: media/
 
-Build, deploy and run server-side rendered React websites using the Enonic framework.
-
-[TIP]
-====
-*tl;dr* Try the <<demo#, React4XP demo>> instead.
-====
+Build, deploy and run server-side rendered React websites with Enonic.
 
 == What is React4XP
 
@@ -27,6 +22,11 @@ React4XP is designed for React devs looking to use Enonic's JS framework and nat
 * Production builds and static asset handling
 
 == Tutorial
+
+[TIP]
+====
+*tl;dr* Try the <<demo#, React4XP demo>> instead.
+====
 
 image:r4xp-demo.png[title="React4xp front-end rendring the Headless Movie DB", 1390px]
 
