@@ -441,9 +441,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#what">What?</a></li>
 <li><a href="#alternative_1_enonic_cloud">Alternative 1 - Enonic Cloud</a></li>
-<li><a href="#alterrnative_2_enonic_sdk">Alterrnative 2 - Enonic SDK</a></li>
+<li><a href="#alternative_2_local_instance">Alternative 2 - Local instance</a></li>
 </ul>
 </div>
 </div>
@@ -453,19 +452,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Spin up your own React4XP personal demo in the cloud, or on your local machine.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="what"><a class="link" href="#what">What?</a></h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>A complete demo instance with sample content and React4XP front-end.</p>
-</div>
-<div class="paragraph">
-<p>Choose from the alternatives below:</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/r4xp-demo.png" alt="r4xp demo" width="1390px" title="React4xp front-end rendring the Headless Movie DB"></span></p>
+<p>Below: Choose to run the demo in Enonic Cloud, or on your local machine.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -502,10 +490,12 @@ To learn the details behind how this front-end was built, head on to the <a href
 </div>
 </li>
 <li>
-<p>Link the front-end to your content</p>
+<p><strong>Link the front-end to your content</strong></p>
 <div class="paragraph">
-<p>Once the solution is ready, launch <code>XP admin</code> and open <code>Content Studio</code>.
-Edit the <code>Headless Movie DB</code> site, add the <code>React4XP Demo</code> application and press <b class="button">Save</b></p>
+<p>Once the solution is ready, launch <code>XP Admin</code> &#8594; <code>Content Studio</code>.</p>
+</div>
+<div class="paragraph">
+<p>Edit the <code>Headless Movie DB</code> site, add the <code>React4XP Demo</code> application and press <b class="button">Save</b></p>
 </div>
 <div class="paragraph">
 <p>You should how see the new front-end in Content Studio.</p>
@@ -559,10 +549,10 @@ If the live site is showing the default preview of Headless Movie DB, you have n
 </div>
 </div>
 <div class="sect1">
-<h2 id="alterrnative_2_enonic_sdk"><a class="link" href="#alterrnative_2_enonic_sdk">Alterrnative 2 - Enonic SDK</a></h2>
+<h2 id="alternative_2_local_instance"><a class="link" href="#alternative_2_local_instance">Alternative 2 - Local instance</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Follow the steps below to build and run the demo an a local Enonic developer instance:</p>
+<p>Follow the steps below to build and run the demo an a local Enonic developer environment:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -575,7 +565,7 @@ If the live site is showing the default preview of Headless Movie DB, you have n
 </div>
 </li>
 <li>
-<p><strong>Create a new sandbox</strong> by running this command in your terminal:</p>
+<p><strong>Create a new sandbox and start it</strong> by running this command in your terminal:</p>
 <div class="literalblock">
 <div class="content">
 <pre>enonic sandbox create r4xpdemo -t hmdb -f</pre>
@@ -583,30 +573,15 @@ If the live site is showing the default preview of Headless Movie DB, you have n
 </div>
 </li>
 <li>
-<p><strong>Create the R4XP front-end app</strong> by running this command from a <em>new terminal window</em>:</p>
-<div class="literalblock">
-<div class="content">
-<pre>enonic project create my.first.r4xp -r tutorial-react4xp -s r4xpdemo -f</pre>
-</div>
-</div>
-</li>
-<li>
-<p><strong>Build and deploy the app</strong> to your XP sandbox</p>
-<div class="literalblock">
-<div class="content">
-<pre>cd r4xpdemo/
-enonic project deploy</pre>
-</div>
-</div>
-</li>
-<li>
 <p><strong>Link the front-end with your content</strong></p>
 <div class="paragraph">
-<p>Launch <code>XP admin</code> and open <code>Content Studio</code>.
-Edit the <code>Headless Movie DB</code> site, add the <code>React4XP Demo</code> application and press <b class="button">Save</b></p>
+<p>Launch <code>XP admin</code> &#8594; <code>Content Studio</code>.</p>
 </div>
 <div class="paragraph">
-<p>You should how see the demo in Content Studio.</p>
+<p>Edit the <code>Headless Movie DB</code> site, add the <code>React4XP Demo</code> application and press <b class="button">Save</b></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="media/r4xp-demo.png" alt="r4xp demo" width="1390px" title="React4xp front-end rendring the Headless Movie DB"></span></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -631,7 +606,7 @@ The live version of the site can be found on <a href="http://localhost:8080/site
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-16 09:06:48 UTC
+Last updated 2025-07-17 12:03:51 UTC
 </div>
 </div>
 </body>

@@ -645,6 +645,18 @@ enonic dev</pre>
 <div class="paragraph">
 <p>Because the sandbox is running in dev mode, any changes to the code wihin your app will instantly be picked up.</p>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Dive deeper by learning more about React4XP&#8217;s <a href="appendix/build.ahtml">build system</a>.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>In the next chapter, you&#8217;ll get familiar with <a href="hello.ahtml">basic React4XP rendering</a>.</p>
 </div>
@@ -653,7 +665,7 @@ enonic dev</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-16 09:06:48 UTC
+Last updated 2025-07-17 12:03:51 UTC
 </div>
 </div>
 </body>

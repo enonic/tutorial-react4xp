@@ -605,7 +605,7 @@ export const helloProcessor: ComponentProcessor&lt;PageDescriptor&gt; = (params)
 </div>
 </div>
 <div class="paragraph">
-<p>The processor does not execute by itself, it must be registered in the dataFetcher.</p>
+<p>This processor does not execute by itself, it must be registered in the dataFetcher.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -676,7 +676,7 @@ componentRegistry.addContentType('portal:site', { View: Hello }); <i class="conu
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Dive deeper by learning how the basic boot-strapping and routing works in the <a href="appendix/controller.ahtml">app controller section</a>.
+Dive deeper by learning how the basic boot-strapping and routing works in the <a href="appendix/controller.ahtml">app controller documentation</a>.
 </td>
 </tr>
 </table>
@@ -695,7 +695,7 @@ Dive deeper by learning how the basic boot-strapping and routing works in the <a
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-16 09:06:48 UTC
+Last updated 2025-07-17 12:03:51 UTC
 </div>
 </div>
 </body>

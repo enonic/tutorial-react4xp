@@ -523,6 +523,7 @@ function fetchAdditionalPhotos(photosIds) {
 
 export const personProcessor: ComponentProcessor&lt;PageDescriptor&gt;
     = (params) =&gt; {
+
     const photos: string[] = toArray&lt;string&gt;(params.content.data.photos as string | string[])
     const firstPhotoId = photos[0] || '';
     const remainingPhotoIds = photos.slice(1);
@@ -547,6 +548,8 @@ export const personProcessor: ComponentProcessor&lt;PageDescriptor&gt;
         bio: processHtml({
             value: params.content.data.bio as string,
             imageWidths: [200, 400, 800],
+            dataFetcher: params.dataFetcher,
+            component: params.component
         })
     };
 };</code></pre>
@@ -561,12 +564,12 @@ export const personProcessor: ComponentProcessor&lt;PageDescriptor&gt;
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/content/Person.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {componentRegistry} from '/react4xp/componentRegistry';
-import {RichText, type ComponentProps} from '@enonic/react-components';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {RichText, type ComponentProps} from '@enonic/react-components';
 import React from 'react'
 import styles from './Person.module.css';
 
 export const Person = (props: ComponentProps) =&gt; {
+    const {meta, common, component} = props;
     const {displayName, photo, restPhotos, bio, birthDate} = props.data as any;
     return (
         &lt;div className={styles.person}&gt;
@@ -617,7 +620,9 @@ export const Person = (props: ComponentProps) =&gt; {
                     &lt;div className={styles.richText}&gt;
                         &lt;RichText
                             data={bio}
-                            componentRegistry={componentRegistry}
+                            meta={meta}
+                            common={common}
+                            component={component}
                             loading="lazy"
                         /&gt;
                     &lt;/div&gt;
@@ -665,12 +670,12 @@ import React from 'react';
 import styles from './FactBox.module.css';
 
 
-export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
+export const Factbox = ({data, children}: MacroComponentParams) =&gt; {
 
     return (
         &lt;ins className={styles.factBox}&gt;
             &lt;i&gt;💬&lt;/i&gt;
-            &lt;strong className={styles.header}&gt;{config.header ? config.header as string : "Fact Box"}&lt;/strong&gt;
+            &lt;strong className={styles.header}&gt;{data.header ? data.header as unknown as string : "Fact Box"}&lt;/strong&gt;
             &lt;div className={styles.bodyContent}&gt; {children}&lt;/div&gt;
         &lt;/ins&gt;
     );
@@ -691,6 +696,10 @@ export const Factbox = ({config, children}: MacroComponentParams) =&gt; {
   position: relative;
   background-color: #0b0425;
   box-shadow: 0 0 5px #0c022b;
+
+  ul {
+    padding-left: 20px;
+  }
 
   i {
     font-style: normal;
@@ -763,7 +772,7 @@ To create a macro dataProcessor, register it using <code>.addMacro</code> instea
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-16 09:06:48 UTC
+Last updated 2025-07-17 12:03:51 UTC
 </div>
 </div>
 </body>
