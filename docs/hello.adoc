@@ -27,9 +27,9 @@ image:hmdb.png[title="HMDB welcome page",width=900px]
 +
 . Add your brand new "React4XP" application to the site. After saving, the preview will refresh, to reveal something like this:
 +
-image:hello.png[title="React4XP starter page", width=1440px]
+image:hello.png[title="React4XP starter page",width=900px]
 
-The component was initially rendered on the server, then <<appendix/hydfation#, hydrated>> to spin up as a client-side React component. 
+The component was initially rendered on the server, then <<appendix/hydration#, hydrated>> to spin up as a client-side React component.
 
 TIP: Click `Preview` and try pressing the button for some React action.
 
@@ -97,7 +97,7 @@ dataFetcher.addContentType('portal:site', { processor: helloProcessor }); // <1>
 
 Back to the Hello React component. Similar to the dataFetcher, this must be added to the ComponentRegistry in order to work.
 
-.react4xp/componentRegistry.ts
+.react4xp/componentRegistry.tsx
 [source,TypeScript]
 ----
 import {ComponentRegistry} from '@enonic/react-components';

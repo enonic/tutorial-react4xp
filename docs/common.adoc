@@ -30,7 +30,7 @@ import '../components/globalStyles.css';
 
 Refresh the Hello page to see the what happened:
 
-image:hello.png[title="Hello page with styling", width=647px]
+image:common.png[title="Hello page with styling",width=900px]
 
 
 == Footer component
@@ -95,7 +95,7 @@ Using `addCommon` ensures this will be executed for every rendering request.
 +
 NOTE: Be careful to only get the props you need, or else this may slow down rendering of all pages.
 
-image:hello.png[title="Hello page with styling", width=647px]
+image:commonWithFooter.png[title="Hello page with styling",width=900px]
 
 *Sweet!*
 You now have a stylish site with a footer component on all pages. The footer also brings it own CSS via a CSS module.

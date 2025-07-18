@@ -1,17 +1,19 @@
 import Footer from "/react4xp/components/common/Footer";
 import '../components/globalStyles.css'
-import type {AppProps} from '/types/AppProps';
+import {AppProps} from '/types/AppProps';
+import type {MetaData} from '@enonic/react-components';
 import {BaseComponent} from '@enonic/react-components';
 import * as React from 'react';
 import {componentRegistry} from '../componentRegistry';
 
-const App: React.FC<AppProps> = (props) => {
+const App: React.FC<AppProps> = ({component, data, common, meta}) => {
+    const compMeta: MetaData = meta as MetaData;
+    compMeta.componentRegistry = componentRegistry;
     return (
         <>
-            <BaseComponent componentRegistry={componentRegistry} data={props}/>
+            <BaseComponent component={component} data={data} common={common} meta={compMeta}/>
             {
-                (props.type == "page" || props.type == "contentType") &&
-                <Footer logoUrl={props.common.logoUrl as string}/>
+                (component.type == "page" || component.type == "contentType") && <Footer logoUrl={common.logoUrl as string}/>
             }
         </>
     );
