@@ -496,13 +496,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li>
 <p>Add your brand new "React4XP" application to the site. After saving, the preview will refresh, to reveal something like this:</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/hello.png" alt="hello" width="1440px" title="React4XP starter page"></span></p>
+<p><span class="image"><img src="media/hello.png" alt="hello" width="900px" title="React4XP starter page"></span></p>
 </div>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>The component was initially rendered on the server, then <a href="appendix/hydfation.ahtml">hydrated</a> to spin up as a client-side React component.</p>
+<p>The component was initially rendered on the server, then <a href="appendix/hydration.ahtml">hydrated</a> to spin up as a client-side React component.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -648,7 +648,7 @@ dataFetcher.addContentType('portal:site', { processor: helloProcessor }); <i cla
 <p>Back to the Hello React component. Similar to the dataFetcher, this must be added to the ComponentRegistry in order to work.</p>
 </div>
 <div class="listingblock">
-<div class="title">react4xp/componentRegistry.ts</div>
+<div class="title">react4xp/componentRegistry.tsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {ComponentRegistry} from '@enonic/react-components';
 import {Hello} from './components/Hello';
@@ -695,7 +695,7 @@ Dive deeper by learning how the basic boot-strapping and routing works in the <a
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-17 14:02:34 UTC
+Last updated 2025-07-18 08:58:03 UTC
 </div>
 </div>
 </body>
