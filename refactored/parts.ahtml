@@ -548,7 +548,7 @@ export const childListProcessor: ComponentProcessor&lt;'com.enonic.app.hmdb:chil
 <li>
 <p><strong>Register the component and processor</strong>:</p>
 <div class="listingblock">
-<div class="title">/src/main/resources/react4xp/componentRegistry.ts</div>
+<div class="title">/src/main/resources/react4xp/componentRegistry.tsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {ChildList} from './components/parts/ChildList';
 
@@ -584,9 +584,6 @@ dataFetcher.addPart('com.enonic.app.hmdb:child-list', {processor: childListProce
 </div>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/child-list-form.png" alt="child list form" width="900px" title="Child list form"></span></p>
 </div>
 </div>
 </div>
@@ -682,7 +679,7 @@ dataFetcher.addPart('com.enonic.app.hmdb:heading', {processor: headingProcessor}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-18 08:58:03 UTC
+Last updated 2025-07-18 12:26:43 UTC
 </div>
 </div>
 </body>

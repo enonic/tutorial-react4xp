@@ -582,11 +582,13 @@ dataFetcher.addContentType('com.enonic.app.hmdb:person', {processor: personProce
 <div class="listingblock">
 <div class="title">/src/main/resources/react4xp/components/content/Person.tsx (React component)</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react'
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {type ComponentProps} from '@enonic/react-components';
+import React from 'react'
 import styles from './Person.module.css';
 
-export const Person = (props) =&gt; {
-    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+export const Person = (props: ComponentProps) =&gt; {
+    const {meta, common, component} = props;
+    const {displayName, photo, restPhotos, birthDate} = props.data as any;
     return (
         &lt;div className={styles.person}&gt;
             &lt;h1&gt;{displayName}&lt;/h1&gt;
@@ -752,14 +754,14 @@ export const Person = (props) =&gt; {
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {Person} from './components/content/Person';
 
-componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Back in Content Studio, select a person item to see what you have made:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/person.png" alt="person" width="1346px" title="Preview of a Person"></span></p>
+<p><span class="image"><img src="media/person.png" alt="person" width="900px" title="Preview of a Person"></span></p>
 </div>
 </div>
 </div>
@@ -774,7 +776,7 @@ componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-18 08:58:03 UTC
+Last updated 2025-07-18 12:26:43 UTC
 </div>
 </div>
 </body>
