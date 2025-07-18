@@ -9,12 +9,12 @@ import type {ComponentProcessor} from '@enonic-types/lib-react4xp/DataFetcher';
 function fetchAdditionalPhotos(photosIds) {
     return photosIds.map(photoId => {
         if (photoId) {
-        const photoContent = getContentByKey<Content>({key: photoId});
-        return {
-            _id: photoContent._id,
-            title: photoContent.displayName,
-            imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
-        };
+            const photoContent = getContentByKey<Content>({key: photoId});
+            return {
+                _id: photoContent._id,
+                title: photoContent.displayName,
+                imageUrl: imageUrl({id: photoContent._id, scale: 'block(175, 175)'})
+            };
         }
     });
 }

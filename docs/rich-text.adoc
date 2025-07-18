@@ -63,6 +63,12 @@ The HMDB dataset defines a `Fact-Box` macro, which editors may use inside their 
 include::{sourcedir}react4xp/components/macro/FactBox.tsx[]
 ----
 +
+./src/main/resources/react4xp/components/macro/FactboxProcessor.ts
+[source,TypeScript]
+----
+include::{sourcedir}react4xp/components/macro/FactboxProcessor.ts[]
+----
++
 ./src/main/resources/react4xp/components/macro/FactBox.module.css
 [source,TypeScript]
 ----
@@ -76,18 +82,19 @@ include::{sourcedir}react4xp/components/macro/FactBox.module.css[]
 ----
 include::{snippet}Rich-text/componentRegistry.tsx[]
 ----
++
+. *Register the processor*
++
+./src/main/resources/react4xp/dataFetcher.ts
+[source,TypeScript]
+----
+include::{snippet}Rich-text/dataFetcher.ts[]
+----
 
 *Factbox complete!*
 
 You should now see the Factbox rendering properly
 
 image::rich-text-with-macro.png[title="Person content rendered with rich text and macro",width=720px]
-
-=== No dataProcessor?
-
-What happened to the FactBox dataProcessor? Macros automatically get configuration values passed to the React component via the `children` field.
-
-TIP: To create a macro dataProcessor, register it using `.addMacro` instead of `.addPage` in your dataFetcher.
-
 
 Sweet! next up are <<pages#, pages>>.

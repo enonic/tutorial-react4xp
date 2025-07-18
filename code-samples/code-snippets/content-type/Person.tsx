@@ -1,8 +1,10 @@
+import {type ComponentProps} from '@enonic/react-components';
 import React from 'react'
 import styles from './Person.module.css';
 
-export const Person = (props) => {
-    const {displayName, photo, restPhotos, bioHtml, birthDate} = props as any;
+export const Person = (props: ComponentProps) => {
+    const {meta, common, component} = props;
+    const {displayName, photo, restPhotos, birthDate} = props.data as any;
     return (
         <div className={styles.person}>
             <h1>{displayName}</h1>

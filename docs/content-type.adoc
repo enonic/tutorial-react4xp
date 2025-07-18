@@ -94,12 +94,12 @@ include::{snippet}Person.module.css[]
 ----
 import {Person} from './components/content/Person';
 
-componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person}); // <1>
+componentRegistry.addContentType('com.enonic.app.hmdb:person', {View: Person});
 ----
 
 Back in Content Studio, select a person item to see what you have made:
 
-image:person.png[title="Preview of a Person", width=1346px]
+image:person.png[title="Preview of a Person",width=900px]
 
 == Next
 

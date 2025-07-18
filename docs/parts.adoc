@@ -36,7 +36,7 @@ include::{sourcedir}react4xp/components/parts/ChildList.module.css[]
 
 . *Register the component and processor*:
 +
-./src/main/resources/react4xp/componentRegistry.ts
+./src/main/resources/react4xp/componentRegistry.tsx
 [source,TypeScript]
 ----
 include::{snippet}/parts/componentRegistry.tsx[]
@@ -52,8 +52,6 @@ include::{snippet}/parts/dataFetcher.ts[]
 image:child-list-render.png[title="Child list part",width=900px]
 +
 Try updating the CMS component by changing the sorting order, or even adding or removing items within the tree structure.
-
-image:child-list-form.png[title="Child list form",width=900px]
 
 == Bonus task: Heading
 
