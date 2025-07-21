@@ -521,7 +521,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/r4xp-demo.png" alt="r4xp demo" width="1390px" title="React4xp front-end rendring the Headless Movie DB"></span></p>
+<p><span class="image"><img src="media/r4xp-demo.png" alt="r4xp demo" width="900px" title="React4xp front-end rendring the Headless Movie DB"></span></p>
 </div>
 <div class="paragraph">
 <p>In this tutorial you will complete the following steps:</p>
@@ -585,7 +585,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-18 12:26:43 UTC
+Last updated 2025-07-21 08:33:50 UTC
 </div>
 </div>
 </body>
